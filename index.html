@@ -725,23 +725,20 @@
 </div>
 
 <!-- ─── LEVEL REVEAL ─── -->
-<div class="screen" id="screen-level" style="overflow-y:auto;padding-bottom:40px;">
-  <div style="padding:56px 24px 24px;background:linear-gradient(180deg,#1A1428 0%,var(--bg) 100%);text-align:center;">
-    <div style="font-size:12px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">YOUR STARTING POINT</div>
-    <div style="font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:8px" id="level-title">Finding Your Voice</div>
-    <div style="font-size:15px;color:var(--muted);line-height:1.6;max-width:300px;margin:0 auto" id="level-desc"></div>
+<div class="screen" id="screen-level" style="overflow-y:auto;padding-bottom:40px;background:linear-gradient(160deg,#0F0F14 0%,#1A1428 60%,#0F0F14 100%);">
+  <div style="padding:64px 24px 32px;text-align:center;">
+    <div style="font-size:12px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">ASSESSMENT COMPLETE</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:28px;line-height:1.3;margin-bottom:12px">Based on your answers,<br>here's where you start</div>
+    <div style="font-size:14px;color:var(--muted);line-height:1.6">Everyone begins somewhere. This is yours.</div>
   </div>
-  <div style="padding:24px;">
-    <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">ALL STARTING POINTS</div>
-    <div id="all-levels-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+
+  <div style="padding:0 24px 32px;">
+    <div id="all-levels-list" style="display:flex;flex-direction:column;gap:10px;"></div>
   </div>
-  <div style="padding:0 24px 8px;">
-    <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">WHAT THIS MEANS FOR YOU</div>
-    <div id="level-traits" style="display:flex;flex-direction:column;gap:10px;"></div>
-  </div>
-  <div style="padding:24px;">
+
+  <div style="padding:0 24px 32px;">
     <button class="btn-primary" onclick="startPractice()">Begin practice</button>
-    <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--muted)">Your starting point will update as you progress</div>
+    <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--muted)">Your level updates as you improve</div>
   </div>
 </div>
 
@@ -1051,52 +1048,66 @@ function calculateLevel() {
 }
 
 function showLevelReveal() {
-  const l = LEVELS[state.level];
-  document.getElementById('level-title').textContent = l.title;
-  document.getElementById('level-desc').textContent = l.desc;
-
-  // Render all 4 levels so user sees themselves in context
   const allLevels = [
-    { num: 1, label: 'Building Foundations', summary: 'Comfortable speaking, want to sharpen skills' },
-    { num: 2, label: 'Finding Your Voice', summary: 'Some nerves, ready to build confidence' },
-    { num: 3, label: 'Facing the Fear', summary: 'Real anxiety that has affected your life' },
-    { num: 4, label: 'Starting Over', summary: 'Significant anxiety, starting from the beginning' },
+    { num: 1, label: 'Building Foundations', summary: 'Comfortable speaking — here to sharpen and polish', icon: '⭐', traits: [] },
+    { num: 2, label: 'Finding Your Voice', summary: 'Some nerves — ready to build real confidence', icon: '🌱', traits: ['Moderate anxiety — very common', 'Each session builds on the last', 'Prompts start low-stakes and grow'] },
+    { num: 3, label: 'Facing the Fear', summary: 'Real anxiety that has affected your life', icon: '💛', traits: ['Significant anxiety — you\'re not alone', 'Slow, gentle progression', 'Small wins matter enormously here'] },
+    { num: 4, label: 'Starting Over', summary: 'Significant anxiety — starting from the very beginning', icon: '🤝', traits: ['Severe anxiety — completely valid', 'Tiny steps, big progress over time', 'Progress is measured in moments, not scores'] },
   ];
 
   document.getElementById('all-levels-list').innerHTML = allLevels.map(lv => {
     const isYours = lv.num === state.level;
+    const traitsHtml = isYours && lv.traits.length ? `
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(124,106,247,0.2);display:flex;flex-direction:column;gap:8px;">
+        ${lv.traits.map(t => `
+          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)">
+            <div style="width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>
+            ${t}
+          </div>
+        `).join('')}
+      </div>
+    ` : '';
+
     return `
       <div style="
-        background:${isYours ? 'rgba(124,106,247,0.12)' : 'var(--surface)'};
+        background:${isYours ? 'rgba(124,106,247,0.1)' : 'var(--surface)'};
         border:1px solid ${isYours ? 'var(--accent)' : 'var(--border)'};
-        border-radius:16px;
-        padding:16px 18px;
-        display:flex;
-        align-items:center;
-        gap:14px;
+        border-radius:20px;
+        padding:18px 20px;
+        transition:all 0.2s;
       ">
-        <div style="
-          width:36px;height:36px;
-          border-radius:50%;
-          background:${isYours ? 'var(--accent)' : 'var(--surface2)'};
-          border:1px solid ${isYours ? 'var(--accent)' : 'var(--border)'};
-          display:flex;align-items:center;justify-content:center;
-          font-size:15px;font-weight:700;
-          color:${isYours ? 'white' : 'var(--muted)'};
-          flex-shrink:0;
-        ">${lv.num}</div>
-        <div style="flex:1">
-          <div style="font-size:14px;font-weight:600;color:${isYours ? 'var(--text)' : 'var(--muted)'};margin-bottom:3px">${lv.label}</div>
-          <div style="font-size:12px;color:var(--muted)">${lv.summary}</div>
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="
+            width:40px;height:40px;flex-shrink:0;
+            border-radius:12px;
+            background:${isYours ? 'var(--accent)' : 'var(--surface2)'};
+            border:1px solid ${isYours ? 'var(--accent)' : 'var(--border)'};
+            display:flex;align-items:center;justify-content:center;
+            font-size:18px;
+          ">${lv.icon}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="
+              font-size:15px;font-weight:600;
+              color:${isYours ? 'var(--text)' : 'var(--muted)'};
+              margin-bottom:3px;
+            ">${lv.label}</div>
+            <div style="font-size:13px;color:var(--muted);line-height:1.4;">${lv.summary}</div>
+          </div>
+          ${isYours ? `<div style="
+            background:var(--accent);
+            color:white;
+            font-size:11px;font-weight:700;
+            letter-spacing:1px;
+            padding:4px 10px;
+            border-radius:100px;
+            white-space:nowrap;
+            flex-shrink:0;
+          ">YOU</div>` : ''}
         </div>
-        ${isYours ? '<div style="font-size:12px;color:var(--accent2);font-weight:600;white-space:nowrap">← You</div>' : ''}
+        ${traitsHtml}
       </div>
     `;
   }).join('');
-
-  document.getElementById('level-traits').innerHTML = l.traits.map(t =>
-    `<div class="trait"><span class="trait-icon">${t.split(' ')[0]}</span><span>${t.split(' ').slice(1).join(' ')}</span></div>`
-  ).join('');
 
   showScreen('screen-level');
 }
