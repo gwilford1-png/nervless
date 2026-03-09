@@ -725,15 +725,24 @@
 </div>
 
 <!-- ─── LEVEL REVEAL ─── -->
-<div class="screen" id="screen-level">
-  <div class="level-badge">
-    <span class="level-label">Level</span>
-    <span class="level-num" id="level-num">2</span>
+<div class="screen" id="screen-level" style="overflow-y:auto;padding-bottom:40px;">
+  <div style="padding:56px 24px 24px;background:linear-gradient(180deg,#1A1428 0%,var(--bg) 100%);text-align:center;">
+    <div style="font-size:12px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">YOUR STARTING POINT</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:8px" id="level-title">Finding Your Voice</div>
+    <div style="font-size:15px;color:var(--muted);line-height:1.6;max-width:300px;margin:0 auto" id="level-desc"></div>
   </div>
-  <h2 class="level-title" id="level-title">Finding Your Voice</h2>
-  <p class="level-desc" id="level-desc">You feel the anxiety but you're ready to face it. These prompts are designed to build your confidence step by step.</p>
-  <div class="level-traits" id="level-traits"></div>
-  <button class="btn-primary" onclick="startPractice()" style="max-width:320px">Begin practice</button>
+  <div style="padding:24px;">
+    <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">ALL STARTING POINTS</div>
+    <div id="all-levels-list" style="display:flex;flex-direction:column;gap:12px;"></div>
+  </div>
+  <div style="padding:0 24px 8px;">
+    <div style="font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">WHAT THIS MEANS FOR YOU</div>
+    <div id="level-traits" style="display:flex;flex-direction:column;gap:10px;"></div>
+  </div>
+  <div style="padding:24px;">
+    <button class="btn-primary" onclick="startPractice()">Begin practice</button>
+    <div style="text-align:center;margin-top:16px;font-size:13px;color:var(--muted)">Your starting point will update as you progress</div>
+  </div>
 </div>
 
 <!-- ─── PRACTICE ─── -->
@@ -1043,12 +1052,52 @@ function calculateLevel() {
 
 function showLevelReveal() {
   const l = LEVELS[state.level];
-  document.getElementById('level-num').textContent = state.level;
   document.getElementById('level-title').textContent = l.title;
   document.getElementById('level-desc').textContent = l.desc;
+
+  // Render all 4 levels so user sees themselves in context
+  const allLevels = [
+    { num: 1, label: 'Building Foundations', summary: 'Comfortable speaking, want to sharpen skills' },
+    { num: 2, label: 'Finding Your Voice', summary: 'Some nerves, ready to build confidence' },
+    { num: 3, label: 'Facing the Fear', summary: 'Real anxiety that has affected your life' },
+    { num: 4, label: 'Starting Over', summary: 'Significant anxiety, starting from the beginning' },
+  ];
+
+  document.getElementById('all-levels-list').innerHTML = allLevels.map(lv => {
+    const isYours = lv.num === state.level;
+    return `
+      <div style="
+        background:${isYours ? 'rgba(124,106,247,0.12)' : 'var(--surface)'};
+        border:1px solid ${isYours ? 'var(--accent)' : 'var(--border)'};
+        border-radius:16px;
+        padding:16px 18px;
+        display:flex;
+        align-items:center;
+        gap:14px;
+      ">
+        <div style="
+          width:36px;height:36px;
+          border-radius:50%;
+          background:${isYours ? 'var(--accent)' : 'var(--surface2)'};
+          border:1px solid ${isYours ? 'var(--accent)' : 'var(--border)'};
+          display:flex;align-items:center;justify-content:center;
+          font-size:15px;font-weight:700;
+          color:${isYours ? 'white' : 'var(--muted)'};
+          flex-shrink:0;
+        ">${lv.num}</div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:600;color:${isYours ? 'var(--text)' : 'var(--muted)'};margin-bottom:3px">${lv.label}</div>
+          <div style="font-size:12px;color:var(--muted)">${lv.summary}</div>
+        </div>
+        ${isYours ? '<div style="font-size:12px;color:var(--accent2);font-weight:600;white-space:nowrap">← You</div>' : ''}
+      </div>
+    `;
+  }).join('');
+
   document.getElementById('level-traits').innerHTML = l.traits.map(t =>
     `<div class="trait"><span class="trait-icon">${t.split(' ')[0]}</span><span>${t.split(' ').slice(1).join(' ')}</span></div>`
   ).join('');
+
   showScreen('screen-level');
 }
 
