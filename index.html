@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Nervless — Overcome Public Speaking Anxiety</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap');
+
+  :root {
+    --bg: #0F0F14;
+    --surface: #16161E;
+    --surface2: #1E1E2A;
+    --border: #2A2A3A;
+    --text: #F0EEF8;
+    --muted: #8A8AA0;
+    --accent: #7C6AF7;
+    --accent2: #A695FF;
+    --green: #4ECCA3;
+    --red: #FF6B8A;
+    --gold: #F4C65A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── SCREENS ─── */
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* ─── LANDING ─── */
+  #screen-landing {
+    background: linear-gradient(160deg, #0F0F14 0%, #1A1428 50%, #0F0F14 100%);
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #screen-landing::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(124,106,247,0.12) 0%, transparent 70%);
+    top: -100px; left: 50%; transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px;
+    color: var(--text);
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+
+  .logo span { color: var(--accent2); }
+
+  .tagline {
+    font-size: 15px;
+    color: var(--muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+  }
+
+  .landing-headline {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    line-height: 1.25;
+    margin-bottom: 20px;
+    max-width: 320px;
+  }
+
+  .landing-headline em {
+    font-style: italic;
+    color: var(--accent2);
+  }
+
+  .landing-sub {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 0 auto 40px;
+  }
+
+  .pills {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 48px;
+  }
+
+  .pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 16px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .pill .dot { color: var(--green); margin-right: 6px; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 16px;
+    padding: 18px 40px;
+    font-size: 17px;
+    font-weight: 600;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    max-width: 320px;
+    transition: all 0.2s;
+    letter-spacing: -0.3px;
+  }
+
+  .btn-primary:active { transform: scale(0.97); background: #6A58E0; }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 40px;
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 12px;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:active { transform: scale(0.97); }
+
+  /* ─── ASSESSMENT ─── */
+  #screen-assessment {
+    padding: 0;
+  }
+
+  .assess-header {
+    padding: 56px 24px 32px;
+    background: linear-gradient(180deg, #1A1428 0%, var(--bg) 100%);
+  }
+
+  .back-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 24px;
+    display: block;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--surface2);
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 100px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .question-num {
+    font-size: 12px;
+    color: var(--accent2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .question-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    line-height: 1.3;
+    color: var(--text);
+  }
+
+  .assess-body { padding: 32px 24px; flex: 1; }
+
+  .scenario-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  .options { display: flex; flex-direction: column; gap: 12px; }
+
+  .option-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 20px;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .option-btn:active { transform: scale(0.98); }
+  .option-btn.selected { border-color: var(--accent); background: rgba(124,106,247,0.1); color: var(--text); }
+
+  .option-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+
+  .option-btn.selected .option-num {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* ─── LEVEL REVEAL ─── */
+  #screen-level {
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+    background: linear-gradient(160deg, #0F0F14 0%, #1A1428 60%, #0F0F14 100%);
+  }
+
+  .level-badge {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 32px;
+    box-shadow: 0 0 60px rgba(124,106,247,0.3);
+  }
+
+  .level-badge .level-label { font-size: 11px; color: rgba(255,255,255,0.7); letter-spacing: 2px; text-transform: uppercase; }
+  .level-badge .level-num { font-family: 'DM Serif Display', serif; font-size: 48px; color: white; line-height: 1; }
+
+  .level-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    margin-bottom: 16px;
+  }
+
+  .level-desc {
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.6;
+    max-width: 300px;
+    margin: 0 auto 40px;
+  }
+
+  .level-traits { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 320px; margin: 0 auto 40px; }
+
+  .trait {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--muted);
+    text-align: left;
+  }
+
+  .trait-icon { font-size: 18px; flex-shrink: 0; }
+
+  /* ─── PRACTICE ─── */
+  #screen-practice {
+    background: var(--bg);
+  }
+
+  .practice-header {
+    padding: 56px 24px 24px;
+    background: linear-gradient(180deg, #1A1428 0%, var(--bg) 100%);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .level-chip {
+    background: rgba(124,106,247,0.15);
+    border: 1px solid rgba(124,106,247,0.3);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--accent2);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .prompt-card {
+    margin: 0 24px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 28px 24px;
+  }
+
+  .prompt-label {
+    font-size: 11px;
+    color: var(--accent2);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .prompt-text {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  .prompt-meta {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .meta-item {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .recording-zone {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px 40px;
+    gap: 24px;
+  }
+
+  .waveform {
+    width: 100%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    opacity: 0.4;
+    transition: opacity 0.3s;
+  }
+
+  .waveform.active { opacity: 1; }
+
+  .wave-bar {
+    width: 3px;
+    background: var(--accent);
+    border-radius: 100px;
+    animation: wave 1.2s ease-in-out infinite;
+    height: 8px;
+  }
+
+  @keyframes wave {
+    0%, 100% { height: 8px; }
+    50% { height: 40px; }
+  }
+
+  .wave-bar:nth-child(2) { animation-delay: 0.1s; }
+  .wave-bar:nth-child(3) { animation-delay: 0.2s; }
+  .wave-bar:nth-child(4) { animation-delay: 0.3s; }
+  .wave-bar:nth-child(5) { animation-delay: 0.4s; }
+  .wave-bar:nth-child(6) { animation-delay: 0.3s; }
+  .wave-bar:nth-child(7) { animation-delay: 0.2s; }
+  .wave-bar:nth-child(8) { animation-delay: 0.1s; }
+  .wave-bar:nth-child(9) { animation-delay: 0s; }
+
+  .waveform:not(.active) .wave-bar { animation: none; }
+
+  .timer {
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--text);
+    letter-spacing: -2px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .timer.recording { color: var(--red); }
+
+  .record-btn {
+    width: 88px; height: 88px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    transition: all 0.2s;
+    background: var(--surface2);
+    border: 2px solid var(--border);
+    position: relative;
+  }
+
+  .record-btn::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+  }
+
+  .record-btn.recording {
+    background: rgba(255,107,138,0.15);
+    border-color: var(--red);
+  }
+
+  .record-btn.recording::before {
+    border-color: rgba(255,107,138,0.3);
+    animation: pulse-ring 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(1.3); opacity: 0; }
+  }
+
+  .record-hint {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* ─── FEEDBACK ─── */
+  #screen-feedback {
+    background: var(--bg);
+    overflow-y: auto;
+    padding-bottom: 40px;
+  }
+
+  .feedback-header {
+    padding: 56px 24px 32px;
+    background: linear-gradient(180deg, #1A1428 0%, var(--bg) 100%);
+    text-align: center;
+  }
+
+  .feedback-score {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: conic-gradient(var(--green) var(--pct), var(--surface2) 0);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    position: relative;
+  }
+
+  .feedback-score::before {
+    content: '';
+    position: absolute;
+    inset: 10px;
+    border-radius: 50%;
+    background: var(--bg);
+  }
+
+  .score-num {
+    position: relative;
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--text);
+    z-index: 1;
+  }
+
+  .feedback-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+
+  .feedback-sub { font-size: 15px; color: var(--muted); }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 24px;
+  }
+
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 18px 16px;
+  }
+
+  .metric-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+  .metric-value { font-size: 28px; font-weight: 600; margin-bottom: 4px; }
+  .metric-desc { font-size: 12px; color: var(--muted); }
+
+  .tips-section { padding: 0 24px; }
+  .tips-title { font-size: 13px; color: var(--accent2); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+
+  .tip-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 12px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .tip-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(124,106,247,0.15);
+    border: 1px solid rgba(124,106,247,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    color: var(--accent2);
+    flex-shrink: 0;
+    font-weight: 600;
+  }
+
+  .tip-text { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  .transcript-section { padding: 24px; }
+  .transcript-title { font-size: 13px; color: var(--accent2); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+
+  .transcript-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 2;
+  }
+
+  .filler { background: rgba(244,198,90,0.2); color: var(--gold); border-radius: 4px; padding: 0 3px; }
+
+  .feedback-actions { padding: 8px 24px; display: flex; flex-direction: column; gap: 12px; }
+
+  /* ─── DASHBOARD ─── */
+  #screen-dashboard {
+    overflow-y: auto;
+    padding-bottom: 40px;
+  }
+
+  .dash-header {
+    padding: 56px 24px 32px;
+    background: linear-gradient(180deg, #1A1428 0%, var(--bg) 100%);
+  }
+
+  .dash-greeting { font-size: 13px; color: var(--muted); letter-spacing: 1px; margin-bottom: 8px; }
+
+  .dash-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    margin-bottom: 24px;
+  }
+
+  .streak-card {
+    background: linear-gradient(135deg, rgba(124,106,247,0.2), rgba(124,106,247,0.05));
+    border: 1px solid rgba(124,106,247,0.3);
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .streak-icon { font-size: 36px; }
+  .streak-label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .streak-value { font-size: 22px; font-weight: 700; color: var(--accent2); }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 24px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 12px;
+    text-align: center;
+  }
+
+  .stat-value { font-size: 26px; font-weight: 700; color: var(--text); }
+  .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .section-title { font-size: 13px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; padding: 0 24px; margin-bottom: 16px; }
+
+  .history-list { padding: 0 24px; display: flex; flex-direction: column; gap: 12px; }
+
+  .history-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .history-prompt { font-size: 14px; color: var(--text); margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+  .history-meta { font-size: 12px; color: var(--muted); }
+  .history-score { font-size: 22px; font-weight: 700; }
+
+  .dash-practice-btn { margin: 24px; }
+
+  /* ─── LOADING ─── */
+  .loading-screen {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15,15,20,0.9);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+  }
+
+  .loading-screen.active { display: flex; }
+
+  .spinner {
+    width: 48px; height: 48px;
+    border: 3px solid var(--surface2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text { font-size: 15px; color: var(--muted); }
+
+  /* ─── UTILS ─── */
+  .text-green { color: var(--green); }
+  .text-gold { color: var(--gold); }
+  .text-red { color: var(--red); }
+  .text-accent { color: var(--accent2); }
+</style>
+</head>
+<body>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-screen" id="loading">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loading-text">Analysing your speech...</div>
+</div>
+
+<!-- ─── LANDING ─── -->
+<div class="screen active" id="screen-landing">
+  <div class="logo">Nerv<span>less</span></div>
+  <div class="tagline">Overcome Speaking Anxiety</div>
+
+  <h1 class="landing-headline">That moment when your mind goes <em>completely blank</em></h1>
+  <p class="landing-sub">Nervless helps you practice until the fear fades. Real AI feedback on your actual voice, at your own pace.</p>
+
+  <div class="pills">
+    <div class="pill"><span class="dot">●</span>No judgement</div>
+    <div class="pill"><span class="dot">●</span>Real AI feedback</div>
+    <div class="pill"><span class="dot">●</span>Starts free</div>
+  </div>
+
+  <button class="btn-primary" onclick="startAssessment()">Start — it's free</button>
+  <button class="btn-secondary" onclick="showDashboard()">View my progress</button>
+</div>
+
+<!-- ─── ASSESSMENT ─── -->
+<div class="screen" id="screen-assessment">
+  <div class="assess-header">
+    <button class="back-btn" onclick="goBack()">←</button>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill" style="width:16%"></div>
+    </div>
+    <div class="question-num" id="q-num">Question 1 of 6</div>
+    <div class="question-text" id="q-text"></div>
+  </div>
+  <div class="assess-body">
+    <div class="scenario-card" id="q-scenario" style="display:none"></div>
+    <div class="options" id="q-options"></div>
+  </div>
+</div>
+
+<!-- ─── LEVEL REVEAL ─── -->
+<div class="screen" id="screen-level">
+  <div class="level-badge">
+    <span class="level-label">Level</span>
+    <span class="level-num" id="level-num">2</span>
+  </div>
+  <h2 class="level-title" id="level-title">Finding Your Voice</h2>
+  <p class="level-desc" id="level-desc">You feel the anxiety but you're ready to face it. These prompts are designed to build your confidence step by step.</p>
+  <div class="level-traits" id="level-traits"></div>
+  <button class="btn-primary" onclick="startPractice()" style="max-width:320px">Begin practice</button>
+</div>
+
+<!-- ─── PRACTICE ─── -->
+<div class="screen" id="screen-practice">
+  <div class="practice-header">
+    <div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Today's prompt</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:20px;line-height:1.3" id="practice-level-label"></div>
+    </div>
+    <div class="level-chip" id="practice-chip">Level 2</div>
+  </div>
+
+  <div class="prompt-card">
+    <div class="prompt-label">Your prompt</div>
+    <div class="prompt-text" id="prompt-text">Loading...</div>
+    <div class="prompt-meta">
+      <div class="meta-item">🎯 <span id="prompt-type"></span></div>
+      <div class="meta-item">⏱ <span id="prompt-duration"></span></div>
+    </div>
+  </div>
+
+  <div class="recording-zone">
+    <div class="waveform" id="waveform">
+      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+      <div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div>
+    </div>
+
+    <div class="timer" id="timer">0:00</div>
+
+    <button class="record-btn" id="record-btn" onclick="toggleRecording()">🎙</button>
+
+    <div class="record-hint" id="record-hint">Tap to start recording</div>
+  </div>
+</div>
+
+<!-- ─── FEEDBACK ─── -->
+<div class="screen" id="screen-feedback">
+  <div class="feedback-header">
+    <div class="feedback-score" id="score-ring" style="--pct:0%">
+      <div class="score-num" id="score-num">—</div>
+    </div>
+    <div class="feedback-title" id="feedback-title">Good effort</div>
+    <div class="feedback-sub" id="feedback-sub">Here's what the AI noticed</div>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">Pace</div>
+      <div class="metric-value" id="m-pace">—</div>
+      <div class="metric-desc" id="m-pace-desc">words per minute</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Filler words</div>
+      <div class="metric-value" id="m-fillers">—</div>
+      <div class="metric-desc" id="m-fillers-desc">detected</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Clarity</div>
+      <div class="metric-value" id="m-clarity">—</div>
+      <div class="metric-desc">out of 10</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Confidence</div>
+      <div class="metric-value" id="m-confidence">—</div>
+      <div class="metric-desc">out of 10</div>
+    </div>
+  </div>
+
+  <div class="transcript-section">
+    <div class="transcript-title">Your transcript</div>
+    <div class="transcript-box" id="transcript-box">
+      Transcript will appear here when real AI is connected.
+    </div>
+  </div>
+
+  <div class="tips-section">
+    <div class="tips-title">Coaching tips</div>
+    <div id="tips-container"></div>
+  </div>
+
+  <div class="feedback-actions">
+    <button class="btn-primary" onclick="nextPrompt()">Next prompt →</button>
+    <button class="btn-secondary" onclick="showDashboard()">View my progress</button>
+  </div>
+</div>
+
+<!-- ─── DASHBOARD ─── -->
+<div class="screen" id="screen-dashboard">
+  <div class="dash-header">
+    <div class="dash-greeting">WELCOME BACK</div>
+    <div class="dash-title">Your journey so far</div>
+    <div class="streak-card">
+      <div class="streak-icon">🔥</div>
+      <div>
+        <div class="streak-label">CURRENT STREAK</div>
+        <div class="streak-value" id="streak-value">1 day</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-value" id="stat-sessions">0</div>
+      <div class="stat-label">Sessions</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-avg">—</div>
+      <div class="stat-label">Avg score</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="stat-mins">0</div>
+      <div class="stat-label">Minutes</div>
+    </div>
+  </div>
+
+  <div class="section-title">Recent sessions</div>
+  <div class="history-list" id="history-list">
+    <div style="text-align:center;color:var(--muted);padding:32px;font-size:15px">
+      No sessions yet. Complete your first practice to see progress here.
+    </div>
+  </div>
+
+  <div class="dash-practice-btn">
+    <button class="btn-primary" onclick="startPractice()">Practice now</button>
+    <button class="btn-secondary" onclick="showScreen('screen-landing')" style="margin-top:12px">← Back to home</button>
+  </div>
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+
+const QUESTIONS = [
+  {
+    text: "How do you feel the night before a presentation at work?",
+    scenario: null,
+    options: ["I barely think about it — it's just part of the job", "A little nervous but I sleep fine", "I find it hard to switch off, keep rehearsing in my head", "Real dread. I might even consider calling in sick"]
+  },
+  {
+    text: "Your name gets called on unexpectedly in a meeting. How do you react?",
+    scenario: '"...actually, let's hear from you on this one."',
+    options: ["I jump in — I like the spontaneity", "A brief moment of surprise, then I'm fine", "My heart races. I can feel everyone looking at me", "My mind goes completely blank. I struggle to form a sentence"]
+  },
+  {
+    text: "Which physical symptoms do you experience when speaking in front of others?",
+    scenario: null,
+    options: ["None really — I feel physically normal", "Maybe a faster heartbeat, nothing major", "Noticeable: voice trembles, hands shake, face flushes", "Severe: sweating, nausea, feel like I might pass out"]
+  },
+  {
+    text: "After a presentation, what's your internal experience?",
+    scenario: null,
+    options: ["I move on immediately — job done", "Brief replay, mostly satisfied", "I replay every mistake for hours", "I'm mortified for days. I avoid thinking about it"]
+  },
+  {
+    text: "Has speaking anxiety held you back professionally?",
+    scenario: null,
+    options: ["Not at all — I put myself forward", "Occasionally hesitate but push through", "I've turned down opportunities because of it", "It's significantly affected my career and confidence"]
+  },
+  {
+    text: "What's your goal with Nervless?",
+    scenario: null,
+    options: ["Polish existing skills — I'm already pretty comfortable", "Build more confidence for everyday speaking situations", "Overcome real fear that's been holding me back", "Transform my relationship with public speaking completely"]
+  }
+];
+
+const LEVELS = {
+  1: {
+    title: "Building Foundations",
+    desc: "You're relatively comfortable but want to sharpen your skills. These prompts focus on structure and delivery refinement.",
+    traits: ["✅ Low baseline anxiety", "🎯 Focus on polish and precision", "⚡ Ready for challenge prompts"]
+  },
+  2: {
+    title: "Finding Your Voice",
+    desc: "You feel the nerves but you're ready to face them. These prompts build your confidence through gradual, supportive exposure.",
+    traits: ["💛 Moderate anxiety — very common", "🌱 Each session builds on the last", "🧘 Breathing tips included"]
+  },
+  3: {
+    title: "Facing the Fear",
+    desc: "Anxiety is real and has affected your life. These prompts are designed to gently reduce avoidance and rebuild your confidence.",
+    traits: ["❤️ Significant anxiety — you're not alone", "🐢 Slow, gentle progression", "💪 Small wins matter enormously here"]
+  },
+  4: {
+    title: "Starting Over",
+    desc: "Speaking anxiety has had a real impact on your life. This level starts at the very beginning — small, safe, achievable steps.",
+    traits: ["🤝 Severe anxiety — completely valid", "🔬 Tiny steps, big progress over time", "🌟 Progress is measured in moments, not scores"]
+  }
+};
+
+const PROMPTS = {
+  1: [
+    { text: "Tell me about a project you're proud of and what you learned from it.", type: "Structured reflection", duration: "2–3 min" },
+    { text: "Explain the best piece of advice you've ever received and why it stuck with you.", type: "Personal story", duration: "2–3 min" },
+    { text: "Pitch a simple product idea as if presenting to your team.", type: "Pitch practice", duration: "2–3 min" },
+    { text: "Describe your ideal working environment and why it brings out your best.", type: "Preference articulation", duration: "2 min" },
+    { text: "Present three reasons why remote work is better or worse than office work.", type: "Argument structure", duration: "3 min" },
+  ],
+  2: [
+    { text: "Introduce yourself as if you've just joined a new team and it's your first day.", type: "Introduction", duration: "1–2 min" },
+    { text: "Describe what you did last weekend. Just talk naturally — no script needed.", type: "Casual speaking", duration: "1–2 min" },
+    { text: "Explain what you do for work to someone who knows nothing about your industry.", type: "Simplification", duration: "2 min" },
+    { text: "Tell me about a challenge you overcame. How did it change you?", type: "Personal story", duration: "2–3 min" },
+    { text: "If you could change one thing about your workplace, what would it be and why?", type: "Opinion sharing", duration: "2 min" },
+  ],
+  3: [
+    { text: "Describe your morning routine. Just talk through what you do — take your time.", type: "Comfort topic", duration: "1 min" },
+    { text: "Tell me about your favourite place you've ever visited and why you loved it.", type: "Positive memory", duration: "1–2 min" },
+    { text: "What's something you're genuinely good at? Explain it as if teaching someone.", type: "Expertise share", duration: "2 min" },
+    { text: "Describe a book, film or show you've recently enjoyed. What made it good?", type: "Low stakes review", duration: "1–2 min" },
+    { text: "What does a perfect Sunday look like for you? Walk me through it.", type: "Comfort topic", duration: "1 min" },
+  ],
+  4: [
+    { text: "Say your name and where you're from. Then describe one thing you love about where you live.", type: "Warm up", duration: "30 sec" },
+    { text: "What did you have for breakfast today? Describe it in as much detail as you can.", type: "Micro topic", duration: "30–60 sec" },
+    { text: "Name three things you can see from where you're sitting right now.", type: "Observation", duration: "30 sec" },
+    { text: "Describe your favourite season and what you like about it.", type: "Safe topic", duration: "30–60 sec" },
+    { text: "Tell me one thing that made you smile recently. It can be very small.", type: "Positive grounding", duration: "30 sec" },
+  ]
+};
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+
+let state = {
+  currentQuestion: 0,
+  answers: [],
+  level: 2,
+  currentPromptIndex: 0,
+  isRecording: false,
+  timerInterval: null,
+  seconds: 0,
+  mediaRecorder: null,
+  audioChunks: [],
+  sessions: JSON.parse(localStorage.getItem('nervless_sessions') || '[]'),
+  screenHistory: ['screen-landing']
+};
+
+// ─── NAVIGATION ──────────────────────────────────────────────────────────────
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (state.screenHistory[state.screenHistory.length - 1] !== id) {
+    state.screenHistory.push(id);
+  }
+  window.scrollTo(0, 0);
+}
+
+function goBack() {
+  state.screenHistory.pop();
+  const prev = state.screenHistory[state.screenHistory.length - 1] || 'screen-landing';
+  showScreen(prev);
+}
+
+// ─── ASSESSMENT ──────────────────────────────────────────────────────────────
+
+function startAssessment() {
+  state.currentQuestion = 0;
+  state.answers = [];
+  showScreen('screen-assessment');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[state.currentQuestion];
+  const pct = ((state.currentQuestion + 1) / QUESTIONS.length * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('q-num').textContent = `Question ${state.currentQuestion + 1} of ${QUESTIONS.length}`;
+  document.getElementById('q-text').textContent = q.text;
+
+  const sc = document.getElementById('q-scenario');
+  if (q.scenario) { sc.textContent = q.scenario; sc.style.display = 'block'; }
+  else { sc.style.display = 'none'; }
+
+  const opts = document.getElementById('q-options');
+  opts.innerHTML = q.options.map((o, i) => `
+    <button class="option-btn" onclick="selectOption(${i})">
+      <div class="option-num">${i + 1}</div>
+      <div>${o}</div>
+    </button>
+  `).join('');
+}
+
+function selectOption(index) {
+  document.querySelectorAll('.option-btn').forEach((b, i) => {
+    b.classList.toggle('selected', i === index);
+  });
+  state.answers[state.currentQuestion] = index;
+
+  setTimeout(() => {
+    state.currentQuestion++;
+    if (state.currentQuestion >= QUESTIONS.length) {
+      calculateLevel();
+    } else {
+      renderQuestion();
+    }
+  }, 300);
+}
+
+function calculateLevel() {
+  const total = state.answers.reduce((a, b) => a + b, 0);
+  const avg = total / state.answers.length;
+  if (avg < 1) state.level = 1;
+  else if (avg < 2) state.level = 2;
+  else if (avg < 3) state.level = 3;
+  else state.level = 4;
+  showLevelReveal();
+}
+
+function showLevelReveal() {
+  const l = LEVELS[state.level];
+  document.getElementById('level-num').textContent = state.level;
+  document.getElementById('level-title').textContent = l.title;
+  document.getElementById('level-desc').textContent = l.desc;
+  document.getElementById('level-traits').innerHTML = l.traits.map(t =>
+    `<div class="trait"><span class="trait-icon">${t.split(' ')[0]}</span><span>${t.split(' ').slice(1).join(' ')}</span></div>`
+  ).join('');
+  showScreen('screen-level');
+}
+
+// ─── PRACTICE ────────────────────────────────────────────────────────────────
+
+function startPractice() {
+  const prompts = PROMPTS[state.level];
+  state.currentPromptIndex = state.currentPromptIndex % prompts.length;
+  const p = prompts[state.currentPromptIndex];
+
+  document.getElementById('practice-level-label').textContent = LEVELS[state.level].title;
+  document.getElementById('practice-chip').textContent = `Level ${state.level}`;
+  document.getElementById('prompt-text').textContent = p.text;
+  document.getElementById('prompt-type').textContent = p.type;
+  document.getElementById('prompt-duration').textContent = p.duration;
+
+  resetRecording();
+  showScreen('screen-practice');
+}
+
+function nextPrompt() {
+  state.currentPromptIndex = (state.currentPromptIndex + 1) % PROMPTS[state.level].length;
+  startPractice();
+}
+
+// ─── RECORDING ───────────────────────────────────────────────────────────────
+
+function resetRecording() {
+  state.isRecording = false;
+  state.seconds = 0;
+  clearInterval(state.timerInterval);
+  document.getElementById('timer').textContent = '0:00';
+  document.getElementById('timer').classList.remove('recording');
+  document.getElementById('record-btn').classList.remove('recording');
+  document.getElementById('record-btn').textContent = '🎙';
+  document.getElementById('record-hint').textContent = 'Tap to start recording';
+  document.getElementById('waveform').classList.remove('active');
+}
+
+async function toggleRecording() {
+  if (!state.isRecording) {
+    await startRecording();
+  } else {
+    stopRecording();
+  }
+}
+
+async function startRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    state.mediaRecorder = new MediaRecorder(stream);
+    state.audioChunks = [];
+
+    state.mediaRecorder.ondataavailable = e => {
+      if (e.data.size > 0) state.audioChunks.push(e.data);
+    };
+
+    state.mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      processFeedback();
+    };
+
+    state.mediaRecorder.start();
+    state.isRecording = true;
+    state.seconds = 0;
+
+    document.getElementById('record-btn').classList.add('recording');
+    document.getElementById('record-btn').textContent = '⏹';
+    document.getElementById('record-hint').textContent = 'Recording... tap to stop';
+    document.getElementById('timer').classList.add('recording');
+    document.getElementById('waveform').classList.add('active');
+
+    state.timerInterval = setInterval(() => {
+      state.seconds++;
+      const m = Math.floor(state.seconds / 60);
+      const s = state.seconds % 60;
+      document.getElementById('timer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    }, 1000);
+
+  } catch (err) {
+    alert('Microphone access is needed to practice. Please allow microphone access and try again.\n\nNote: This requires HTTPS — if testing locally, some browsers may block microphone access.');
+  }
+}
+
+function stopRecording() {
+  if (state.mediaRecorder && state.mediaRecorder.state !== 'inactive') {
+    clearInterval(state.timerInterval);
+    state.isRecording = false;
+    state.mediaRecorder.stop();
+  }
+}
+
+function processFeedback() {
+  showLoading('Analysing your speech...');
+
+  // Simulated feedback — replace with real Whisper + Claude in Phase 2
+  setTimeout(() => {
+    const duration = state.seconds;
+    const score = Math.floor(50 + Math.random() * 40);
+    const wpm = Math.floor(100 + Math.random() * 80);
+    const fillers = Math.floor(Math.random() * 8);
+    const clarity = Math.floor(5 + Math.random() * 5);
+    const confidence = Math.floor(4 + Math.random() * 6);
+
+    const allTips = [
+      "Try pausing for 1–2 seconds before answering. Silence feels longer to you than to your audience.",
+      "Your pace is natural. The next step is varying your tone — emphasise one key word per sentence.",
+      "Reduce filler words by practising with deliberate pauses instead. 'Um' fills silence that doesn't need filling.",
+      "Gesturing naturally as you speak helps ground your body and reduces physical tension.",
+      "Eye contact (or looking at the camera) builds trust. Try holding your gaze for 3 full seconds at a time.",
+      "Recording yourself is one of the most effective ways to improve — you're already doing the hard part.",
+      "Your voice is your greatest tool. Slow down slightly on the words that matter most.",
+    ];
+
+    const tips = allTips.sort(() => Math.random() - 0.5).slice(0, 3);
+    const titles = ['Great effort', 'Keep going', 'You did it', 'Building momentum', 'Well done'];
+    const subs = ['Your scores improve with every session', 'Consistency is what matters most', 'The more you practice, the easier it gets'];
+
+    const session = {
+      id: Date.now(),
+      prompt: document.getElementById('prompt-text').textContent,
+      score, wpm, fillers, clarity, confidence, tips,
+      duration, level: state.level,
+      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+    };
+
+    state.sessions.unshift(session);
+    localStorage.setItem('nervless_sessions', JSON.stringify(state.sessions.slice(0, 20)));
+
+    hideLoading();
+    renderFeedback(session, titles, subs);
+  }, 2200);
+}
+
+function renderFeedback(s, titles, subs) {
+  const pct = Math.round((s.score / 100) * 360);
+  document.getElementById('score-ring').style.setProperty('--pct', `${s.score}%`);
+  document.getElementById('score-num').textContent = s.score;
+  document.getElementById('feedback-title').textContent = titles[Math.floor(Math.random() * titles.length)];
+  document.getElementById('feedback-sub').textContent = subs[Math.floor(Math.random() * subs.length)];
+
+  const paceColor = s.wpm < 120 ? 'var(--gold)' : s.wpm > 170 ? 'var(--red)' : 'var(--green)';
+  const fillerColor = s.fillers === 0 ? 'var(--green)' : s.fillers < 4 ? 'var(--gold)' : 'var(--red)';
+
+  document.getElementById('m-pace').innerHTML = `<span style="color:${paceColor}">${s.wpm}</span>`;
+  document.getElementById('m-pace-desc').textContent = s.wpm < 120 ? 'A bit slow — try a little faster' : s.wpm > 170 ? 'A bit fast — slow down slightly' : 'Good pace';
+  document.getElementById('m-fillers').innerHTML = `<span style="color:${fillerColor}">${s.fillers}</span>`;
+  document.getElementById('m-fillers-desc').textContent = s.fillers === 0 ? 'Excellent — none detected' : s.fillers < 4 ? 'Pretty good' : 'Try pausing instead';
+  document.getElementById('m-clarity').innerHTML = `<span class="text-green">${s.clarity}</span>`;
+  document.getElementById('m-confidence').innerHTML = `<span class="text-accent">${s.confidence}</span>`;
+
+  // Simulated transcript with highlighted fillers
+  const sampleTranscripts = [
+    `So <span class="filler">um</span> the main thing I wanted to talk about was really just getting started. I think <span class="filler">like</span> a lot of people overthink it and <span class="filler">you know</span> they never actually begin. The most important step is just doing the thing.`,
+    `I genuinely believe that the best way to improve is through consistent practice. Not perfect practice — just regular, honest effort. Every session teaches you something new about your own voice.`,
+    `<span class="filler">Basically</span> what I'm saying is that fear is a normal part of this. <span class="filler">Um</span> everyone feels it. The difference is whether you let it stop you or whether you practice through it anyway.`,
+  ];
+
+  document.getElementById('transcript-box').innerHTML =
+    '<em style="font-size:12px;color:var(--muted);display:block;margin-bottom:12px">⚠️ Simulated transcript — real transcription available in Phase 2</em>' +
+    sampleTranscripts[Math.floor(Math.random() * sampleTranscripts.length)];
+
+  document.getElementById('tips-container').innerHTML = s.tips.map((t, i) =>
+    `<div class="tip-card"><div class="tip-num">${i + 1}</div><div class="tip-text">${t}</div></div>`
+  ).join('');
+
+  showScreen('screen-feedback');
+}
+
+// ─── DASHBOARD ───────────────────────────────────────────────────────────────
+
+function showDashboard() {
+  const sessions = state.sessions;
+  const count = sessions.length;
+  const avg = count ? Math.round(sessions.reduce((a, s) => a + s.score, 0) / count) : null;
+  const mins = Math.round(sessions.reduce((a, s) => a + (s.duration || 60), 0) / 60);
+
+  document.getElementById('stat-sessions').textContent = count;
+  document.getElementById('stat-avg').textContent = avg || '—';
+  document.getElementById('stat-mins').textContent = mins;
+  document.getElementById('streak-value').textContent = count > 0 ? `${Math.min(count, 7)} day${count > 1 ? 's' : ''}` : 'Start today';
+
+  const list = document.getElementById('history-list');
+  if (sessions.length === 0) {
+    list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:32px;font-size:15px">No sessions yet. Complete your first practice to see progress here.</div>';
+  } else {
+    list.innerHTML = sessions.slice(0, 8).map(s => {
+      const scoreColor = s.score >= 70 ? 'var(--green)' : s.score >= 50 ? 'var(--gold)' : 'var(--red)';
+      return `
+        <div class="history-card">
+          <div>
+            <div class="history-prompt">${s.prompt}</div>
+            <div class="history-meta">Level ${s.level} · ${s.date} · ${Math.round((s.duration || 60) / 60 * 10) / 10} min</div>
+          </div>
+          <div class="history-score" style="color:${scoreColor}">${s.score}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  showScreen('screen-dashboard');
+}
+
+// ─── UTILS ───────────────────────────────────────────────────────────────────
+
+function showLoading(text) {
+  document.getElementById('loading-text').textContent = text;
+  document.getElementById('loading').classList.add('active');
+}
+
+function hideLoading() {
+  document.getElementById('loading').classList.remove('active');
+}
+</script>
+</body>
+</html>
