@@ -1048,66 +1048,89 @@ function calculateLevel() {
 }
 
 function showLevelReveal() {
+  // Ordered 4 to 1 — most anxious at top, goal at bottom
   const allLevels = [
-    { num: 1, label: 'Building Foundations', summary: 'Comfortable speaking — here to sharpen and polish', icon: '⭐', traits: [] },
+    { num: 4, label: 'Starting Over', summary: 'Significant anxiety — starting from the very beginning', icon: '🤝', traits: ['Severe anxiety — completely valid', 'Tiny steps, big progress over time', 'Progress measured in moments, not scores'] },
+    { num: 3, label: 'Facing the Fear', summary: 'Real anxiety that has affected your life', icon: '💛', traits: ['Significant anxiety — you\'re not alone', 'Slow, gentle progression', 'Small wins matter enormously'] },
     { num: 2, label: 'Finding Your Voice', summary: 'Some nerves — ready to build real confidence', icon: '🌱', traits: ['Moderate anxiety — very common', 'Each session builds on the last', 'Prompts start low-stakes and grow'] },
-    { num: 3, label: 'Facing the Fear', summary: 'Real anxiety that has affected your life', icon: '💛', traits: ['Significant anxiety — you\'re not alone', 'Slow, gentle progression', 'Small wins matter enormously here'] },
-    { num: 4, label: 'Starting Over', summary: 'Significant anxiety — starting from the very beginning', icon: '🤝', traits: ['Severe anxiety — completely valid', 'Tiny steps, big progress over time', 'Progress is measured in moments, not scores'] },
+    { num: 1, label: 'Building Foundations', summary: 'Comfortable speaking — here to sharpen and polish', icon: '⭐', traits: [] },
   ];
 
-  document.getElementById('all-levels-list').innerHTML = allLevels.map(lv => {
-    const isYours = lv.num === state.level;
-    const traitsHtml = isYours && lv.traits.length ? `
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(124,106,247,0.2);display:flex;flex-direction:column;gap:8px;">
-        ${lv.traits.map(t => `
-          <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)">
-            <div style="width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>
-            ${t}
-          </div>
-        `).join('')}
-      </div>
-    ` : '';
+  const cardHeights = allLevels.map(lv => lv.num === state.level && lv.traits.length ? 110 : 70);
 
-    return `
+  let lineSegments = '';
+  let cards = '';
+  let dotOffset = 20;
+
+  allLevels.forEach((lv, i) => {
+    const isYours = lv.num === state.level;
+    const isPast = lv.num > state.level;
+    const cardH = cardHeights[i];
+
+    // dot
+    lineSegments += `<div style="
+      width:28px;height:28px;border-radius:50%;
+      background:${isYours ? 'var(--accent)' : isPast ? 'var(--surface2)' : 'rgba(124,106,247,0.25)'};
+      border:2px solid ${isYours ? 'var(--accent)' : isPast ? 'var(--border)' : 'rgba(124,106,247,0.5)'};
+      display:flex;align-items:center;justify-content:center;
+      font-size:11px;font-weight:700;
+      color:${isYours ? 'white' : isPast ? 'var(--muted)' : 'var(--accent2)'};
+      box-shadow:${isYours ? '0 0 16px rgba(124,106,247,0.5)' : 'none'};
+      flex-shrink:0;
+    ">${lv.num}</div>`;
+
+    // connector line
+    if (i < allLevels.length - 1) {
+      const nextIsPast = allLevels[i+1].num > state.level;
+      lineSegments += `<div style="
+        width:2px;
+        flex:1;
+        min-height:${cardHeights[i+1] - 28}px;
+        background:${isPast && nextIsPast ? 'var(--border)' : 'linear-gradient(180deg,rgba(124,106,247,0.5),rgba(124,106,247,0.2))'};
+      "></div>`;
+    }
+
+    // card
+    const traitsHtml = isYours && lv.traits.length ? `
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(124,106,247,0.2);display:flex;flex-direction:column;gap:6px;">
+        ${lv.traits.map(t => `
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)">
+            <div style="width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>${t}
+          </div>`).join('')}
+      </div>` : '';
+
+    cards += `
       <div style="
         background:${isYours ? 'rgba(124,106,247,0.1)' : 'var(--surface)'};
         border:1px solid ${isYours ? 'var(--accent)' : 'var(--border)'};
-        border-radius:20px;
-        padding:18px 20px;
-        transition:all 0.2s;
+        border-radius:16px;padding:14px 16px;
+        opacity:${isPast ? '0.45' : '1'};
+        margin-bottom:${i < allLevels.length - 1 ? '8px' : '0'};
       ">
-        <div style="display:flex;align-items:center;gap:14px;">
-          <div style="
-            width:40px;height:40px;flex-shrink:0;
-            border-radius:12px;
-            background:${isYours ? 'var(--accent)' : 'var(--surface2)'};
-            border:1px solid ${isYours ? 'var(--accent)' : 'var(--border)'};
-            display:flex;align-items:center;justify-content:center;
-            font-size:18px;
-          ">${lv.icon}</div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="font-size:20px;flex-shrink:0;">${lv.icon}</div>
           <div style="flex:1;min-width:0;">
-            <div style="
-              font-size:15px;font-weight:600;
-              color:${isYours ? 'var(--text)' : 'var(--muted)'};
-              margin-bottom:3px;
-            ">${lv.label}</div>
-            <div style="font-size:13px;color:var(--muted);line-height:1.4;">${lv.summary}</div>
+            <div style="font-size:14px;font-weight:600;color:${isYours ? 'var(--text)' : isPast ? 'var(--muted)' : 'var(--text)'};margin-bottom:2px;">${lv.label}</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.4;">${lv.summary}</div>
           </div>
-          ${isYours ? `<div style="
-            background:var(--accent);
-            color:white;
-            font-size:11px;font-weight:700;
-            letter-spacing:1px;
-            padding:4px 10px;
-            border-radius:100px;
-            white-space:nowrap;
-            flex-shrink:0;
-          ">YOU</div>` : ''}
+          ${isYours ? `<div style="background:var(--accent);color:white;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 9px;border-radius:100px;white-space:nowrap;flex-shrink:0;">YOU</div>` : ''}
+          ${!isPast && !isYours ? `<div style="font-size:11px;color:var(--accent2);white-space:nowrap;flex-shrink:0;">Goal</div>` : ''}
         </div>
         ${traitsHtml}
+      </div>`;
+  });
+
+  document.getElementById('all-levels-list').innerHTML = `
+    <div style="display:flex;gap:12px;align-items:stretch;">
+      <div style="display:flex;flex-direction:column;align-items:center;padding-top:21px;flex-shrink:0;">
+        ${lineSegments}
       </div>
-    `;
-  }).join('');
+      <div style="flex:1;">${cards}</div>
+    </div>
+    <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--muted);">
+      ↑ Starting point &nbsp;·&nbsp; Goal ↓
+    </div>
+  `;
 
   showScreen('screen-level');
 }
