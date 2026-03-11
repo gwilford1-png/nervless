@@ -390,7 +390,7 @@ function renderQuestion(){
   const sc=document.getElementById('q-scenario');
   if(q.scenario){sc.textContent=q.scenario;sc.style.display='block';}else{sc.style.display='none';}
   document.getElementById('q-options').innerHTML=q.options.map((o,i)=>
-    '<button class="option-btn" onclick="selectOption('+i+'"><div class="option-num">'+(i+1)+'</div><div>'+o+'</div></button>'
+    '<button class="option-btn" onclick="selectOption('+i+')"><div class="option-num">'+(i+1)+'</div><div>'+o+'</div></button>'
   ).join('');
 }
 function selectOption(index){
