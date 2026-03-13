@@ -80,8 +80,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .phase-sessions-inner{padding:4px 14px 14px}
 .session-card{background:rgba(255,255,255,0.75);border:1.5px solid rgba(255,255,255,0.9);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.15s;margin-bottom:8px}
 .session-card:active{transform:scale(0.98)}
-.session-card.s-passed{border-color:rgba(46,158,122,0.3)}
+.session-card.s-passed{border-color:rgba(46,158,122,0.4);background:rgba(46,158,122,0.04)}
 .session-card.s-current{border-color:rgba(91,79,217,0.5);background:rgba(255,255,255,0.95)}
+.session-card.s-tried{border-color:rgba(217,84,112,0.35);background:rgba(217,84,112,0.03)}
 .session-card.s-locked{opacity:0.5;cursor:not-allowed}
 .session-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;flex-shrink:0;background:rgba(255,255,255,0.9);color:var(--muted);border:2px solid rgba(0,0,0,0.08)}
 .session-num.s-passed{background:var(--green);color:white;border-color:var(--green)}
@@ -641,15 +642,14 @@ function showCurriculum(){
       const passScore = getPassScore(session);
       const canRetry = !isPassed && attempts > 0;
       const clickable = phaseUnlocked;
-      const cardClass = isPassed?'s-passed':isU?'s-current':!phaseUnlocked?'s-locked':'';
-      const numClass = isPassed?'s-passed':isU?'s-current':'';
+      const cardClass = isPassed ? 's-passed' : isU ? 's-current' : attempts > 0 ? 's-tried' : !phaseUnlocked ? 's-locked' : '';
+      const numClass = isPassed ? 's-passed' : isU ? 's-current' : '';
 
       let statusRight = '';
       if (isPassed) {
-        statusRight = '<span style="color:var(--green);font-size:20px;font-weight:900;flex-shrink:0;">✓</span>';
+        statusRight = '<span style="color:var(--green);font-size:24px;font-weight:900;flex-shrink:0;">✓</span>';
       } else if (attempts > 0) {
-        const sc = bestScore >= passScore ? 'var(--green)' : 'var(--red)';
-        statusRight = '<div style="text-align:right;flex-shrink:0;"><div style="font-size:14px;font-weight:800;color:'+sc+'">'+bestScore+'</div><div style="font-size:10px;color:var(--muted);font-weight:600;">need '+passScore+'</div></div>';
+        statusRight = '<div style="text-align:right;flex-shrink:0;"><div style="font-size:14px;font-weight:800;color:var(--red)">'+bestScore+'</div><div style="font-size:10px;color:var(--muted);font-weight:600;">need '+passScore+'</div></div>';
       } else if (isU) {
         statusRight = '<div class="current-arrow">Start ›</div>';
       }
