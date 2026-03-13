@@ -1146,7 +1146,11 @@ function startLesson(s) {
   document.getElementById('lesson-check').style.display = 'none';
   document.getElementById('lesson-talk').style.display = 'none';
   document.getElementById('lesson-back-btn').style.display = 'none';
-  document.getElementById('lesson-next-btn').textContent = 'I\'ve read this →';
+  const nextBtn = document.getElementById('lesson-next-btn');
+  nextBtn.textContent = 'I\'ve read this →';
+  nextBtn.disabled = false;
+  nextBtn.style.opacity = '1';
+  nextBtn.onclick = lessonNext;
 
   showScreen('screen-lesson');
 }
