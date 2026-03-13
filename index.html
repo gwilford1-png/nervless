@@ -507,7 +507,18 @@ const MAX_ATTEMPTS = 3;
 function getPassScore(session) { return PHASE_PASS_SCORE[session.phase] || 60; }
 function getSessionAttempts(sessionId) { return state.sessions.filter(s => s.sessionId === sessionId).length; }
 function getBestScore(sessionId) { const all = state.sessions.filter(s => s.sessionId === sessionId); return all.length ? Math.max(...all.map(s => s.score)) : 0; }
-function hasPassedSession(sessionId) { return JSON.parse(localStorage.getItem('nervless_passed')||'[]').includes(sessionId); }
+function hasPassedSession(sessionId) {
+  // Check explicit passed list first
+  const passed = JSON.parse(localStorage.getItem('nervless_passed')||'[]');
+  if (passed.includes(sessionId)) return true;
+  // Auto-pass if best score meets threshold (handles legacy sessions)
+  const session = CURRICULUM.find(s => s.id === sessionId);
+  if (session && getBestScore(sessionId) >= getPassScore(session)) {
+    markSessionPassed(sessionId); // persist it
+    return true;
+  }
+  return false;
+}
 function markSessionPassed(sessionId) {
   const passed = JSON.parse(localStorage.getItem('nervless_passed')||'[]');
   if (!passed.includes(sessionId)) { passed.push(sessionId); localStorage.setItem('nervless_passed', JSON.stringify(passed)); }
