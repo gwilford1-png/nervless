@@ -2,14 +2,6 @@
 <html lang="en">
 <head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-JZG8MESD88"></script>
-  <!-- Microsoft Clarity -->
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "vvb018xk7t");
-</script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JZG8MESD88');</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -179,7 +171,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .free-prompt-text{font-family:'DM Serif Display',serif;font-size:20px;line-height:1.45;color:var(--text);margin-bottom:16px}
 .free-recording-zone{display:flex;flex-direction:column;align-items:center;padding:0 16px 24px;gap:18px}
 .free-section-title{font-size:13px;font-weight:800;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;padding:0 20px;margin-bottom:8px}
-#screen-lesson{overflow-y:auto;padding-bottom:calc(var(--nav-h) + 80px);background:var(--bg)}
+#screen-lesson{overflow-y:auto;padding-bottom:calc(var(--nav-h) + 100px);background:var(--bg)}
 .lesson-header{padding:56px 24px 28px;background:linear-gradient(180deg,#EDE8FF 0%,var(--bg) 100%)}
 .lesson-step-pills{display:flex;gap:8px;margin-bottom:20px}
 .step-pill{flex:1;height:4px;border-radius:100px;background:var(--border);transition:background 0.4s}
@@ -231,7 +223,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .talk-coach strong{color:var(--accent2);font-style:normal}
 .talk-recording-zone{display:flex;flex-direction:column;align-items:center;padding:8px 24px 16px;gap:20px}
 
-.lesson-nav{position:fixed;bottom:0;left:0;right:0;padding:16px 24px;background:var(--bg);border-top:1px solid var(--border);display:flex;gap:12px;z-index:10}
+.lesson-nav{position:fixed;bottom:0;left:0;right:0;padding:12px 24px calc(12px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--border);display:flex;gap:12px;z-index:60}
 .lesson-nav .btn-primary{flex:1;padding:16px;font-size:16px}
 .lesson-nav .btn-back{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px;font-size:16px;cursor:pointer;flex-shrink:0;font-family:'Nunito',sans-serif;color:var(--muted);transition:all 0.15s}
 </style>
