@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /banner-split-test.html
+Disallow: /nervless-funnel.html
+Disallow: /nervless-map.html
+Disallow: /nervless-progress.html
+
+Sitemap: https://nervless.app/sitemap.xml
