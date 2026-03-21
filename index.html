@@ -366,6 +366,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
   <button class="btn-primary" onclick="startAssessment()">Start &#8212; it's free</button>
   <button class="btn-secondary" onclick="returnUser()">Continue my journey</button>
+  <div style="margin-top:40px;font-size:13px;color:var(--muted)"><a href="/learn/" style="color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:1px">Learn about speaking anxiety</a></div>
 </div>
 <!-- ASSESSMENT -->
 <div class="screen" id="screen-assessment">
@@ -396,7 +397,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 <!-- CURRICULUM -->
 <div class="screen" id="screen-curriculum">
   <div class="curr-header">
-    <div style="font-size:12px;color:var(--muted);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase">Your journey</div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+      <div style="font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Your journey</div>
+      <a href="/learn/" style="font-size:12px;color:var(--muted);text-decoration:none;font-weight:700;letter-spacing:0.5px">Learn ↗</a>
+    </div>
     <div style="font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:16px" id="curr-level-title">Finding Your Voice</div>
 
     <!-- Progress bar 0–50 -->
