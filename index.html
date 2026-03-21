@@ -110,7 +110,25 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .phase-header-text{flex:1;min-width:0}
 .phase-header-name{font-size:16px;font-weight:800;color:var(--text);margin-bottom:3px}
 .phase-header-sub{font-size:13px;font-weight:600;color:var(--muted)}
-.phase-chevron{font-size:18px;color:var(--muted);transition:transform 0.25s;flex-shrink:0}
+.phase-chevron{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.7);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text);transition:transform 0.25s,background 0.15s;flex-shrink:0;font-weight:900}
+.phase-header-btn:active .phase-chevron{background:rgba(255,255,255,1)}
+
+/* Burger menu */
+.burger-btn{background:none;border:none;cursor:pointer;padding:8px;display:flex;flex-direction:column;gap:5px;z-index:102}
+.burger-btn span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px;transition:all 0.25s}
+.burger-btn.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.burger-btn.open span:nth-child(2){opacity:0}
+.burger-btn.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:100;opacity:0;pointer-events:none;transition:opacity 0.25s}
+.menu-overlay.open{opacity:1;pointer-events:auto}
+.menu-drawer{position:fixed;top:0;right:0;width:260px;height:100%;background:var(--surface);z-index:101;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);padding:72px 24px 40px;box-shadow:-4px 0 24px rgba(0,0,0,0.08)}
+.menu-drawer.open{transform:translateX(0)}
+.menu-item{display:block;padding:16px 0;border-bottom:1px solid var(--border);font-size:16px;font-weight:700;color:var(--text);text-decoration:none;transition:color 0.15s}
+.menu-item:hover{color:var(--accent);text-decoration:none}
+.menu-item-sub{font-size:12px;color:var(--muted);font-weight:600;margin-top:2px}
+.menu-footer{position:absolute;bottom:40px;left:24px;right:24px}
+.menu-cta{display:block;text-align:center;background:var(--accent);color:white;border-radius:100px;padding:14px;font-size:14px;font-weight:700;font-family:'Nunito',sans-serif;text-decoration:none;transition:opacity 0.2s}
+.menu-cta:hover{opacity:0.9;text-decoration:none;color:white}
 /* Session items inside phase */
 .phase-sessions-inner{padding:4px 14px 14px}
 .session-card{background:rgba(255,255,255,0.75);border:1.5px solid rgba(255,255,255,0.9);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.15s;margin-bottom:8px}
@@ -364,9 +382,14 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
   </div>
 
-  <button class="btn-primary" onclick="startAssessment()">Start &#8212; it's free</button>
-  <button class="btn-secondary" onclick="returnUser()">Continue my journey</button>
-  <div style="margin-top:40px;font-size:13px;color:var(--muted)"><a href="/learn/" style="color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:1px">Learn about speaking anxiety</a></div>
+  <!-- CTA area -->
+  <div style="margin-top:32px;padding:32px 24px;background:var(--surface);border-radius:24px;border:1.5px solid var(--border);max-width:380px;width:100%;">
+    <div style="font-family:'DM Serif Display',serif;font-size:20px;text-align:center;margin-bottom:4px">Ready to begin?</div>
+    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px">5 minutes a day. No judgement. Just practice.</div>
+    <button class="btn-primary" onclick="startAssessment()" style="margin-bottom:10px">Start &#8212; it's free</button>
+    <button class="btn-secondary" onclick="returnUser()" id="continue-btn" style="display:none">Continue my journey</button>
+  </div>
+  <div style="margin-top:24px;font-size:13px;color:var(--muted)"><a href="/learn/" style="color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:1px">Learn about speaking anxiety</a></div>
 </div>
 <!-- ASSESSMENT -->
 <div class="screen" id="screen-assessment">
@@ -394,12 +417,23 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--muted)">Your level updates as you improve</div>
   </div>
 </div>
+<!-- Menu overlay and drawer -->
+<div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
+<div class="menu-drawer" id="menu-drawer">
+  <a href="/learn/" class="menu-item">Learn<div class="menu-item-sub">Guides on speaking anxiety</div></a>
+  <a class="menu-item" onclick="showDashboard();toggleMenu()">Progress<div class="menu-item-sub">Your stats and history</div></a>
+  <a class="menu-item" onclick="showCurriculum();toggleMenu()">Journey<div class="menu-item-sub">Your session curriculum</div></a>
+  <div class="menu-footer">
+    <a href="https://nervless.app" class="menu-cta">Try Nervless free</a>
+  </div>
+</div>
+
 <!-- CURRICULUM -->
 <div class="screen" id="screen-curriculum">
   <div class="curr-header">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
       <div style="font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Your journey</div>
-      <a href="/learn/" style="font-size:12px;color:var(--muted);text-decoration:none;font-weight:700;letter-spacing:0.5px">Learn ↗</a>
+      <button class="burger-btn" id="burger-btn" onclick="toggleMenu()"><span></span><span></span><span></span></button>
     </div>
     <div style="font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:16px" id="curr-level-title">Finding Your Voice</div>
 
@@ -625,6 +659,21 @@ const CURRICULUM=[
 
 let state={currentQuestion:0,answers:[],level:2,currentSessionId:6,isRecording:false,timerInterval:null,seconds:0,mediaRecorder:null,audioChunks:[],sessions:JSON.parse(localStorage.getItem('nervless_sessions')||'[]'),completedSessions:JSON.parse(localStorage.getItem('nervless_completed')||'[]'),screenHistory:['screen-landing']};
 
+// Auto-redirect returning users straight to curriculum
+(function(){
+  const savedLevel=localStorage.getItem('nervless_level');
+  const hasProgress=state.completedSessions.length>0||state.sessions.length>0;
+  if(savedLevel&&hasProgress){
+    // Has real progress — skip landing, go straight to curriculum
+    state.level=parseInt(savedLevel);
+    state.currentSessionId=parseInt(localStorage.getItem('nervless_current_session')||6);
+    setTimeout(function(){showCurriculum();},0);
+  } else if(savedLevel){
+    // Has level but no sessions — show Continue button
+    const cb=document.getElementById('continue-btn');if(cb)cb.style.display='block';
+  }
+})();
+
 // ── MASTERY THRESHOLDS ──
 const PHASE_PASS_SCORE = {1: 65, 2: 70, 3: 75, 4: 75, 5: 78, 6: 78, 7: 80, 8: 80};
 const MAX_ATTEMPTS = 3;
@@ -748,7 +797,7 @@ function showCurriculum(){
     const phaseUnlocked = isPhaseUnlocked(pg.phase, relevant);
     const isCurrent=pg.phase===currentPhaseNum && phaseUnlocked;
     const isLocked=!phaseUnlocked;
-    const defaultOpen=isCurrent||(!isAllDone&&!isLocked);
+    const defaultOpen=isCurrent;
     const phaseId='phase-'+pg.phase;
 
     // Phase colours
@@ -764,7 +813,7 @@ function showCurriculum(){
     html+='<div class="phase-header-name">Phase '+pg.phase+' — '+pg.name+'</div>';
     html+='<div class="phase-header-sub">'+(isLocked?'Complete Phase '+(pg.phase-1)+' to unlock':phPassed+' of '+phTotal+' passed'+(isAllDone?' ✅':''))+'</div>';
     html+='</div>';
-    html+='<div class="phase-chevron" id="chevron-'+phaseId+'" style="transform:'+(defaultOpen?'rotate(90deg)':'rotate(0deg)')+'">›</div>';
+    html+='<div class="phase-chevron" id="chevron-'+phaseId+'" style="transform:'+(defaultOpen?'rotate(90deg)':'rotate(0deg)')+'">&#9654;</div>';
     html+='</button>';
 
     // Sessions
@@ -827,6 +876,15 @@ function showCurriculum(){
   document.getElementById('curriculum-list').innerHTML+=csHtml;
   setActiveNav('journey');
   showScreen('screen-curriculum');
+}
+function toggleMenu(){
+  const overlay=document.getElementById('menu-overlay');
+  const drawer=document.getElementById('menu-drawer');
+  const btn=document.getElementById('burger-btn');
+  const isOpen=drawer.classList.contains('open');
+  overlay.classList.toggle('open',!isOpen);
+  drawer.classList.toggle('open',!isOpen);
+  btn.classList.toggle('open',!isOpen);
 }
 function togglePhase(phaseId){
   const sessions=document.getElementById('sessions-'+phaseId);
