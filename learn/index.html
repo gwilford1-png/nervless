@@ -17,27 +17,73 @@
 :root{--bg:#F7F5F0;--surface:#FFFFFF;--surface2:#EDEAE3;--border:#E0DBD2;--text:#1A1814;--muted:#7A7268;--accent:#5B4FD9;--accent2:#7B6FEF;--green:#2E9E7A;--red:#D95470;--gold:#C4922A}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.7}
-a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+a{color:inherit;text-decoration:none}
 
-.site-nav{padding:20px 24px;display:flex;align-items:center;justify-content:space-between;max-width:720px;margin:0 auto}
-.nav-logo{font-family:'DM Serif Display',serif;font-size:24px;color:var(--text);letter-spacing:-0.5px}
+/* Nav */
+.site-nav{padding:20px 24px;display:flex;align-items:center;justify-content:space-between;max-width:760px;margin:0 auto}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:24px;color:var(--text);letter-spacing:-0.5px;font-style:italic}
 .nav-logo span{color:var(--accent)}
 .nav-cta{background:var(--accent);color:white;border:none;border-radius:100px;padding:8px 20px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;transition:opacity 0.2s;display:inline-block}
-.nav-cta:hover{opacity:0.9;text-decoration:none;color:white}
+.nav-cta:hover{opacity:0.9}
 
-.learn-hero{padding:60px 24px 40px;text-align:center;max-width:720px;margin:0 auto}
-.learn-hero h1{font-family:'DM Serif Display',serif;font-size:36px;line-height:1.25;margin-bottom:12px;color:var(--text)}
-.learn-hero p{font-size:16px;color:var(--muted);max-width:480px;margin:0 auto}
+/* Hero */
+.learn-hero{padding:48px 24px 32px;max-width:760px;margin:0 auto}
+.learn-hero h1{font-family:'DM Serif Display',serif;font-size:34px;line-height:1.2;margin-bottom:8px;color:var(--text)}
+.learn-hero p{font-size:15px;color:var(--muted);max-width:520px}
 
-.learn-list{max-width:720px;margin:0 auto;padding:0 24px 80px}
-.learn-card{display:block;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:28px 24px;margin-bottom:16px;transition:border-color 0.2s, transform 0.2s;color:var(--text)}
-.learn-card:hover{border-color:var(--accent);transform:translateY(-2px);text-decoration:none}
-.learn-card-tag{font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;font-weight:800}
-.learn-card h2{font-family:'DM Serif Display',serif;font-size:22px;line-height:1.3;margin-bottom:8px;color:var(--text)}
-.learn-card p{font-size:14px;color:var(--muted);line-height:1.6}
-.learn-card-meta{margin-top:12px;font-size:12px;color:var(--muted)}
+/* Category tabs */
+.category-tabs{max-width:760px;margin:0 auto;padding:0 24px 24px;display:flex;gap:8px;flex-wrap:wrap}
+.cat-tab{padding:7px 16px;border-radius:100px;font-size:12px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;cursor:pointer;transition:all 0.15s;border:1.5px solid var(--border);background:var(--surface);color:var(--muted)}
+.cat-tab:hover{border-color:var(--accent);color:var(--accent)}
+.cat-tab.active{background:var(--accent);color:white;border-color:var(--accent)}
 
-.site-footer{text-align:center;padding:40px 24px;font-size:13px;color:var(--muted);border-top:1.5px solid var(--border);max-width:720px;margin:0 auto}
+/* Featured card */
+.featured{max-width:760px;margin:0 auto;padding:0 24px 28px}
+.featured-card{display:block;position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(135deg,#EDE8FF 0%,#F7F0E0 100%);border:1.5px solid var(--border);transition:transform 0.2s,border-color 0.2s;min-height:220px}
+.featured-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.featured-inner{padding:32px 28px;position:relative;z-index:1}
+.featured-tag{font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;font-weight:800;margin-bottom:12px}
+.featured-card h2{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.25;color:var(--text);margin-bottom:10px;max-width:440px}
+.featured-card p{font-size:14px;color:var(--muted);line-height:1.6;max-width:400px;margin-bottom:16px}
+.featured-link{font-size:13px;font-weight:800;color:var(--accent);letter-spacing:0.5px;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px}
+.featured-link span{transition:transform 0.2s}
+.featured-card:hover .featured-link span{transform:translateX(4px)}
+/* Decorative SVG element */
+.featured-deco{position:absolute;right:-20px;bottom:-20px;width:240px;height:240px;opacity:0.08;pointer-events:none}
+@media(max-width:520px){.featured-card h2{font-size:22px}.featured-deco{width:160px;height:160px;right:-10px;bottom:-10px}}
+
+/* Section header */
+.section-header{max-width:760px;margin:0 auto;padding:0 24px 16px;display:flex;justify-content:space-between;align-items:center}
+.section-title{font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--text)}
+
+/* Article list */
+.learn-list{max-width:760px;margin:0 auto;padding:0 24px 80px}
+
+.learn-card{display:flex;align-items:center;gap:18px;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:16px 18px;margin-bottom:12px;transition:border-color 0.2s, transform 0.2s;cursor:pointer}
+.learn-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+
+.card-thumb{width:76px;height:76px;border-radius:12px;flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:32px}
+/* Each card gets a colour-coded placeholder until real images are added */
+.card-thumb.science{background:var(--accent);background:linear-gradient(135deg,#EDE8FF,#D5CDFF)}
+.card-thumb.psychology{background:linear-gradient(135deg,#E4F7F1,#A8DFD0)}
+.card-thumb.techniques{background:linear-gradient(135deg,#FDF3E3,#F0D49A)}
+.card-thumb.expectations{background:linear-gradient(135deg,#FDEAEE,#F4B8C4)}
+.card-thumb.guide{background:linear-gradient(135deg,#F0EEFF,#C8C0F5)}
+.card-thumb img{width:100%;height:100%;object-fit:cover}
+
+.card-content{flex:1;min-width:0}
+.card-tag{font-size:10px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;font-weight:800;margin-bottom:4px}
+.card-title{font-family:'DM Serif Display',serif;font-size:17px;line-height:1.3;color:var(--text);margin-bottom:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-meta{font-size:12px;color:var(--muted)}
+
+@media(max-width:420px){
+  .card-thumb{width:60px;height:60px}
+  .card-title{font-size:15px}
+}
+
+/* Footer */
+.site-footer{text-align:center;padding:40px 24px;font-size:13px;color:var(--muted);border-top:1.5px solid var(--border);max-width:760px;margin:0 auto}
+.site-footer a{color:var(--accent)}
 </style>
 </head>
 <body>
@@ -48,59 +94,157 @@ a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 </nav>
 
 <div class="learn-hero">
-  <h1>Understanding Speaking Anxiety</h1>
-  <p>Evidence-based guides on what causes public speaking anxiety, how it works in your body, and what actually helps. No fluff.</p>
+  <h1>Learn &amp; Understand</h1>
+  <p>Evidence-based guides on what causes public speaking anxiety, how it works in your body, and what actually helps.</p>
 </div>
 
-<div class="learn-list">
+<!-- Category filters -->
+<div class="category-tabs" id="tabs">
+  <button class="cat-tab active" data-cat="all">All</button>
+  <button class="cat-tab" data-cat="science">The Science</button>
+  <button class="cat-tab" data-cat="psychology">The Psychology</button>
+  <button class="cat-tab" data-cat="techniques">Techniques</button>
+  <button class="cat-tab" data-cat="guide">Guides</button>
+</div>
 
-  <a href="/learn/best-apps-public-speaking-anxiety.html" class="learn-card">
-    <div class="learn-card-tag">Guide</div>
-    <h2>Best Apps for Public Speaking Anxiety in 2026</h2>
-    <p>A practical comparison of the apps that actually help with presentation nerves — what they do, what they cost, and which one fits your situation.</p>
-    <div class="learn-card-meta">8 min read</div>
+<!-- Featured article -->
+<div class="featured" id="featured-wrap">
+  <a href="/learn/calm-nerves-before-presentation.html" class="featured-card" data-cat="techniques">
+    <div class="featured-inner">
+      <div class="featured-tag">Featured Guide</div>
+      <h2>How to Calm Nerves Before a Presentation</h2>
+      <p>Evidence-based techniques for the 5 minutes before you speak — what works, what doesn't, and why.</p>
+      <div class="featured-link">Read guide <span>&rarr;</span></div>
+    </div>
+    <svg class="featured-deco" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="80" stroke="var(--accent)" stroke-width="2"/>
+      <circle cx="100" cy="100" r="50" stroke="var(--accent)" stroke-width="1.5"/>
+      <circle cx="100" cy="100" r="20" fill="var(--accent)" opacity="0.3"/>
+      <line x1="20" y1="100" x2="180" y2="100" stroke="var(--accent)" stroke-width="1"/>
+      <line x1="100" y1="20" x2="100" y2="180" stroke="var(--accent)" stroke-width="1"/>
+    </svg>
+  </a>
+</div>
+
+<!-- Article list -->
+<div class="section-header">
+  <div class="section-title">All Guides</div>
+</div>
+
+<div class="learn-list" id="list">
+
+  <a href="/learn/best-apps-public-speaking-anxiety.html" class="learn-card" data-cat="guide">
+    <div class="card-thumb guide">
+      <!-- Replace with: <img src="/learn/images/best-apps-thumb.png" alt="Comparison of public speaking anxiety apps"> -->
+      &#128241;
+    </div>
+    <div class="card-content">
+      <div class="card-tag">Guide</div>
+      <div class="card-title">Best Apps for Public Speaking Anxiety in 2026</div>
+      <div class="card-meta">8 min read</div>
+    </div>
   </a>
 
-  <a href="/learn/why-body-shakes-before-presentations.html" class="learn-card">
-    <div class="learn-card-tag">The Science</div>
-    <h2>Why Your Body Shakes Before Presentations — And How to Stop It</h2>
-    <p>The science behind why your hands shake, your voice trembles, and your heart races before presenting. What's actually happening — and what works.</p>
-    <div class="learn-card-meta">7 min read</div>
+  <a href="/learn/why-body-shakes-before-presentations.html" class="learn-card" data-cat="science">
+    <div class="card-thumb science">
+      <!-- Replace with: <img src="/learn/images/body-shakes-thumb.png" alt="Fight or flight body map for presentation anxiety"> -->
+      &#129504;
+    </div>
+    <div class="card-content">
+      <div class="card-tag">The Science</div>
+      <div class="card-title">Why Your Body Shakes Before Presentations</div>
+      <div class="card-meta">7 min read</div>
+    </div>
   </a>
 
-  <a href="/learn/avoidance-trap-public-speaking-anxiety.html" class="learn-card">
-    <div class="learn-card-tag">The Psychology</div>
-    <h2>The Avoidance Trap: Why Avoiding Public Speaking Makes Anxiety Worse</h2>
-    <p>Every time you avoid a speaking situation, the fear gets stronger. Here's the psychology behind why avoidance backfires — and what to do instead.</p>
-    <div class="learn-card-meta">6 min read</div>
+  <a href="/learn/avoidance-trap-public-speaking-anxiety.html" class="learn-card" data-cat="psychology">
+    <div class="card-thumb psychology">
+      <!-- Replace with: <img src="/learn/images/avoidance-cycle-thumb.png" alt="The avoidance cycle in public speaking anxiety"> -->
+      &#128260;
+    </div>
+    <div class="card-content">
+      <div class="card-tag">The Psychology</div>
+      <div class="card-title">The Avoidance Trap: Why Avoiding Speaking Makes It Worse</div>
+      <div class="card-meta">6 min read</div>
+    </div>
   </a>
 
-  <a href="/learn/how-long-overcome-public-speaking-anxiety.html" class="learn-card">
-    <div class="learn-card-tag">Realistic Expectations</div>
-    <h2>How Long Does It Take to Overcome Public Speaking Anxiety?</h2>
-    <p>A realistic timeline based on evidence. What affects the speed of progress, and what "overcoming it" actually means.</p>
-    <div class="learn-card-meta">6 min read</div>
+  <a href="/learn/how-long-overcome-public-speaking-anxiety.html" class="learn-card" data-cat="expectations">
+    <div class="card-thumb expectations">
+      <!-- Replace with: <img src="/learn/images/anxiety-timeline-thumb.png" alt="Timeline for overcoming public speaking anxiety"> -->
+      &#9200;
+    </div>
+    <div class="card-content">
+      <div class="card-tag">Realistic Expectations</div>
+      <div class="card-title">How Long Does It Take to Overcome Speaking Anxiety?</div>
+      <div class="card-meta">6 min read</div>
+    </div>
   </a>
 
-  <a href="/learn/calm-nerves-before-presentation.html" class="learn-card">
-    <div class="learn-card-tag">Practical Techniques</div>
-    <h2>How to Calm Nerves Before a Presentation — What Actually Works</h2>
-    <p>Evidence-based techniques for the 5 minutes before you speak, the weeks before, and what's a waste of time.</p>
-    <div class="learn-card-meta">7 min read</div>
+  <a href="/learn/calm-nerves-before-presentation.html" class="learn-card" data-cat="techniques">
+    <div class="card-thumb techniques">
+      <!-- Replace with: <img src="/learn/images/calm-nerves-thumb.png" alt="Breathing techniques for calming nerves before presenting"> -->
+      &#127793;
+    </div>
+    <div class="card-content">
+      <div class="card-tag">Practical Techniques</div>
+      <div class="card-title">How to Calm Nerves Before a Presentation</div>
+      <div class="card-meta">7 min read</div>
+    </div>
   </a>
 
-  <a href="/learn/mind-goes-blank-presenting.html" class="learn-card">
-    <div class="learn-card-tag">The Science</div>
-    <h2>Why Does My Mind Go Blank When Presenting?</h2>
-    <p>The neuroscience behind why your mind goes blank during presentations. Why it's not a memory problem, and how to prevent it.</p>
-    <div class="learn-card-meta">6 min read</div>
+  <a href="/learn/mind-goes-blank-presenting.html" class="learn-card" data-cat="science">
+    <div class="card-thumb science">
+      <!-- Replace with: <img src="/learn/images/mind-blank-thumb.png" alt="Brain diagram showing amygdala hijack during presentations"> -->
+      &#129504;
+    </div>
+    <div class="card-content">
+      <div class="card-tag">The Science</div>
+      <div class="card-title">Why Does My Mind Go Blank When Presenting?</div>
+      <div class="card-meta">6 min read</div>
+    </div>
   </a>
 
 </div>
 
 <footer class="site-footer">
-  &copy; 2026 Nervless. Practice until the fear fades.
+  &copy; 2026 Nervless. Practice until the fear fades.<br>
+  <a href="/">Try Nervless</a>
 </footer>
+
+<script>
+// Category filtering
+const tabs = document.querySelectorAll('.cat-tab');
+const cards = document.querySelectorAll('.learn-card');
+const featured = document.querySelector('.featured-card');
+const featuredWrap = document.getElementById('featured-wrap');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const cat = tab.dataset.cat;
+    
+    // Update active tab
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    
+    // Filter cards
+    cards.forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    
+    // Show/hide featured based on filter
+    if (cat === 'all' || featured.dataset.cat === cat) {
+      featuredWrap.style.display = '';
+    } else {
+      featuredWrap.style.display = 'none';
+    }
+  });
+});
+</script>
 
 </body>
 </html>
