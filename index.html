@@ -98,20 +98,28 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .phase-label{font-size:11px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;font-weight:700}
 .phase-line{flex:1;height:1px;background:var(--border)}
 /* Phase section cards */
-.phase-block{margin:0 16px 14px;border-radius:22px;overflow:hidden;border:2px solid var(--border)}
-.phase-block.ph1{border-color:var(--phase1-border);background:var(--phase1-bg)}
-.phase-block.ph2{border-color:var(--phase2-border);background:var(--phase2-bg)}
-.phase-block.ph3{border-color:var(--phase3-border);background:var(--phase3-bg)}
-.phase-block.ph4{border-color:var(--phase4-border);background:var(--phase4-bg)}
-.phase-block.ph5{border-color:var(--phase5-border);background:var(--phase5-bg)}
-.phase-block.locked-block{opacity:0.5;filter:grayscale(0.3)}
-.phase-header-btn{padding:18px 20px;display:flex;align-items:center;gap:14px;cursor:pointer;background:transparent;border:none;width:100%;text-align:left;font-family:'Nunito',sans-serif}
-.phase-icon-circle{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;background:rgba(255,255,255,0.7)}
+.phase-block{margin:0 16px 10px;border-radius:18px;overflow:hidden;border:1.5px solid var(--border);background:var(--surface)}
+.phase-block.ph1{border-left:4px solid var(--phase1);background:var(--phase1-bg)}
+.phase-block.ph2{border-left:4px solid var(--phase2);background:var(--phase2-bg)}
+.phase-block.ph3{border-left:4px solid var(--phase3);background:var(--phase3-bg)}
+.phase-block.ph4{border-left:4px solid var(--phase4);background:var(--phase4-bg)}
+.phase-block.ph5{border-left:4px solid var(--phase5);background:var(--phase5-bg)}
+.phase-block.locked-block{opacity:0.45;filter:grayscale(0.2)}
+.phase-header-btn{padding:20px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;background:transparent;border:none;width:100%;text-align:left;font-family:'Nunito',sans-serif}
+.phase-icon-circle{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:rgba(255,255,255,0.8)}
 .phase-header-text{flex:1;min-width:0}
-.phase-header-name{font-size:16px;font-weight:800;color:var(--text);margin-bottom:3px}
-.phase-header-sub{font-size:13px;font-weight:600;color:var(--muted)}
-.phase-chevron{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.7);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text);transition:transform 0.25s,background 0.15s;flex-shrink:0;font-weight:900}
-.phase-header-btn:active .phase-chevron{background:rgba(255,255,255,1)}
+.phase-header-label{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.phase-header-tag{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+.phase-block.ph1 .phase-header-tag{color:var(--phase1)}
+.phase-block.ph2 .phase-header-tag{color:var(--phase2)}
+.phase-block.ph3 .phase-header-tag{color:var(--phase3)}
+.phase-block.ph4 .phase-header-tag{color:var(--phase4)}
+.phase-block.ph5 .phase-header-tag{color:var(--phase5)}
+.phase-header-dot{font-size:10px;color:var(--muted)}
+.phase-header-progress{font-size:12px;font-weight:700;color:var(--muted)}
+.phase-header-name{font-family:'DM Serif Display',serif;font-size:20px;font-weight:400;color:var(--text);line-height:1.2}
+.phase-chevron{width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--muted);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1)}
+.phase-chevron svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
 
 /* Burger menu */
 .burger-btn{background:none;border:none;cursor:pointer;padding:8px;display:flex;flex-direction:column;gap:5px;z-index:102}
@@ -808,12 +816,11 @@ function showCurriculum(){
 
     html+='<div class="phase-block '+phColour+(isLocked?' locked-block':'')+'" id="'+phaseId+'">';
     html+='<button class="phase-header-btn" onclick="togglePhase(\''+phaseId+'\')">';
-    html+='<div class="phase-icon-circle">'+(isAllDone?'✅':isLocked?'🔒':phIcon)+'</div>';
     html+='<div class="phase-header-text">';
-    html+='<div class="phase-header-name">Phase '+pg.phase+' — '+pg.name+'</div>';
-    html+='<div class="phase-header-sub">'+(isLocked?'Complete Phase '+(pg.phase-1)+' to unlock':phPassed+' of '+phTotal+' passed'+(isAllDone?' ✅':''))+'</div>';
+    html+='<div class="phase-header-label"><span class="phase-header-tag">Phase '+pg.phase+'</span>'+(isLocked?'<span class="phase-header-dot">🔒</span>':'<span class="phase-header-dot">&middot;</span>')+'<span class="phase-header-progress">'+(isLocked?'Locked':phPassed+' of '+phTotal+' passed'+(isAllDone?' ✅':''))+'</span></div>';
+    html+='<div class="phase-header-name">'+pg.name+'</div>';
     html+='</div>';
-    html+='<div class="phase-chevron" id="chevron-'+phaseId+'" style="transform:'+(defaultOpen?'rotate(90deg)':'rotate(0deg)')+'">&#9654;</div>';
+    html+='<div class="phase-chevron" id="chevron-'+phaseId+'" style="transform:'+(defaultOpen?'rotate(180deg)':'rotate(0deg)')+'"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>';
     html+='</button>';
 
     // Sessions
@@ -892,7 +899,7 @@ function togglePhase(phaseId){
   if(!sessions)return;
   const isOpen=sessions.style.display!=='none';
   sessions.style.display=isOpen?'none':'block';
-  if(chevron)chevron.style.transform=isOpen?'rotate(0deg)':'rotate(90deg)';
+  if(chevron)chevron.style.transform=isOpen?'rotate(0deg)':'rotate(180deg)';
 }
 // ── LESSON CONTENT (Read + Quiz for sessions 1–5, Phase 1) ──
 const LESSON_CONTENT = {
