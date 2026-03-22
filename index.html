@@ -465,6 +465,15 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="metric-card"><div class="metric-label">Confidence</div><div class="metric-value" id="m-confidence">-</div><div class="metric-desc">out of 10</div></div>
     <div class="metric-card"><div class="metric-label">Openness</div><div class="metric-value" id="m-openness">-</div><div class="metric-desc">out of 10</div></div>
   </div>
+  <!-- Voice analysis row -->
+  <div id="voice-analysis-row" style="display:none;padding:0 24px 4px;">
+    <div style="font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px;">Voice analysis</div>
+    <div class="metrics-grid" style="padding:0;">
+      <div class="metric-card"><div class="metric-label">Volume</div><div class="metric-value" id="m-volume">-</div><div class="metric-desc" id="m-volume-desc">level</div></div>
+      <div class="metric-card"><div class="metric-label">Pitch range</div><div class="metric-value" id="m-pitch">-</div><div class="metric-desc" id="m-pitch-desc">variation</div></div>
+      <div class="metric-card"><div class="metric-label">Steadiness</div><div class="metric-value" id="m-steady">-</div><div class="metric-desc" id="m-steady-desc">stability</div></div>
+    </div>
+  </div>
   <div class="transcript-section">
     <div class="transcript-title">Your transcript</div>
     <div class="transcript-box" id="transcript-box">Transcript will appear here...</div>
@@ -580,12 +589,36 @@ let state={currentQuestion:0,answers:[],level:2,currentSessionId:6,isRecording:f
   setTimeout(function(){showCurriculum();},0);
 })();
 
-// ── MASTERY THRESHOLDS ──
-const PHASE_PASS_SCORE = {1: 65, 2: 70, 3: 75, 4: 72, 5: 75, 6: 78, 7: 78, 8: 80, 9: 80};
-const MAX_ATTEMPTS = 3;
-function getPassScore(session) { return PHASE_PASS_SCORE[session.phase] || 60; }
+// ── STAR THRESHOLDS ──
+// 1 star = pass and unlock next. 2 stars = good. 3 stars = mastered.
+// Thresholds increase by phase. 1-star is not easy — you still have to genuinely try.
+const STAR_THRESHOLDS = {
+  1: { star1: 55, star2: 70, star3: 85 },
+  2: { star1: 58, star2: 72, star3: 86 },
+  3: { star1: 60, star2: 75, star3: 88 },
+  4: { star1: 58, star2: 72, star3: 86 },
+  5: { star1: 62, star2: 76, star3: 90 },
+  6: { star1: 65, star2: 78, star3: 92 },
+  7: { star1: 65, star2: 78, star3: 92 },
+  8: { star1: 68, star2: 80, star3: 94 },
+  9: { star1: 65, star2: 78, star3: 92 },
+};
+function getStarThresholds(session) { return STAR_THRESHOLDS[session.phase] || { star1: 55, star2: 70, star3: 85 }; }
+function getStars(score, session) {
+  const t = getStarThresholds(session);
+  if (score >= t.star3) return 3;
+  if (score >= t.star2) return 2;
+  if (score >= t.star1) return 1;
+  return 0;
+}
+function getPassScore(session) { return getStarThresholds(session).star1; }
 function getSessionAttempts(sessionId) { return state.sessions.filter(s => s.sessionId === sessionId).length; }
 function getBestScore(sessionId) { const all = state.sessions.filter(s => s.sessionId === sessionId); return all.length ? Math.max(...all.map(s => s.score)) : 0; }
+function getBestStars(sessionId) {
+  const session = CURRICULUM.find(s => s.id === sessionId);
+  if (!session) return 0;
+  return getStars(getBestScore(sessionId), session);
+}
 function hasPassedSession(sessionId) {
   // Check explicit passed list first
   const passed = JSON.parse(localStorage.getItem('nervless_passed')||'[]');
@@ -656,6 +689,8 @@ function showCurriculum(){
     const phSessions=pg.sessions;
     const phPassed=phSessions.filter(s=>hasPassedSession(s.id)).length;
     const phTotal=phSessions.length;
+    const phStars=phSessions.reduce((sum, s) => sum + getBestStars(s.id), 0);
+    const phMaxStars=phTotal * 3;
     const isAllDone=phPassed===phTotal;
     const phaseUnlocked = isPhaseUnlocked(pg.phase, relevant);
     const isCurrent=pg.phase===currentPhaseNum && phaseUnlocked;
@@ -683,7 +718,7 @@ function showCurriculum(){
     html+='<div class="phase-block '+phColour+(isLocked?' locked-block':'')+'" id="'+phaseId+'">';
     html+='<button class="phase-header-btn" onclick="togglePhase(\''+phaseId+'\')">';
     html+='<div class="phase-header-text">';
-    html+='<div class="phase-header-label"><span class="phase-header-tag">Phase '+pg.phase+'</span>'+(isLocked?'<span class="phase-header-dot">🔒</span>':'<span class="phase-header-dot">&middot;</span>')+'<span class="phase-header-progress">'+(isLocked?'Locked':phPassed+' of '+phTotal+' passed'+(isAllDone?' ✅':''))+'</span></div>';
+    html+='<div class="phase-header-label"><span class="phase-header-tag">Phase '+pg.phase+'</span>'+(isLocked?'<span class="phase-header-dot">🔒</span>':'<span class="phase-header-dot">&middot;</span>')+'<span class="phase-header-progress">'+(isLocked?'Locked':phPassed+' of '+phTotal+' passed'+(isAllDone?' ✅':'')+' · '+phStars+'★')+'</span></div>';
     html+='<div class="phase-header-name">'+pg.name+'</div>';
     if(phaseBenefits[pg.phase])html+='<div class="phase-header-benefit">'+phaseBenefits[pg.phase]+'</div>';
     html+='</div>';
@@ -697,17 +732,25 @@ function showCurriculum(){
       const isU = session.id===state.currentSessionId && !isPassed;
       const attempts = getSessionAttempts(session.id);
       const bestScore = getBestScore(session.id);
-      const passScore = getPassScore(session);
-      const canRetry = !isPassed && attempts > 0;
+      const stars = getBestStars(session.id);
+      const thresholds = getStarThresholds(session);
+      const canRetry = isPassed && stars < 3; // Can always retry for more stars
       const clickable = phaseUnlocked;
       const cardClass = isPassed ? 's-passed' : isU ? 's-current' : attempts > 0 ? 's-tried' : !phaseUnlocked ? 's-locked' : '';
       const numClass = isPassed ? 's-passed' : isU ? 's-current' : '';
 
+      // Star display
+      function starDisplay(count) {
+        return '<span style="letter-spacing:2px;">' + '★'.repeat(count) + '<span style="color:var(--border);">' + '★'.repeat(3 - count) + '</span></span>';
+      }
+
       let statusRight = '';
       if (isPassed) {
-        statusRight = '<span style="color:var(--green);font-size:24px;font-weight:900;flex-shrink:0;">✓</span>';
+        statusRight = '<div style="text-align:right;flex-shrink:0;line-height:1.2;"><div style="font-size:16px;color:var(--gold);">' + starDisplay(stars) + '</div>'
+          + (stars < 3 ? '<div style="font-size:10px;color:var(--muted);margin-top:2px;">'+bestScore+' / '+thresholds.star3+' for ★★★</div>' : '<div style="font-size:10px;color:var(--green);margin-top:2px;font-weight:700;">Mastered</div>')
+          + '</div>';
       } else if (attempts > 0) {
-        statusRight = '<div style="text-align:right;flex-shrink:0;"><div style="font-size:14px;font-weight:800;color:var(--red)">'+bestScore+'</div><div style="font-size:10px;color:var(--muted);font-weight:600;">need '+passScore+'</div></div>';
+        statusRight = '<div style="text-align:right;flex-shrink:0;line-height:1.2;"><div style="font-size:14px;font-weight:800;color:var(--red)">'+bestScore+'</div><div style="font-size:10px;color:var(--muted);font-weight:600;">need '+thresholds.star1+' for ★</div></div>';
       } else if (isU) {
         statusRight = '<div class="current-arrow">Start ›</div>';
       }
@@ -715,7 +758,7 @@ function showCurriculum(){
       html+='<div class="session-card '+cardClass+'" '+(clickable?'onclick="loadSession('+session.id+')"':'')+'>'+
         '<div class="session-num '+numClass+'">'+session.id+'</div>'+
         '<div class="session-info">'+
-          '<div class="session-title">'+session.title+(canRetry&&!isPassed?' <span style="font-size:11px;color:var(--gold);font-weight:700;">↩ retry</span>':'')+'</div>'+
+          '<div class="session-title">'+session.title+(canRetry?' <span style="font-size:11px;color:var(--gold);font-weight:700;">↩ improve</span>':'')+(attempts > 0 && !isPassed?' <span style="font-size:11px;color:var(--gold);font-weight:700;">↩ retry</span>':'')+'</div>'+
           '<div class="session-desc">'+session.what+'</div>'+
         '</div>'+
         statusRight+
@@ -1637,23 +1680,183 @@ async function runAIPipeline(audioChunks, durationSeconds, session) {
     transcript = '[Transcription failed — check your proxy is running]';
   }
 
-  // Step 2: Claude analysis
+  // Step 2: Validate transcript
+  const wordCount = transcript.trim().split(/\s+/).filter(w => w.length > 0).length;
+  if (!transcript || transcript.trim() === '' || wordCount < 5) {
+    hideLoading();
+    return {
+      transcript: transcript || '',
+      wpm: 0,
+      fillerCount: 0,
+      durationSeconds,
+      analysis: {
+        overallScore: 0,
+        title: "Nothing detected",
+        subtitle: "We didn't pick up any speech — try again and speak clearly into your microphone.",
+        scores: { promptAdherence: 0, clarity: 0, confidence: 0, openness: 0 },
+        fillerWords: { count: 0, examples: [], verdict: "No speech detected." },
+        pace: { wpm: 0, verdict: "No speech detected." },
+        coachingPoints: [
+          "Make sure your microphone is working and you're in a quiet environment.",
+          "Try speaking for at least 30 seconds — even a few sentences is enough to get started.",
+          "It's completely normal to feel awkward at first. Press record and just start talking."
+        ],
+        transcriptHighlight: "",
+        modelAnswer: ""
+      }
+    };
+  }
+
+  // Step 3: Claude analysis
   showLoading('Claude is analysing...', 'Reading your response...');
 
   const wpm = durationSeconds > 0
     ? Math.round(((words.length || transcript.split(' ').length) / durationSeconds) * 60)
     : 0;
 
+  // Cadence analysis from word timestamps
+  let cadenceData = '';
+  if (words.length > 2 && words[0].start !== undefined) {
+    const gaps = [];
+    for (let i = 1; i < words.length; i++) {
+      const gap = words[i].start - words[i-1].end;
+      if (gap >= 0) gaps.push({ after: words[i-1].word, gap: Math.round(gap * 100) / 100 });
+    }
+    const longPauses = gaps.filter(g => g.gap > 1.0);
+    const medPauses = gaps.filter(g => g.gap > 0.5 && g.gap <= 1.0);
+    const allGaps = gaps.map(g => g.gap).filter(g => g >= 0);
+    const avgGap = allGaps.length > 0 ? Math.round((allGaps.reduce((a,b) => a+b, 0) / allGaps.length) * 100) / 100 : 0;
+    
+    // Speaking rate in 10-second windows
+    const windowSize = 10;
+    const windows = [];
+    for (let t = 0; t < durationSeconds; t += windowSize) {
+      const wordsInWindow = words.filter(w => w.start >= t && w.start < t + windowSize);
+      windows.push({ start: t, wpm: Math.round((wordsInWindow.length / windowSize) * 60) });
+    }
+    const wpmValues = windows.map(w => w.wpm).filter(w => w > 0);
+    const wpmVariation = wpmValues.length > 1 ? Math.max(...wpmValues) - Math.min(...wpmValues) : 0;
+    
+    cadenceData = `
+CADENCE DATA (from word-level timestamps):
+- Average gap between words: ${avgGap}s
+- Long pauses (>1s): ${longPauses.length} — ${longPauses.length > 0 ? 'after words: ' + longPauses.slice(0, 8).map(p => '"' + p.after + '" (' + p.gap + 's)').join(', ') : 'none'}
+- Medium pauses (0.5–1s): ${medPauses.length}
+- Pace variation across ${windows.length} segments: ${wpmVariation} WPM range (${wpmValues.length > 1 ? 'slowest ' + Math.min(...wpmValues) + ', fastest ' + Math.max(...wpmValues) : 'not enough data'})
+- ${wpmVariation < 20 ? 'MONOTONE PACE — very little speed variation detected' : wpmVariation < 50 ? 'MODERATE variation in pace' : 'GOOD pace variation — natural speech rhythm detected'}
+Use this data to assess delivery quality: deliberate pauses show control, rushed sections suggest anxiety, monotone pace suggests nervousness or disengagement. Long pauses after filler words suggest the speaker is struggling to find words.`;
+  }
+
   const fillerPattern = /\b(um|uh|er|like|basically|you know|sort of|kind of|literally|right|so|actually|honestly|anyway)\b/gi;
   const fillerMatches = transcript.match(fillerPattern) || [];
   const fillerCount = fillerMatches.length;
 
-  const isPhase1 = session && (session.phase === 1 || session.phase === 4);
+  const isReflective = session && (session.phase === 1 || session.phase === 4);
+  
+  // Phase-specific scoring rubric
+  let scoringRubric = '';
+  const phase = session ? session.phase : 2;
+  if (phase === 1) {
+    scoringRubric = `SCORING RUBRIC — PHASE 1 (Reflective/Understanding):
+Score generously on effort and emotional honesty. This is about speaking freely and building self-awareness.
+- promptAdherence: Did they attempt the prompt? Low bar — effort counts.
+- clarity: NOT scored strictly. Rambling is fine. Just needs to be understandable.
+- confidence: Look for willingness to be vulnerable, not assertiveness.
+- openness: MOST IMPORTANT. Emotional honesty and depth. Weight this heavily.
+- Filler words: Ignore completely. Do not mention them.
+- Pace/cadence: Note but do not penalise.
+- overallScore: 60-90 range for genuine attempts. Below 60 only if clearly no effort.`;
+  } else if (phase === 2) {
+    scoringRubric = `SCORING RUBRIC — PHASE 2 (Body & Regulation):
+Score on technique execution and self-awareness of physical state.
+- promptAdherence: Did they actually do the technique (breathing, grounding, etc)?
+- clarity: Can you follow their narration of what they're doing?
+- confidence: Listen for voice changes — does it settle through the exercise?
+- openness: Willingness to describe physical sensations honestly.
+- Filler words: Note but don't penalise heavily.
+- Pace/cadence: Important — look for pace settling as regulation kicks in.
+- overallScore: Score honestly. Partial technique execution = partial score.`;
+  } else if (phase === 3) {
+    scoringRubric = `SCORING RUBRIC — PHASE 3 (Exposure):
+Score on engagement with the exposure challenge and gradual comfort.
+- promptAdherence: Did they address the actual prompt, not dodge it?
+- clarity: Should be improving — expect basic structure.
+- confidence: Key metric. Hedging language, trailing off, and apologising should lower this.
+- openness: Still matters but less than Phase 1.
+- Filler words: Start noting them. More than 8 per minute is worth flagging.
+- Pace/cadence: Flag rushing (>170 WPM) as a sign of anxiety.
+- overallScore: 50-85 range. Genuinely good = 80+. Average effort = 60-70.`;
+  } else if (phase === 4) {
+    scoringRubric = `SCORING RUBRIC — PHASE 4 (Cognitive Reframing — Reflective):
+Score on self-awareness, honest engagement with thought patterns, and cognitive flexibility.
+- promptAdherence: Did they genuinely engage with the cognitive exercise?
+- clarity: Less important than honesty. Structure not expected.
+- confidence: Look for conviction when challenging their own thoughts.
+- openness: MOST IMPORTANT. Are they being genuinely honest about their internal monologue?
+- Filler words: Ignore. This is reflective work.
+- Pace/cadence: Slower, thoughtful pace is positive here.
+- overallScore: 60-90 range for genuine attempts. Performative answers = lower scores.`;
+  } else if (phase === 5) {
+    scoringRubric = `SCORING RUBRIC — PHASE 5 (Finding Your Voice):
+Score on authenticity, emotional range, and personal distinctiveness.
+- promptAdherence: Strict. They must address the specific prompt.
+- clarity: Expect clear structure — beginning, middle, end.
+- confidence: Should sound like them, not like they're performing. Genuine > polished.
+- openness: Emotional range matters — monotone delivery should lose points.
+- Filler words: Penalise. More than 5 per minute is too many at this stage.
+- Pace/cadence: Variation is key. Monotone pace = lower score. Natural rhythm = higher.
+- overallScore: 45-90 range. Be honest. Bland, safe answers shouldn't score above 65.`;
+  } else if (phase === 6) {
+    scoringRubric = `SCORING RUBRIC — PHASE 6 (High Stakes):
+Score strictly on delivery under pressure. These are professional scenarios.
+- promptAdherence: Strict. Must address the scenario directly, not waffle around it.
+- clarity: CRITICAL. Must have clear structure. Rambling = penalised hard.
+- confidence: Key metric. Hedging, apologising, undermining own points = low score.
+- openness: Less relevant. Replace with "composure" — did they stay steady?
+- Filler words: Penalise firmly. More than 4 per minute at this stage is too many.
+- Pace/cadence: Rushing = anxiety. Long pauses after filler words = struggling. Flag both.
+- Duration: If response is under 60 seconds for a 2-3 min prompt, penalise — they're cutting short.
+- overallScore: 40-90 range. Be strict. This phase should feel harder to score well on.`;
+  } else if (phase === 7) {
+    scoringRubric = `SCORING RUBRIC — PHASE 7 (In-the-Moment Tools):
+Score on technique execution and recovery quality.
+- promptAdherence: Must actually perform the technique, not just talk about it.
+- clarity: Expect clear narration of what they're doing and why.
+- confidence: Recovery speed matters — how quickly do they regain composure?
+- openness: Honest self-assessment of what worked and what didn't.
+- Filler words: Penalise. Filler words during recovery = the technique isn't landing.
+- Pace/cadence: Critical. Use cadence data to assess voice steadiness and recovery.
+- overallScore: 45-90 range. Technique not demonstrated = max 50.`;
+  } else if (phase === 8) {
+    scoringRubric = `SCORING RUBRIC — PHASE 8 (Performing Under Pressure):
+STRICTEST SCORING. These are advanced performance sessions.
+- promptAdherence: Must fully address the prompt with sophistication.
+- clarity: Expect polished structure. Point-by-point, narrative arc, clear transitions.
+- confidence: Should sound commanding, not tentative. Score vocal authority.
+- openness: Replace with "audience awareness" — are they speaking TO someone, not AT them?
+- Filler words: Strict. More than 3 per minute loses points. Pauses should replace fillers by now.
+- Pace/cadence: MOST IMPORTANT. Use cadence data heavily. Score vocal variety, deliberate pauses, pace variation. Monotone = penalise. Rushed = penalise.
+- Duration: Must meet the suggested duration. Under-time = penalise. This is about sustained performance.
+- overallScore: 35-95 range. Average attempts should score 55-70. Only genuinely strong delivery = 80+.`;
+  } else if (phase === 9) {
+    scoringRubric = `SCORING RUBRIC — PHASE 9 (Maintenance):
+Score on honest self-assessment and continued growth.
+- promptAdherence: Must engage with the specific reflection or challenge.
+- clarity: Expect clear, mature communication at this stage.
+- confidence: Should sound grounded and self-aware. Not performing confidence — being confident.
+- openness: Critical again. Honest reflection on remaining challenges = high marks.
+- Filler words: Note but weight less than Phase 8. This is reflective.
+- Pace/cadence: Natural, conversational pace is the goal.
+- overallScore: Compare implicitly to what Phase 1 delivery sounded like. Reward growth.`;
+  }
+
   const claudePrompt = `You are an expert speaking coach analysing a recorded speech exercise. The user is working to overcome speaking anxiety.
 
 SCOPE RESTRICTION: You are a speaking coach analysing delivery, not a general assistant. The user may speak about any topic — that's expected, because the prompts ask them to discuss careers, opinions, stories, and more. Analyse their SPEAKING (clarity, structure, confidence, pace, filler words) regardless of subject matter. However, if the transcript is clearly not a speaking exercise but instead a direct question or request to you as an AI (e.g. asking you to write something, explain an unrelated topic, or have a conversation), note in coachingPoints that Nervless is designed for speaking practice and encourage them to try the prompt again.
 
-${isPhase1 ? `IMPORTANT: This is a Phase 1 reflective session. The goal is emotional honesty and self-awareness — NOT structure, clarity, or technique. Do NOT penalise for lack of structure. Score generously on openness and self-reflection. Be warm and encouraging. The overallScore should reflect effort and emotional engagement, not speaking quality.` : `IMPORTANT: Score honestly and critically. Do not inflate scores. If the answer lacks structure, clarity, or substance — say so directly. Be specific about what was weak. The user needs accurate feedback to improve.`}
+SCORING INTEGRITY: Score honestly based on what was actually said. If the transcript is very short (under 20 words), the overallScore must not exceed 15. If the response doesn't meaningfully address the prompt, promptAdherence must be 1-2 regardless of phase. Do not give credit for effort that isn't there — credibility depends on honest scoring.
+
+${scoringRubric}
 
 SESSION CONTEXT:
 - Phase: ${session ? session.phase : '?'}
@@ -1661,16 +1864,20 @@ SESSION CONTEXT:
 - What it covers: "${session ? session.what : ''}"
 - The prompt they were given: "${session ? session.prompt : ''}"
 - Type: ${session ? session.type : 'Practice'}
+- Expected duration: ${session ? session.duration : 'unknown'}
+- Actual duration: ${durationSeconds} seconds
 
 SPEECH DATA:
 - Duration: ${durationSeconds} seconds
 - Words per minute: ${wpm}
 - Filler words detected: ${fillerCount} (${fillerMatches.slice(0, 10).join(', ') || 'none'})
 - Full transcript: "${transcript}"
+${cadenceData}
+${getAudioAnalysisReport()}
 
 Analyse this speech and return ONLY a JSON object with exactly this structure (no markdown, no explanation, just the JSON):
 {
-  "overallScore": <integer 0-100. Phase 1: score on effort/honesty, be generous. Phase 2+: score honestly, penalise weak structure/clarity/relevance>,
+  "overallScore": <integer 0-100. Follow the scoring rubric above for this phase. Use the full range specified.>,
   "title": "<2-4 word title — encouraging for Phase 1, honest for Phase 2+>",
   "subtitle": "<one sentence — warm acknowledgement for Phase 1, specific honest observation for Phase 2+>",
   "scores": {
@@ -1686,15 +1893,22 @@ Analyse this speech and return ONLY a JSON object with exactly this structure (n
   },
   "pace": {
     "wpm": ${wpm},
-    "verdict": "<one sentence on pace>"
+    "verdict": "<one sentence on pace>",
+    "pauseVerdict": "<one sentence on pause usage — were pauses deliberate/strategic or anxious/stumbling? Use cadence data if available>",
+    "variationVerdict": "<one sentence on pace variation — was delivery monotone or naturally varied? Reference the cadence data>"
   },
   "coachingPoints": [
-    "<specific observation referencing their actual words>",
-    "<one thing they did well — be specific>",
-    "<one concrete actionable improvement — for Phase 1 be gentle, Phase 2+ be direct>"
+    "<specific observation referencing their actual words or cadence data — what you noticed>",
+    "<one thing they did well — be specific, quote their words if possible>",
+    "<one concrete actionable improvement — name the technique, framework, or specific change>"
   ],
+  "improvementPlan": {
+    "focus": "<the single most impactful thing to improve — e.g. 'structure', 'pace control', 'filler words', 'emotional range', 'prompt adherence'>",
+    "technique": "<name a specific framework or technique to try — e.g. 'Use the PREP framework: Position, Reason, Example, Position', 'Try the 2-second rule: pause for 2 seconds instead of saying um', 'Use the situation-complication-resolution story structure'>",
+    "example": "<rewrite one weak sentence from their transcript using the technique — show don't tell. If transcript is too short, give a brief example of how to start the prompt>"
+  },
   "transcriptHighlight": "<a specific phrase from their transcript worth noting, with a one-sentence observation>",
-  "modelAnswer": ${isPhase1 ? '"" /* leave empty for Phase 1 */' : '"<ONLY if overallScore < 70: write a 2-3 sentence example of how a strong answer to this prompt would sound. Use their topic/content where possible. If score >= 70, leave empty string.>"'}
+  "modelAnswer": ${isReflective ? '"" /* leave empty for reflective phases */' : '"<ONLY if overallScore < 70: write a 2-3 sentence example of how a strong answer to this prompt would sound. Use their topic/content where possible. If score >= 70, leave empty string.>"'}
 }`;
 
   let analysis = null;
@@ -1801,6 +2015,48 @@ function renderFeedback(rec, transcript, analysis) {
   document.getElementById('m-confidence').innerHTML = '<span style="color:' + scoreColour(a.scores.confidence) + '">' + a.scores.confidence + '</span>';
   document.getElementById('m-openness').innerHTML = '<span style="color:' + scoreColour(a.scores.openness) + '">' + a.scores.openness + '</span>';
 
+  // Voice analysis display
+  const voiceRow = document.getElementById('voice-analysis-row');
+  const va = audioAnalysis.volumeSamples.filter(d => d > -80);
+  const pa = audioAnalysis.pitchSamples;
+  if (va.length > 3 && voiceRow) {
+    voiceRow.style.display = 'block';
+    const avgVol = Math.round(va.reduce((a,b)=>a+b,0)/va.length);
+    const volLabel = avgVol < -35 ? 'Quiet' : avgVol > -15 ? 'Strong' : 'Good';
+    const volColour = avgVol < -35 ? 'var(--gold)' : 'var(--green)';
+    document.getElementById('m-volume').innerHTML = '<span style="color:'+volColour+'">'+volLabel+'</span>';
+    document.getElementById('m-volume-desc').textContent = avgVol + ' dB avg';
+
+    if (pa.length > 5) {
+      const pitchRange = Math.round(Math.max(...pa)) - Math.round(Math.min(...pa));
+      const pitchLabel = pitchRange < 30 ? 'Flat' : pitchRange < 60 ? 'Limited' : pitchRange < 100 ? 'Good' : 'Expressive';
+      const pitchColour = pitchRange < 30 ? 'var(--red)' : pitchRange < 60 ? 'var(--gold)' : 'var(--green)';
+      document.getElementById('m-pitch').innerHTML = '<span style="color:'+pitchColour+'">'+pitchLabel+'</span>';
+      document.getElementById('m-pitch-desc').textContent = pitchRange + ' Hz range';
+
+      // Stability
+      const windowSize = 5;
+      const vars = [];
+      for (let i = 0; i <= pa.length - windowSize; i++) {
+        const w = pa.slice(i, i + windowSize);
+        const mean = w.reduce((a,b)=>a+b,0)/w.length;
+        vars.push(w.reduce((a,b)=>a+(b-mean)**2,0)/w.length);
+      }
+      const maxVar = vars.length > 0 ? Math.max(...vars) : 0;
+      const steadyLabel = maxVar > 800 ? 'Shaky' : maxVar > 400 ? 'Uneven' : 'Steady';
+      const steadyColour = maxVar > 800 ? 'var(--red)' : maxVar > 400 ? 'var(--gold)' : 'var(--green)';
+      document.getElementById('m-steady').innerHTML = '<span style="color:'+steadyColour+'">'+steadyLabel+'</span>';
+      document.getElementById('m-steady-desc').textContent = maxVar > 800 ? 'voice tremor detected' : maxVar > 400 ? 'some instability' : 'good control';
+    } else {
+      document.getElementById('m-pitch').textContent = '—';
+      document.getElementById('m-pitch-desc').textContent = 'not enough data';
+      document.getElementById('m-steady').textContent = '—';
+      document.getElementById('m-steady-desc').textContent = 'not enough data';
+    }
+  } else if (voiceRow) {
+    voiceRow.style.display = 'none';
+  }
+
   // Transcript — highlight filler words
   const fillerPattern = /\b(um|uh|er|like|basically|you know|sort of|kind of|literally|right|so|actually|honestly|anyway)\b/gi;
   const highlightedTranscript = transcript
@@ -1815,19 +2071,40 @@ function renderFeedback(rec, transcript, analysis) {
       tipsHtml += '<div class="tip-card"><div class="tip-num">' + (i + 1) + '</div><div class="tip-text">' + tip + '</div></div>';
     });
   }
+  
+  // Pace & cadence details
+  if (a.pace.pauseVerdict || a.pace.variationVerdict) {
+    tipsHtml += '<div class="tip-card" style="border-color:rgba(196,146,42,0.3);background:rgba(196,146,42,0.04)">'
+      + '<div class="tip-num" style="background:rgba(196,146,42,0.15);color:var(--gold);border-color:rgba(196,146,42,0.3)">🎙</div>'
+      + '<div class="tip-text">'
+      + (a.pace.pauseVerdict ? '<div style="margin-bottom:4px">' + a.pace.pauseVerdict + '</div>' : '')
+      + (a.pace.variationVerdict ? '<div>' + a.pace.variationVerdict + '</div>' : '')
+      + '</div></div>';
+  }
+  
   if (a.transcriptHighlight) {
     tipsHtml += '<div class="tip-card" style="border-color:rgba(91,79,217,0.3);background:rgba(91,79,217,0.04)"><div class="tip-num" style="background:rgba(91,79,217,0.15);color:var(--accent);border-color:rgba(91,79,217,0.3)">💬</div><div class="tip-text" style="font-style:italic">' + a.transcriptHighlight + '</div></div>';
   }
+  
+  // Improvement plan (shown when score < pass threshold)
+  if (a.improvementPlan && a.improvementPlan.focus) {
+    tipsHtml += '<div style="background:var(--surface);border:1.5px solid rgba(91,79,217,0.25);border-radius:16px;padding:18px;margin-top:12px;">'
+      + '<div style="font-size:11px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:10px;">🎯 Focus for next attempt</div>'
+      + '<div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px;">' + a.improvementPlan.focus + '</div>'
+      + '<div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px;">' + a.improvementPlan.technique + '</div>'
+      + (a.improvementPlan.example ? '<div style="font-size:13px;color:var(--text);line-height:1.6;background:rgba(91,79,217,0.04);border-radius:10px;padding:12px 14px;font-style:italic;">"' + a.improvementPlan.example + '"</div>' : '')
+      + '</div>';
+  }
+  
   document.getElementById('tips-container').innerHTML = tipsHtml;
 
-  // Pass / fail banner — phase-aware
+  // Pass / fail banner — star system
   const sessionForScore = CURRICULUM.find(s => s.id === (rec.sessionId || state.currentSessionId));
-  const passScore = sessionForScore ? getPassScore(sessionForScore) : 65;
+  const thresholds = sessionForScore ? getStarThresholds(sessionForScore) : { star1: 55, star2: 70, star3: 85 };
   const isPhase1Session = sessionForScore && (sessionForScore.phase === 1 || sessionForScore.phase === 4);
   const alreadyPassed = hasPassedSession(rec.sessionId || state.currentSessionId);
-  const thisAttemptPassed = a.overallScore >= passScore;
-  const attempts = getSessionAttempts(rec.sessionId || state.currentSessionId);
-  const forcePass = attempts >= MAX_ATTEMPTS;
+  const starsEarned = sessionForScore ? getStars(a.overallScore, sessionForScore) : 0;
+  const bestStars = getBestStars(rec.sessionId || state.currentSessionId);
   const banner = document.getElementById('pass-fail-banner');
   const btn = document.getElementById('complete-session-btn');
 
@@ -1845,56 +2122,88 @@ function renderFeedback(rec, transcript, analysis) {
     }
   }
 
+  // Star bar builder
+  function buildStarBar(score, t) {
+    const pct = Math.min(100, Math.round((score / 100) * 100));
+    const s1pct = t.star1;
+    const s2pct = t.star2;
+    const s3pct = t.star3;
+    const barColor = score >= t.star3 ? 'var(--green)' : score >= t.star1 ? 'var(--gold)' : 'var(--red)';
+    return '<div style="margin:12px 0 8px;">'
+      + '<div style="position:relative;height:24px;background:var(--surface2);border-radius:12px;overflow:visible;">'
+      // Progress fill
+      + '<div style="position:absolute;left:0;top:0;height:100%;width:'+pct+'%;background:'+barColor+';border-radius:12px;transition:width 0.6s ease;"></div>'
+      // Star markers
+      + '<div style="position:absolute;top:-2px;left:'+s1pct+'%;transform:translateX(-50%);font-size:16px;z-index:2;'+(score>=t.star1?'':'opacity:0.4;')+'">★</div>'
+      + '<div style="position:absolute;top:-2px;left:'+s2pct+'%;transform:translateX(-50%);font-size:16px;z-index:2;'+(score>=t.star2?'':'opacity:0.4;')+'">★★</div>'
+      + '<div style="position:absolute;top:-2px;left:calc('+s3pct+'% - 4px);transform:translateX(-50%);font-size:16px;z-index:2;'+(score>=t.star3?'':'opacity:0.4;')+'">★★★</div>'
+      + '</div>'
+      // Score labels below bar
+      + '<div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--muted);font-weight:700;">'
+      + '<span>0</span>'
+      + '<span style="position:relative;left:'+Math.max(0,s1pct-5)+'%;">'+t.star1+'</span>'
+      + '<span style="position:relative;">'+t.star2+'</span>'
+      + '<span>'+t.star3+'</span>'
+      + '</div>'
+      + '</div>';
+  }
+
+  // Stars display
+  function starStr(n) {
+    return '<span style="color:var(--gold);font-size:22px;letter-spacing:3px;">' + '★'.repeat(n) + '</span><span style="color:var(--border);font-size:22px;letter-spacing:3px;">' + '★'.repeat(3-n) + '</span>';
+  }
+
   if (banner) {
     banner.style.display = 'block';
 
-    if (thisAttemptPassed || forcePass) {
-      banner.style.background = 'rgba(46,158,122,0.1)';
-      banner.style.border = '1px solid rgba(46,158,122,0.3)';
-      banner.innerHTML = '<div style="font-size:22px;margin-bottom:4px">✅</div>'
-        + '<div style="font-weight:700;color:var(--green);margin-bottom:4px">Session passed!</div>'
-        + '<div style="font-size:13px;color:var(--muted)">You scored ' + a.overallScore + (forcePass && !thisAttemptPassed ? ' — auto-passed after ' + MAX_ATTEMPTS + ' attempts.' : ' — above the ' + passScore + ' needed.') + '</div>';
-      if (btn) { btn.textContent = 'Mark complete ✓'; btn.style.background = 'var(--green)'; btn.style.width = '100%'; btn.onclick = completeSession; }
-
-    } else if (alreadyPassed) {
-      banner.style.background = 'rgba(196,146,42,0.08)';
-      banner.style.border = '1px solid rgba(196,146,42,0.25)';
-      banner.innerHTML = '<div style="font-size:22px;margin-bottom:4px">📊</div>'
-        + '<div style="font-weight:700;color:var(--gold);margin-bottom:4px">This attempt: ' + a.overallScore + ' / ' + passScore + ' needed</div>'
-        + '<div style="font-size:13px;color:var(--muted)">Session already passed ✓ — this attempt didn\'t hit the bar. Your tick stays.</div>';
-      if (btn) { btn.textContent = 'Back to journey'; btn.style.background = ''; btn.style.width = '100%'; btn.onclick = showCurriculum; }
-
-    } else {
-      // Failed — show Try Again + Show Me How (Phase 2+ only)
-      const attemptsLeft = Math.max(0, MAX_ATTEMPTS - attempts);
-      banner.style.background = 'rgba(217,84,112,0.06)';
-      banner.style.border = '1px solid rgba(217,84,112,0.2)';
-      banner.innerHTML = '<div style="font-size:22px;margin-bottom:4px">💪</div>'
-        + '<div style="font-weight:700;color:var(--red);margin-bottom:4px">Not there yet — ' + a.overallScore + ' / ' + passScore + ' needed</div>'
-        + '<div style="font-size:13px;color:var(--muted);margin-bottom:' + (!isPhase1Session && a.modelAnswer ? '0' : '0') + '">'
-        + (attemptsLeft > 0 ? attemptsLeft + ' attempt' + (attemptsLeft > 1 ? 's' : '') + ' remaining.' : 'Auto-pass on next attempt.')
-        + '</div>';
+    if (starsEarned >= 1) {
+      // Got at least 1 star — session passed
+      const isNewBest = starsEarned > bestStars || !alreadyPassed;
+      banner.style.background = starsEarned === 3 ? 'rgba(46,158,122,0.1)' : 'rgba(196,146,42,0.08)';
+      banner.style.border = '1px solid ' + (starsEarned === 3 ? 'rgba(46,158,122,0.3)' : 'rgba(196,146,42,0.25)');
+      banner.innerHTML = '<div style="margin-bottom:8px;">' + starStr(starsEarned) + '</div>'
+        + '<div style="font-weight:700;color:' + (starsEarned === 3 ? 'var(--green)' : 'var(--gold)') + ';margin-bottom:4px;">'
+        + (starsEarned === 3 ? 'Perfect score!' : starsEarned === 2 ? 'Great work!' : 'Session passed!') + '</div>'
+        + '<div style="font-size:13px;color:var(--muted);margin-bottom:2px;">You scored ' + a.overallScore
+        + (starsEarned < 3 ? ' — need ' + (starsEarned === 1 ? thresholds.star2 + ' for ★★' : thresholds.star3 + ' for ★★★') : ' — mastered!') + '</div>'
+        + buildStarBar(a.overallScore, thresholds);
 
       if (btn) {
-        if (attemptsLeft > 0) {
-          btn.textContent = 'Try again'; btn.style.background = ''; btn.style.width = !isPhase1Session && a.modelAnswer ? '48%' : '100%';
-          btn.onclick = () => loadSession(rec.sessionId || state.currentSessionId);
+        if (!alreadyPassed) {
+          btn.textContent = 'Continue ★'; btn.style.background = 'var(--green)'; btn.style.width = '100%'; btn.onclick = completeSession;
+        } else if (isNewBest) {
+          btn.textContent = 'Save new best ★'; btn.style.background = 'var(--gold)'; btn.style.width = '100%'; btn.onclick = () => { completeSession(); };
         } else {
-          btn.textContent = 'Mark complete ✓'; btn.style.background = 'var(--green)'; btn.style.width = '100%'; btn.onclick = completeSession;
+          btn.textContent = 'Back to journey'; btn.style.background = ''; btn.style.width = '100%'; btn.onclick = showCurriculum;
         }
       }
 
-      // Show Me How button — Phase 2+ only, when model answer exists
+    } else {
+      // 0 stars — didn't reach 1-star threshold
+      banner.style.background = 'rgba(217,84,112,0.06)';
+      banner.style.border = '1px solid rgba(217,84,112,0.2)';
+      banner.innerHTML = '<div style="margin-bottom:8px;">' + starStr(0) + '</div>'
+        + '<div style="font-weight:700;color:var(--red);margin-bottom:4px;">Not there yet</div>'
+        + '<div style="font-size:13px;color:var(--muted);margin-bottom:2px;">You scored ' + a.overallScore + ' — need ' + thresholds.star1 + ' for your first ★</div>'
+        + buildStarBar(a.overallScore, thresholds)
+        + (alreadyPassed ? '<div style="font-size:12px;color:var(--muted);margin-top:6px;">Your previous ★ rating is kept.</div>' : '');
+
+      if (btn) {
+        btn.textContent = 'Try again'; btn.style.background = ''; btn.style.width = '100%';
+        btn.onclick = () => loadSession(rec.sessionId || state.currentSessionId);
+      }
+
+      // Show Me How button
       const actionsDiv = document.getElementById('feedback-actions');
       const existingShowHow = document.getElementById('show-how-btn');
       if (existingShowHow) existingShowHow.remove();
 
-      if (!isPhase1Session && a.modelAnswer && attemptsLeft > 0 && actionsDiv) {
+      if (!isPhase1Session && a.modelAnswer && actionsDiv) {
         const showHowBtn = document.createElement('button');
         showHowBtn.id = 'show-how-btn';
         showHowBtn.className = 'btn-secondary';
         showHowBtn.style.cssText = 'width:100%;margin-top:10px;background:rgba(91,79,217,0.06);border-color:rgba(91,79,217,0.3);color:var(--accent);font-weight:700;';
-        showHowBtn.textContent = '💡 Show me how to structure this better';
+        showHowBtn.textContent = '💡 Show me how to improve';
         showHowBtn.onclick = () => showModelAnswer(a.modelAnswer, sessionForScore);
         actionsDiv.insertBefore(showHowBtn, actionsDiv.querySelector('.btn-secondary'));
       }
@@ -1929,7 +2238,16 @@ function showModelAnswer(modelAnswer, session) {
     </div>
     <div style="margin:0 24px 20px;background:var(--surface2);border-radius:16px;padding:18px;">
       <div style="font-size:13px;color:var(--muted);line-height:1.6;">
-        <strong style="color:var(--text);">What makes this stronger:</strong> Notice how it answers the prompt directly, uses specific detail rather than generalities, and has a clear structure. Read it, then try recording again with that shape in mind.
+        <strong style="color:var(--text);">What makes this stronger:</strong> Notice how it answers the prompt directly, uses specific detail rather than generalities, and has a clear structure. Try reading the example out loud once, then record your own version — you don't need to copy it, just borrow the shape.
+      </div>
+    </div>
+    <div style="margin:0 24px 20px;background:rgba(46,158,122,0.06);border:1px solid rgba(46,158,122,0.2);border-radius:16px;padding:18px;">
+      <div style="font-size:13px;color:var(--text);line-height:1.6;">
+        <strong>Quick tips for this attempt:</strong><br>
+        • Start with your main point — don't build up to it<br>
+        • Use one specific example, not several vague ones<br>
+        • Aim for a natural pace — if you're rushing, slow down deliberately<br>
+        • When you feel an "um" coming, pause silently instead
       </div>
     </div>
     <div style="padding:0 24px;">
@@ -1939,13 +2257,149 @@ function showModelAnswer(modelAnswer, session) {
 }
 
 function resetRecording(){state.isRecording=false;state.seconds=0;clearInterval(state.timerInterval);document.getElementById('timer').textContent='0:00';document.getElementById('timer').classList.remove('recording');document.getElementById('record-btn').classList.remove('recording');document.getElementById('record-btn').textContent='🎙';document.getElementById('record-hint').textContent='Tap to start recording';document.getElementById('waveform').classList.remove('active');}
+
+// ── AUDIO ANALYSIS ENGINE ──
+const audioAnalysis = { samples: [], pitchSamples: [], volumeSamples: [], audioCtx: null, analyser: null, interval: null };
+
+function initAudioAnalysis(stream) {
+  try {
+    audioAnalysis.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const source = audioAnalysis.audioCtx.createMediaStreamSource(stream);
+    audioAnalysis.analyser = audioAnalysis.audioCtx.createAnalyser();
+    audioAnalysis.analyser.fftSize = 2048;
+    source.connect(audioAnalysis.analyser);
+    audioAnalysis.samples = [];
+    audioAnalysis.pitchSamples = [];
+    audioAnalysis.volumeSamples = [];
+
+    const bufferLength = audioAnalysis.analyser.fftSize;
+    const dataArray = new Float32Array(bufferLength);
+    const sampleRate = audioAnalysis.audioCtx.sampleRate;
+
+    audioAnalysis.interval = setInterval(() => {
+      audioAnalysis.analyser.getFloatTimeDomainData(dataArray);
+
+      // Volume (RMS)
+      let sum = 0;
+      for (let i = 0; i < bufferLength; i++) sum += dataArray[i] * dataArray[i];
+      const rms = Math.sqrt(sum / bufferLength);
+      const db = rms > 0 ? Math.round(20 * Math.log10(rms)) : -100;
+      audioAnalysis.volumeSamples.push(db);
+
+      // Pitch (autocorrelation)
+      const pitch = detectPitch(dataArray, sampleRate);
+      if (pitch > 50 && pitch < 500) audioAnalysis.pitchSamples.push(pitch);
+
+      audioAnalysis.samples.push({ t: audioAnalysis.samples.length * 0.2, db, pitch: pitch || 0 });
+    }, 200); // Sample 5x per second
+  } catch (e) { console.warn('Audio analysis init failed:', e); }
+}
+
+function detectPitch(buf, sampleRate) {
+  // Simple autocorrelation pitch detection
+  const size = buf.length;
+  let rms = 0;
+  for (let i = 0; i < size; i++) rms += buf[i] * buf[i];
+  rms = Math.sqrt(rms / size);
+  if (rms < 0.01) return 0; // Too quiet
+
+  let r1 = 0, r2 = size - 1;
+  const thresh = 0.2;
+  for (let i = 0; i < size / 2; i++) { if (Math.abs(buf[i]) < thresh) { r1 = i; break; } }
+  for (let i = 1; i < size / 2; i++) { if (Math.abs(buf[size - i]) < thresh) { r2 = size - i; break; } }
+
+  const trimBuf = buf.slice(r1, r2);
+  const trimSize = trimBuf.length;
+  const c = new Float32Array(trimSize);
+  for (let i = 0; i < trimSize; i++) {
+    let sum = 0;
+    for (let j = 0; j < trimSize - i; j++) sum += trimBuf[j] * trimBuf[j + i];
+    c[i] = sum;
+  }
+
+  let d = 0;
+  while (c[d] > c[d + 1]) { d++; if (d >= trimSize - 1) return 0; }
+  let maxVal = -1, maxPos = -1;
+  for (let i = d; i < trimSize; i++) { if (c[i] > maxVal) { maxVal = c[i]; maxPos = i; } }
+  return maxPos > 0 ? sampleRate / maxPos : 0;
+}
+
+function getAudioAnalysisReport() {
+  const v = audioAnalysis.volumeSamples.filter(d => d > -80); // Ignore silence
+  const p = audioAnalysis.pitchSamples;
+  if (v.length < 3) return '';
+
+  const avgVol = Math.round(v.reduce((a, b) => a + b, 0) / v.length);
+  const maxVol = Math.max(...v);
+  const minVol = Math.min(...v);
+  const volVariation = maxVol - minVol;
+
+  let pitchReport = '';
+  if (p.length > 5) {
+    const avgPitch = Math.round(p.reduce((a, b) => a + b, 0) / p.length);
+    const maxPitch = Math.round(Math.max(...p));
+    const minPitch = Math.round(Math.min(...p));
+    const pitchRange = maxPitch - minPitch;
+    
+    // Pitch stability — calculate variance over rolling 1-second windows
+    const windowSize = 5; // 5 samples = 1 second
+    const pitchVariances = [];
+    for (let i = 0; i <= p.length - windowSize; i++) {
+      const window = p.slice(i, i + windowSize);
+      const mean = window.reduce((a, b) => a + b, 0) / window.length;
+      const variance = window.reduce((a, b) => a + (b - mean) ** 2, 0) / window.length;
+      pitchVariances.push(variance);
+    }
+    const avgPitchVariance = pitchVariances.length > 0 ? Math.round(pitchVariances.reduce((a, b) => a + b, 0) / pitchVariances.length) : 0;
+    const maxPitchVariance = pitchVariances.length > 0 ? Math.round(Math.max(...pitchVariances)) : 0;
+    
+    const stabilityLabel = maxPitchVariance > 800 ? 'UNSTABLE — possible voice shakiness detected' : 
+                           maxPitchVariance > 400 ? 'SOMEWHAT UNSTABLE — moderate pitch fluctuation' :
+                           avgPitchVariance < 50 ? 'VERY STABLE but potentially monotone' : 'STABLE — natural variation';
+
+    pitchReport = `
+- Average pitch: ${avgPitch} Hz (${avgPitch < 130 ? 'lower register' : avgPitch < 200 ? 'mid register' : 'higher register'})
+- Pitch range: ${minPitch}–${maxPitch} Hz (${pitchRange} Hz variation)
+- ${pitchRange < 30 ? 'MONOTONE PITCH — very little variation, sounds flat' : pitchRange < 60 ? 'LIMITED pitch variation — could use more expression' : pitchRange < 100 ? 'GOOD pitch variation — natural expressive range' : 'WIDE pitch variation — strong vocal expression'}
+- Pitch stability: ${stabilityLabel} (avg variance: ${avgPitchVariance}, peak: ${maxPitchVariance})
+- ${maxPitchVariance > 800 ? 'High pitch instability often indicates nervousness or voice tremor. This is normal early on and improves with practice.' : ''}`;
+  }
+
+  return `
+VOICE ANALYSIS (from real-time audio monitoring):
+Volume:
+- Average: ${avgVol} dB, Range: ${minVol} to ${maxVol} dB (${volVariation} dB variation)
+- ${volVariation < 6 ? 'FLAT VOLUME — speaking at one level throughout, sounds disengaged' : volVariation < 15 ? 'MODERATE volume variation — some dynamics present' : 'GOOD volume dynamics — natural emphasis and variation'}
+- ${avgVol < -35 ? 'QUIET — speaker may be holding back or speaking away from microphone' : avgVol > -15 ? 'STRONG PROJECTION — good volume for speaking' : 'ADEQUATE volume'}
+${pitchReport}
+Use this data to assess: flat pitch + flat volume = monotone delivery. High pitch variance with short spikes = possible voice shakiness from anxiety. Wide pitch range with controlled variation = confident, expressive delivery.`;
+}
+
+function cleanupAudioAnalysis() {
+  if (audioAnalysis.interval) clearInterval(audioAnalysis.interval);
+  if (audioAnalysis.audioCtx && audioAnalysis.audioCtx.state !== 'closed') {
+    try { audioAnalysis.audioCtx.close(); } catch(e) {}
+  }
+  audioAnalysis.interval = null;
+  audioAnalysis.audioCtx = null;
+  audioAnalysis.analyser = null;
+}
+
 async function toggleRecording(){if(!state.isRecording)await startRecording();else stopRecording();}
 async function startRecording(){
   try{
     const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    state.mediaRecorder=new MediaRecorder(stream);state.audioChunks=[];
+    
+    // Init audio analysis
+    initAudioAnalysis(stream);
+    
+    // Detect supported MIME type (iOS compatibility)
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 
+                     MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
+    state.mediaRecorder = mimeType ? new MediaRecorder(stream, {mimeType}) : new MediaRecorder(stream);
+    state.audioChunks=[];
     state.mediaRecorder.ondataavailable=e=>{if(e.data.size>0)state.audioChunks.push(e.data);};
-    state.mediaRecorder.onstop=()=>{stream.getTracks().forEach(t=>t.stop());processFeedback();};
+    state.mediaRecorder.onstop=()=>{stream.getTracks().forEach(t=>t.stop());cleanupAudioAnalysis();processFeedback();};
     state.mediaRecorder.start();state.isRecording=true;state.seconds=0;
     document.getElementById('record-btn').classList.add('recording');document.getElementById('record-btn').textContent='⏹';
     document.getElementById('record-hint').textContent='Recording... tap to stop';
@@ -1967,11 +2421,9 @@ function completeSession() {
   const session = CURRICULUM.find(s => s.id === id);
   const lastRec = state.sessions.find(s => s.sessionId === id);
   const score = lastRec ? lastRec.score : 0;
-  const passScore = session ? getPassScore(session) : 60;
-  const attempts = getSessionAttempts(id);
-  const forcePass = attempts >= MAX_ATTEMPTS;
+  const passScore = session ? getPassScore(session) : 55;
 
-  if (score >= passScore || forcePass) {
+  if (score >= passScore) {
     markSessionPassed(id);
     // Advance current pointer to next unpassed session
     const entry = LEVEL_ENTRY[state.level];
@@ -2049,6 +2501,18 @@ const FREE_MODES = {
     prompts: [
       'No prompt. Just talk. Whatever is on your mind right now — start speaking and keep going for 2 minutes.',
     ]
+  },
+  hotseat: {
+    icon: '🔥', title: 'Hot Seat', desc: 'You answer. Then Claude fires back a follow-up. Can you handle both?',
+    isInteractive: true,
+    prompts: [
+      'What\'s the biggest challenge your team is facing right now — and what do you think should be done about it?',
+      'Tell me about a project you\'re proud of. What was your specific contribution?',
+      'What makes you good at your job? Be specific — don\'t be modest.',
+      'What\'s one thing your company should change and why hasn\'t it happened yet?',
+      'If you had to present your team\'s results to the board in 60 seconds, what would you say?',
+      'What\'s a decision you made recently that you\'re not sure was right? Walk me through your thinking.',
+    ]
   }
 };
 
@@ -2058,6 +2522,10 @@ function showFreeTab() {
   setActiveNav('free');
   freeState.mode = null;
   freeState.prompt = '';
+  freeState.round2 = false;
+  freeState.round1Transcript = '';
+  freeState.followUpQuestion = '';
+  freeState.round1Prompt = '';
   document.getElementById('free-prompt-area').style.display = 'none';
   document.getElementById('free-recording-wrap').style.display = 'none';
   document.querySelectorAll('.free-mode-card').forEach(c => c.classList.remove('selected'));
@@ -2067,12 +2535,17 @@ function showFreeTab() {
 
 function selectFreeMode(mode) {
   freeState.mode = mode;
+  freeState.round2 = false;
+  freeState.round1Transcript = '';
+  freeState.followUpQuestion = '';
+  freeState.round1Prompt = '';
   document.querySelectorAll('.free-mode-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('free-card-' + mode).classList.add('selected');
   const m = FREE_MODES[mode];
   const prompts = m.prompts;
   freeState.prompt = prompts[Math.floor(Math.random() * prompts.length)];
   document.getElementById('free-prompt-text').textContent = freeState.prompt;
+  document.getElementById('free-prompt-label-text').textContent = m.isInteractive ? '🔥 Round 1' : 'Your prompt';
   document.getElementById('free-prompt-area').style.display = 'block';
   document.getElementById('free-recording-wrap').style.display = 'flex';
   resetFreeRecording();
@@ -2094,10 +2567,13 @@ async function toggleFreeRecording() {
   if (!freeState.isRecording) {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({audio:true});
-      freeState.mediaRecorder = new MediaRecorder(stream);
+      initAudioAnalysis(stream);
+      const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 
+                       MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
+      freeState.mediaRecorder = mimeType ? new MediaRecorder(stream, {mimeType}) : new MediaRecorder(stream);
       freeState.audioChunks = [];
       freeState.mediaRecorder.ondataavailable = e => { if(e.data.size>0) freeState.audioChunks.push(e.data); };
-      freeState.mediaRecorder.onstop = () => { stream.getTracks().forEach(t=>t.stop()); processFreeRecording(); };
+      freeState.mediaRecorder.onstop = () => { stream.getTracks().forEach(t=>t.stop()); cleanupAudioAnalysis(); processFreeRecording(); };
       freeState.mediaRecorder.start();
       freeState.isRecording = true; freeState.seconds = 0;
       document.getElementById('free-record-btn').classList.add('recording');
@@ -2119,18 +2595,39 @@ async function toggleFreeRecording() {
 }
 
 function processFreeRecording() {
+  const mode = FREE_MODES[freeState.mode];
+  
+  // Hot Seat: if round 1, get follow-up question first
+  if (mode && mode.isInteractive && !freeState.round2) {
+    processHotSeatRound1();
+    return;
+  }
+  
   const fakeSession = {
-    title: FREE_MODES[freeState.mode]?.title || 'Free Practice',
-    what: 'Free practice session',
-    prompt: freeState.prompt,
+    title: mode?.title || 'Free Practice',
+    what: freeState.round2 ? 'Hot Seat: Round 2 follow-up response' : 'Free practice session',
+    prompt: freeState.round2 ? freeState.round1Prompt + ' | FOLLOW-UP: ' + freeState.followUpQuestion : freeState.prompt,
     type: freeState.mode,
-    phase: 2
+    phase: 2,
+    duration: '2 min'
   };
-  runAIPipeline(freeState.audioChunks, freeState.seconds, fakeSession).then(result => {
+  
+  // For Hot Seat round 2, combine both transcripts
+  const audioToProcess = freeState.round2 ? freeState.audioChunks : freeState.audioChunks;
+  const duration = freeState.round2 ? freeState.seconds : freeState.seconds;
+  
+  runAIPipeline(audioToProcess, duration, fakeSession).then(result => {
     hideLoading();
+    
+    // If Hot Seat round 2, enhance the analysis context
+    if (freeState.round2 && freeState.round1Transcript) {
+      result.analysis.coachingPoints = result.analysis.coachingPoints || [];
+      result.analysis.coachingPoints.unshift('Round 1 answer: "' + freeState.round1Transcript.slice(0, 100) + '..." → Follow-up: "' + freeState.followUpQuestion + '"');
+    }
+    
     const rec = {
       id: Date.now(), sessionId: 'free-'+Date.now(),
-      sessionTitle: FREE_MODES[freeState.mode]?.title || 'Free Practice',
+      sessionTitle: mode?.title || 'Free Practice',
       score: result.analysis.overallScore, wpm: result.wpm, fillers: result.fillerCount,
       clarity: result.analysis.scores.clarity, confidence: result.analysis.scores.confidence,
       promptAdherence: result.analysis.scores.promptAdherence, openness: result.analysis.scores.openness,
@@ -2139,14 +2636,92 @@ function processFreeRecording() {
     };
     state.sessions.unshift(rec);
     localStorage.setItem('nervless_sessions', JSON.stringify(state.sessions.slice(0,30)));
-    // Show feedback but override complete button
     renderFeedback(rec, result.transcript, result.analysis);
-    // Override banner for free sessions
     const banner = document.getElementById('pass-fail-banner');
     const btn = document.getElementById('complete-session-btn');
     if(banner){ banner.style.display='none'; }
     if(btn){ btn.textContent='Back to practice'; btn.style.background=''; btn.onclick=showFreeTab; }
+    // Clean up hot seat state
+    freeState.round2 = false;
+    freeState.round1Transcript = '';
+    freeState.followUpQuestion = '';
+    freeState.round1Prompt = '';
   });
+}
+
+async function processHotSeatRound1() {
+  showLoading('Transcribing round 1...', 'Preparing your follow-up...');
+  const proxy = getProxyUrl();
+  
+  // Transcribe round 1
+  const audioBlob = new Blob(freeState.audioChunks, { type: freeState.mediaRecorder?.mimeType || 'audio/webm' });
+  const formData = new FormData();
+  formData.append('file', audioBlob, 'recording.webm');
+  
+  let transcript = '';
+  try {
+    const whisperRes = await fetch(proxy + '/transcribe', { method: 'POST', body: formData });
+    if (whisperRes.ok) {
+      const data = await whisperRes.json();
+      transcript = data.text || '';
+    }
+  } catch(e) { console.error('Hot Seat R1 transcription failed:', e); }
+  
+  if (!transcript || transcript.trim().split(/\s+/).length < 5) {
+    hideLoading();
+    alert('We didn\'t catch enough speech for round 1. Try again and speak a bit more.');
+    resetFreeRecording();
+    return;
+  }
+  
+  freeState.round1Transcript = transcript;
+  freeState.round1Prompt = freeState.prompt;
+  
+  // Ask Claude for a challenging follow-up question
+  showLoading('Generating follow-up...', 'Claude is thinking of a tough one...');
+  try {
+    const claudeRes = await fetch(proxy + '/analyse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 200,
+        messages: [{ role: 'user', content: `You are an interviewer in a speaking practice exercise. The speaker was asked: "${freeState.prompt}"
+
+Their answer was: "${transcript}"
+
+Generate ONE sharp, specific follow-up question that:
+- Directly challenges, probes, or extends something they said
+- Requires them to think on their feet
+- Feels like a real follow-up a manager, interviewer, or audience member would ask
+- Is 1-2 sentences maximum
+
+Return ONLY the follow-up question, nothing else.` }]
+      })
+    });
+    if (!claudeRes.ok) throw new Error('Claude error');
+    const data = await claudeRes.json();
+    freeState.followUpQuestion = data.content[0].text.trim();
+  } catch(e) {
+    console.error('Follow-up generation failed:', e);
+    freeState.followUpQuestion = 'Can you give me a specific example of what you just described?';
+  }
+  
+  hideLoading();
+  
+  // Show the follow-up question and prompt round 2 recording
+  freeState.round2 = true;
+  freeState.audioChunks = [];
+  
+  document.getElementById('free-prompt-label-text').textContent = '🔥 FOLLOW-UP QUESTION';
+  document.getElementById('free-prompt-text').textContent = freeState.followUpQuestion;
+  document.getElementById('free-record-hint').textContent = 'Tap to record your answer';
+  document.getElementById('free-timer').textContent = '0:00';
+  document.getElementById('free-timer').classList.remove('recording');
+  document.getElementById('free-record-btn').classList.remove('recording');
+  document.getElementById('free-record-btn').textContent = '🎙';
+  document.getElementById('free-waveform').classList.remove('active');
+  freeState.isRecording = false;
 }
 
 // ── NAV ──
@@ -2187,10 +2762,15 @@ function setActiveNav(tab) {
       <div class="free-mode-title">Open Mic</div>
       <div class="free-mode-desc">No prompt — just talk freely</div>
     </div>
+    <div class="free-mode-card" id="free-card-hotseat" onclick="selectFreeMode('hotseat')" style="border-color:rgba(217,84,112,0.3);background:rgba(217,84,112,0.04)">
+      <div class="free-mode-icon">🔥</div>
+      <div class="free-mode-title">Hot Seat</div>
+      <div class="free-mode-desc">Answer, then face a follow-up</div>
+    </div>
   </div>
 
   <div class="free-prompt-area" id="free-prompt-area" style="display:none">
-    <div class="free-prompt-label">Your prompt</div>
+    <div class="free-prompt-label" id="free-prompt-label-text">Your prompt</div>
     <div class="free-prompt-text" id="free-prompt-text"></div>
     <button onclick="selectFreeMode(freeState.mode)" style="background:none;border:none;font-size:13px;color:var(--muted);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;padding:0;">🔀 New prompt</button>
   </div>
