@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JZG8MESD88"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JZG8MESD88');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Nervless — Overcome Public Speaking Anxiety With AI Practice</title>
+<meta name="description" content="Nervless helps you overcome public speaking anxiety through private, structured AI-powered practice. Real feedback on your actual voice, at your own pace. No judgement. Starts free.">
+<link rel="canonical" href="https://nervless.app/start">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#F7F5F0">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nervless.app/start">
+<meta property="og:title" content="Nervless — Overcome Public Speaking Anxiety With AI Practice">
+<meta property="og:description" content="Private, structured AI-powered practice to help you overcome public speaking anxiety. Real feedback on your actual voice, at your own pace.">
+<meta property="og:site_name" content="Nervless">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nervless — Overcome Public Speaking Anxiety With AI Practice">
+<meta name="twitter:description" content="Private, structured AI-powered practice to help you overcome public speaking anxiety.">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebApplication","name":"Nervless","url":"https://nervless.app","description":"AI-powered public speaking anxiety practice app with real voice feedback","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"GBP"}}
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap');
+:root{--bg:#F7F5F0;--surface:#FFFFFF;--surface2:#EDEAE3;--border:#E0DBD2;--text:#1A1814;--muted:#7A7268;--accent:#5B4FD9;--accent2:#7B6FEF;--green:#2E9E7A;--red:#D95470;--gold:#C4922A;
+  --phase1:#5B4FD9;--phase1-bg:#EEEAFF;--phase1-border:#C8C0F5;
+  --phase2:#2E9E7A;--phase2-bg:#E4F7F1;--phase2-border:#A8DFD0;
+  --phase3:#C4922A;--phase3-bg:#FDF3E3;--phase3-border:#F0D49A;
+  --phase4:#D95470;--phase4-bg:#FDEAEE;--phase4-border:#F4B8C4;
+  --phase5:#7B6FEF;--phase5-bg:#F0EEFF;--phase5-border:#C8C0F5;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.screen{display:none;min-height:100vh;flex-direction:column}.screen.active{display:flex}
+
+/* Landing */
+#screen-landing{background:linear-gradient(160deg,#F7F5F0 0%,#EDE8FF 50%,#F7F5F0 100%);align-items:center;justify-content:flex-start;padding:32px 24px 48px;text-align:center;position:relative;overflow-y:auto}
+#screen-landing::before{content:'';position:absolute;width:500px;height:500px;background:radial-gradient(circle,rgba(91,79,217,0.07) 0%,transparent 70%);top:-80px;left:50%;transform:translateX(-50%);pointer-events:none}
+.nav-bar{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:380px;margin-bottom:28px;position:relative;z-index:1}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);letter-spacing:-0.5px;font-style:italic}
+.nav-logo span{color:var(--accent)}
+.nav-learn{font-size:13px;color:var(--muted);text-decoration:none;font-weight:700}
+.nav-learn:hover{color:var(--accent)}
+.landing-headline{font-family:'DM Serif Display',serif;font-size:30px;line-height:1.25;margin-bottom:12px;max-width:320px}
+.landing-headline em{font-style:italic;color:var(--accent2)}
+.landing-sub{font-size:15px;color:var(--muted);line-height:1.6;max-width:300px;margin:0 auto 24px}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+.pill{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:12px;color:var(--muted);font-weight:600}
+.pill .dot{color:var(--green);margin-right:4px}
+.btn-primary{background:var(--accent);color:white;border:none;border-radius:16px;padding:18px 40px;font-size:17px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;width:100%;max-width:320px;transition:all 0.2s;letter-spacing:-0.3px;display:block;margin:0 auto}
+.btn-primary:active{transform:scale(0.97);background:#6A58E0}
+.btn-secondary{background:transparent;color:var(--muted);border:1.5px solid var(--border);border-radius:16px;padding:14px 40px;font-size:15px;font-family:'Nunito',sans-serif;cursor:pointer;width:100%;max-width:320px;transition:all 0.2s;display:block;margin:10px auto 0;font-weight:700}
+.btn-secondary:active{transform:scale(0.97)}
+
+/* Phase preview */
+.phase-preview{width:100%;max-width:340px;margin:28px auto 0}
+.phase-preview-title{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:12px}
+.phase-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;margin-bottom:6px;border:1px solid var(--border);background:var(--surface)}
+.phase-row .ph-icon{font-size:16px;flex-shrink:0}
+.phase-row .ph-info{flex:1;min-width:0}
+.phase-row .ph-name{font-size:13px;font-weight:700;color:var(--text);display:block}
+.phase-row .ph-desc{font-size:11px;color:var(--muted);display:block;margin-top:1px;line-height:1.3}
+.phase-row .ph-badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:100px;flex-shrink:0;white-space:nowrap}
+.phase-row.live .ph-badge{color:var(--green);border:1px solid rgba(46,158,122,0.3);background:rgba(46,158,122,0.06)}
+.phase-row.soon .ph-badge{color:var(--muted);border:1px solid var(--border)}
+.phase-row.soon{opacity:0.5}
+
+/* Assessment */
+#screen-assessment{padding:0}
+.assess-header{padding:32px 24px 24px;background:linear-gradient(180deg,#EDE8FF 0%,var(--bg) 100%)}
+.back-btn{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;padding:0;margin-bottom:24px;display:block}
+.progress-bar{height:3px;background:var(--surface2);border-radius:100px;overflow:hidden;margin-bottom:32px}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px;transition:width 0.4s cubic-bezier(0.4,0,0.2,1)}
+.question-num{font-size:12px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.question-text{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.3;color:var(--text)}
+.assess-body{padding:32px 24px;flex:1}
+.scenario-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:16px;font-size:15px;color:var(--muted);line-height:1.5;font-style:italic}
+.options{display:flex;flex-direction:column;gap:12px}
+.option-btn{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;text-align:left;cursor:pointer;font-family:'Nunito',sans-serif;font-size:15px;color:var(--text);transition:all 0.15s;display:flex;align-items:center;gap:14px;width:100%}
+.option-btn:active{transform:scale(0.98)}.option-btn.selected{border-color:var(--accent);background:rgba(124,106,247,0.1)}
+.option-num{width:28px;height:28px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);flex-shrink:0;transition:all 0.15s}
+.option-btn.selected .option-num{background:var(--accent);border-color:var(--accent);color:white}
+
+/* Level reveal */
+.level-footer{font-size:13px;color:var(--muted);text-align:center;margin-top:12px}
+</style>
+</head>
+<body>
+<script>
+// If user already has progress, skip straight to the app
+if(localStorage.getItem('nervless_level')&&(JSON.parse(localStorage.getItem('nervless_completed')||'[]').length>0||JSON.parse(localStorage.getItem('nervless_sessions')||'[]').length>0)){
+  window.location.replace('/');
+}
+</script>
+
+<!-- LANDING -->
+<div class="screen active" id="screen-landing">
+  <div class="nav-bar">
+    <div class="nav-logo">Nerv<span>less</span></div>
+    <a href="/learn/" class="nav-learn">Learn</a>
+  </div>
+  <h1 class="landing-headline">That moment when your mind goes <em>completely blank</em></h1>
+  <p class="landing-sub">Private AI-powered practice to help you overcome speaking anxiety. At your own pace.</p>
+  <div class="pills"><div class="pill"><span class="dot">&#9679;</span>No judgement</div><div class="pill"><span class="dot">&#9679;</span>Real AI feedback</div><div class="pill"><span class="dot">&#9679;</span>Starts free</div></div>
+  <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:24px;padding:28px 24px;width:100%;max-width:340px;">
+    <div style="font-family:'DM Serif Display',serif;font-size:20px;text-align:center;margin-bottom:4px">Ready to begin?</div>
+    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px">5 minutes a day. No judgement. Just practice.</div>
+    <button class="btn-primary" onclick="startAssessment()">Start</button>
+    <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px">Free trial · No card required</div>
+  </div>
+
+  <!-- Address the objection -->
+  <div style="width:100%;max-width:340px;margin:32px auto 0;text-align:left;">
+    <div style="font-family:'DM Serif Display',serif;font-size:18px;text-align:center;margin-bottom:16px;color:var(--text)">But I'm just speaking into a phone?</div>
+    <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
+      <div style="font-size:16px;flex-shrink:0;margin-top:1px">&#9889;</div>
+      <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px">Your body doesn't know the difference</div><div style="font-size:12px;color:var(--muted);line-height:1.5">Recording yourself speaking triggers the same stress response — racing heart, filler words, self-consciousness. The anxiety is real even without an audience.</div></div>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
+      <div style="font-size:16px;flex-shrink:0;margin-top:1px">&#128275;</div>
+      <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px">The real barrier is avoidance</div><div style="font-size:12px;color:var(--muted);line-height:1.5">Most people never practise because every opportunity involves other people. This removes that barrier so you can actually start.</div></div>
+    </div>
+    <div style="display:flex;gap:12px;align-items:flex-start">
+      <div style="font-size:16px;flex-shrink:0;margin-top:1px">&#129520;</div>
+      <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px">It's a ladder, not a destination</div><div style="font-size:12px;color:var(--muted);line-height:1.5">You start private. By Phase 5 you're handling hostile questions and delivering presentations under simulated pressure. The goal is to get you ready for the real thing.</div></div>
+    </div>
+  </div>
+
+  <div class="phase-preview">
+    <div class="phase-preview-title">33 sessions · 5 phases live</div>
+    <div class="phase-row live"><span class="ph-icon">🧠</span><div class="ph-info"><span class="ph-name">Understanding the Fear</span><span class="ph-desc">Name what's happening to you — and why it's not your fault</span></div><span class="ph-badge">5 sessions</span></div>
+    <div class="phase-row live"><span class="ph-icon">🫁</span><div class="ph-info"><span class="ph-name">The Body First</span><span class="ph-desc">Learn to calm your nervous system before and while you speak</span></div><span class="ph-badge">7 sessions</span></div>
+    <div class="phase-row live"><span class="ph-icon">🪜</span><div class="ph-info"><span class="ph-name">Gradual Exposure</span><span class="ph-desc">From safe topics to introductions to opinions — the difficulty climbs</span></div><span class="ph-badge">8 sessions</span></div>
+    <div class="phase-row live"><span class="ph-icon">💬</span><div class="ph-info"><span class="ph-name">Finding Your Voice</span><span class="ph-desc">Storytelling, emotion, humour — develop your authentic speaking style</span></div><span class="ph-badge">7 sessions</span></div>
+    <div class="phase-row live"><span class="ph-icon">🚀</span><div class="ph-info"><span class="ph-name">Raising the Stakes</span><span class="ph-desc">Job interviews, hostile questions, presentations under real pressure</span></div><span class="ph-badge">6 sessions</span></div>
+    <div class="phase-row soon"><span class="ph-icon">🌍</span><div class="ph-info"><span class="ph-name">Real World Practice</span><span class="ph-desc">Take what you've built into actual speaking situations</span></div><span class="ph-badge">Soon</span></div>
+    <div class="phase-row soon"><span class="ph-icon">⚡</span><div class="ph-info"><span class="ph-name">Advanced Techniques</span><span class="ph-desc">Persuasion, presence, and high-level delivery</span></div><span class="ph-badge">Soon</span></div>
+    <div class="phase-row soon"><span class="ph-icon">🏆</span><div class="ph-info"><span class="ph-name">Mastery</span><span class="ph-desc">Speaking becomes a strength, not a fear</span></div><span class="ph-badge">Soon</span></div>
+  </div>
+  <div style="margin-top:24px;font-size:13px;color:var(--muted)"><a href="/learn/" style="color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:1px">Learn about speaking anxiety</a></div>
+</div>
+
+<!-- ASSESSMENT -->
+<div class="screen" id="screen-assessment">
+  <div class="assess-header">
+    <button class="back-btn" onclick="showScreen('screen-landing')">&#8592;</button>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:16%"></div></div>
+    <div class="question-num" id="q-num">Question 1 of 6</div>
+    <div class="question-text" id="q-text"></div>
+  </div>
+  <div class="assess-body">
+    <div class="scenario-card" id="q-scenario" style="display:none"></div>
+    <div class="options" id="q-options"></div>
+  </div>
+</div>
+
+<!-- LEVEL REVEAL -->
+<div class="screen" id="screen-level" style="overflow-y:auto;padding-bottom:40px;background:linear-gradient(160deg,#F7F5F0 0%,#EDE8FF 60%,#F7F5F0 100%);">
+  <div style="padding:32px 24px 20px;text-align:center;">
+    <div style="font-size:12px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">ASSESSMENT COMPLETE</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:28px;line-height:1.3;margin-bottom:12px">Based on your answers,<br>here's where you start</div>
+    <div style="font-size:14px;color:var(--muted);line-height:1.6">Everyone begins somewhere. This is yours.</div>
+  </div>
+  <div style="padding:0 24px 32px;"><div id="all-levels-list"></div></div>
+  <div style="padding:0 24px 32px;text-align:center;">
+    <button class="btn-primary" onclick="window.location.href='/'">Begin your journey</button>
+    <div class="level-footer">Your level updates as you improve</div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS=[
+  {text:"How do you feel the night before a presentation at work?",scenario:null,options:["I barely think about it","A little nervous but I sleep fine","I find it hard to switch off","Real dread. I might consider calling in sick"]},
+  {text:"Your name gets called on unexpectedly in a meeting.",scenario:'"...actually, let\'s hear from you on this one."',options:["I jump in — I like the spontaneity","A brief moment of surprise, then fine","My heart races. I can feel everyone looking","My mind goes blank. I can't form a sentence"]},
+  {text:"Which physical symptoms do you experience when speaking?",scenario:null,options:["None really","Maybe a faster heartbeat","Voice trembles, hands shake, face flushes","Severe: sweating, nausea, feel faint"]},
+  {text:"After a presentation, what happens internally?",scenario:null,options:["I move on immediately","Brief replay, mostly satisfied","I replay every mistake for hours","I'm mortified for days"]},
+  {text:"Has speaking anxiety held you back professionally?",scenario:null,options:["Not at all","Occasionally hesitate but push through","I've turned down opportunities","It's significantly affected my career"]},
+  {text:"What's your goal with Nervless?",scenario:null,options:["Polish existing skills","Build more confidence","Overcome real fear holding me back","Completely transform my relationship with speaking"]}
+];
+
+const LEVEL_ENTRY={1:13,2:6,3:1,4:1};
+let state={currentQuestion:0,answers:[],level:2};
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function startAssessment(){state.currentQuestion=0;state.answers=[];showScreen('screen-assessment');renderQuestion();}
+function renderQuestion(){
+  const q=QUESTIONS[state.currentQuestion];
+  document.getElementById('progress-fill').style.width=((state.currentQuestion+1)/QUESTIONS.length*100)+'%';
+  document.getElementById('q-num').textContent='Question '+(state.currentQuestion+1)+' of '+QUESTIONS.length;
+  document.getElementById('q-text').textContent=q.text;
+  const sc=document.getElementById('q-scenario');
+  if(q.scenario){sc.textContent=q.scenario;sc.style.display='block';}else{sc.style.display='none';}
+  document.getElementById('q-options').innerHTML=q.options.map((o,i)=>'<button class="option-btn" onclick="selectOption('+i+')"><div class="option-num">'+(i+1)+'</div><div>'+o+'</div></button>').join('');
+}
+function selectOption(index){
+  document.querySelectorAll('.option-btn').forEach((b,i)=>b.classList.toggle('selected',i===index));
+  state.answers[state.currentQuestion]=index;
+  setTimeout(()=>{state.currentQuestion++;if(state.currentQuestion>=QUESTIONS.length)calculateLevel();else renderQuestion();},300);
+}
+function calculateLevel(){
+  const avg=state.answers.reduce((a,b)=>a+b,0)/state.answers.length;
+  state.level=avg<1?1:avg<2?2:avg<3?3:4;
+  localStorage.setItem('nervless_level',state.level);
+  const entry=LEVEL_ENTRY[state.level];
+  localStorage.setItem('nervless_current_session',entry);
+  showLevelReveal();
+}
+function showLevelReveal(){
+  const all=[
+    {num:4,label:'Starting Over',summary:'Significant anxiety — starting from the very beginning',icon:'🤝',traits:['Severe anxiety — completely valid','Tiny steps, big progress over time','Progress measured in moments, not scores']},
+    {num:3,label:'Facing the Fear',summary:'Real anxiety that has affected your life',icon:'💛',traits:["Significant anxiety — you're not alone",'Slow, gentle progression','Small wins matter enormously']},
+    {num:2,label:'Finding Your Voice',summary:'Some nerves — ready to build real confidence',icon:'🌱',traits:['Moderate anxiety — very common','Each session builds on the last','Prompts start low-stakes and grow']},
+    {num:1,label:'Building Foundations',summary:'Comfortable speaking — here to sharpen and polish',icon:'⭐',traits:[]}
+  ];
+  let lines='',cards='';
+  all.forEach((lv,i)=>{
+    const isY=lv.num===state.level,isP=lv.num>state.level;
+    lines+='<div style="width:28px;height:28px;border-radius:50%;background:'+(isY?'var(--accent)':isP?'var(--surface2)':'rgba(124,106,247,0.25)')+';border:2px solid '+(isY?'var(--accent)':isP?'var(--border)':'rgba(124,106,247,0.5)')+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:'+(isY?'white':isP?'var(--muted)':'var(--accent2)')+';box-shadow:'+(isY?'0 0 16px rgba(124,106,247,0.5)':'none')+';flex-shrink:0;">'+lv.num+'</div>';
+    if(i<all.length-1)lines+='<div style="width:2px;flex:1;min-height:42px;background:'+(isP?'var(--border)':'linear-gradient(180deg,rgba(124,106,247,0.5),rgba(124,106,247,0.2))')+'"></div>';
+    const th=isY&&lv.traits.length?'<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(124,106,247,0.2);display:flex;flex-direction:column;gap:6px;">'+lv.traits.map(t=>'<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)"><div style="width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>'+t+'</div>').join('')+'</div>':'';
+    cards+='<div style="background:'+(isY?'rgba(124,106,247,0.1)':'var(--surface)')+';border:1px solid '+(isY?'var(--accent)':'var(--border)')+';border-radius:16px;padding:14px 16px;opacity:'+(isP?'0.45':'1')+';margin-bottom:'+(i<all.length-1?'8px':'0')+'"><div style="display:flex;align-items:center;gap:12px;"><div style="font-size:20px;flex-shrink:0;">'+lv.icon+'</div><div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:600;color:'+(isY?'var(--text)':isP?'var(--muted)':'var(--text)')+';margin-bottom:2px;">'+lv.label+'</div><div style="font-size:12px;color:var(--muted);line-height:1.4;">'+lv.summary+'</div></div>'+(isY?'<div style="background:var(--accent);color:white;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 9px;border-radius:100px;white-space:nowrap;flex-shrink:0;">YOU</div>':'')+((!isP&&!isY)?'<div style="font-size:11px;color:var(--accent2);white-space:nowrap;flex-shrink:0;">Goal</div>':'')+'</div>'+th+'</div>';
+  });
+  document.getElementById('all-levels-list').innerHTML='<div style="display:flex;gap:12px;align-items:stretch;"><div style="display:flex;flex-direction:column;align-items:center;padding-top:21px;flex-shrink:0;">'+lines+'</div><div style="flex:1;">'+cards+'</div></div><div style="text-align:center;margin-top:12px;font-size:12px;color:var(--muted);">Starting point above &middot; Goal below</div>';
+  showScreen('screen-level');
+}
+</script>
+</body>
+</html>
