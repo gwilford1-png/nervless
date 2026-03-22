@@ -54,7 +54,7 @@
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 .screen{display:none;min-height:100vh;flex-direction:column;padding-bottom:var(--nav-h)}.screen.active{display:flex}
 /* screens that shouldn't have bottom nav padding */
-#screen-landing,#screen-assessment,#screen-level,#screen-apikeys{padding-bottom:0}
+#screen-apikeys{padding-bottom:0}
 
 /* ── BOTTOM NAV ── */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--surface);border-top:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:50;padding-bottom:env(safe-area-inset-bottom)}
@@ -64,35 +64,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .nav-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.3px}
 .nav-item.active .nav-label{color:var(--accent)}
 .nav-item.active .nav-icon{filter:drop-shadow(0 0 6px rgba(91,79,217,0.4))}
-#screen-landing{background:linear-gradient(160deg,#F7F5F0 0%,#EDE8FF 50%,#F7F5F0 100%);align-items:center;justify-content:flex-start;padding:52px 24px 48px;text-align:center;position:relative;overflow-y:auto}
-#screen-landing::before{content:'';position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(91,79,217,0.08) 0%,transparent 70%);top:-100px;left:50%;transform:translateX(-50%);pointer-events:none}
-.logo{font-family:'DM Serif Display',serif;font-size:52px;color:var(--text);letter-spacing:-1px;margin-bottom:4px}
-.logo span{color:var(--accent2)}.tagline{font-size:15px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-bottom:48px}
-.landing-headline{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.25;margin-bottom:20px;max-width:320px}
-.landing-headline em{font-style:italic;color:var(--accent2)}
-.landing-sub{font-size:16px;color:var(--muted);line-height:1.6;max-width:300px;margin:0 auto 40px}
-.pills{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
-.pill{background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:8px 16px;font-size:13px;color:var(--muted)}
-.pill .dot{color:var(--green);margin-right:6px}
+/* ── APP STYLES ── */
 .btn-primary{background:var(--accent);color:white;border:none;border-radius:16px;padding:18px 40px;font-size:17px;font-weight:600;font-family:'Nunito',sans-serif;cursor:pointer;width:100%;max-width:320px;transition:all 0.2s;letter-spacing:-0.3px;display:block;margin:0 auto}
 .btn-primary:active{transform:scale(0.97);background:#6A58E0}
 .btn-secondary{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:16px;padding:16px 40px;font-size:16px;font-family:'Nunito',sans-serif;cursor:pointer;width:100%;max-width:320px;margin-top:12px;transition:all 0.2s;display:block;margin:12px auto 0}
 .btn-secondary:active{transform:scale(0.97)}
-#screen-assessment{padding:0}
-.assess-header{padding:56px 24px 32px;background:linear-gradient(180deg,#EDE8FF 0%,var(--bg) 100%)}
-.back-btn{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;padding:0;margin-bottom:24px;display:block}
-.progress-bar{height:3px;background:var(--surface2);border-radius:100px;overflow:hidden;margin-bottom:32px}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px;transition:width 0.4s cubic-bezier(0.4,0,0.2,1)}
-.question-num{font-size:12px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
-.question-text{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.3;color:var(--text)}
-.assess-body{padding:32px 24px;flex:1}
-.scenario-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;margin-bottom:16px;font-size:15px;color:var(--muted);line-height:1.5;font-style:italic}
-.options{display:flex;flex-direction:column;gap:12px}
-.option-btn{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;text-align:left;cursor:pointer;font-family:'Nunito',sans-serif;font-size:15px;color:var(--text);transition:all 0.15s;display:flex;align-items:center;gap:14px;width:100%}
-.option-btn:active{transform:scale(0.98)}.option-btn.selected{border-color:var(--accent);background:rgba(124,106,247,0.1)}
-.option-num{width:28px;height:28px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);flex-shrink:0;transition:all 0.15s}
-.option-btn.selected .option-num{background:var(--accent);border-color:var(--accent);color:white}
 #screen-curriculum{overflow-y:auto;padding-bottom:calc(var(--nav-h) + 20px)}
+.back-btn{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;padding:0;margin-bottom:24px;display:block}
 .curr-header{padding:52px 20px 20px;background:linear-gradient(180deg,#EDE8FF 0%,var(--bg) 100%)}
 .curr-phase-header{padding:8px 24px 12px;display:flex;align-items:center;gap:10px;margin-top:8px}
 .phase-label{font-size:11px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;font-weight:700}
@@ -308,131 +286,18 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <div style="font-size:11px;color:var(--muted);margin-top:5px">Deploy your proxy on Render first, then paste the URL here.</div>
     </div>
     <button class="btn-primary" onclick="saveApiKeys()" style="margin-top:8px">Save & connect →</button>
-    <button class="btn-secondary" onclick="showScreen('screen-landing')">Back</button>
-  </div>
-</div>
-<!-- LANDING -->
-<div class="screen active" id="screen-landing">
-  <div class="logo">Nerv<span>less</span></div>
-  <div class="tagline">Overcome Speaking Anxiety</div>
-  <h1 class="landing-headline">That moment when your mind goes <em>completely blank</em></h1>
-  <p class="landing-sub">Nervless helps you practice until the fear fades. Real AI feedback on your actual voice, at your own pace.</p>
-  <div class="pills"><div class="pill"><span class="dot">&#9679;</span>No judgement</div><div class="pill"><span class="dot">&#9679;</span>Real AI feedback</div><div class="pill"><span class="dot">&#9679;</span>Starts free</div></div>
-
-  <!-- Programme roadmap -->
-  <div style="width:100%;max-width:340px;margin:0 auto 32px;">
-    <div style="font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:14px;text-align:center">50 sessions · 8 phases</div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      <div style="background:var(--phase1-bg);border:1.5px solid var(--phase1-border);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:18px;">🧠</span>
-        <div style="flex:1;text-align:left;">
-          <div style="font-size:13px;font-weight:800;color:var(--text)">Phase 1 — Understanding the Fear</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:1px">5 sessions · Available now</div>
-        </div>
-        <span style="font-size:11px;font-weight:800;color:var(--phase1);background:var(--phase1-bg);border:1px solid var(--phase1-border);padding:3px 8px;border-radius:100px;">✓ Live</span>
-      </div>
-      <div style="background:var(--phase2-bg);border:1.5px solid var(--phase2-border);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:18px;">🫁</span>
-        <div style="flex:1;text-align:left;">
-          <div style="font-size:13px;font-weight:800;color:var(--text)">Phase 2 — The Body First</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:1px">7 sessions · Available now</div>
-        </div>
-        <span style="font-size:11px;font-weight:800;color:var(--phase2);background:var(--phase2-bg);border:1px solid var(--phase2-border);padding:3px 8px;border-radius:100px;">✓ Live</span>
-      </div>
-      <div style="background:var(--phase3-bg);border:1.5px solid var(--phase3-border);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:18px;">🪜</span>
-        <div style="flex:1;text-align:left;">
-          <div style="font-size:13px;font-weight:800;color:var(--text)">Phase 3 — Gradual Exposure</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:1px">8 sessions · Available now</div>
-        </div>
-        <span style="font-size:11px;font-weight:800;color:var(--phase3);background:var(--phase3-bg);border:1px solid var(--phase3-border);padding:3px 8px;border-radius:100px;">✓ Live</span>
-      </div>
-      <div style="background:var(--phase4-bg);border:1.5px solid var(--phase4-border);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:18px;">💬</span>
-        <div style="flex:1;text-align:left;">
-          <div style="font-size:13px;font-weight:800;color:var(--text)">Phase 4 — Finding Your Voice</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:1px">7 sessions · Available now</div>
-        </div>
-        <span style="font-size:11px;font-weight:800;color:var(--phase4);background:var(--phase4-bg);border:1px solid var(--phase4-border);padding:3px 8px;border-radius:100px;">✓ Live</span>
-      </div>
-      <div style="background:var(--phase5-bg);border:1.5px solid var(--phase5-border);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;">
-        <span style="font-size:18px;">🎯</span>
-        <div style="flex:1;text-align:left;">
-          <div style="font-size:13px;font-weight:800;color:var(--text)">Phase 5 — Raising the Stakes</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:1px">6 sessions · Available now</div>
-        </div>
-        <span style="font-size:11px;font-weight:800;color:var(--phase5);background:var(--phase5-bg);border:1px solid var(--phase5-border);padding:3px 8px;border-radius:100px;">✓ Live</span>
-      </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;opacity:0.5;">
-        <span style="font-size:18px;">🌍</span>
-        <div style="flex:1;text-align:left;">
-          <div style="font-size:13px;font-weight:800;color:var(--text)">Phase 6 — Real World Practice</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:1px">6 sessions · Coming soon</div>
-        </div>
-        <span style="font-size:11px;font-weight:700;color:var(--muted);padding:3px 8px;border-radius:100px;border:1px solid var(--border);">Soon</span>
-      </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;opacity:0.4;">
-        <span style="font-size:18px;">⚡</span>
-        <div style="flex:1;text-align:left;">
-          <div style="font-size:13px;font-weight:800;color:var(--text)">Phase 7 — Advanced Techniques</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:1px">6 sessions · Coming soon</div>
-        </div>
-        <span style="font-size:11px;font-weight:700;color:var(--muted);padding:3px 8px;border-radius:100px;border:1px solid var(--border);">Soon</span>
-      </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:11px 14px;display:flex;align-items:center;gap:12px;opacity:0.3;">
-        <span style="font-size:18px;">🏆</span>
-        <div style="flex:1;text-align:left;">
-          <div style="font-size:13px;font-weight:800;color:var(--text)">Phase 8 — Mastery</div>
-          <div style="font-size:11px;color:var(--muted);margin-top:1px">5 sessions · Coming soon</div>
-        </div>
-        <span style="font-size:11px;font-weight:700;color:var(--muted);padding:3px 8px;border-radius:100px;border:1px solid var(--border);">Soon</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- CTA area -->
-  <div style="margin-top:32px;padding:32px 24px;background:var(--surface);border-radius:24px;border:1.5px solid var(--border);max-width:380px;width:100%;">
-    <div style="font-family:'DM Serif Display',serif;font-size:20px;text-align:center;margin-bottom:4px">Ready to begin?</div>
-    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px">5 minutes a day. No judgement. Just practice.</div>
-    <button class="btn-primary" onclick="startAssessment()" style="margin-bottom:10px">Start &#8212; it's free</button>
-    <button class="btn-secondary" onclick="returnUser()" id="continue-btn" style="display:none">Continue my journey</button>
-  </div>
-  <div style="margin-top:24px;font-size:13px;color:var(--muted)"><a href="/learn/" style="color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:1px">Learn about speaking anxiety</a></div>
-</div>
-<!-- ASSESSMENT -->
-<div class="screen" id="screen-assessment">
-  <div class="assess-header">
-    <button class="back-btn" onclick="goBack()">&#8592;</button>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:16%"></div></div>
-    <div class="question-num" id="q-num">Question 1 of 6</div>
-    <div class="question-text" id="q-text"></div>
-  </div>
-  <div class="assess-body">
-    <div class="scenario-card" id="q-scenario" style="display:none"></div>
-    <div class="options" id="q-options"></div>
-  </div>
-</div>
-<!-- LEVEL REVEAL -->
-<div class="screen" id="screen-level" style="overflow-y:auto;padding-bottom:40px;background:linear-gradient(160deg,#F7F5F0 0%,#EDE8FF 60%,#F7F5F0 100%);">
-  <div style="padding:64px 24px 32px;text-align:center;">
-    <div style="font-size:12px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px">ASSESSMENT COMPLETE</div>
-    <div style="font-family:'DM Serif Display',serif;font-size:28px;line-height:1.3;margin-bottom:12px">Based on your answers,<br>here's where you start</div>
-    <div style="font-size:14px;color:var(--muted);line-height:1.6">Everyone begins somewhere. This is yours.</div>
-  </div>
-  <div style="padding:0 24px 32px;"><div id="all-levels-list"></div></div>
-  <div style="padding:0 24px 32px;text-align:center;">
-    <button class="btn-primary" onclick="showCurriculum()">Begin your journey</button>
-    <div style="text-align:center;margin-top:12px;font-size:13px;color:var(--muted)">Your level updates as you improve</div>
+    <button class="btn-secondary" onclick="showScreen('screen-apikeys')">Back</button>
   </div>
 </div>
 <!-- Menu overlay and drawer -->
 <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
 <div class="menu-drawer" id="menu-drawer">
   <a href="/learn/" class="menu-item">Learn<div class="menu-item-sub">Guides on speaking anxiety</div></a>
+  <a href="/start.html" class="menu-item">Start over<div class="menu-item-sub">Retake the assessment</div></a>
   <a class="menu-item" onclick="showDashboard();toggleMenu()">Progress<div class="menu-item-sub">Your stats and history</div></a>
   <a class="menu-item" onclick="showCurriculum();toggleMenu()">Journey<div class="menu-item-sub">Your session curriculum</div></a>
   <div class="menu-footer">
-    <a href="https://nervless.app" class="menu-cta">Try Nervless free</a>
+    <div style="font-size:12px;color:var(--muted);text-align:center">nervless.app</div>
   </div>
 </div>
 
@@ -473,7 +338,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div style="display:flex;gap:10px;margin-bottom:4px;">
       <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;text-align:center;">
         <div style="font-size:18px;font-weight:700;color:var(--accent)" id="stat-level-num">—</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:0.5px;text-transform:uppercase">Stage</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:0.5px;text-transform:uppercase">Level</div>
       </div>
       <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;text-align:center;">
         <div style="font-size:18px;font-weight:700;color:var(--text)" id="stat-phase-done">0</div>
@@ -613,18 +478,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div class="history-list" id="history-list"><div style="text-align:center;color:var(--muted);padding:32px;font-size:15px">No sessions yet.</div></div>
   <div class="dash-practice-btn">
     <button class="btn-primary" onclick="showCurriculum()">Continue journey</button>
-    <button class="btn-secondary" onclick="showScreen('screen-landing')">Back to home</button>
+    <button class="btn-secondary" onclick="showCurriculum()">Back to journey</button>
   </div>
 </div>
 <script>
-const QUESTIONS=[
-  {text:"How do you feel the night before a presentation at work?",scenario:null,options:["I barely think about it","A little nervous but I sleep fine","I find it hard to switch off","Real dread. I might consider calling in sick"]},
-  {text:"Your name gets called on unexpectedly in a meeting.",scenario:'"...actually, let\'s hear from you on this one."',options:["I jump in — I like the spontaneity","A brief moment of surprise, then fine","My heart races. I can feel everyone looking","My mind goes blank. I can't form a sentence"]},
-  {text:"Which physical symptoms do you experience when speaking?",scenario:null,options:["None really","Maybe a faster heartbeat","Voice trembles, hands shake, face flushes","Severe: sweating, nausea, feel faint"]},
-  {text:"After a presentation, what happens internally?",scenario:null,options:["I move on immediately","Brief replay, mostly satisfied","I replay every mistake for hours","I'm mortified for days"]},
-  {text:"Has speaking anxiety held you back professionally?",scenario:null,options:["Not at all","Occasionally hesitate but push through","I've turned down opportunities","It's significantly affected my career"]},
-  {text:"What's your goal with Nervless?",scenario:null,options:["Polish existing skills","Build more confidence","Overcome real fear holding me back","Completely transform my relationship with speaking"]}
-];
 
 const LEVELS={1:{title:"Building Foundations"},2:{title:"Finding Your Voice"},3:{title:"Facing the Fear"},4:{title:"Starting Over"}};
 const LEVEL_ENTRY={1:13,2:6,3:1,4:1};
@@ -665,21 +522,18 @@ const CURRICULUM=[
   {id:33,phase:5,phaseName:"Raising the Stakes",title:"The Presentation That Matters",what:"Deliver a structured, compelling presentation under real pressure",prompt:"Deliver a 3-minute presentation on this topic: a problem in your industry or field that most people underestimate, why it matters more than people think, and what you believe should be done about it. Use a clear structure: hook, problem, evidence, solution, call to action.",type:"Full presentation",duration:"3 min",coaching:"By this session you have all the tools: structure, regulation, connection, story. This is about putting them together under genuine pressure. The measure isn't perfection — it's coherence under stress.",aiTips:["Does the presentation have a clear structure from start to finish?","How does voice quality and pace compare to earlier sessions?","Listen for whether the speaker sounds like they believe what they're saying"]}
 ];
 
-let state={currentQuestion:0,answers:[],level:2,currentSessionId:6,isRecording:false,timerInterval:null,seconds:0,mediaRecorder:null,audioChunks:[],sessions:JSON.parse(localStorage.getItem('nervless_sessions')||'[]'),completedSessions:JSON.parse(localStorage.getItem('nervless_completed')||'[]'),screenHistory:['screen-landing']};
+let state={currentQuestion:0,answers:[],level:2,currentSessionId:6,isRecording:false,timerInterval:null,seconds:0,mediaRecorder:null,audioChunks:[],sessions:JSON.parse(localStorage.getItem('nervless_sessions')||'[]'),completedSessions:JSON.parse(localStorage.getItem('nervless_completed')||'[]'),screenHistory:['screen-curriculum']};
 
-// Auto-redirect returning users straight to curriculum
+// Redirect to /start if no saved level — user hasn't done the assessment yet
 (function(){
-  const savedLevel=localStorage.getItem('nervless_level');
-  const hasProgress=state.completedSessions.length>0||state.sessions.length>0;
-  if(savedLevel&&hasProgress){
-    // Has real progress — skip landing, go straight to curriculum
-    state.level=parseInt(savedLevel);
-    state.currentSessionId=parseInt(localStorage.getItem('nervless_current_session')||6);
-    setTimeout(function(){showCurriculum();},0);
-  } else if(savedLevel){
-    // Has level but no sessions — show Continue button
-    const cb=document.getElementById('continue-btn');if(cb)cb.style.display='block';
+  if(!localStorage.getItem('nervless_level')){
+    window.location.replace('/start.html');
+    return;
   }
+  // Load saved state and show curriculum
+  state.level=parseInt(localStorage.getItem('nervless_level'));
+  state.currentSessionId=parseInt(localStorage.getItem('nervless_current_session')||6);
+  setTimeout(function(){showCurriculum();},0);
 })();
 
 // ── MASTERY THRESHOLDS ──
@@ -716,69 +570,26 @@ function showScreen(id){
   if(state.screenHistory[state.screenHistory.length-1]!==id)state.screenHistory.push(id);
   window.scrollTo(0,0);
   // Show nav on main app screens, hide on onboarding
-  const noNav=['screen-landing','screen-assessment','screen-level','screen-apikeys'];
+  const noNav=['screen-apikeys'];
   const nav=document.getElementById('bottom-nav');
   if(nav) nav.style.display=noNav.includes(id)?'none':'flex';
 }
-function goBack(){state.screenHistory.pop();showScreen(state.screenHistory[state.screenHistory.length-1]||'screen-landing');}
-function returnUser(){const saved=localStorage.getItem('nervless_level');if(saved){state.level=parseInt(saved);state.completedSessions=JSON.parse(localStorage.getItem('nervless_completed')||'[]');state.currentSessionId=parseInt(localStorage.getItem('nervless_current_session')||LEVEL_ENTRY[state.level]);showCurriculum();}else startAssessment();}
-function startAssessment(){state.currentQuestion=0;state.answers=[];showScreen('screen-assessment');renderQuestion();}
-function renderQuestion(){
-  const q=QUESTIONS[state.currentQuestion];
-  document.getElementById('progress-fill').style.width=((state.currentQuestion+1)/QUESTIONS.length*100)+'%';
-  document.getElementById('q-num').textContent='Question '+(state.currentQuestion+1)+' of '+QUESTIONS.length;
-  document.getElementById('q-text').textContent=q.text;
-  const sc=document.getElementById('q-scenario');
-  if(q.scenario){sc.textContent=q.scenario;sc.style.display='block';}else{sc.style.display='none';}
-  document.getElementById('q-options').innerHTML=q.options.map((o,i)=>'<button class="option-btn" onclick="selectOption('+i+')"><div class="option-num">'+(i+1)+'</div><div>'+o+'</div></button>').join('');
-}
-function selectOption(index){
-  document.querySelectorAll('.option-btn').forEach((b,i)=>b.classList.toggle('selected',i===index));
-  state.answers[state.currentQuestion]=index;
-  setTimeout(()=>{state.currentQuestion++;if(state.currentQuestion>=QUESTIONS.length)calculateLevel();else renderQuestion();},300);
-}
-function calculateLevel(){
-  const avg=state.answers.reduce((a,b)=>a+b,0)/state.answers.length;
-  state.level=avg<1?1:avg<2?2:avg<3?3:4;
-  localStorage.setItem('nervless_level',state.level);
-  const entry=LEVEL_ENTRY[state.level];
-  state.currentSessionId=entry;
-  localStorage.setItem('nervless_current_session',entry);
-  showLevelReveal();
-}
-function showLevelReveal(){
-  const all=[
-    {num:4,label:'Starting Over',summary:'Significant anxiety — starting from the very beginning',icon:'🤝',traits:['Severe anxiety — completely valid','Tiny steps, big progress over time','Progress measured in moments, not scores']},
-    {num:3,label:'Facing the Fear',summary:'Real anxiety that has affected your life',icon:'💛',traits:["Significant anxiety — you're not alone",'Slow, gentle progression','Small wins matter enormously']},
-    {num:2,label:'Finding Your Voice',summary:'Some nerves — ready to build real confidence',icon:'🌱',traits:['Moderate anxiety — very common','Each session builds on the last','Prompts start low-stakes and grow']},
-    {num:1,label:'Building Foundations',summary:'Comfortable speaking — here to sharpen and polish',icon:'⭐',traits:[]}
-  ];
-  let lines='',cards='';
-  all.forEach((lv,i)=>{
-    const isY=lv.num===state.level,isP=lv.num>state.level;
-    lines+='<div style="width:28px;height:28px;border-radius:50%;background:'+(isY?'var(--accent)':isP?'var(--surface2)':'rgba(124,106,247,0.25)')+';border:2px solid '+(isY?'var(--accent)':isP?'var(--border)':'rgba(124,106,247,0.5)')+';display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:'+(isY?'white':isP?'var(--muted)':'var(--accent2)')+';box-shadow:'+(isY?'0 0 16px rgba(124,106,247,0.5)':'none')+';flex-shrink:0;">'+lv.num+'</div>';
-    if(i<all.length-1)lines+='<div style="width:2px;flex:1;min-height:42px;background:'+(isP?'var(--border)':'linear-gradient(180deg,rgba(124,106,247,0.5),rgba(124,106,247,0.2))')+';"></div>';
-    const th=isY&&lv.traits.length?'<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(124,106,247,0.2);display:flex;flex-direction:column;gap:6px;">'+lv.traits.map(t=>'<div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)"><div style="width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>'+t+'</div>').join('')+'</div>':'';
-    cards+='<div style="background:'+(isY?'rgba(124,106,247,0.1)':'var(--surface)')+';border:1px solid '+(isY?'var(--accent)':'var(--border)')+';border-radius:16px;padding:14px 16px;opacity:'+(isP?'0.45':'1')+';margin-bottom:'+(i<all.length-1?'8px':'0')+';"><div style="display:flex;align-items:center;gap:12px;"><div style="font-size:20px;flex-shrink:0;">'+lv.icon+'</div><div style="flex:1;min-width:0;"><div style="font-size:14px;font-weight:600;color:'+(isY?'var(--text)':isP?'var(--muted)':'var(--text)')+';margin-bottom:2px;">'+lv.label+'</div><div style="font-size:12px;color:var(--muted);line-height:1.4;">'+lv.summary+'</div></div>'+(isY?'<div style="background:var(--accent);color:white;font-size:10px;font-weight:700;letter-spacing:1px;padding:3px 9px;border-radius:100px;white-space:nowrap;flex-shrink:0;">YOU</div>':'')+((!isP&&!isY)?'<div style="font-size:11px;color:var(--accent2);white-space:nowrap;flex-shrink:0;">Goal</div>':'')+' </div>'+th+'</div>';
-  });
-  document.getElementById('all-levels-list').innerHTML='<div style="display:flex;gap:12px;align-items:stretch;"><div style="display:flex;flex-direction:column;align-items:center;padding-top:21px;flex-shrink:0;">'+lines+'</div><div style="flex:1;">'+cards+'</div></div><div style="text-align:center;margin-top:12px;font-size:12px;color:var(--muted);">Starting point above &middot; Goal below</div>';
-  showScreen('screen-level');
-}
+function goBack(){state.screenHistory.pop();showScreen(state.screenHistory[state.screenHistory.length-1]||'screen-curriculum');}
 function showCurriculum(){
   state.level=parseInt(localStorage.getItem('nervless_level')||state.level);
   state.currentSessionId=parseInt(localStorage.getItem('nervless_current_session')||LEVEL_ENTRY[state.level]);
   state.completedSessions=JSON.parse(localStorage.getItem('nervless_completed')||'[]');
   const entry=LEVEL_ENTRY[state.level],relevant=CURRICULUM.filter(s=>s.id>=entry),done=relevant.filter(s=>state.completedSessions.includes(s.id)).length;
   document.getElementById('curr-level-title').textContent=LEVELS[state.level].title;
-  // Display level as 1–4 where 4=most anxious starting point, shown as "Stage X"
-  // Internally level 4 = most anxious, level 1 = most confident. Show as readable stage name.
-  const stageNames={1:'Polish',2:'Build',3:'Overcome',4:'Restart'};
-  document.getElementById('stat-level-num').textContent=stageNames[state.level]||state.level;
+  // Calculate current phase from current session
+  const currSession=CURRICULUM.find(s=>s.id===state.currentSessionId);
+  const currPhaseNum=currSession?currSession.phase:1;
+  document.getElementById('stat-level-num').textContent=currPhaseNum+' of 8';
   const totalDone = JSON.parse(localStorage.getItem('nervless_passed')||'[]').length;
   const totalSessions=50;
   const pct=Math.min(100,Math.round((totalDone/totalSessions)*100));
   document.getElementById('stat-done-num').textContent=totalDone+' / '+totalSessions;
-  document.getElementById('stat-phase-done').textContent=totalDone;
+  document.getElementById('stat-phase-done').textContent=totalDone+' of '+totalSessions;
   const progressFill=document.getElementById('journey-progress-fill');
   if(progressFill)progressFill.style.width=pct+'%';
   const streakCount=Math.min(state.sessions?state.sessions.length:0,7);
@@ -1804,6 +1615,8 @@ async function runAIPipeline(audioChunks, durationSeconds, session) {
 
   const isPhase1 = session && session.phase === 1;
   const claudePrompt = `You are an expert speaking coach analysing a recorded speech exercise. The user is working to overcome speaking anxiety.
+
+SCOPE RESTRICTION: You are a speaking coach analysing delivery, not a general assistant. The user may speak about any topic — that's expected, because the prompts ask them to discuss careers, opinions, stories, and more. Analyse their SPEAKING (clarity, structure, confidence, pace, filler words) regardless of subject matter. However, if the transcript is clearly not a speaking exercise but instead a direct question or request to you as an AI (e.g. asking you to write something, explain an unrelated topic, or have a conversation), note in coachingPoints that Nervless is designed for speaking practice and encourage them to try the prompt again.
 
 ${isPhase1 ? `IMPORTANT: This is a Phase 1 reflective session. The goal is emotional honesty and self-awareness — NOT structure, clarity, or technique. Do NOT penalise for lack of structure. Score generously on openness and self-reflection. Be warm and encouraging. The overallScore should reflect effort and emotional engagement, not speaking quality.` : `IMPORTANT: Score honestly and critically. Do not inflate scores. If the answer lacks structure, clarity, or substance — say so directly. Be specific about what was weak. The user needs accurate feedback to improve.`}
 
