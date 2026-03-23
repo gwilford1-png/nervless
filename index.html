@@ -61,13 +61,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 #screen-apikeys{padding-bottom:0}
 
 /* ── BOTTOM NAV ── */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--surface);border-top:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:50;padding-bottom:env(safe-area-inset-bottom)}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:var(--nav-h);background:var(--surface);border-top:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:50;padding-bottom:env(safe-area-inset-bottom)}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:8px 16px;border-radius:16px;transition:all 0.15s;flex:1;border:none;background:none;font-family:'Nunito',sans-serif}
 .nav-item:active{transform:scale(0.92)}
-.nav-icon{font-size:24px;line-height:1}
+.nav-icon{font-size:24px;line-height:1;color:var(--muted)}
 .nav-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.3px}
 .nav-item.active .nav-label{color:var(--accent)}
-.nav-item.active .nav-icon{filter:drop-shadow(0 0 6px rgba(91,79,217,0.4))}
+.nav-item.active .nav-icon{color:var(--accent)}
 /* ── APP STYLES ── */
 .btn-primary{background:var(--accent);color:white;border:none;border-radius:16px;padding:18px 40px;font-size:17px;font-weight:600;font-family:'Nunito',sans-serif;cursor:pointer;width:100%;max-width:320px;transition:all 0.2s;letter-spacing:-0.3px;display:block;margin:0 auto}
 .btn-primary:active{transform:scale(0.97);background:#6A58E0}
@@ -323,20 +323,21 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       <div style="font-size:12px;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Your journey</div>
       <button class="burger-btn" id="burger-btn" onclick="toggleMenu()"><span></span><span></span><span></span></button>
     </div>
-    <div style="font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:16px" id="curr-level-title">Finding Your Voice</div>
+    <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:16px;">
+      <div style="font-family:'DM Serif Display',serif;font-size:28px;" id="curr-level-title">Finding Your Voice</div>
+      <div style="font-size:11px;font-weight:700;color:var(--accent);background:rgba(91,79,217,0.1);padding:4px 10px;border-radius:100px;white-space:nowrap;" id="stat-phase-pill">Phase 1 of 9</div>
+    </div>
 
-    <!-- Progress bar 0–50 -->
+    <!-- Progress bar 0–59 -->
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 18px;margin-bottom:10px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
         <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
           <div style="font-size:22px;">🫣</div>
           <div style="font-size:10px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase">Nervous</div>
         </div>
         <div style="flex:1;margin:0 12px;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
-            <div style="font-size:11px;color:var(--muted)">0</div>
-            <div style="font-size:12px;font-weight:700;color:var(--accent)" id="stat-done-num">0 / 50</div>
-            <div style="font-size:11px;color:var(--muted)">50</div>
+          <div style="text-align:center;margin-bottom:5px;">
+            <span style="font-size:13px;font-weight:700;color:var(--accent)" id="stat-done-num">0 / 59</span>
           </div>
           <div style="height:8px;background:var(--surface2);border-radius:100px;overflow:hidden;border:1px solid var(--border);">
             <div id="journey-progress-fill" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:100px;transition:width 0.6s cubic-bezier(0.4,0,0.2,1);width:0%"></div>
@@ -346,22 +347,6 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
           <div style="font-size:22px;">🎤</div>
           <div style="font-size:10px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase">Confident</div>
         </div>
-      </div>
-    </div>
-
-    <!-- Stats row -->
-    <div style="display:flex;gap:10px;margin-bottom:4px;">
-      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;text-align:center;">
-        <div style="font-size:18px;font-weight:700;color:var(--accent)" id="stat-level-num">—</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:0.5px;text-transform:uppercase">Level</div>
-      </div>
-      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;text-align:center;">
-        <div style="font-size:18px;font-weight:700;color:var(--text)" id="stat-phase-done">0</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:0.5px;text-transform:uppercase">Done</div>
-      </div>
-      <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px 14px;text-align:center;">
-        <div style="font-size:18px;font-weight:700;color:var(--green)" id="stat-streak-num">0</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:0.5px;text-transform:uppercase">Streak 🔥</div>
       </div>
     </div>
   </div>
@@ -661,16 +646,13 @@ function showCurriculum(){
   // Calculate current phase from current session
   const currSession=CURRICULUM.find(s=>s.id===state.currentSessionId);
   const currPhaseNum=currSession?currSession.phase:1;
-  document.getElementById('stat-level-num').textContent=currPhaseNum+' of 9';
+  document.getElementById('stat-phase-pill').textContent='Phase '+currPhaseNum+' of 9';
   const totalDone = JSON.parse(localStorage.getItem('nervless_passed')||'[]').length;
   const totalSessions=59;
   const pct=Math.min(100,Math.round((totalDone/totalSessions)*100));
   document.getElementById('stat-done-num').textContent=totalDone+' / '+totalSessions;
-  document.getElementById('stat-phase-done').textContent=totalDone+' of '+totalSessions;
   const progressFill=document.getElementById('journey-progress-fill');
   if(progressFill)progressFill.style.width=pct+'%';
-  const streakCount=Math.min(state.sessions?state.sessions.length:0,7);
-  document.getElementById('stat-streak-num').textContent=streakCount;
 
   // Group sessions by phase
   const phases={};
@@ -2786,15 +2768,15 @@ function setActiveNav(tab) {
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav" id="bottom-nav" style="display:none">
   <button class="nav-item active" id="nav-journey" onclick="showCurriculum();setActiveNav('journey')">
-    <span class="nav-icon">🗺️</span>
+    <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></span>
     <span class="nav-label">Journey</span>
   </button>
   <button class="nav-item" id="nav-free" onclick="showFreeTab()">
-    <span class="nav-icon">🎤</span>
+    <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></span>
     <span class="nav-label">Practice</span>
   </button>
   <button class="nav-item" id="nav-progress" onclick="showDashboard();setActiveNav('progress')">
-    <span class="nav-icon">📈</span>
+    <span class="nav-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="8" width="4" height="13" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg></span>
     <span class="nav-label">Progress</span>
   </button>
 </nav>
