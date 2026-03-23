@@ -1637,7 +1637,30 @@ function getProxyUrl() { return NERVLESS_PROXY; }
 function checkApiKeys() { return true; }
 
 // ── SHARED AI PIPELINE ──
+// ── REQUEST THROTTLE ──
+const throttle = { lastCall: 0, cooldownMs: 15000, callsThisMinute: 0, minuteStart: 0, maxPerMinute: 6 };
+function checkThrottle() {
+  const now = Date.now();
+  // Reset minute counter
+  if (now - throttle.minuteStart > 60000) { throttle.callsThisMinute = 0; throttle.minuteStart = now; }
+  // Cooldown between calls
+  if (now - throttle.lastCall < throttle.cooldownMs) {
+    const wait = Math.ceil((throttle.cooldownMs - (now - throttle.lastCall)) / 1000);
+    alert('Please wait ' + wait + ' seconds before recording again.');
+    return false;
+  }
+  // Max per minute
+  if (throttle.callsThisMinute >= throttle.maxPerMinute) {
+    alert('You\'ve reached the limit of ' + throttle.maxPerMinute + ' recordings per minute. Take a breath and try again shortly.');
+    return false;
+  }
+  throttle.lastCall = now;
+  throttle.callsThisMinute++;
+  return true;
+}
+
 async function runAIPipeline(audioChunks, durationSeconds, session) {
+  if (!checkThrottle()) { hideLoading(); return null; }
   const proxy = getProxyUrl();
 
   // Step 1: Whisper transcription
@@ -1930,6 +1953,7 @@ function processLessonFeedback() {
   if (!checkApiKeys()) return;
   const session = CURRICULUM.find(s => s.id === lessonState.sessionId);
   runAIPipeline(lessonState.audioChunks, lessonState.seconds, session).then(result => {
+    if (!result) return;
     hideLoading();
     const rec = buildRecord(result, lessonState.sessionId, session);
     state.sessions.unshift(rec);
@@ -1942,6 +1966,7 @@ function processFeedback() {
   if (!checkApiKeys()) return;
   const session = CURRICULUM.find(s => s.id === state.currentSessionId);
   runAIPipeline(state.audioChunks, state.seconds, session).then(result => {
+    if (!result) return;
     hideLoading();
     const rec = buildRecord(result, state.currentSessionId, session);
     state.sessions.unshift(rec);
@@ -2599,6 +2624,7 @@ function processFreeRecording() {
   const duration = freeState.round2 ? freeState.seconds : freeState.seconds;
   
   runAIPipeline(audioToProcess, duration, fakeSession).then(result => {
+    if (!result) return;
     hideLoading();
     
     // If Hot Seat round 2, enhance the analysis context
