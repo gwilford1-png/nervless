@@ -65,6 +65,13 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .phase-row.soon .ph-badge{color:var(--muted);border:1px solid var(--border)}
 .phase-row.soon{opacity:0.5}
 
+/* FAQ toggles */
+.faq-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text);text-align:left;transition:border-color 0.2s}
+.faq-toggle:hover{border-color:var(--accent)}
+.faq-toggle svg{color:var(--muted);flex-shrink:0;transition:transform 0.3s}
+.faq-toggle.open svg{transform:rotate(180deg)}
+.faq-answer{font-size:12px;color:var(--muted);line-height:1.6;padding:0 14px 14px;margin-top:-4px;margin-bottom:8px}
+
 /* Assessment */
 #screen-assessment{padding:0}
 .assess-header{padding:32px 24px 24px;background:linear-gradient(180deg,#EDE8FF 0%,var(--bg) 100%)}
@@ -109,24 +116,30 @@ if(localStorage.getItem('nervless_level')&&(JSON.parse(localStorage.getItem('ner
     <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px">Free trial · No card required</div>
   </div>
 
-  <!-- Address the objection -->
-  <div style="width:100%;max-width:340px;margin:32px auto 0;text-align:left;">
-    <div style="font-family:'DM Serif Display',serif;font-size:18px;text-align:center;margin-bottom:16px;color:var(--text)">But I'm just speaking into a phone?</div>
-    <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
-      <div style="font-size:16px;flex-shrink:0;margin-top:1px">&#9889;</div>
-      <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px">Your body doesn't know the difference</div><div style="font-size:12px;color:var(--muted);line-height:1.5">Recording yourself speaking triggers the same stress response — racing heart, filler words, self-consciousness. The anxiety is real even without an audience.</div></div>
-    </div>
-    <div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">
-      <div style="font-size:16px;flex-shrink:0;margin-top:1px">&#128275;</div>
-      <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px">The real barrier is avoidance</div><div style="font-size:12px;color:var(--muted);line-height:1.5">Most people never practise because every opportunity involves other people. This removes that barrier so you can actually start.</div></div>
-    </div>
-    <div style="display:flex;gap:12px;align-items:flex-start">
-      <div style="font-size:16px;flex-shrink:0;margin-top:1px">&#129520;</div>
-      <div><div style="font-size:13px;font-weight:800;color:var(--text);margin-bottom:2px">It's a ladder, not a destination</div><div style="font-size:12px;color:var(--muted);line-height:1.5">You start private. By Phase 5 you're handling hostile questions and delivering presentations under simulated pressure. The goal is to get you ready for the real thing.</div></div>
-    </div>
+  <!-- Address the objection — collapsible -->
+  <div style="width:100%;max-width:340px;margin:28px auto 0;text-align:left;">
+    <div style="font-family:'DM Serif Display',serif;font-size:18px;text-align:center;margin-bottom:14px;color:var(--text)">How will this work? I'm just talking into a phone?</div>
+    
+    <button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none'">
+      <span>⚡ Your body doesn't know the difference</span>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="faq-answer" style="display:none">Recording yourself speaking triggers the same stress response — racing heart, filler words, self-consciousness. The anxiety is real even without an audience.</div>
+
+    <button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none'">
+      <span>🔓 The real barrier is avoidance</span>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="faq-answer" style="display:none">Most people never practise because every opportunity involves other people. This removes that barrier so you can actually start.</div>
+
+    <button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none'">
+      <span>🧱 It's a ladder, not a destination</span>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="faq-answer" style="display:none">The programme starts with simple exercises — just you talking aloud, no audience. Each phase raises the difficulty gradually. By Phase 6 you're practising job interviews and handling tough questions under pressure. It builds up so you're ready when it counts.</div>
   </div>
 
-  <div class="phase-preview">
+  <div class="phase-preview" style="margin-top:20px;">
     <div class="phase-preview-title">59 sessions · 9 phases</div>
     <div class="phase-row live"><span class="ph-icon">🧠</span><div class="ph-info"><span class="ph-name">Understanding the Fear</span><span class="ph-desc">Name what's happening to you — and why it's not your fault</span></div><span class="ph-badge">5 sessions</span></div>
     <div class="phase-row live"><span class="ph-icon">🫁</span><div class="ph-info"><span class="ph-name">The Body First</span><span class="ph-desc">Learn to calm your nervous system before and while you speak</span></div><span class="ph-badge">7 sessions</span></div>
@@ -163,6 +176,11 @@ if(localStorage.getItem('nervless_level')&&(JSON.parse(localStorage.getItem('ner
     <div style="font-size:14px;color:var(--muted);line-height:1.6">Everyone begins somewhere. This is yours.</div>
   </div>
   <div style="padding:0 24px 32px;"><div id="all-levels-list"></div></div>
+  <div style="padding:0 24px 8px;">
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;text-align:center;font-size:13px;color:var(--muted);line-height:1.6">
+      Speaking anxiety reduces wages by <strong style="color:var(--accent)">10%</strong> on average and causes <strong style="color:var(--accent)">45%</strong> of people to turn down promotions. It also stops people speaking at weddings, funerals, and the moments that matter most.
+    </div>
+  </div>
   <div style="padding:0 24px 32px;text-align:center;">
     <button class="btn-primary" onclick="window.location.href='/'">Begin your journey</button>
     <div class="level-footer">Your level updates as you improve</div>
