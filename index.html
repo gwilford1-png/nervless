@@ -61,7 +61,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 #screen-apikeys{padding-bottom:0}
 
 /* ── BOTTOM NAV ── */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;height:var(--nav-h);background:var(--surface);border-top:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:50;padding-bottom:env(safe-area-inset-bottom)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;height:var(--nav-h);background:var(--surface);border-top:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-around;z-index:50;padding-bottom:env(safe-area-inset-bottom,0px)}
 .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;padding:8px 16px;border-radius:16px;transition:all 0.15s;flex:1;border:none;background:none;font-family:'Nunito',sans-serif}
 .nav-item:active{transform:scale(0.92)}
 .nav-icon{font-size:24px;line-height:1;color:var(--muted)}
@@ -122,9 +122,10 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .burger-btn.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 .menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:100;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .menu-overlay.open{opacity:1;pointer-events:auto}
-.menu-drawer{position:fixed;top:0;right:0;width:260px;height:100%;background:var(--surface);z-index:101;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);padding:72px 24px 40px;box-shadow:-4px 0 24px rgba(0,0,0,0.08)}
+.menu-drawer{position:fixed;top:0;right:0;width:220px;height:auto;max-height:80vh;background:var(--surface);z-index:101;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.4,0,0.2,1);padding:56px 20px 24px;box-shadow:-4px 0 24px rgba(0,0,0,0.08);border-radius:0 0 0 20px}
 .menu-drawer.open{transform:translateX(0)}
-.menu-item{display:block;padding:16px 0;border-bottom:1px solid var(--border);font-size:16px;font-weight:700;color:var(--text);text-decoration:none;transition:color 0.15s}
+.menu-item{display:block;padding:14px 0;border-bottom:1px solid var(--border);font-size:15px;font-weight:700;color:var(--text);text-decoration:none;transition:color 0.15s}
+.menu-item:last-child{border-bottom:none}
 .menu-item:hover{color:var(--accent);text-decoration:none}
 .menu-item-sub{font-size:12px;color:var(--muted);font-weight:600;margin-top:2px}
 .menu-footer{position:absolute;bottom:40px;left:24px;right:24px}
@@ -297,7 +298,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div style="width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px;">
     <div>
       <div style="font-size:12px;color:var(--muted);margin-bottom:6px;letter-spacing:0.5px">PROXY SERVER URL</div>
-      <input id="input-proxy-url" type="url" placeholder="https://nervless-proxy.onrender.com" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;">
+      <input id="input-proxy-url" type="url" placeholder="https://shark-app-3ywir.ondigitalocean.app" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;">
       <div style="font-size:11px;color:var(--muted);margin-top:5px">Deploy your proxy on Render first, then paste the URL here.</div>
     </div>
     <button class="btn-primary" onclick="saveApiKeys()" style="margin-top:8px">Save & connect →</button>
@@ -307,13 +308,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 <!-- Menu overlay and drawer -->
 <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
 <div class="menu-drawer" id="menu-drawer">
+  <button onclick="toggleMenu()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;">✕</button>
   <a href="/learn/" class="menu-item">Learn<div class="menu-item-sub">Guides on speaking anxiety</div></a>
-  <a href="/start.html" class="menu-item">Start over<div class="menu-item-sub">Retake the assessment</div></a>
-  <a class="menu-item" onclick="showDashboard();toggleMenu()">Progress<div class="menu-item-sub">Your stats and history</div></a>
-  <a class="menu-item" onclick="showCurriculum();toggleMenu()">Journey<div class="menu-item-sub">Your session curriculum</div></a>
-  <div class="menu-footer">
-    <div style="font-size:12px;color:var(--muted);text-align:center">nervless.app</div>
-  </div>
 </div>
 
 <!-- CURRICULUM -->
@@ -1632,7 +1628,7 @@ function stopLessonRecording() {
   }
 }
 
-const NERVLESS_PROXY = 'https://nervless-proxy.onrender.com';
+const NERVLESS_PROXY = 'https://shark-app-3ywir.ondigitalocean.app';
 function getProxyUrl() { return NERVLESS_PROXY; }
 function checkApiKeys() { return true; }
 
