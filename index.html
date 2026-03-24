@@ -176,15 +176,16 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .score-num{position:relative;font-family:'DM Serif Display',serif;font-size:32px;color:var(--text);z-index:1}
 .feedback-title{font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:8px}.feedback-sub{font-size:15px;color:var(--muted)}
 .session-context-strip{margin:0 24px 16px;background:rgba(124,106,247,0.06);border:1px solid rgba(124,106,247,0.2);border-radius:12px;padding:12px 16px;font-size:13px;color:var(--muted);line-height:1.5}
-.metrics-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:16px 24px}
-.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px 16px}
-.metric-label{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
-.metric-value{font-size:28px;font-weight:600;margin-bottom:4px}.metric-desc{font-size:12px;color:var(--muted)}
+.score-widget{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px 6px;text-align:center}
+.sw-icon{font-size:18px;margin-bottom:4px}
+.sw-val{font-size:20px;font-weight:700;margin-bottom:2px}
+.sw-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+.transcript-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;font-size:14px;color:var(--muted);line-height:2}
+.filler{background:rgba(244,198,90,0.2);color:var(--gold);border-radius:4px;padding:0 3px}
 .tips-section{padding:0 24px}.tips-title{font-size:13px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
 .tip-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:12px;display:flex;gap:14px;align-items:flex-start}
 .tip-num{width:28px;height:28px;border-radius:50%;background:rgba(124,106,247,0.15);border:1px solid rgba(124,106,247,0.3);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--accent2);flex-shrink:0;font-weight:600}
 .tip-text{font-size:14px;color:var(--muted);line-height:1.6}
-.transcript-section{padding:24px}.transcript-title{font-size:13px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
 .transcript-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;font-size:14px;color:var(--muted);line-height:2}
 .filler{background:rgba(244,198,90,0.2);color:var(--gold);border-radius:4px;padding:0 3px}
 .feedback-actions{padding:8px 24px;display:flex;flex-direction:column;gap:12px;align-items:center}
@@ -229,11 +230,17 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .free-section-title{font-size:13px;font-weight:800;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;padding:0 20px;margin-bottom:8px}
 #screen-lesson{overflow-y:auto;padding-bottom:calc(var(--nav-h) + 80px);background:var(--bg)}
 .lesson-header{padding:44px 20px 16px;background:linear-gradient(180deg,#EDE8FF 0%,var(--bg) 100%)}
-.lesson-step-pills{display:flex;gap:8px;margin-bottom:14px}
-.step-pill{flex:1;height:4px;border-radius:100px;background:var(--border);transition:background 0.4s}
-.step-pill.active{background:var(--accent)}
-.step-pill.done{background:var(--green)}
-.lesson-step-label{font-size:11px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.lesson-step-bar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1.5px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:center;gap:0}
+.step-item{display:flex;flex-direction:column;align-items:center;gap:4px;flex:0 0 auto;width:70px}
+.step-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid var(--border);background:var(--surface);color:var(--muted);transition:all 0.3s}
+.step-item.active .step-icon{border-color:var(--accent);background:var(--accent);color:white;box-shadow:0 0 12px rgba(91,79,217,0.3)}
+.step-item.done .step-icon{border-color:var(--green);background:var(--green);color:white}
+.step-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase}
+.step-item.active .step-label{color:var(--accent)}
+.step-item.done .step-label{color:var(--green)}
+.step-connector{width:32px;height:2px;background:var(--border);margin:0 -2px;margin-bottom:18px;transition:background 0.3s}
+.step-connector.done{background:var(--green)}
+.lesson-title{font-family:'DM Serif Display',serif;font-size:24px;line-height:1.3;margin-top:4px}
 .lesson-title{font-family:'DM Serif Display',serif;font-size:22px;line-height:1.25;color:var(--text)}
 
 /* READ step */
@@ -351,14 +358,26 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 </div>
 <!-- LESSON (Read → Check → Talk) -->
 <div class="screen" id="screen-lesson">
+  <!-- Sticky step bar -->
+  <div class="lesson-step-bar" id="lesson-step-bar">
+    <div class="step-item active" id="step-read">
+      <div class="step-icon">📖</div>
+      <div class="step-label">Read</div>
+    </div>
+    <div class="step-connector" id="conn-1"></div>
+    <div class="step-item" id="step-check">
+      <div class="step-icon">✓</div>
+      <div class="step-label">Check</div>
+    </div>
+    <div class="step-connector" id="conn-2"></div>
+    <div class="step-item" id="step-talk">
+      <div class="step-icon">🎙</div>
+      <div class="step-label">Talk</div>
+    </div>
+  </div>
+
   <div class="lesson-header">
     <button class="back-btn" onclick="showCurriculum()">←</button>
-    <div class="lesson-step-pills">
-      <div class="step-pill" id="pill-read"></div>
-      <div class="step-pill" id="pill-check"></div>
-      <div class="step-pill" id="pill-talk"></div>
-    </div>
-    <div class="lesson-step-label" id="lesson-step-label">STEP 1 OF 3 · READ</div>
     <div class="lesson-title" id="lesson-title">Session Title</div>
   </div>
 
@@ -438,33 +457,101 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="feedback-sub" id="feedback-sub">Here's what the AI noticed</div>
   </div>
   <div class="session-context-strip" id="session-context-strip"></div>
-  <div class="metrics-grid">
-    <div class="metric-card"><div class="metric-label">Pace</div><div class="metric-value" id="m-pace">-</div><div class="metric-desc" id="m-pace-desc">words per minute</div></div>
-    <div class="metric-card"><div class="metric-label">Filler words</div><div class="metric-value" id="m-fillers">-</div><div class="metric-desc" id="m-fillers-desc">detected</div></div>
-    <div class="metric-card"><div class="metric-label">On prompt</div><div class="metric-value" id="m-prompt">-</div><div class="metric-desc">out of 10</div></div>
-    <div class="metric-card"><div class="metric-label">Clarity</div><div class="metric-value" id="m-clarity">-</div><div class="metric-desc">out of 10</div></div>
-    <div class="metric-card"><div class="metric-label">Confidence</div><div class="metric-value" id="m-confidence">-</div><div class="metric-desc">out of 10</div></div>
-    <div class="metric-card"><div class="metric-label">Openness</div><div class="metric-value" id="m-openness">-</div><div class="metric-desc">out of 10</div></div>
-  </div>
-  <!-- Voice analysis row -->
-  <div id="voice-analysis-row" style="display:none;padding:0 24px 4px;">
-    <div style="font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px;">Voice analysis</div>
-    <div class="metrics-grid" style="padding:0;">
-      <div class="metric-card"><div class="metric-label">Volume</div><div class="metric-value" id="m-volume">-</div><div class="metric-desc" id="m-volume-desc">level</div></div>
-      <div class="metric-card"><div class="metric-label">Pitch range</div><div class="metric-value" id="m-pitch">-</div><div class="metric-desc" id="m-pitch-desc">variation</div></div>
-      <div class="metric-card"><div class="metric-label">Steadiness</div><div class="metric-value" id="m-steady">-</div><div class="metric-desc" id="m-steady-desc">stability</div></div>
+
+  <!-- Pace & Filler — horizontal text cards -->
+  <div style="padding:0 24px 8px;display:flex;gap:10px;">
+    <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span style="font-size:11px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;font-weight:700;">Pace</span>
+      </div>
+      <div style="font-size:22px;font-weight:700;" id="m-pace">-</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.4;margin-top:4px;" id="m-pace-desc">words per minute</div>
+    </div>
+    <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+        <span style="font-size:11px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;font-weight:700;">Fillers</span>
+      </div>
+      <div style="font-size:22px;font-weight:700;" id="m-fillers">-</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.4;margin-top:4px;" id="m-fillers-desc">detected</div>
     </div>
   </div>
-  <div class="transcript-section">
-    <div class="transcript-title">Your transcript</div>
-    <div class="transcript-box" id="transcript-box">Transcript will appear here...</div>
+
+  <!-- 4 score widgets — single row -->
+  <div style="padding:0 24px 16px;display:flex;gap:8px;">
+    <div class="score-widget">
+      <div class="sw-icon">🎯</div>
+      <div class="sw-val" id="m-prompt">-</div>
+      <div class="sw-lbl">Prompt</div>
+    </div>
+    <div class="score-widget">
+      <div class="sw-icon">💎</div>
+      <div class="sw-val" id="m-clarity">-</div>
+      <div class="sw-lbl">Clarity</div>
+    </div>
+    <div class="score-widget">
+      <div class="sw-icon">💪</div>
+      <div class="sw-val" id="m-confidence">-</div>
+      <div class="sw-lbl">Confidence</div>
+    </div>
+    <div class="score-widget">
+      <div class="sw-icon">💛</div>
+      <div class="sw-val" id="m-openness">-</div>
+      <div class="sw-lbl">Openness</div>
+    </div>
   </div>
+
+  <!-- Voice analysis row -->
+  <div id="voice-analysis-row" style="display:none;padding:0 24px 16px;">
+    <div style="display:flex;gap:8px;">
+      <div class="score-widget">
+        <div class="sw-icon">🔊</div>
+        <div class="sw-val" id="m-volume">-</div>
+        <div class="sw-lbl" id="m-volume-desc">Volume</div>
+      </div>
+      <div class="score-widget">
+        <div class="sw-icon">🎵</div>
+        <div class="sw-val" id="m-pitch">-</div>
+        <div class="sw-lbl" id="m-pitch-desc">Pitch</div>
+      </div>
+      <div class="score-widget">
+        <div class="sw-icon">〰️</div>
+        <div class="sw-val" id="m-steady">-</div>
+        <div class="sw-lbl" id="m-steady-desc">Steady</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transcript — collapsible -->
+  <div style="padding:0 24px 8px;">
+    <button onclick="this.classList.toggle('open');document.getElementById('transcript-box').style.display=this.classList.contains('open')?'block':'none'" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:12px 16px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text);" id="transcript-toggle">
+      <span>📝 Show transcript</span>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);transition:transform 0.3s"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="transcript-box" id="transcript-box" style="display:none;margin-top:8px;">Transcript will appear here...</div>
+  </div>
+
   <div class="tips-section"><div class="tips-title">Coaching feedback</div><div id="tips-container"></div></div>
   <div class="feedback-actions" id="feedback-actions">
     <div id="pass-fail-banner" style="width:100%;border-radius:16px;padding:16px 18px;text-align:center;margin-bottom:4px;display:none;"></div>
     <button class="btn-primary" id="complete-session-btn" onclick="completeSession()">Complete session ✓</button>
     <button class="btn-secondary" onclick="showCurriculum()">Back to journey</button>
-    <a href="https://tally.so/r/2EkVGg" target="_blank" style="display:block;text-align:center;margin-top:8px;font-size:13px;color:var(--muted);text-decoration:none;padding:10px;">💬 How was this session?</a>
+    
+    <!-- Scoring feedback -->
+    <div id="score-feedback-widget" style="margin-top:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:18px;text-align:center;">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Was this feedback accurate?</div>
+      <div style="display:flex;justify-content:center;gap:12px;margin-bottom:10px;">
+        <button onclick="submitScoreFeedback('accurate')" class="fb-btn" id="fb-accurate" style="padding:8px 20px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text);transition:all 0.15s">👍 Yes</button>
+        <button onclick="submitScoreFeedback('too_high')" class="fb-btn" id="fb-too-high" style="padding:8px 20px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text);transition:all 0.15s">📈 Too high</button>
+        <button onclick="submitScoreFeedback('too_low')" class="fb-btn" id="fb-too-low" style="padding:8px 20px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text);transition:all 0.15s">📉 Too low</button>
+      </div>
+      <div id="fb-detail" style="display:none;">
+        <textarea id="fb-text" placeholder="What felt off? (optional)" style="width:100%;min-height:60px;border:1.5px solid var(--border);border-radius:12px;padding:10px 12px;font-size:13px;font-family:'Nunito',sans-serif;color:var(--text);background:var(--bg);resize:none;outline:none;margin-bottom:8px;"></textarea>
+        <button onclick="sendFeedbackDetail()" style="background:var(--accent);color:white;border:none;border-radius:100px;padding:10px 24px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;">Send feedback</button>
+      </div>
+      <div id="fb-thanks" style="display:none;font-size:13px;color:var(--green);font-weight:700;padding:8px 0;">Thanks — this helps us improve ✓</div>
+    </div>
   </div>
 </div>
 <!-- DASHBOARD -->
@@ -1468,15 +1555,16 @@ function startLesson(s) {
 
 function updateLessonStepUI(step) {
   const steps = ['read', 'check', 'talk'];
-  const labels = ['STEP 1 OF 3 · READ', 'STEP 2 OF 3 · CHECK', 'STEP 3 OF 3 · TALK'];
   const idx = steps.indexOf(step);
   steps.forEach((s, i) => {
-    const pill = document.getElementById('pill-' + s);
-    if (i < idx) { pill.className = 'step-pill done'; }
-    else if (i === idx) { pill.className = 'step-pill active'; }
-    else { pill.className = 'step-pill'; }
+    const item = document.getElementById('step-' + s);
+    item.className = 'step-item' + (i < idx ? ' done' : i === idx ? ' active' : '');
   });
-  document.getElementById('lesson-step-label').textContent = labels[idx];
+  // Update connectors
+  const conn1 = document.getElementById('conn-1');
+  const conn2 = document.getElementById('conn-2');
+  conn1.className = 'step-connector' + (idx > 0 ? ' done' : '');
+  conn2.className = 'step-connector' + (idx > 1 ? ' done' : '');
 }
 
 function lessonNext() {
@@ -1595,10 +1683,13 @@ async function toggleLessonRecording() {
 async function startLessonRecording() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    lessonState.mediaRecorder = new MediaRecorder(stream);
+    initAudioAnalysis(stream);
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 
+                     MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
+    lessonState.mediaRecorder = mimeType ? new MediaRecorder(stream, {mimeType}) : new MediaRecorder(stream);
     lessonState.audioChunks = [];
     lessonState.mediaRecorder.ondataavailable = e => { if (e.data.size > 0) lessonState.audioChunks.push(e.data); };
-    lessonState.mediaRecorder.onstop = () => { stream.getTracks().forEach(t => t.stop()); processLessonFeedback(); };
+    lessonState.mediaRecorder.onstop = () => { stream.getTracks().forEach(t => t.stop()); cleanupAudioAnalysis(); processLessonFeedback(); };
     lessonState.mediaRecorder.start();
     lessonState.isRecording = true;
     lessonState.seconds = 0;
@@ -1748,7 +1839,7 @@ CADENCE DATA (from word-level timestamps):
 Use this data to assess delivery quality: deliberate pauses show control, rushed sections suggest anxiety, monotone pace suggests nervousness or disengagement. Long pauses after filler words suggest the speaker is struggling to find words.`;
   }
 
-  const fillerPattern = /\b(um|uh|er|like|basically|you know|sort of|kind of|literally|right|so|actually|honestly|anyway)\b/gi;
+  const fillerPattern = /\b(um|uh|er|erm|you know|sort of|kind of|basically|literally|I mean)\b/gi;
   const fillerMatches = transcript.match(fillerPattern) || [];
   const fillerCount = fillerMatches.length;
 
@@ -1872,6 +1963,7 @@ SPEECH DATA:
 - Duration: ${durationSeconds} seconds
 - Words per minute: ${wpm}
 - Filler words detected: ${fillerCount} (${fillerMatches.slice(0, 10).join(', ') || 'none'})
+- Note: The automated filler count only catches unambiguous fillers (um, uh, er, erm, you know, sort of, kind of, basically, literally, I mean). Words like "like", "so", "right", "actually" are NOT auto-detected because they're often used as normal speech. Use your judgement to identify any additional filler usage from context in the transcript.
 - Full transcript: "${transcript}"
 ${cadenceData}
 ${getAudioAnalysisReport()}
@@ -1992,6 +2084,7 @@ function buildRecord(result, sessionId, session) {
 
 function renderFeedback(rec, transcript, analysis) {
   const a = analysis;
+  resetFeedbackWidget();
 
   // Score ring
   document.getElementById('score-ring').style.setProperty('--pct', a.overallScore + '%');
@@ -2061,7 +2154,7 @@ function renderFeedback(rec, transcript, analysis) {
   }
 
   // Transcript — highlight filler words
-  const fillerPattern = /\b(um|uh|er|like|basically|you know|sort of|kind of|literally|right|so|actually|honestly|anyway)\b/gi;
+  const fillerPattern = /\b(um|uh|er|erm|you know|sort of|kind of|basically|literally|I mean)\b/gi;
   const highlightedTranscript = transcript
     ? transcript.replace(fillerPattern, w => '<span class="filler">' + w + '</span>')
     : '<em style="color:var(--muted)">No transcript available.</em>';
@@ -2126,34 +2219,34 @@ function renderFeedback(rec, transcript, analysis) {
   }
 
   // Star bar builder
-  function buildStarBar(score, t) {
-    const pct = Math.min(100, Math.round((score / 100) * 100));
-    const s1pct = t.star1;
-    const s2pct = t.star2;
-    const s3pct = t.star3;
+  function buildStarBar(score, t, bestScore) {
+    const pct = Math.min(100, score);
     const barColor = score >= t.star3 ? 'var(--green)' : score >= t.star1 ? 'var(--gold)' : 'var(--red)';
-    return '<div style="margin:12px 0 8px;">'
-      + '<div style="position:relative;height:24px;background:var(--surface2);border-radius:12px;overflow:visible;">'
-      // Progress fill
-      + '<div style="position:absolute;left:0;top:0;height:100%;width:'+pct+'%;background:'+barColor+';border-radius:12px;transition:width 0.6s ease;"></div>'
-      // Star markers
-      + '<div style="position:absolute;top:-2px;left:'+s1pct+'%;transform:translateX(-50%);font-size:16px;z-index:2;'+(score>=t.star1?'':'opacity:0.4;')+'">★</div>'
-      + '<div style="position:absolute;top:-2px;left:'+s2pct+'%;transform:translateX(-50%);font-size:16px;z-index:2;'+(score>=t.star2?'':'opacity:0.4;')+'">★★</div>'
-      + '<div style="position:absolute;top:-2px;left:calc('+s3pct+'% - 4px);transform:translateX(-50%);font-size:16px;z-index:2;'+(score>=t.star3?'':'opacity:0.4;')+'">★★★</div>'
+    // Marker positions as percentages of the bar
+    const m1 = t.star1;
+    const m2 = t.star2;
+    const m3 = t.star3;
+    
+    return '<div style="margin:12px 0 4px;">'
+      // Best score indicator
+      + (bestScore > 0 && bestScore !== score ? '<div style="font-size:11px;color:var(--muted);text-align:right;margin-bottom:6px;">Best: <strong>' + bestScore + '</strong></div>' : '')
+      // Bar container
+      + '<div style="position:relative;height:20px;background:var(--surface2);border-radius:10px;overflow:hidden;">'
+      // Animated fill — starts at 0, animates to score via CSS
+      + '<div id="star-bar-fill" style="position:absolute;left:0;top:0;height:100%;width:0%;background:'+barColor+';border-radius:10px;transition:width 1s cubic-bezier(0.4,0,0.2,1);"></div>'
       + '</div>'
-      // Score labels below bar
-      + '<div style="display:flex;justify-content:space-between;margin-top:6px;font-size:10px;color:var(--muted);font-weight:700;">'
-      + '<span>0</span>'
-      + '<span style="position:relative;left:'+Math.max(0,s1pct-5)+'%;">'+t.star1+'</span>'
-      + '<span style="position:relative;">'+t.star2+'</span>'
-      + '<span>'+t.star3+'</span>'
+      // Threshold markers below bar
+      + '<div style="position:relative;height:20px;margin-top:2px;">'
+      + '<div style="position:absolute;left:'+m1+'%;transform:translateX(-50%);text-align:center;"><div style="font-size:12px;'+(score>=m1?'color:var(--gold)':'color:var(--muted);opacity:0.5')+'">★</div><div style="font-size:9px;color:var(--muted);font-weight:700;">'+t.star1+'</div></div>'
+      + '<div style="position:absolute;left:'+m2+'%;transform:translateX(-50%);text-align:center;"><div style="font-size:12px;'+(score>=m2?'color:var(--gold)':'color:var(--muted);opacity:0.5')+'">★★</div><div style="font-size:9px;color:var(--muted);font-weight:700;">'+t.star2+'</div></div>'
+      + '<div style="position:absolute;left:'+Math.min(m3, 96)+'%;transform:translateX(-50%);text-align:center;"><div style="font-size:12px;'+(score>=m3?'color:var(--gold)':'color:var(--muted);opacity:0.5')+'">★★★</div><div style="font-size:9px;color:var(--muted);font-weight:700;">'+t.star3+'</div></div>'
       + '</div>'
       + '</div>';
   }
 
   // Stars display
   function starStr(n) {
-    return '<span style="color:var(--gold);font-size:22px;letter-spacing:3px;">' + '★'.repeat(n) + '</span><span style="color:var(--border);font-size:22px;letter-spacing:3px;">' + '★'.repeat(3-n) + '</span>';
+    return '<span style="color:var(--gold);font-size:24px;letter-spacing:4px;">' + '★'.repeat(n) + '</span><span style="color:var(--border);font-size:24px;letter-spacing:4px;">' + '★'.repeat(3-n) + '</span>';
   }
 
   if (banner) {
@@ -2162,6 +2255,7 @@ function renderFeedback(rec, transcript, analysis) {
     if (starsEarned >= 1) {
       // Got at least 1 star — session passed
       const isNewBest = starsEarned > bestStars || !alreadyPassed;
+      const prevBest = getBestScore(rec.sessionId || state.currentSessionId);
       banner.style.background = starsEarned === 3 ? 'rgba(46,158,122,0.1)' : 'rgba(196,146,42,0.08)';
       banner.style.border = '1px solid ' + (starsEarned === 3 ? 'rgba(46,158,122,0.3)' : 'rgba(196,146,42,0.25)');
       banner.innerHTML = '<div style="margin-bottom:8px;">' + starStr(starsEarned) + '</div>'
@@ -2169,7 +2263,9 @@ function renderFeedback(rec, transcript, analysis) {
         + (starsEarned === 3 ? 'Perfect score!' : starsEarned === 2 ? 'Great work!' : 'Session passed!') + '</div>'
         + '<div style="font-size:13px;color:var(--muted);margin-bottom:2px;">You scored ' + a.overallScore
         + (starsEarned < 3 ? ' — need ' + (starsEarned === 1 ? thresholds.star2 + ' for ★★' : thresholds.star3 + ' for ★★★') : ' — mastered!') + '</div>'
-        + buildStarBar(a.overallScore, thresholds);
+        + buildStarBar(a.overallScore, thresholds, prevBest);
+      // Animate bar fill after render
+      setTimeout(() => { const fill = document.getElementById('star-bar-fill'); if (fill) fill.style.width = a.overallScore + '%'; }, 100);
 
       if (btn) {
         if (!alreadyPassed) {
@@ -2183,13 +2279,16 @@ function renderFeedback(rec, transcript, analysis) {
 
     } else {
       // 0 stars — didn't reach 1-star threshold
+      const prevBestFail = getBestScore(rec.sessionId || state.currentSessionId);
       banner.style.background = 'rgba(217,84,112,0.06)';
       banner.style.border = '1px solid rgba(217,84,112,0.2)';
       banner.innerHTML = '<div style="margin-bottom:8px;">' + starStr(0) + '</div>'
         + '<div style="font-weight:700;color:var(--red);margin-bottom:4px;">Not there yet</div>'
         + '<div style="font-size:13px;color:var(--muted);margin-bottom:2px;">You scored ' + a.overallScore + ' — need ' + thresholds.star1 + ' for your first ★</div>'
-        + buildStarBar(a.overallScore, thresholds)
+        + buildStarBar(a.overallScore, thresholds, prevBestFail)
         + (alreadyPassed ? '<div style="font-size:12px;color:var(--muted);margin-top:6px;">Your previous ★ rating is kept.</div>' : '');
+      // Animate bar fill
+      setTimeout(() => { const fill = document.getElementById('star-bar-fill'); if (fill) fill.style.width = a.overallScore + '%'; }, 100);
 
       if (btn) {
         btn.textContent = 'Try again'; btn.style.background = ''; btn.style.width = '100%';
@@ -2218,6 +2317,53 @@ function renderFeedback(rec, transcript, analysis) {
 
 function scoreColour(n) {
   return n >= 8 ? 'var(--green)' : n >= 5 ? 'var(--gold)' : 'var(--red)';
+}
+
+// ── SCORING FEEDBACK ──
+let lastFeedbackType = '';
+function submitScoreFeedback(type) {
+  lastFeedbackType = type;
+  // Highlight selected button
+  document.querySelectorAll('.fb-btn').forEach(b => { b.style.borderColor = 'var(--border)'; b.style.background = 'var(--surface)'; });
+  const btn = document.getElementById('fb-' + type.replace('_', '-'));
+  if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.background = 'rgba(91,79,217,0.08)'; }
+  
+  if (type === 'accurate') {
+    // Just log it and say thanks
+    logFeedback(type, '');
+    document.getElementById('fb-detail').style.display = 'none';
+    document.getElementById('fb-thanks').style.display = 'block';
+  } else {
+    // Show the text area for detail
+    document.getElementById('fb-detail').style.display = 'block';
+    document.getElementById('fb-thanks').style.display = 'none';
+    document.getElementById('fb-text').focus();
+  }
+}
+function sendFeedbackDetail() {
+  const text = document.getElementById('fb-text').value.trim();
+  logFeedback(lastFeedbackType, text);
+  document.getElementById('fb-detail').style.display = 'none';
+  document.getElementById('fb-thanks').style.display = 'block';
+}
+function logFeedback(type, detail) {
+  // Store locally for now — can be sent to a server later
+  const feedback = JSON.parse(localStorage.getItem('nervless_feedback') || '[]');
+  feedback.push({
+    type,
+    detail,
+    sessionId: state.currentSessionId,
+    score: state.sessions.length > 0 ? state.sessions[0].score : null,
+    timestamp: new Date().toISOString()
+  });
+  localStorage.setItem('nervless_feedback', JSON.stringify(feedback.slice(-50)));
+}
+function resetFeedbackWidget() {
+  document.querySelectorAll('.fb-btn').forEach(b => { b.style.borderColor = 'var(--border)'; b.style.background = 'var(--surface)'; });
+  document.getElementById('fb-detail').style.display = 'none';
+  document.getElementById('fb-thanks').style.display = 'none';
+  document.getElementById('fb-text').value = '';
+  lastFeedbackType = '';
 }
 
 function showModelAnswer(modelAnswer, session) {
