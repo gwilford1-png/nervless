@@ -179,6 +179,8 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .score-widget{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px 6px;text-align:center}
 .sw-icon{font-size:18px;margin-bottom:4px}
 .sw-val{font-size:20px;font-weight:700;margin-bottom:2px}
+.sw-bar-wrap{width:80%;height:4px;background:var(--surface2);border-radius:2px;margin:4px auto 4px;overflow:hidden}
+.sw-bar{height:100%;width:0%;border-radius:2px;transition:width 1s cubic-bezier(0.4,0,0.2,1)}
 .sw-lbl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
 .transcript-box{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;font-size:14px;color:var(--muted);line-height:2}
 .filler{background:rgba(244,198,90,0.2);color:var(--gold);border-radius:4px;padding:0 3px}
@@ -467,6 +469,18 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
       </div>
       <div style="font-size:22px;font-weight:700;" id="m-pace">-</div>
       <div style="font-size:12px;color:var(--muted);line-height:1.4;margin-top:4px;" id="m-pace-desc">words per minute</div>
+      <!-- Pace goal bar -->
+      <div id="pace-bar-wrap" style="margin-top:10px;">
+        <div style="position:relative;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;">
+          <div style="position:absolute;left:30%;width:30%;height:100%;background:rgba(46,158,122,0.15);border-radius:4px;"></div>
+          <div id="pace-marker" style="position:absolute;top:-2px;width:3px;height:12px;background:var(--accent);border-radius:2px;transition:left 1s cubic-bezier(0.4,0,0.2,1);left:0%;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:3px;font-size:9px;color:var(--muted);font-weight:700;">
+          <span>Too slow</span>
+          <span style="color:var(--green)">120–160</span>
+          <span>Too fast</span>
+        </div>
+      </div>
     </div>
     <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
@@ -478,26 +492,30 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
   </div>
 
-  <!-- 4 score widgets — single row -->
+  <!-- 4 score widgets — single row with /10 bars -->
   <div style="padding:0 24px 16px;display:flex;gap:8px;">
     <div class="score-widget">
       <div class="sw-icon">🎯</div>
       <div class="sw-val" id="m-prompt">-</div>
+      <div class="sw-bar-wrap"><div class="sw-bar" id="bar-prompt"></div></div>
       <div class="sw-lbl">Prompt</div>
     </div>
     <div class="score-widget">
       <div class="sw-icon">💎</div>
       <div class="sw-val" id="m-clarity">-</div>
+      <div class="sw-bar-wrap"><div class="sw-bar" id="bar-clarity"></div></div>
       <div class="sw-lbl">Clarity</div>
     </div>
     <div class="score-widget">
       <div class="sw-icon">💪</div>
       <div class="sw-val" id="m-confidence">-</div>
+      <div class="sw-bar-wrap"><div class="sw-bar" id="bar-confidence"></div></div>
       <div class="sw-lbl">Confidence</div>
     </div>
     <div class="score-widget">
       <div class="sw-icon">💛</div>
       <div class="sw-val" id="m-openness">-</div>
+      <div class="sw-bar-wrap"><div class="sw-bar" id="bar-openness"></div></div>
       <div class="sw-lbl">Openness</div>
     </div>
   </div>
@@ -2102,14 +2120,36 @@ function renderFeedback(rec, transcript, analysis) {
   // Metrics
   const wc = a.pace.wpm < 120 ? 'var(--gold)' : a.pace.wpm > 170 ? 'var(--red)' : 'var(--green)';
   const fc = a.fillerWords.count === 0 ? 'var(--green)' : a.fillerWords.count < 4 ? 'var(--gold)' : 'var(--red)';
-  document.getElementById('m-pace').innerHTML = '<span style="color:' + wc + '">' + a.pace.wpm + '</span>';
+  document.getElementById('m-pace').innerHTML = '<span style="color:' + wc + '">' + a.pace.wpm + ' <span style="font-size:12px;font-weight:600;color:var(--muted)">WPM</span></span>';
   document.getElementById('m-pace-desc').textContent = a.pace.verdict;
   document.getElementById('m-fillers').innerHTML = '<span style="color:' + fc + '">' + a.fillerWords.count + '</span>';
   document.getElementById('m-fillers-desc').textContent = a.fillerWords.verdict;
-  document.getElementById('m-prompt').innerHTML = '<span style="color:' + scoreColour(a.scores.promptAdherence) + '">' + a.scores.promptAdherence + '</span>';
-  document.getElementById('m-clarity').innerHTML = '<span style="color:' + scoreColour(a.scores.clarity) + '">' + a.scores.clarity + '</span>';
-  document.getElementById('m-confidence').innerHTML = '<span style="color:' + scoreColour(a.scores.confidence) + '">' + a.scores.confidence + '</span>';
-  document.getElementById('m-openness').innerHTML = '<span style="color:' + scoreColour(a.scores.openness) + '">' + a.scores.openness + '</span>';
+
+  // Pace goal bar — position marker (0-200+ WPM mapped to 0-100%)
+  setTimeout(() => {
+    const paceMarker = document.getElementById('pace-marker');
+    if (paceMarker) {
+      const pacePct = Math.min(100, Math.max(0, (a.pace.wpm / 220) * 100));
+      paceMarker.style.left = pacePct + '%';
+    }
+  }, 200);
+
+  // Score widgets with /10, colour, and animated bar
+  function renderScore(id, barId, score) {
+    const colour = scoreColour(score);
+    document.getElementById(id).innerHTML = '<span style="color:' + colour + '">' + score + '</span><span style="font-size:11px;color:var(--muted);font-weight:600">/10</span>';
+    setTimeout(() => {
+      const bar = document.getElementById(barId);
+      if (bar) {
+        bar.style.width = (score * 10) + '%';
+        bar.style.background = colour;
+      }
+    }, 300);
+  }
+  renderScore('m-prompt', 'bar-prompt', a.scores.promptAdherence);
+  renderScore('m-clarity', 'bar-clarity', a.scores.clarity);
+  renderScore('m-confidence', 'bar-confidence', a.scores.confidence);
+  renderScore('m-openness', 'bar-openness', a.scores.openness);
 
   // Voice analysis display
   const voiceRow = document.getElementById('voice-analysis-row');
