@@ -96,6 +96,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 <script>
 // If user already has progress, skip straight to the app
 if(localStorage.getItem('nervless_level')&&(JSON.parse(localStorage.getItem('nervless_completed')||'[]').length>0||JSON.parse(localStorage.getItem('nervless_sessions')||'[]').length>0)){
+  gtag('event','returning_user_redirect',{event_category:'funnel'});
   window.location.replace('/');
 }
 </script>
@@ -120,19 +121,19 @@ if(localStorage.getItem('nervless_level')&&(JSON.parse(localStorage.getItem('ner
   <div style="width:100%;max-width:340px;margin:28px auto 0;text-align:left;">
     <div style="font-family:'DM Serif Display',serif;font-size:18px;text-align:center;margin-bottom:14px;color:var(--text)">How will this work? I'm just talking into a phone?</div>
     
-    <button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none'">
+    <button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none';if(this.classList.contains('open'))gtag('event','faq_opened',{event_category:'engagement',event_label:'body_difference'})">
       <span>⚡ Your body doesn't know the difference</span>
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
     <div class="faq-answer" style="display:none">Recording yourself speaking triggers the same stress response — racing heart, filler words, self-consciousness. The anxiety is real even without an audience.</div>
 
-    <button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none'">
+    <button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none';if(this.classList.contains('open'))gtag('event','faq_opened',{event_category:'engagement',event_label:'avoidance_barrier'})">
       <span>🔓 The real barrier is avoidance</span>
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
     <div class="faq-answer" style="display:none">Most people never practise because every opportunity involves other people. This removes that barrier so you can actually start.</div>
 
-    <button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none'">
+    <button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none';if(this.classList.contains('open'))gtag('event','faq_opened',{event_category:'engagement',event_label:'ladder_not_destination'})">
       <span>🧱 It's a ladder, not a destination</span>
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
@@ -182,7 +183,7 @@ if(localStorage.getItem('nervless_level')&&(JSON.parse(localStorage.getItem('ner
     </div>
   </div>
   <div style="padding:0 24px 32px;text-align:center;">
-    <button class="btn-primary" onclick="window.location.href='/'">Begin your journey</button>
+    <button class="btn-primary" onclick="gtag('event','begin_journey_clicked',{event_category:'funnel',event_label:'Level_'+state.level});window.location.href='/'">Begin your journey</button>
     <div class="level-footer">Your level updates as you improve</div>
   </div>
 </div>
@@ -205,7 +206,7 @@ function showScreen(id){
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
 }
-function startAssessment(){state.currentQuestion=0;state.answers=[];showScreen('screen-assessment');renderQuestion();}
+function startAssessment(){gtag('event','assessment_started',{event_category:'funnel'});state.currentQuestion=0;state.answers=[];showScreen('screen-assessment');renderQuestion();}
 function renderQuestion(){
   const q=QUESTIONS[state.currentQuestion];
   document.getElementById('progress-fill').style.width=((state.currentQuestion+1)/QUESTIONS.length*100)+'%';
@@ -218,6 +219,7 @@ function renderQuestion(){
 function selectOption(index){
   document.querySelectorAll('.option-btn').forEach((b,i)=>b.classList.toggle('selected',i===index));
   state.answers[state.currentQuestion]=index;
+  gtag('event','question_answered',{event_category:'funnel',event_label:'Q'+(state.currentQuestion+1),value:index});
   setTimeout(()=>{state.currentQuestion++;if(state.currentQuestion>=QUESTIONS.length)calculateLevel();else renderQuestion();},300);
 }
 function calculateLevel(){
@@ -226,6 +228,7 @@ function calculateLevel(){
   localStorage.setItem('nervless_level',state.level);
   const entry=LEVEL_ENTRY[state.level];
   localStorage.setItem('nervless_current_session',entry);
+  gtag('event','assessment_completed',{event_category:'funnel',event_label:'Level_'+state.level,value:state.level});
   showLevelReveal();
 }
 function showLevelReveal(){
