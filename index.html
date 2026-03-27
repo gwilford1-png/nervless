@@ -163,10 +163,12 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .wave-bar:nth-child(2){animation-delay:.1s}.wave-bar:nth-child(3){animation-delay:.2s}.wave-bar:nth-child(4){animation-delay:.3s}.wave-bar:nth-child(5){animation-delay:.4s}.wave-bar:nth-child(6){animation-delay:.3s}.wave-bar:nth-child(7){animation-delay:.2s}.wave-bar:nth-child(8){animation-delay:.1s}
 .waveform:not(.active) .wave-bar{animation:none}
 .timer{font-size:40px;font-weight:300;color:var(--text);letter-spacing:-2px;font-variant-numeric:tabular-nums}.timer.recording{color:var(--red)}
-.record-btn{width:88px;height:88px;border-radius:50%;border:2px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:28px;transition:all 0.2s;background:var(--surface2);position:relative}
+.record-btn{width:72px;height:72px;border-radius:50%;border:4px solid #E0E0E0;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;background:white;position:relative;padding:0;-webkit-appearance:none}
+.record-btn::after{content:'';width:48px;height:48px;border-radius:50%;background:#E53935;transition:all 0.25s}
 .record-btn::before{content:'';position:absolute;inset:-8px;border-radius:50%;border:2px solid transparent;transition:all 0.3s}
-.record-btn.recording{background:rgba(255,107,138,0.15);border-color:var(--red)}
-.record-btn.recording::before{border-color:rgba(255,107,138,0.3);animation:pulse-ring 1.5s ease-in-out infinite}
+.record-btn.recording::after{width:24px;height:24px;border-radius:6px;background:#E53935}
+.record-btn.recording{border-color:#E53935}
+.record-btn.recording::before{border-color:rgba(229,57,53,0.3);animation:pulse-ring 1.5s ease-in-out infinite}
 @keyframes pulse-ring{0%{transform:scale(1);opacity:1}100%{transform:scale(1.3);opacity:0}}
 .record-hint{font-size:13px;color:var(--muted);text-align:center}
 #screen-feedback{background:var(--bg);overflow-y:auto;padding-bottom:calc(var(--nav-h) + 20px)}
@@ -230,18 +232,21 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .free-prompt-text{font-family:'DM Serif Display',serif;font-size:20px;line-height:1.45;color:var(--text);margin-bottom:16px}
 .free-recording-zone{display:flex;flex-direction:column;align-items:center;padding:0 16px 24px;gap:18px}
 .free-section-title{font-size:13px;font-weight:800;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;padding:0 20px;margin-bottom:8px}
-#screen-lesson{overflow-y:auto;padding-bottom:calc(var(--nav-h) + 80px);background:var(--bg)}
+#screen-lesson{overflow-y:auto;padding-bottom:calc(var(--nav-h) + 80px);background:var(--bg);display:block}
 .lesson-header{padding:44px 20px 16px;background:linear-gradient(180deg,#EDE8FF 0%,var(--bg) 100%)}
-.lesson-step-bar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1.5px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:center;gap:0}
-.step-item{display:flex;flex-direction:column;align-items:center;gap:4px;flex:0 0 auto;width:70px}
-.step-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;border:2px solid var(--border);background:var(--surface);color:var(--muted);transition:all 0.3s}
-.step-item.active .step-icon{border-color:var(--accent);background:var(--accent);color:white;box-shadow:0 0 12px rgba(91,79,217,0.3)}
-.step-item.done .step-icon{border-color:var(--green);background:var(--green);color:white}
-.step-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase}
-.step-item.active .step-label{color:var(--accent)}
-.step-item.done .step-label{color:var(--green)}
-.step-connector{width:32px;height:2px;background:var(--border);margin:0 -2px;margin-bottom:18px;transition:background 0.3s}
-.step-connector.done{background:var(--green)}
+.lesson-step-bar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:center;gap:0}
+.step-item{display:flex;flex-direction:column;align-items:center;gap:3px;flex:0 0 auto;width:64px}
+.step-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--border);background:var(--bg);transition:all 0.3s}
+.step-icon svg{width:14px;height:14px;stroke:var(--muted);stroke-width:2.5;fill:none}
+.step-item.active .step-icon{border-color:var(--text);background:var(--text)}
+.step-item.active .step-icon svg{stroke:white}
+.step-item.done .step-icon{border-color:var(--text);background:var(--text)}
+.step-item.done .step-icon svg{stroke:white}
+.step-label{font-size:9px;font-weight:700;color:var(--border);letter-spacing:0.5px;text-transform:uppercase;transition:color 0.3s}
+.step-item.active .step-label{color:var(--text)}
+.step-item.done .step-label{color:var(--text)}
+.step-connector{width:28px;height:1.5px;background:var(--border);margin:0 -2px;margin-bottom:16px;transition:background 0.3s}
+.step-connector.done{background:var(--text)}
 .lesson-title{font-family:'DM Serif Display',serif;font-size:24px;line-height:1.3;margin-top:4px}
 .lesson-title{font-family:'DM Serif Display',serif;font-size:22px;line-height:1.25;color:var(--text)}
 
@@ -363,17 +368,17 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <!-- Sticky step bar -->
   <div class="lesson-step-bar" id="lesson-step-bar">
     <div class="step-item active" id="step-read">
-      <div class="step-icon">📖</div>
+      <div class="step-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
       <div class="step-label">Read</div>
     </div>
     <div class="step-connector" id="conn-1"></div>
     <div class="step-item" id="step-check">
-      <div class="step-icon">✓</div>
+      <div class="step-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
       <div class="step-label">Check</div>
     </div>
     <div class="step-connector" id="conn-2"></div>
     <div class="step-item" id="step-talk">
-      <div class="step-icon">🎙</div>
+      <div class="step-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
       <div class="step-label">Talk</div>
     </div>
   </div>
@@ -415,7 +420,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="talk-recording-zone">
       <div class="waveform" id="lesson-waveform"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
       <div class="timer" id="lesson-timer">0:00</div>
-      <button class="record-btn" id="lesson-record-btn" onclick="toggleLessonRecording()">🎙</button>
+      <button class="record-btn" id="lesson-record-btn" onclick="toggleLessonRecording()"></button>
       <div class="record-hint" id="lesson-record-hint">Tap to start recording</div>
     </div>
   </div>
@@ -447,7 +452,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   <div class="recording-zone">
     <div class="waveform" id="waveform"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
     <div class="timer" id="timer">0:00</div>
-    <button class="record-btn" id="record-btn" onclick="toggleRecording()">&#127897;</button>
+    <button class="record-btn" id="record-btn" onclick="toggleRecording()"></button>
     <div class="record-hint" id="record-hint">Tap to start recording</div>
   </div>
 </div>
@@ -817,7 +822,6 @@ function showCurriculum(){
       const bestScore = getBestScore(session.id);
       const stars = getBestStars(session.id);
       const thresholds = getStarThresholds(session);
-      const canRetry = isPassed && stars < 3; // Can always retry for more stars
       const clickable = phaseUnlocked;
       const cardClass = isPassed ? 's-passed' : isU ? 's-current' : attempts > 0 ? 's-tried' : !phaseUnlocked ? 's-locked' : '';
       const numClass = isPassed ? 's-passed' : isU ? 's-current' : '';
@@ -830,10 +834,15 @@ function showCurriculum(){
       let statusRight = '';
       if (isPassed) {
         statusRight = '<div style="text-align:right;flex-shrink:0;line-height:1.2;"><div style="font-size:16px;color:var(--gold);">' + starDisplay(stars) + '</div>'
-          + (stars < 3 ? '<div style="font-size:10px;color:var(--muted);margin-top:2px;">'+bestScore+' / '+thresholds.star3+' for ★★★</div>' : '<div style="font-size:10px;color:var(--green);margin-top:2px;font-weight:700;">Mastered</div>')
+          + (stars < 3 ? '<div style="font-size:10px;color:var(--muted);margin-top:2px;">'+bestScore+' / '+thresholds.star3+'</div>' : '<div style="font-size:10px;color:var(--green);margin-top:2px;font-weight:700;">Mastered</div>')
           + '</div>';
       } else if (attempts > 0) {
-        statusRight = '<div style="text-align:right;flex-shrink:0;line-height:1.2;"><div style="font-size:14px;font-weight:800;color:var(--red)">'+bestScore+'</div><div style="font-size:10px;color:var(--muted);font-weight:600;">need '+thresholds.star1+' for ★</div></div>';
+        // Tried but not passed — show score as a mini progress indicator
+        const pct = Math.round((bestScore / thresholds.star1) * 100);
+        statusRight = '<div style="text-align:right;flex-shrink:0;line-height:1.2;min-width:60px;">'
+          + '<div style="font-size:13px;font-weight:800;color:var(--text);">' + bestScore + '<span style="font-size:10px;color:var(--muted);font-weight:600;"> / ' + thresholds.star1 + '</span></div>'
+          + '<div style="height:3px;background:var(--surface2);border-radius:2px;margin-top:4px;overflow:hidden;"><div style="height:100%;width:' + Math.min(100, pct) + '%;background:' + (pct >= 100 ? 'var(--green)' : pct >= 75 ? 'var(--gold)' : 'var(--red)') + ';border-radius:2px;"></div></div>'
+          + '</div>';
       } else if (isU) {
         statusRight = '<div class="current-arrow">Start ›</div>';
       }
@@ -841,7 +850,7 @@ function showCurriculum(){
       html+='<div class="session-card '+cardClass+'" '+(clickable?'onclick="loadSession('+session.id+')"':'')+'>'+
         '<div class="session-num '+numClass+'">'+session.id+'</div>'+
         '<div class="session-info">'+
-          '<div class="session-title">'+session.title+(canRetry?' <span style="font-size:11px;color:var(--gold);font-weight:700;">↩ improve</span>':'')+(attempts > 0 && !isPassed?' <span style="font-size:11px;color:var(--gold);font-weight:700;">↩ retry</span>':'')+'</div>'+
+          '<div class="session-title">'+session.title+'</div>'+
           '<div class="session-desc">'+session.what+'</div>'+
         '</div>'+
         statusRight+
@@ -1688,7 +1697,7 @@ function resetLessonRecording() {
   const w = document.getElementById('lesson-waveform');
   if (t) t.textContent = '0:00';
   if (t) t.classList.remove('recording');
-  if (b) { b.classList.remove('recording'); b.textContent = '🎙'; }
+  if (b) { b.classList.remove('recording'); b.textContent = ''; }
   if (h) h.textContent = 'Tap to start recording';
   if (w) w.classList.remove('active');
 }
@@ -1712,7 +1721,7 @@ async function startLessonRecording() {
     lessonState.isRecording = true;
     lessonState.seconds = 0;
     document.getElementById('lesson-record-btn').classList.add('recording');
-    document.getElementById('lesson-record-btn').textContent = '⏹';
+    document.getElementById('lesson-record-btn').textContent = '';
     document.getElementById('lesson-record-hint').textContent = 'Recording... tap to stop';
     document.getElementById('lesson-timer').classList.add('recording');
     document.getElementById('lesson-waveform').classList.add('active');
@@ -2445,7 +2454,7 @@ function showModelAnswer(modelAnswer, session) {
   document.body.appendChild(overlay);
 }
 
-function resetRecording(){state.isRecording=false;state.seconds=0;clearInterval(state.timerInterval);document.getElementById('timer').textContent='0:00';document.getElementById('timer').classList.remove('recording');document.getElementById('record-btn').classList.remove('recording');document.getElementById('record-btn').textContent='🎙';document.getElementById('record-hint').textContent='Tap to start recording';document.getElementById('waveform').classList.remove('active');}
+function resetRecording(){state.isRecording=false;state.seconds=0;clearInterval(state.timerInterval);document.getElementById('timer').textContent='0:00';document.getElementById('timer').classList.remove('recording');document.getElementById('record-btn').classList.remove('recording');document.getElementById('record-btn').textContent='';document.getElementById('record-hint').textContent='Tap to start recording';document.getElementById('waveform').classList.remove('active');}
 
 // ── AUDIO ANALYSIS ENGINE ──
 const audioAnalysis = { samples: [], pitchSamples: [], volumeSamples: [], audioCtx: null, analyser: null, interval: null };
@@ -2590,7 +2599,7 @@ async function startRecording(){
     state.mediaRecorder.ondataavailable=e=>{if(e.data.size>0)state.audioChunks.push(e.data);};
     state.mediaRecorder.onstop=()=>{stream.getTracks().forEach(t=>t.stop());cleanupAudioAnalysis();processFeedback();};
     state.mediaRecorder.start();state.isRecording=true;state.seconds=0;
-    document.getElementById('record-btn').classList.add('recording');document.getElementById('record-btn').textContent='⏹';
+    document.getElementById('record-btn').classList.add('recording');document.getElementById('record-btn').textContent='';
     document.getElementById('record-hint').textContent='Recording... tap to stop';
     document.getElementById('timer').classList.add('recording');document.getElementById('waveform').classList.add('active');
     state.timerInterval=setInterval(()=>{state.seconds++;const m=Math.floor(state.seconds/60),s=state.seconds%60;document.getElementById('timer').textContent=m+':'+s.toString().padStart(2,'0');},1000);
@@ -2745,7 +2754,7 @@ function resetFreeRecording() {
   clearInterval(freeState.timerInterval);
   const t=document.getElementById('free-timer'),b=document.getElementById('free-record-btn'),h=document.getElementById('free-record-hint'),w=document.getElementById('free-waveform');
   if(t){t.textContent='0:00';t.classList.remove('recording');}
-  if(b){b.classList.remove('recording');b.textContent='🎙';}
+  if(b){b.classList.remove('recording');b.textContent='';}
   if(h)h.textContent='Tap to start recording';
   if(w)w.classList.remove('active');
   const sb=document.getElementById('free-submit-btn');
@@ -2766,7 +2775,7 @@ async function toggleFreeRecording() {
       freeState.mediaRecorder.start();
       freeState.isRecording = true; freeState.seconds = 0;
       document.getElementById('free-record-btn').classList.add('recording');
-      document.getElementById('free-record-btn').textContent = '⏹';
+      document.getElementById('free-record-btn').textContent = '';
       document.getElementById('free-record-hint').textContent = 'Recording... tap to stop';
       document.getElementById('free-timer').classList.add('recording');
       document.getElementById('free-waveform').classList.add('active');
@@ -2909,7 +2918,7 @@ Return ONLY the follow-up question, nothing else.` }]
   document.getElementById('free-timer').textContent = '0:00';
   document.getElementById('free-timer').classList.remove('recording');
   document.getElementById('free-record-btn').classList.remove('recording');
-  document.getElementById('free-record-btn').textContent = '🎙';
+  document.getElementById('free-record-btn').textContent = '';
   document.getElementById('free-waveform').classList.remove('active');
   freeState.isRecording = false;
 }
@@ -2968,7 +2977,7 @@ function setActiveNav(tab) {
   <div class="free-recording-zone" id="free-recording-wrap" style="display:none">
     <div class="waveform" id="free-waveform"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
     <div class="timer" id="free-timer">0:00</div>
-    <button class="record-btn" id="free-record-btn" onclick="toggleFreeRecording()">🎙</button>
+    <button class="record-btn" id="free-record-btn" onclick="toggleFreeRecording()"></button>
     <div class="record-hint" id="free-record-hint">Tap to start recording</div>
   </div>
 </div>
