@@ -147,7 +147,7 @@ body {
 #screen-curriculum { overflow-y: auto; padding-bottom: calc(var(--nav-h) + 20px); }
 
 /* v7 header */
-.curr-header { padding: 52px 20px 16px; }
+.curr-header { padding: 16px 20px 16px; }
 .curr-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px; }
 .curr-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); letter-spacing: -0.3px; line-height: 1.15; margin-bottom: 16px; }
 
@@ -259,7 +259,7 @@ body {
 .record-hint { font-size: 13px; color: var(--text-muted); text-align: center; }
 
 /* ── LESSON SCREEN (Read → Check → Talk) ── */
-#screen-lesson { overflow-y: auto; padding-bottom: 40px; background: var(--bg); display: block; }
+#screen-lesson { overflow-y: auto; padding-bottom: 40px; background: var(--bg); }
 .lesson-step-bar {
   position: sticky; top: 0; z-index: 20;
   background: rgba(245,243,238,0.96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
@@ -491,7 +491,7 @@ body {
 .session-score { display: flex; align-items: baseline; gap: 1px; line-height: 1; }
 .session-score .score-num { font-size: 16px; font-weight: 900; letter-spacing: -0.5px; position: static; font-family: 'Nunito', sans-serif; }
 .session-score .score-num.zero { color: var(--text-faint); }
-.session-score .score-denom { font-size: 10px; font-weight: 700; color: var(--text-faint); letter-spacing: -0.2px; }
+.session-score .score-denom { font-size: 11px; font-weight: 700; color: var(--text-faint); letter-spacing: -0.2px; }
 .session-stars { font-size: 13px; letter-spacing: 1.5px; line-height: 1; }
 .session-stars.earned { color: #C4922A; }
 .session-stars.unearned { color: var(--border-strong); }
@@ -555,7 +555,6 @@ body {
     <div class="curr-rule"></div>
   </div>
   <div id="curriculum-list"></div>
-  <div style="padding:24px;text-align:center;"><button class="btn-secondary" onclick="showDashboard()">View my progress</button></div>
 </div>
 <!-- LESSON (Read → Check → Talk) -->
 <div class="screen" id="screen-lesson">
@@ -1171,7 +1170,7 @@ function showCurriculum() {
           <div class="session-score-block">
             <div class="session-score">
               <span class="score-num${score === 0 ? ' zero' : ''}" style="color:${sessionPtsColour}">${score}</span>
-              <span class="score-denom"> pts</span>
+              <span class="score-denom">/ 100</span>
             </div>
             <div class="session-stars ${starsClass}">${stars}</div>
           </div>`;
@@ -3388,7 +3387,7 @@ function setActiveNav(tab) {
 </div>
 
 <!-- BOTTOM NAV -->
-<nav class="bottom-nav" id="bottom-nav" style="display:none">
+<nav class="bottom-nav" id="bottom-nav">
   <button class="nav-item active" id="nav-journey" onclick="showCurriculum();setActiveNav('journey')">
     <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div>
     <span class="nav-label">Journey</span>
