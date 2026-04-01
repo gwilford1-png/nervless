@@ -1,3 +1,11 @@
+// ─── Data compatibility aliases ───────────────────────────────────────────────
+// LEVELS, LEVEL_ENTRY and CURRICULUM live in js/data.js which loads first.
+// These aliases make all existing references in this file work unchanged.
+const LEVELS = window.LEVELS;
+const LEVEL_ENTRY = window.LEVEL_ENTRY;
+const CURRICULUM = window.CURRICULUM;
+
+
 let state={currentQuestion:0,answers:[],level:2,currentSessionId:6,isRecording:false,timerInterval:null,seconds:0,mediaRecorder:null,audioChunks:[],sessions:JSON.parse(localStorage.getItem('nervless_sessions')||'[]'),completedSessions:JSON.parse(localStorage.getItem('nervless_completed')||'[]'),screenHistory:['screen-curriculum']};
 
 // Redirect to /start if no saved level — user hasn't done the assessment yet
@@ -2238,7 +2246,7 @@ Analyse this speech and return ONLY a JSON object with exactly this structure (n
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-opus-4-5',
+        model: 'claude-sonnet-4-20250514',
         max_tokens: 1024,
         messages: [{ role: 'user', content: claudePrompt }]
       })
@@ -2857,6 +2865,147 @@ function showDashboard(){
   else{list.innerHTML=sessions.slice(0,8).map(s=>{const c=s.score>=70?'var(--green)':s.score>=50?'var(--gold)':'var(--red)';return'<div class="history-card"><div><div class="history-prompt">'+(s.sessionTitle||'Practice session')+'</div><div class="history-meta">Level '+s.level+' &middot; '+s.date+'</div></div><div class="history-score" style="color:'+c+'">'+s.score+'</div></div>';}).join('');}
   setActiveNav('progress');
   showScreen('screen-dashboard');
+  renderProgressChart();
+}
+
+function renderProgressChart() {
+  const canvas = document.getElementById('progress-chart');
+  if (!canvas) return;
+
+  const scored = state.sessions.filter(s => typeof s.score === 'number' && s.score > 0);
+  const slice = scored.slice(-20);
+
+  if (slice.length < 2) {
+    const wrap = document.getElementById('progress-chart-wrap');
+    if (wrap) wrap.style.display = 'none';
+    return;
+  }
+
+  const wrap = document.getElementById('progress-chart-wrap');
+  if (wrap) wrap.style.display = 'block';
+
+  const labels = slice.map((s, i) => s.sessionTitle ? s.sessionTitle.split(' ').slice(0,2).join(' ') : 'Session ' + (i + 1));
+  const scores = slice.map(s => s.score);
+  const fillers = slice.map(s => typeof s.fillers === 'number' ? s.fillers : null);
+  const hasFillers = fillers.some(f => f !== null);
+
+  // Resolve CSS variables for chart colours
+  const style = getComputedStyle(document.documentElement);
+  const accentColor = style.getPropertyValue('--accent').trim() || '#5B4FD9';
+  const greenColor  = style.getPropertyValue('--green').trim()  || '#2E9E7A';
+  const mutedColor  = style.getPropertyValue('--text-faint').trim() || '#ADA89E';
+  const borderColor = style.getPropertyValue('--border').trim() || '#E4E0D8';
+
+  // Destroy previous instance if it exists
+  if (canvas._chartInstance) {
+    canvas._chartInstance.destroy();
+  }
+
+  const datasets = [
+    {
+      label: 'Score',
+      data: scores,
+      borderColor: accentColor,
+      backgroundColor: accentColor + '18',
+      borderWidth: 2.5,
+      pointRadius: 4,
+      pointBackgroundColor: accentColor,
+      tension: 0.35,
+      fill: true,
+      yAxisID: 'y'
+    }
+  ];
+
+  if (hasFillers) {
+    datasets.push({
+      label: 'Filler words',
+      data: fillers,
+      borderColor: greenColor,
+      backgroundColor: 'transparent',
+      borderWidth: 2,
+      pointRadius: 3,
+      pointBackgroundColor: greenColor,
+      borderDash: [4, 3],
+      tension: 0.35,
+      fill: false,
+      yAxisID: 'y2'
+    });
+  }
+
+  canvas._chartInstance = new Chart(canvas, {
+    type: 'line',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            color: mutedColor,
+            font: { family: 'Nunito', size: 11, weight: '700' },
+            boxWidth: 12,
+            padding: 16
+          }
+        },
+        tooltip: {
+          backgroundColor: '#fff',
+          titleColor: '#1A1814',
+          bodyColor: '#7A7268',
+          borderColor: borderColor,
+          borderWidth: 1,
+          titleFont: { family: 'Nunito', weight: '800', size: 12 },
+          bodyFont: { family: 'Nunito', size: 12 },
+          padding: 10,
+          cornerRadius: 10
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: mutedColor,
+            font: { family: 'Nunito', size: 10 },
+            maxRotation: 30,
+            maxTicksLimit: 8
+          },
+          grid: { color: borderColor }
+        },
+        y: {
+          min: 0, max: 100,
+          ticks: {
+            color: mutedColor,
+            font: { family: 'Nunito', size: 11 },
+            stepSize: 25
+          },
+          grid: { color: borderColor },
+          title: {
+            display: true,
+            text: 'Score',
+            color: mutedColor,
+            font: { family: 'Nunito', size: 11, weight: '700' }
+          }
+        },
+        ...(hasFillers ? {
+          y2: {
+            position: 'right',
+            min: 0,
+            ticks: {
+              color: greenColor,
+              font: { family: 'Nunito', size: 11 }
+            },
+            grid: { drawOnChartArea: false },
+            title: {
+              display: true,
+              text: 'Fillers',
+              color: greenColor,
+              font: { family: 'Nunito', size: 11, weight: '700' }
+            }
+          }
+        } : {})
+      }
+    }
+  });
 }
 function showLoading(t, sub){
   document.getElementById('loading-text').textContent=t;
@@ -3151,6 +3300,7 @@ function setActiveNav(tab) {
 // Explicit assignment guarantees inline onclick/oninput handlers can reach them.
 window.showCurriculum        = showCurriculum;
 window.showDashboard         = showDashboard;
+window.renderProgressChart   = renderProgressChart;
 window.showFreeTab           = showFreeTab;
 window.showScreen            = showScreen;
 window.loadSession           = loadSession;
