@@ -1,11 +1,3 @@
-// ─── Data compatibility aliases ───────────────────────────────────────────────
-// LEVELS, LEVEL_ENTRY and CURRICULUM live in js/data.js which loads first.
-// These aliases make all existing references in this file work unchanged.
-const LEVELS = window.LEVELS;
-const LEVEL_ENTRY = window.LEVEL_ENTRY;
-const CURRICULUM = window.CURRICULUM;
-
-
 let state={currentQuestion:0,answers:[],level:2,currentSessionId:6,isRecording:false,timerInterval:null,seconds:0,mediaRecorder:null,audioChunks:[],sessions:JSON.parse(localStorage.getItem('nervless_sessions')||'[]'),completedSessions:JSON.parse(localStorage.getItem('nervless_completed')||'[]'),screenHistory:['screen-curriculum']};
 
 // Redirect to /start if no saved level — user hasn't done the assessment yet
