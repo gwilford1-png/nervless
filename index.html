@@ -516,18 +516,20 @@ body {
 .course-overview.open .course-overview-chevron { transform: rotate(180deg); }
 .course-overview-body { display: none; padding: 0 16px 16px; }
 .course-overview.open .course-overview-body { display: block; }
-.co-phase { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.co-phase { padding: 14px 0; border-bottom: 1px solid var(--border); }
 .co-phase:last-child { border-bottom: none; }
-.co-phase-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.co-phase-label { font-size: 10px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+.co-phase-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .co-phase-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.co-phase-name { font-size: 13px; font-weight: 800; color: var(--text); }
-.co-phase-difficulty { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; }
-.co-phase-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; margin-bottom: 6px; }
-.co-phase-formats { display: flex; flex-wrap: wrap; gap: 4px; }
-.co-format-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 6px; background: var(--bg); color: var(--text-muted); white-space: nowrap; }
+.co-phase-name { font-size: 14px; font-weight: 800; color: var(--text); flex: 1; }
+.co-phase-difficulty { font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 2px 8px; border-radius: 100px; flex-shrink: 0; }
+.co-bullets { list-style: none; display: flex; flex-direction: column; gap: 5px; padding: 0; }
+.co-bullets li { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--text-muted); line-height: 1.45; }
+.co-bi { font-size: 13px; flex-shrink: 0; margin-top: 0px; }
+
 
 /* ── FORMAT BADGE on session cards ── */
-.session-format-badge { display: inline-flex; align-items: center; gap: 3px; font-size: 9px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; margin-top: 4px; background: var(--bg); color: var(--text-muted); }
+
 
 /* ── CONTENT CARDS (swipeable read) ── */
 .content-cards-wrap { position: relative; overflow: hidden; border-radius: 16px; margin-bottom: 14px; }
@@ -616,7 +618,7 @@ body {
   <div class="course-overview" id="course-overview">
     <button class="course-overview-btn" onclick="document.getElementById('course-overview').classList.toggle('open')">
       <div class="course-overview-left">
-        <div class="course-overview-icon">🗺️</div>
+        <div class="course-overview-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M6 17V9a6 6 0 0 1 6-6"/><path d="M18 7v8a6 6 0 0 1-6 6"/></svg></div>
         <div>
           <div class="course-overview-title">Your Journey — 9 Phases</div>
           <div class="course-overview-sub">See how the experience evolves</div>
@@ -625,87 +627,133 @@ body {
       <div class="course-overview-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
     </button>
     <div class="course-overview-body">
+
       <div class="co-phase">
+        <div class="co-phase-label" style="color:#5B4FD9">Phase 1</div>
         <div class="co-phase-header">
           <div class="co-phase-dot" style="background:#5B4FD9"></div>
-          <div class="co-phase-name">1. Understanding the Fear</div>
-          <div class="co-phase-difficulty" style="background:#EEEAFF;color:#5B4FD9">Easy</div>
+          <div class="co-phase-name">Understanding the Fear</div>
+          <div class="co-phase-difficulty" style="background:#E4F7F1;color:#1E8449">Easy</div>
         </div>
-        <div class="co-phase-desc">Learn why your brain panics. Content-led sessions with gentle voice exercises. You're just building awareness.</div>
-        <div class="co-phase-formats"><span class="co-format-tag">📖 Read</span><span class="co-format-tag">🎙️ Speak</span><span class="co-format-tag">🧠 Reframe</span></div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">🧠</span>Understand why your brain treats speaking like a threat</li>
+          <li><span class="co-bi">🔍</span>Map your personal triggers, symptoms, and anxiety history</li>
+          <li><span class="co-bi">🚪</span>Learn why avoidance makes fear worse — and what to do instead</li>
+        </ul>
       </div>
+
       <div class="co-phase">
+        <div class="co-phase-label" style="color:#2E9E7A">Phase 2</div>
         <div class="co-phase-header">
           <div class="co-phase-dot" style="background:#2E9E7A"></div>
-          <div class="co-phase-name">2. The Body First</div>
-          <div class="co-phase-difficulty" style="background:#E4F7F1;color:#2E9E7A">Easy</div>
+          <div class="co-phase-name">The Body First</div>
+          <div class="co-phase-difficulty" style="background:#E4F7F1;color:#1E8449">Easy</div>
         </div>
-        <div class="co-phase-desc">Breathing, tension release, grounding. Practical physical tools you'll use before every speaking situation.</div>
-        <div class="co-phase-formats"><span class="co-format-tag">📖 Read</span><span class="co-format-tag">🎙️ Speak</span></div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">🫁</span>Control your nervous system with breathing techniques</li>
+          <li><span class="co-bi">💪</span>Release physical tension before you speak</li>
+          <li><span class="co-bi">⚡</span>Reframe adrenaline as energy, not danger</li>
+        </ul>
       </div>
+
       <div class="co-phase">
+        <div class="co-phase-label" style="color:#C4922A">Phase 3</div>
         <div class="co-phase-header">
           <div class="co-phase-dot" style="background:#C4922A"></div>
-          <div class="co-phase-name">3. Gradual Exposure</div>
-          <div class="co-phase-difficulty" style="background:#FDF3E3;color:#C4922A">Medium</div>
+          <div class="co-phase-name">Gradual Exposure</div>
+          <div class="co-phase-difficulty" style="background:#FEF3E2;color:#C07000">Medium</div>
         </div>
-        <div class="co-phase-desc">Real scenarios appear. Introduce yourself, share opinions, handle questions. You pick your approach, then record.</div>
-        <div class="co-phase-formats"><span class="co-format-tag">🎯 Scenario</span><span class="co-format-tag">🎙️ Speak</span><span class="co-format-tag">🧠 Reframe</span></div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">🪜</span>Build an anxiety ladder from low-stakes to high-stakes</li>
+          <li><span class="co-bi">🎯</span>Practice introductions, opinions, and spontaneous answers</li>
+          <li><span class="co-bi">📈</span>Experience what your voice sounds like when you're not afraid</li>
+        </ul>
       </div>
+
       <div class="co-phase">
+        <div class="co-phase-label" style="color:#2980B9">Phase 4</div>
         <div class="co-phase-header">
           <div class="co-phase-dot" style="background:#2980B9"></div>
-          <div class="co-phase-name">4. Changing the Narrative</div>
-          <div class="co-phase-difficulty" style="background:#EBF5FB;color:#2980B9">Medium</div>
+          <div class="co-phase-name">Changing the Narrative</div>
+          <div class="co-phase-difficulty" style="background:#FEF3E2;color:#C07000">Medium</div>
         </div>
-        <div class="co-phase-desc">Challenge catastrophic thinking. Reality-test your fears with evidence. Build a kinder inner voice.</div>
-        <div class="co-phase-formats"><span class="co-format-tag">🧠 Reframe</span><span class="co-format-tag">🎙️ Speak</span><span class="co-format-tag">🪞 Reflect</span></div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">💭</span>Challenge the catastrophic thoughts that fuel anxiety</li>
+          <li><span class="co-bi">🔬</span>Reality-test your fears with actual evidence</li>
+          <li><span class="co-bi">🤝</span>Build a kinder, more accurate inner voice</li>
+        </ul>
       </div>
+
       <div class="co-phase">
+        <div class="co-phase-label" style="color:#D95470">Phase 5</div>
         <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#C0392B"></div>
-          <div class="co-phase-name">5. Finding Your Voice</div>
-          <div class="co-phase-difficulty" style="background:#FDEDEC;color:#C0392B">Medium</div>
+          <div class="co-phase-dot" style="background:#D95470"></div>
+          <div class="co-phase-name">Finding Your Voice</div>
+          <div class="co-phase-difficulty" style="background:#FEF3E2;color:#C07000">Medium</div>
         </div>
-        <div class="co-phase-desc">Stories, emotion, authenticity. Discover what makes you worth listening to. Speaking gets personal.</div>
-        <div class="co-phase-formats"><span class="co-format-tag">🎙️ Speak</span><span class="co-format-tag">🎯 Scenario</span></div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">✨</span>Discover what makes your communication style uniquely powerful</li>
+          <li><span class="co-bi">📖</span>Craft stories that land — and practise telling them</li>
+          <li><span class="co-bi">😄</span>Learn to use humour and authenticity without forcing it</li>
+        </ul>
       </div>
+
       <div class="co-phase">
+        <div class="co-phase-label" style="color:#7B6FEF">Phase 6</div>
         <div class="co-phase-header">
           <div class="co-phase-dot" style="background:#7B6FEF"></div>
-          <div class="co-phase-name">6. Raising the Stakes</div>
-          <div class="co-phase-difficulty" style="background:#F0EEFF;color:#7B6FEF">Hard</div>
+          <div class="co-phase-name">Raising the Stakes</div>
+          <div class="co-phase-difficulty" style="background:#FDEAEE;color:#B52040">Hard</div>
         </div>
-        <div class="co-phase-desc">Present to senior people, handle hostile questions, deliver bad news. Timed challenges and surprise prompts begin.</div>
-        <div class="co-phase-formats"><span class="co-format-tag">⏱️ Timed</span><span class="co-format-tag">⚡ Surprise</span><span class="co-format-tag">🎯 Scenario</span></div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">👔</span>Present confidently to senior people and sceptical audiences</li>
+          <li><span class="co-bi">🔥</span>Handle hostile questions without losing composure</li>
+          <li><span class="co-bi">⏱️</span>Perform under timed pressure and surprise prompts</li>
+        </ul>
       </div>
+
       <div class="co-phase">
+        <div class="co-phase-label" style="color:#E67E22">Phase 7</div>
         <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#D68910"></div>
-          <div class="co-phase-name">7. In-the-Moment Tools</div>
-          <div class="co-phase-difficulty" style="background:#FEF9E7;color:#D68910">Hard</div>
+          <div class="co-phase-dot" style="background:#E67E22"></div>
+          <div class="co-phase-name">In-the-Moment Tools</div>
+          <div class="co-phase-difficulty" style="background:#FDEAEE;color:#B52040">Hard</div>
         </div>
-        <div class="co-phase-desc">Recover from blanks, structure answers on the spot, debrief after speaking. The toolkit for real life.</div>
-        <div class="co-phase-formats"><span class="co-format-tag">⚡ Surprise</span><span class="co-format-tag">⏱️ Timed</span><span class="co-format-tag">🎙️ Speak</span></div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">🧩</span>Structure answers on the spot using the PREP framework</li>
+          <li><span class="co-bi">🔄</span>Recover when your mind goes blank mid-sentence</li>
+          <li><span class="co-bi">🎙️</span>Steady your voice and control pace under real pressure</li>
+        </ul>
       </div>
+
       <div class="co-phase">
+        <div class="co-phase-label" style="color:#8E44AD">Phase 8</div>
         <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#6C3483"></div>
-          <div class="co-phase-name">8. Performing Under Pressure</div>
-          <div class="co-phase-difficulty" style="background:#F5EEF8;color:#6C3483">Extra Hard</div>
+          <div class="co-phase-dot" style="background:#8E44AD"></div>
+          <div class="co-phase-name">Performing Under Pressure</div>
+          <div class="co-phase-difficulty" style="background:#FDEAEE;color:#8B0000">Extra Hard</div>
         </div>
-        <div class="co-phase-desc">Full presentations, hot seat conversations, vocal variety, reading the room. The AI pushes back.</div>
-        <div class="co-phase-formats"><span class="co-format-tag">🔥 Hot Seat</span><span class="co-format-tag">⏱️ Timed</span><span class="co-format-tag">⚡ Surprise</span><span class="co-format-tag">🎯 Scenario</span></div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">🎤</span>Deliver full presentations with vocal variety and presence</li>
+          <li><span class="co-bi">👥</span>Read the room and adapt in real time</li>
+          <li><span class="co-bi">🏆</span>Perform at your peak when the stakes are highest</li>
+        </ul>
       </div>
+
       <div class="co-phase">
+        <div class="co-phase-label" style="color:#27AE60">Phase 9</div>
         <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#1E8449"></div>
-          <div class="co-phase-name">9. Maintenance</div>
-          <div class="co-phase-difficulty" style="background:#E9F7EF;color:#1E8449">Ongoing</div>
+          <div class="co-phase-dot" style="background:#27AE60"></div>
+          <div class="co-phase-name">Maintenance</div>
+          <div class="co-phase-difficulty" style="background:#EEF2F7;color:#5A7A9A">Ongoing</div>
         </div>
-        <div class="co-phase-desc">Weekly check-ins, challenge sessions, progress reviews. Keep what you've built.</div>
-        <div class="co-phase-formats"><span class="co-format-tag">🪞 Reflect</span><span class="co-format-tag">🎙️ Speak</span></div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">📊</span>Measure how far you've come with an updated anxiety ladder</li>
+          <li><span class="co-bi">🔁</span>Weekly sessions to keep your skills sharp</li>
+          <li><span class="co-bi">🌱</span>Build the long-term habits that make progress stick</li>
+        </ul>
       </div>
+
     </div>
   </div>
   <div id="curriculum-list"></div>
@@ -1331,9 +1379,10 @@ function showCurriculum() {
       return `<div class="dot ${isDone ? 'dot-done' : isCurr ? 'dot-current' : 'dot-todo'}"></div>`;
     }).join('');
 
-    // Points: max 100 per session, colour-banded
-    const maxPts = sessions.length * 100;
-    const earnedPts = sessions.reduce((sum, s) => sum + getBestScore(s.id), 0);
+    // Points: max 100 per scored session only (non-speaking sessions excluded)
+    const scoredSessions = sessions.filter(s => s.scored !== false);
+    const maxPts = scoredSessions.length * 100;
+    const earnedPts = scoredSessions.reduce((sum, s) => sum + getBestScore(s.id), 0);
     const ptsPct = maxPts > 0 ? earnedPts / maxPts : 0;
     const ptsColour = phState === 'locked' ? 'var(--text-faint)'
       : earnedPts === 0 ? 'var(--text-faint)'
@@ -1404,10 +1453,10 @@ function showCurriculum() {
           const isComplete = isDone;
           scoreBlock = `
             <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;">
-              <div style="width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid ${isComplete ? 'var(--green)' : 'var(--border)'};background:${isComplete ? 'var(--green)' : 'transparent'};">
-                ${isComplete ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+              <div style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid ${isComplete ? '#2E9E7A' : 'var(--border)'};background:${isComplete ? '#2E9E7A' : 'transparent'};">
+                ${isComplete ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
               </div>
-              <div style="font-size:10px;font-weight:800;color:${isComplete ? 'var(--green)' : 'var(--text-faint)'};letter-spacing:0.03em;text-transform:uppercase;">${isComplete ? 'Done' : 'Complete'}</div>
+              <div style="font-size:10px;font-weight:800;color:${isComplete ? '#2E9E7A' : 'var(--text-faint)'};letter-spacing:0.03em;text-transform:uppercase;">${isComplete ? 'Done' : 'Complete'}</div>
             </div>`;
           passLabel = `<div style="font-size:10px;font-weight:800;color:var(--text-faint);letter-spacing:0.03em;text-transform:uppercase;margin-top:2px;">No recording needed</div>`;
         }
@@ -1424,7 +1473,7 @@ function showCurriculum() {
                 <div class="session-title">${s.title}</div>
                 <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
                   ${passLabel}
-                  ${s.format ? `<div class="session-format-badge" style="background:${p.light};color:${p.color}">${{read_speak:'📖 Read & Speak',read_only:'📖 Content',scenario:'🎯 Scenario',timed:'⏱️ Timed',surprise:'⚡ Surprise',hot_seat:'🔥 Hot Seat',reframe:'🧠 Reframe',reflect:'🪞 Reflect'}[s.format]||s.format}</div>` : ''}
+
                 </div>
               </div>
               ${scoreBlock}
@@ -1552,8 +1601,9 @@ function drawAllArcs(phases, relevant, done) {
   phases.forEach(p => {
     const sessions = relevant.filter(s => s.phase === p.num);
     if (!sessions.length) return;
-    const maxPts = sessions.length * 100;
-    const earnedPts = sessions.reduce((sum, s) => sum + getBestScore(s.id), 0);
+    const scoredSessions = sessions.filter(s => s.scored !== false);
+    const maxPts = scoredSessions.length * 100;
+    const earnedPts = scoredSessions.reduce((sum, s) => sum + getBestScore(s.id), 0);
     const ptsPct = maxPts > 0 ? earnedPts / maxPts : 0;
     const colour = earnedPts === 0 ? '#E4E0D8'
       : ptsPct >= 0.95 ? '#C4922A'
