@@ -495,12 +495,12 @@ body {
 .session-stars { font-size: 13px; letter-spacing: 1.5px; line-height: 1; }
 .session-stars.earned { color: #C4922A; }
 .session-stars.unearned { color: var(--border-strong); }
-.session-desc { font-size: 12px; font-weight: 600; color: var(--text-muted); line-height: 1.65; margin-top: 10px; margin-bottom: 16px; margin-right: 72px; padding-left: 10px; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.session-desc { font-size: 13px; font-weight: 600; color: var(--text-muted); line-height: 1.7; margin-top: 8px; margin-bottom: 20px; padding-left: 10px; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
 .session-desc strong { font-weight: 900; color: var(--text); }
 .session-btn-row { display: flex; justify-content: center; padding-top: 4px; }
-.btn-start-session { display: inline-block; padding: 11px 32px; border-radius: 100px; border: none; font-size: 13px; font-weight: 900; font-family: 'Nunito', sans-serif; color: #fff; cursor: pointer; letter-spacing: -0.1px; transition: opacity 0.15s, transform 0.1s; }
+.btn-start-session { display: inline-block; padding: 14px 36px; border-radius: 14px; border: none; font-size: 15px; font-weight: 900; font-family: 'Nunito', sans-serif; color: #fff; cursor: pointer; letter-spacing: -0.1px; transition: opacity 0.15s, transform 0.1s; }
 .btn-start-session:active { opacity: 0.82; transform: scale(0.97); }
-.btn-redo-session { display: inline-block; padding: 10px 28px; border-radius: 100px; border: 1.5px solid var(--border-strong); font-size: 13px; font-weight: 800; font-family: 'Nunito', sans-serif; color: var(--text-muted); background: var(--surface); cursor: pointer; letter-spacing: -0.1px; transition: opacity 0.15s; }
+.btn-redo-session { display: inline-block; padding: 13px 32px; border-radius: 14px; border: 1.5px solid var(--border-strong); font-size: 14px; font-weight: 800; font-family: 'Nunito', sans-serif; color: var(--text-muted); background: var(--surface); cursor: pointer; letter-spacing: -0.1px; transition: opacity 0.15s; }
 .btn-redo-session:active { opacity: 0.7; }
 
 </style>
@@ -536,14 +536,13 @@ body {
 <!-- CURRICULUM -->
 <div class="screen" id="screen-curriculum">
   <div class="curr-header">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div style="display:flex;justify-content:center;align-items:center;position:relative;margin-bottom:12px">
       <div style="font-family:'DM Serif Display',serif;font-size:24px;letter-spacing:-0.5px;font-style:italic;color:var(--text)">Nerv<span style="color:var(--accent)">less</span></div>
-      <button class="burger-btn" id="burger-btn" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+      <button class="burger-btn" id="burger-btn" onclick="toggleMenu()" style="position:absolute;right:0;transform:scale(0.82);transform-origin:right center;"><span></span><span></span><span></span></button>
     </div>
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+    <div style="margin-bottom:4px">
       <div class="curr-eyebrow">Your Journey</div>
     </div>
-    <div class="curr-title" id="curr-level-title">Finding Your Voice</div>
     <div class="curr-progress-strip">
       <div class="curr-progress-top">
         <div class="curr-progress-num" id="stat-done-num">0 <span>/ 59 sessions</span></div>
@@ -959,7 +958,7 @@ function showCurriculum() {
   const entry = LEVEL_ENTRY[state.level];
 
   // Update header
-  document.getElementById('curr-level-title').textContent = LEVELS[state.level].title;
+  // level title removed from header
   const totalDone = passed.length;
   const currSession = CURRICULUM.find(s => s.id === CURRENT);
   const currPhase = currSession ? currSession.phase : 1;
@@ -1158,25 +1157,24 @@ function showCurriculum() {
         const bestScore = getBestScore(s.id);
         const score = bestScore;
         const t = getStarThresholds(s);
-        const stars = score >= t.star3 ? '★★★' : score >= t.star2 ? '★★☆' : score >= t.star1 ? '★☆☆' : '☆☆☆';
-        const starsClass = isDone && score >= t.star1 ? 'earned' : 'unearned';
+
         const scoreColour = isDone ? p.color : '';
 
-        // Colour score by performance band
-        const sessionPtsColour = score === 0 ? 'var(--text-faint)'
-          : score >= 95 ? '#C4922A'
-          : score >= 80 ? 'var(--green)'
-          : score >= 50 ? '#E67E22'
-          : 'var(--red)';
-
+        // Mini arc gauge per session
+        const hasPassed = isDone && score >= t.star1;
+        const sessionArcId = 'sarc-' + s.id;
+        const passScore = t.star1;
+        // Arc + score only — pass label moves under title
         const scoreBlock = `
-          <div class="session-score-block">
-            <div class="session-score">
-              <span class="score-num${score === 0 ? ' zero' : ''}" style="color:${sessionPtsColour}">${score}</span>
-              <span class="score-denom">/ 100</span>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;">
+            <div style="position:relative;width:48px;height:48px;">
+              <canvas id="${sessionArcId}" width="48" height="48" style="display:block;"></canvas>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;pointer-events:none;${hasPassed ? '' : 'opacity:0.3;'}">⭐</div>
             </div>
-            <div class="session-stars ${starsClass}">${stars}</div>
+            <div style="font-size:12px;font-weight:900;color:${hasPassed ? '#C4922A' : score > 0 ? 'var(--text-muted)' : 'var(--text-faint)'};">${score}<span style="font-size:9px;font-weight:600;color:var(--text-faint);">/100</span></div>
           </div>`;
+        // Pass label sits under the session title
+        const passLabel = `<div style="font-size:10px;font-weight:800;color:${hasPassed ? '#C4922A' : 'var(--text-faint)'};letter-spacing:0.03em;text-transform:uppercase;margin-top:2px;">${hasPassed ? '★ Passed' : 'Pass: ' + passScore + '/100'}</div>`;
 
         const btn = isDone
           ? `<button class="btn-redo-session" onclick="event.stopPropagation();loadSession(${s.id})">Redo Session</button>`
@@ -1188,15 +1186,18 @@ function showCurriculum() {
               <div class="session-title-block">
                 <div class="session-label" style="color:${p.color}">Session ${si + 1}</div>
                 <div class="session-title">${s.title}</div>
+                ${passLabel}
               </div>
               ${scoreBlock}
             </div>
-            <div class="session-desc">${V7_DESC[s.id] || s.what || ''}</div>
+            <div class="session-desc" style="max-width:calc(100% - 64px);">${V7_DESC[s.id] || s.what || ''}</div>
             <div class="session-btn-row">${btn}</div>
           </div>`;
       }).join('');
       sessionsList = `<div class="phase-sessions">${rows}</div>`;
     }
+
+    const canvasId = 'arc-' + p.num;
 
     return `
       <div class="phase-card state-${phState}${isOpen ? ' open' : ''}"
@@ -1204,17 +1205,32 @@ function showCurriculum() {
            style="${style}">
         <div class="phase-accent"></div>
         <div class="phase-body">
+          <!-- Top row: label + badge -->
           <div class="phase-top-row">
             <div class="phase-number" style="color:${p.color}">Phase ${p.num}</div>
             <div>${badge}</div>
           </div>
+          <!-- Name row -->
           <div class="phase-name">${p.name}</div>
-          <div class="progress-row">
-            <div class="prog-pill">
+          <!-- Progress dots + arc gauge aligned on same row -->
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;">
+            <div class="prog-pill" style="flex-shrink:0;">
               <div class="prog-pill-count">${pillLabel}</div>
               <div class="dots-inline">${dots}</div>
             </div>
-            ${ptsDisplay}
+            <!-- Arc gauge — same height as badge pill above it -->
+            <div style="flex-shrink:0;display:flex;align-items:center;gap:6px;">
+              <div style="position:relative;width:52px;height:52px;">
+                <canvas id="${canvasId}" width="52" height="52" style="display:block;"></canvas>
+                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;pointer-events:none;">⭐</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-start;">
+                <div style="display:flex;align-items:baseline;gap:1px;">
+                  <span id="arc-score-${p.num}" style="font-size:16px;font-weight:900;color:${ptsColour};letter-spacing:-0.5px;">${earnedPts}</span>
+                  <span style="font-size:10px;font-weight:700;color:var(--text-faint);">/${maxPts} pts</span>
+                </div>
+              </div>
+            </div>
           </div>
           <div style="font-size:10px;font-weight:900;letter-spacing:0.12em;text-transform:uppercase;color:var(--pc);opacity:0.7;margin-bottom:8px;">What you'll achieve</div>
           <div class="outcomes">${outcomes}</div>
@@ -1228,6 +1244,85 @@ function showCurriculum() {
   document.getElementById('curriculum-list').innerHTML = '<div class="v7-phase-list">' + html + '</div>';
   setActiveNav('journey');
   showScreen('screen-curriculum');
+  // Draw arc gauges after DOM is updated
+  requestAnimationFrame(() => {
+    drawAllArcs(V7_PHASES, relevant, DONE);
+    // Draw session arcs for any phase that starts open
+    V7_PHASES.forEach(p => {
+      const sessions = relevant.filter(s => s.phase === p.num);
+      const card = document.getElementById('v7-pc-' + p.num);
+      if (card && card.classList.contains('open')) drawSessionArcs(sessions);
+    });
+  });
+}
+
+function drawArcGauge(canvasId, earnedPts, maxPts, colour, animate) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = 26, cy = 26, r = 20;
+  const startA = Math.PI * 0.75;
+  const spanA = Math.PI * 1.5;
+
+  function draw(frac) {
+    ctx.clearRect(0, 0, 72, 72);
+    // Track
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, startA, startA + spanA, false);
+    ctx.strokeStyle = '#E4E0D8';
+    ctx.lineWidth = 7;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+    // Fill
+    if (frac > 0.01) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, startA, startA + spanA * Math.min(frac, 1), false);
+      ctx.strokeStyle = colour;
+      ctx.lineWidth = 7;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    }
+    // Ticks at thresholds
+    [250, 400, 475, maxPts].forEach(t => {
+      if (t > maxPts) return;
+      const a = startA + (t / maxPts) * spanA;
+      ctx.beginPath();
+      ctx.moveTo(cx + (r - 4) * Math.cos(a), cy + (r - 4) * Math.sin(a));
+      ctx.lineTo(cx + (r + 4) * Math.cos(a), cy + (r + 4) * Math.sin(a));
+      ctx.strokeStyle = 'rgba(255,255,255,0.95)';
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    });
+  }
+
+  if (!animate) { draw(earnedPts / maxPts); return; }
+
+  let frame = 0, total = 50;
+  function step() {
+    frame++;
+    const ease = 1 - Math.pow(1 - frame / total, 3);
+    draw((earnedPts / maxPts) * ease);
+    if (frame < total) requestAnimationFrame(step);
+    else draw(earnedPts / maxPts);
+  }
+  requestAnimationFrame(step);
+}
+
+function drawAllArcs(phases, relevant, done) {
+  phases.forEach(p => {
+    const sessions = relevant.filter(s => s.phase === p.num);
+    if (!sessions.length) return;
+    const maxPts = sessions.length * 100;
+    const earnedPts = sessions.reduce((sum, s) => sum + getBestScore(s.id), 0);
+    const ptsPct = maxPts > 0 ? earnedPts / maxPts : 0;
+    const colour = earnedPts === 0 ? '#E4E0D8'
+      : ptsPct >= 0.95 ? '#C4922A'
+      : ptsPct >= 0.80 ? '#2E9E7A'
+      : ptsPct >= 0.50 ? '#E67E22'
+      : '#D95470';
+    drawArcGauge('arc-' + p.num, earnedPts, maxPts, colour, true);
+  });
 }
 
 function v7ToggleCard(n, event) {
@@ -1237,6 +1332,56 @@ function v7ToggleCard(n, event) {
   const sessions = CURRICULUM.filter(s => s.phase === n);
   const isNowOpen = card.classList.toggle('open');
   label.textContent = isNowOpen ? 'Hide sessions' : 'Show ' + sessions.length + ' sessions';
+  if (isNowOpen) requestAnimationFrame(() => drawSessionArcs(sessions));
+}
+
+function drawSessionArc(canvasId, score, passScore, hasPassed) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const cx = 24, cy = 24, r = 18;
+  const startA = Math.PI * 0.75;
+  const spanA = Math.PI * 1.5;
+
+  ctx.clearRect(0, 0, 48, 48);
+
+  // Track
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, startA, startA + spanA, false);
+  ctx.strokeStyle = '#E4E0D8';
+  ctx.lineWidth = 5;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+
+  // Fill — gold if passed, muted amber if attempted but not passed
+  if (score > 0) {
+    const frac = Math.min(score / 100, 1);
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, startA, startA + spanA * frac, false);
+    ctx.strokeStyle = hasPassed ? '#C4922A' : '#CEC9BF';
+    ctx.lineWidth = 5;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+  }
+
+  // Single tick at pass threshold
+  const passA = startA + (passScore / 100) * spanA;
+  ctx.beginPath();
+  ctx.moveTo(cx + (r - 3) * Math.cos(passA), cy + (r - 3) * Math.sin(passA));
+  ctx.lineTo(cx + (r + 3) * Math.cos(passA), cy + (r + 3) * Math.sin(passA));
+  ctx.strokeStyle = 'rgba(255,255,255,0.95)';
+  ctx.lineWidth = 1.5;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+}
+
+function drawSessionArcs(sessions) {
+  sessions.forEach(s => {
+    const score = getBestScore(s.id);
+    const t = getStarThresholds(s);
+    const hasPassed = hasPassedSession(s.id);
+    drawSessionArc('sarc-' + s.id, score, t.star1, hasPassed);
+  });
 }
 
 function toggleMenu(){
