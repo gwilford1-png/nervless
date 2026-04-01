@@ -42,6 +42,7 @@
 }
 </script>
 <link rel="stylesheet" href="css/styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
 <div class="loading-screen" id="loading">
@@ -525,6 +526,12 @@
     <div class="stat-card"><div class="stat-value" id="stat-sessions">0</div><div class="stat-label">Sessions</div></div>
     <div class="stat-card"><div class="stat-value" id="stat-avg">-</div><div class="stat-label">Avg score</div></div>
     <div class="stat-card"><div class="stat-value" id="stat-mins">0</div><div class="stat-label">Minutes</div></div>
+  </div>
+  <div id="progress-chart-wrap" style="display:none;margin:0 20px 8px;background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:18px 16px 12px;">
+    <div style="font-size:11px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;">Progress Trends</div>
+    <div style="position:relative;height:160px;">
+      <canvas id="progress-chart"></canvas>
+    </div>
   </div>
   <div class="section-title">Recent sessions</div>
   <div class="history-list" id="history-list"><div style="text-align:center;color:var(--muted);padding:32px;font-size:15px">No sessions yet.</div></div>
