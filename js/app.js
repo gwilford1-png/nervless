@@ -2481,84 +2481,58 @@ function renderFeedback(rec, transcript, analysis) {
     }
   }
 
-  // Star bar builder
-  function buildStarBar(score, t, bestScore) {
-    const pct = Math.min(100, score);
-    const barColor = score >= t.star3 ? 'var(--green)' : score >= t.star1 ? 'var(--gold)' : 'var(--red)';
-    // Marker positions as percentages of the bar
-    const m1 = t.star1;
-    const m2 = t.star2;
-    const m3 = t.star3;
-    
-    return '<div style="margin:12px 0 4px;">'
-      // Best score indicator
-      + (bestScore > 0 && bestScore !== score ? '<div style="font-size:11px;color:var(--muted);text-align:right;margin-bottom:6px;">Best: <strong>' + bestScore + '</strong></div>' : '')
-      // Bar container
-      + '<div style="position:relative;height:20px;background:var(--surface2);border-radius:10px;overflow:hidden;">'
-      // Animated fill — starts at 0, animates to score via CSS
-      + '<div id="star-bar-fill" style="position:absolute;left:0;top:0;height:100%;width:0%;background:'+barColor+';border-radius:10px;transition:width 1s cubic-bezier(0.4,0,0.2,1);"></div>'
-      + '</div>'
-      // Threshold markers below bar
-      + '<div style="position:relative;height:20px;margin-top:2px;">'
-      + '<div style="position:absolute;left:'+m1+'%;transform:translateX(-50%);text-align:center;"><div style="font-size:12px;'+(score>=m1?'color:var(--gold)':'color:var(--muted);opacity:0.5')+'">★</div><div style="font-size:9px;color:var(--muted);font-weight:700;">'+t.star1+'</div></div>'
-      + '<div style="position:absolute;left:'+m2+'%;transform:translateX(-50%);text-align:center;"><div style="font-size:12px;'+(score>=m2?'color:var(--gold)':'color:var(--muted);opacity:0.5')+'">★★</div><div style="font-size:9px;color:var(--muted);font-weight:700;">'+t.star2+'</div></div>'
-      + '<div style="position:absolute;left:'+Math.min(m3, 96)+'%;transform:translateX(-50%);text-align:center;"><div style="font-size:12px;'+(score>=m3?'color:var(--gold)':'color:var(--muted);opacity:0.5')+'">★★★</div><div style="font-size:9px;color:var(--muted);font-weight:700;">'+t.star3+'</div></div>'
-      + '</div>'
-      + '</div>';
-  }
-
-  // Stars display
-  function starStr(n) {
-    return '<span style="color:var(--gold);font-size:24px;letter-spacing:4px;">' + '★'.repeat(n) + '</span><span style="color:var(--border);font-size:24px;letter-spacing:4px;">' + '★'.repeat(3-n) + '</span>';
-  }
+ // ─────────────────────────────────────────────────────────────────────────────
+// PASTE THIS BLOCK INTO app.js
+//
+// 1. Find the line:   // Star bar builder
+// 2. Select from there all the way down to (but NOT including) the line:
+//        showScreen('screen-feedback');
+// 3. Delete everything you selected
+// 4. Paste this block in its place
+// ─────────────────────────────────────────────────────────────────────────────
 
   if (banner) {
     banner.style.display = 'block';
+    const passed = a.overallScore >= thresholds.star1;
 
-    if (starsEarned >= 1) {
-      // Got at least 1 star — session passed
-      const isNewBest = starsEarned > bestStars || !alreadyPassed;
-      const prevBest = getBestScore(rec.sessionId || state.currentSessionId);
-      banner.style.background = starsEarned === 3 ? 'rgba(46,158,122,0.1)' : 'rgba(196,146,42,0.08)';
-      banner.style.border = '1px solid ' + (starsEarned === 3 ? 'rgba(46,158,122,0.3)' : 'rgba(196,146,42,0.25)');
-      banner.innerHTML = '<div style="margin-bottom:8px;">' + starStr(starsEarned) + '</div>'
-        + '<div style="font-weight:700;color:' + (starsEarned === 3 ? 'var(--green)' : 'var(--gold)') + ';margin-bottom:4px;">'
-        + (starsEarned === 3 ? 'Perfect score!' : starsEarned === 2 ? 'Great work!' : 'Session passed!') + '</div>'
-        + '<div style="font-size:13px;color:var(--muted);margin-bottom:2px;">You scored ' + a.overallScore
-        + (starsEarned < 3 ? ' — need ' + (starsEarned === 1 ? thresholds.star2 + ' for ★★' : thresholds.star3 + ' for ★★★') : ' — mastered!') + '</div>'
-        + buildStarBar(a.overallScore, thresholds, prevBest);
-      // Animate bar fill after render
-      setTimeout(() => { const fill = document.getElementById('star-bar-fill'); if (fill) fill.style.width = a.overallScore + '%'; }, 100);
+    if (passed) {
+      banner.style.background = 'rgba(46,158,122,0.1)';
+      banner.style.border = '1px solid rgba(46,158,122,0.3)';
+      banner.innerHTML =
+        '<div style="font-size:32px;margin-bottom:6px;">✓</div>'
+        + '<div style="font-weight:800;color:var(--green);font-size:18px;margin-bottom:4px;">Session passed</div>'
+        + '<div style="font-size:13px;color:var(--muted);">You scored ' + a.overallScore + ' / 100</div>';
 
       if (btn) {
         if (!alreadyPassed) {
-          btn.textContent = 'Continue ★'; btn.style.background = 'var(--green)'; btn.style.width = '100%'; btn.onclick = completeSession;
-        } else if (isNewBest) {
-          btn.textContent = 'Save new best ★'; btn.style.background = 'var(--gold)'; btn.style.width = '100%'; btn.onclick = () => { completeSession(); };
+          btn.textContent = 'Continue →';
+          btn.style.background = 'var(--green)';
+          btn.style.width = '100%';
+          btn.onclick = completeSession;
         } else {
-          btn.textContent = 'Back to journey'; btn.style.background = ''; btn.style.width = '100%'; btn.onclick = showCurriculum;
+          btn.textContent = 'Back to journey';
+          btn.style.background = '';
+          btn.style.width = '100%';
+          btn.onclick = showCurriculum;
         }
       }
 
     } else {
-      // 0 stars — didn't reach 1-star threshold
-      const prevBestFail = getBestScore(rec.sessionId || state.currentSessionId);
       banner.style.background = 'rgba(217,84,112,0.06)';
       banner.style.border = '1px solid rgba(217,84,112,0.2)';
-      banner.innerHTML = '<div style="margin-bottom:8px;">' + starStr(0) + '</div>'
-        + '<div style="font-weight:700;color:var(--red);margin-bottom:4px;">Not there yet</div>'
-        + '<div style="font-size:13px;color:var(--muted);margin-bottom:2px;">You scored ' + a.overallScore + ' — need ' + thresholds.star1 + ' for your first ★</div>'
-        + buildStarBar(a.overallScore, thresholds, prevBestFail)
-        + (alreadyPassed ? '<div style="font-size:12px;color:var(--muted);margin-top:6px;">Your previous ★ rating is kept.</div>' : '');
-      // Animate bar fill
-      setTimeout(() => { const fill = document.getElementById('star-bar-fill'); if (fill) fill.style.width = a.overallScore + '%'; }, 100);
+      banner.innerHTML =
+        '<div style="font-size:32px;margin-bottom:6px;">✗</div>'
+        + '<div style="font-weight:800;color:var(--red);font-size:18px;margin-bottom:4px;">Not yet</div>'
+        + '<div style="font-size:13px;color:var(--muted);">You scored ' + a.overallScore + ' — need ' + thresholds.star1 + ' to pass</div>'
+        + (alreadyPassed ? '<div style="font-size:12px;color:var(--muted);margin-top:6px;">Your previous pass is kept.</div>' : '');
 
       if (btn) {
-        btn.textContent = 'Try again'; btn.style.background = ''; btn.style.width = '100%';
+        btn.textContent = 'Try again';
+        btn.style.background = '';
+        btn.style.width = '100%';
         btn.onclick = () => loadSession(rec.sessionId || state.currentSessionId);
       }
 
-      // Show Me How button
       const actionsDiv = document.getElementById('feedback-actions');
       const existingShowHow = document.getElementById('show-how-btn');
       if (existingShowHow) existingShowHow.remove();
@@ -2575,6 +2549,10 @@ function renderFeedback(rec, transcript, analysis) {
     }
   }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// END OF PASTE — the next line in app.js should be:
+//   showScreen('screen-feedback');
+// ─────────────────────────────────────────────────────────────────────────────
   showScreen('screen-feedback');
 }
 
