@@ -1,630 +1,622 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "vvb018xk7t");
+</script>
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-JZG8MESD88"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-JZG8MESD88');</script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nervless — Journey</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#F4F2EE;
-  --surface:#FFFFFF;
-  --surface-2:#FBFAF9;
-  --ink:#272430;
-  --ink-soft:#6F6B78;
-  --muted:#A6A2AD;
-  --line:#ECE9E4;
-  --line-soft:#F3F1ED;
-  --accent:#C77B5A;
-  --accent-soft:#F7ECE8;
-  --accent-line:#EFDAD1;
-  --done:#6E8B7B;
-  --done-soft:#E7EDE8;
-  --slate:#8A93A8;
-  --radius:24px;
-  --radius-sm:16px;
-  --font:'Plus Jakarta Sans';
-  --shadow-card:0 1px 2px rgba(39,36,48,.04), 0 6px 18px rgba(39,36,48,.05);
-  --shadow-lift:0 2px 6px rgba(39,36,48,.06), 0 14px 34px rgba(39,36,48,.10);
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Nervless — Overcome Public Speaking Anxiety With AI Practice</title>
+<meta name="description" content="Nervless helps you overcome public speaking anxiety through private, structured AI-powered practice. Real feedback on your actual voice, at your own pace. No judgement. Starts free.">
+<meta name="keywords" content="public speaking anxiety, presentation anxiety, fear of public speaking, speech anxiety app, overcome glossophobia, speaking confidence, nervless">
+<link rel="canonical" href="https://nervless.app/">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#F7F5F0">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nervless.app/">
+<meta property="og:title" content="Nervless — Overcome Public Speaking Anxiety With AI Practice">
+<meta property="og:description" content="Private, structured AI-powered practice to help you overcome public speaking anxiety. Real feedback on your actual voice, at your own pace.">
+<meta property="og:site_name" content="Nervless">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nervless — Overcome Public Speaking Anxiety With AI Practice">
+<meta name="twitter:description" content="Private, structured AI-powered practice to help you overcome public speaking anxiety. Real feedback on your actual voice, at your own pace.">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Nervless",
+  "url": "https://nervless.app",
+  "description": "AI-powered public speaking anxiety practice app with real voice feedback",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "GBP"
+  }
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-html,body{height:100%;}
-body{
-  font-family:var(--font),system-ui,sans-serif;
-  background:
-    radial-gradient(120% 80% at 50% -10%, #EFECE6 0%, #E7E4DE 55%, #DEDAD3 100%);
-  color:var(--ink);
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-}
-
-/* ── phone shell ── */
-#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;}
-#phone{
-  width:390px;height:844px;flex:0 0 auto;
-  background:var(--bg);
-  border-radius:46px;
-  box-shadow:0 0 0 11px #16141A, 0 0 0 13px #322E3A, 0 50px 90px -30px rgba(20,18,24,.55);
-  position:relative;overflow:hidden;
-  transform-origin:center center;
-  transition:background .35s ease;
-}
-.app{position:absolute;inset:0;display:flex;flex-direction:column;}
-
-/* status bar */
-.statusbar{height:54px;flex:0 0 auto;display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 8px;font-size:14px;font-weight:700;color:var(--ink);z-index:6;}
-.statusbar .sb-right{display:flex;align-items:center;gap:7px;}
-.sb-right svg{display:block;}
-
-/* app bar */
-.appbar{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:6px 22px 12px;}
-.wordmark{display:flex;align-items:center;gap:9px;}
-.wm-dot{width:26px;height:26px;border-radius:9px;background:var(--ink);display:flex;align-items:center;justify-content:center;}
-.wm-dot svg{width:15px;height:15px;stroke:var(--bg);fill:none;stroke-width:2;}
-.wm-text{font-size:19px;font-weight:800;letter-spacing:-.5px;}
-.wm-text b{color:var(--accent);font-weight:800;}
-.appbar-btn{width:40px;height:40px;border-radius:13px;border:1px solid var(--line);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;}
-.appbar-btn:active{transform:scale(.92);}
-.appbar-btn svg{width:19px;height:19px;stroke:var(--ink-soft);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
-
-/* scroll body */
-.scroll{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;padding:6px 18px 116px;scroll-behavior:smooth;}
-.scroll::-webkit-scrollbar{display:none;}
-
-.screen{display:none;}
-.screen.active{display:block;animation:fade .42s cubic-bezier(.4,0,.2,1);}
-@keyframes fade{from{transform:translateY(9px);}to{transform:none;}}
-
-.eyebrow{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);}
-
-/* ── progress card ── */
-.prog-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 20px 22px;box-shadow:var(--shadow-card);margin-bottom:14px;}
-.prog-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-.phase-pill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;white-space:nowrap;color:var(--slate);background:#F1F2F5;border:1px solid #E5E7EC;padding:5px 11px;border-radius:100px;}
-.prog-figure{display:flex;align-items:baseline;gap:8px;margin-bottom:4px;}
-.prog-big{font-size:38px;font-weight:800;letter-spacing:-1.5px;line-height:1;white-space:nowrap;}
-.prog-big .slash{color:var(--muted);font-weight:600;}
-.prog-unit{font-size:15px;font-weight:700;color:var(--muted);align-self:flex-end;margin-bottom:6px;}
-.prog-cap{font-size:13.5px;color:var(--ink-soft);font-weight:500;margin-bottom:18px;}
-.track-wrap{margin-top:2px;}
-.track{position:relative;height:8px;border-radius:100px;background:var(--line);overflow:visible;}
-.track-fill{position:absolute;left:0;top:0;height:100%;border-radius:100px;background:linear-gradient(90deg,#D89C7E,var(--accent));transition:width 1s cubic-bezier(.4,0,.2,1);}
-.track-dot{position:absolute;top:50%;width:16px;height:16px;border-radius:50%;background:var(--surface);border:3.5px solid var(--accent);transform:translate(-50%,-50%);box-shadow:0 2px 6px rgba(199,123,90,.4);transition:left 1s cubic-bezier(.4,0,.2,1);}
-.track-ends{display:flex;justify-content:space-between;margin-top:11px;}
-.track-ends span{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.02em;white-space:nowrap;}
-.track-ends span.now{color:var(--accent);}
-
-/* ── continue card ── */
-.cont-card{position:relative;background:linear-gradient(160deg,#fff, var(--accent-soft));border:1px solid var(--accent-line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow-lift);margin-bottom:26px;cursor:pointer;transition:transform .14s ease;overflow:hidden;}
-.cont-card:active{transform:scale(.985);}
-.cont-eyebrow{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:9px;}
-.cont-eyebrow svg{width:14px;height:14px;stroke:var(--accent);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
-.cont-title{font-size:21px;font-weight:800;letter-spacing:-.4px;line-height:1.2;margin-bottom:14px;}
-.steps{display:flex;align-items:center;gap:7px;margin-bottom:18px;}
-.step{display:flex;align-items:center;gap:7px;}
-.step-ic{width:25px;height:25px;border-radius:8px;background:var(--surface);border:1px solid var(--accent-line);display:flex;align-items:center;justify-content:center;}
-.step-ic svg{width:13px;height:13px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.step-lbl{font-size:12.5px;font-weight:700;color:var(--ink-soft);}
-.step-arrow{color:var(--accent-line);font-size:13px;margin:0 1px;}
-.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:none;border-radius:100px;padding:15px;font-family:inherit;font-size:15.5px;font-weight:700;cursor:pointer;transition:transform .12s,opacity .15s;}
-.btn:active{transform:scale(.975);}
-.btn-accent{background:var(--accent);color:#fff;box-shadow:0 6px 16px -4px rgba(199,123,90,.5);}
-.btn-accent svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
-
-/* ── section heading ── */
-.sec-head{display:flex;align-items:center;justify-content:space-between;padding:0 4px;margin-bottom:14px;}
-.sec-title{font-size:13px;font-weight:800;letter-spacing:.04em;color:var(--ink);}
-.sec-meta{font-size:12.5px;font-weight:600;color:var(--muted);}
-
-/* ── phase row ── */
-.phase-list{display:flex;flex-direction:column;gap:11px;}
-.phase{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-card);overflow:hidden;transition:border-color .3s, box-shadow .3s;}
-.phase.is-active{border-color:var(--pc-line);box-shadow:0 2px 6px rgba(39,36,48,.05),0 16px 32px -16px rgba(39,36,48,.18);}
-.phase.is-locked{background:var(--surface-2);box-shadow:none;}
-.phase-head{display:flex;align-items:center;gap:14px;padding:17px 18px;cursor:pointer;user-select:none;}
-.phase.is-locked .phase-head{cursor:default;}
-.pmark{width:46px;height:46px;border-radius:14px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;position:relative;transition:background .3s;}
-.pmark svg{width:23px;height:23px;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
-.pmark.done{background:var(--pc);}
-.pmark.done svg{stroke:#fff;}
-.pmark.active{background:var(--pc-soft);box-shadow:inset 0 0 0 1.6px var(--pc-line);}
-.pmark.active svg{stroke:var(--pc);}
-.pmark.locked{background:var(--pc-soft);}
-.pmark.locked svg{stroke:var(--pc);opacity:.9;}
-.pmark-badge{position:absolute;bottom:-3px;right:-3px;width:18px;height:18px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(39,36,48,.2);}
-.pmark-badge svg{width:10px;height:10px;stroke-width:3.2;}
-.pmark-badge.done svg{stroke:var(--pc);}
-.pmark-badge.locked{background:#fff;}
-.pmark-badge.locked svg{stroke:#9A98A2;width:9px;height:11px;stroke-width:2;}
-.phase-kicker{font-size:10.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;}
-.phase-mid{flex:1 1 auto;min-width:0;}
-.phase-name{font-size:16px;font-weight:700;letter-spacing:-.2px;line-height:1.25;}
-.phase.is-locked .phase-name{color:var(--ink-soft);}
-.phase-sub{font-size:12.5px;font-weight:500;color:var(--muted);line-height:1.4;margin-top:3px;}
-.phase-right{display:flex;align-items:center;gap:11px;flex:0 0 auto;}
-.mini-prog{display:flex;flex-direction:column;align-items:flex-end;gap:5px;}
-.mini-count{font-size:11.5px;font-weight:700;color:var(--ink-soft);}
-.phase.is-active .mini-count{color:var(--pc);}
-.locked-chev svg{stroke:var(--muted);}
-.locked-chev svg rect,.locked-chev svg path{stroke:var(--muted);}
-.dots{display:flex;gap:3px;}
-.dot{width:5px;height:5px;border-radius:50%;background:var(--line);}
-.dot.f{background:var(--done);}
-.dot.c{background:var(--accent);}
-.chev{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:transform .32s cubic-bezier(.4,0,.2,1);}
-.chev svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;}
-.phase.open .chev{transform:rotate(180deg);}
-.lock-badge{font-size:11px;font-weight:700;color:var(--muted);background:#F0EEEA;border-radius:100px;padding:5px 11px;}
-
-/* sessions */
-.sessions{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1);}
-.phase.open .sessions{max-height:760px;}
-.sessions-inner{padding:2px 12px 12px;}
-.srow{display:flex;align-items:center;gap:13px;padding:12px 8px;border-radius:14px;cursor:pointer;transition:background .14s;}
-.srow:active{background:var(--line-soft);}
-.srow + .srow{border-top:1px solid var(--line-soft);}
-.snum{width:28px;height:28px;border-radius:9px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
-.snum.done{background:var(--done-soft);color:var(--done);}
-.snum.done svg{width:14px;height:14px;stroke:var(--done);fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;}
-.snum.current{background:var(--accent);color:#fff;box-shadow:0 3px 9px -2px rgba(199,123,90,.6);}
-.snum.up{background:var(--line-soft);color:var(--muted);}
-.sinfo{flex:1 1 auto;min-width:0;}
-.stitle{font-size:14px;font-weight:600;letter-spacing:-.1px;line-height:1.3;}
-.srow.up .stitle{color:var(--ink-soft);}
-.smeta{font-size:11.5px;font-weight:600;color:var(--muted);margin-top:2px;}
-.srow.current .smeta{color:var(--accent);}
-.sscore{font-size:13px;font-weight:800;color:var(--done);flex:0 0 auto;}
-.sgo{width:24px;height:24px;flex:0 0 auto;color:var(--muted);display:flex;align-items:center;justify-content:center;}
-.sgo svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-
-/* locked note */
-.lock-note{padding:0 18px 17px;font-size:12px;font-weight:600;color:var(--muted);display:flex;align-items:center;gap:7px;}
-.lock-note svg{width:13px;height:13px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-
-/* ── bottom nav ── */
-.tabbar{position:absolute;left:0;right:0;bottom:0;height:92px;padding-bottom:18px;display:flex;align-items:flex-start;padding-top:12px;background:linear-gradient(to top,var(--bg) 64%, transparent);z-index:7;}
-.tabbar-inner{margin:0 16px;flex:1;background:rgba(255,255,255,.86);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:22px;box-shadow:0 6px 22px -8px rgba(39,36,48,.18);display:flex;align-items:center;justify-content:space-around;height:62px;}
-.tab{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:none;cursor:pointer;font-family:inherit;flex:1;padding:8px 0;transition:transform .12s;}
-.tab:active{transform:scale(.9);}
-.tab svg{width:22px;height:22px;stroke:var(--muted);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s;}
-.tab-lbl{font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.01em;transition:color .2s;}
-.tab.active svg{stroke:var(--accent);}
-.tab.active .tab-lbl{color:var(--accent);}
-
-/* ── placeholder screens ── */
-.placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:560px;padding:0 40px;}
-.ph-ic{width:64px;height:64px;border-radius:20px;background:var(--surface);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;margin-bottom:20px;box-shadow:var(--shadow-card);}
-.ph-ic svg{width:28px;height:28px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
-.ph-title{font-size:21px;font-weight:800;letter-spacing:-.4px;margin-bottom:8px;}
-.ph-text{font-size:14px;color:var(--ink-soft);line-height:1.6;font-weight:500;max-width:240px;}
-
-/* ── bottom sheet ── */
-.sheet-scrim{position:absolute;inset:0;background:rgba(28,25,34,.34);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .3s;z-index:20;}
-.sheet-scrim.open{opacity:1;pointer-events:auto;}
-.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--surface);border-radius:30px 30px 0 0;padding:10px 22px calc(28px + env(safe-area-inset-bottom));transform:translateY(102%);transition:transform .42s cubic-bezier(.32,.72,0,1);z-index:21;box-shadow:0 -18px 50px -20px rgba(28,25,34,.4);}
-.sheet.open{transform:translateY(0);}
-.sheet-grab{width:40px;height:5px;border-radius:100px;background:var(--line);margin:0 auto 18px;}
-.sheet-eyebrow{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:9px;}
-.sheet-title{font-size:25px;font-weight:800;letter-spacing:-.6px;line-height:1.18;margin-bottom:12px;}
-.sheet-desc{font-size:14.5px;color:var(--ink-soft);line-height:1.6;font-weight:500;margin-bottom:20px;}
-.sheet-steps{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;}
-.sheet-step{display:flex;align-items:center;gap:13px;padding:13px 15px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface-2);}
-.ss-ic{width:34px;height:34px;border-radius:11px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;background:var(--accent-soft);}
-.ss-ic svg{width:17px;height:17px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-.ss-body{flex:1;}
-.ss-name{font-size:14.5px;font-weight:700;}
-.ss-sub{font-size:12px;color:var(--muted);font-weight:500;margin-top:1px;}
-.ss-time{font-size:12px;font-weight:700;color:var(--ink-soft);}
-
-#tweaks-root{position:fixed;z-index:100;}
-</style>
+</script>
+<link rel="stylesheet" href="css/styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body>
-<div id="stage">
-  <div id="phone">
-    <div class="app">
-      <div class="statusbar">
-        <span>9:41</span>
-        <span class="sb-right">
-          <svg width="18" height="12" viewBox="0 0 18 12" fill="none"><rect x="0" y="7" width="3" height="5" rx="1" fill="#272430"/><rect x="5" y="4.5" width="3" height="7.5" rx="1" fill="#272430"/><rect x="10" y="2" width="3" height="10" rx="1" fill="#272430"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#272430"/></svg>
-          <svg width="17" height="12" viewBox="0 0 17 12" fill="none"><path d="M8.5 2.5C11 2.5 13.2 3.5 14.8 5.1L8.5 11.4L2.2 5.1C3.8 3.5 6 2.5 8.5 2.5Z" fill="#272430" opacity="0.9"/></svg>
-          <svg width="26" height="12" viewBox="0 0 26 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="#272430" opacity="0.4"/><rect x="2" y="2" width="17" height="8" rx="1.5" fill="#272430"/><rect x="23" y="4" width="2" height="4" rx="1" fill="#272430" opacity="0.4"/></svg>
-        </span>
+<div class="loading-screen" id="loading">
+  <div class="spinner"></div>
+  <div class="loading-text" id="loading-text">Analysing your speech...</div>
+  <div style="font-size:12px;color:var(--muted);margin-top:4px;text-align:center;max-width:240px" id="loading-sub"></div>
+</div>
+<!-- API KEY SETUP -->
+<div class="screen" id="screen-apikeys" style="align-items:center;justify-content:center;padding:40px 24px;background:linear-gradient(160deg,#F7F5F0 0%,#EDE8FF 50%,#F7F5F0 100%);">
+  <div style="font-size:36px;margin-bottom:16px">🔌</div>
+  <div style="font-family:'DM Serif Display',serif;font-size:26px;margin-bottom:8px;text-align:center">Connect your AI</div>
+  <div style="font-size:14px;color:var(--muted);text-align:center;line-height:1.6;max-width:300px;margin-bottom:32px">Enter the URL of your Nervless proxy server. This is what connects the app to Whisper and Claude.</div>
+  <div style="width:100%;max-width:340px;display:flex;flex-direction:column;gap:12px;">
+    <div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px;letter-spacing:0.5px">PROXY SERVER URL</div>
+      <input id="input-proxy-url" type="url" placeholder="https://shark-app-3ywir.ondigitalocean.app" style="width:100%;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:14px;font-family:'Nunito',sans-serif;color:var(--text);outline:none;">
+      <div style="font-size:11px;color:var(--muted);margin-top:5px">Deploy your proxy on Render first, then paste the URL here.</div>
+    </div>
+    <button class="btn-primary" onclick="saveApiKeys()" style="margin-top:8px">Save & connect →</button>
+    <button class="btn-secondary" onclick="showScreen('screen-apikeys')">Back</button>
+  </div>
+</div>
+<!-- Menu overlay and drawer -->
+<div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
+<div class="menu-drawer" id="menu-drawer">
+  <button onclick="toggleMenu()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;">✕</button>
+  <a href="/learn/" class="menu-item">Learn<div class="menu-item-sub">Guides on speaking anxiety</div></a>
+</div>
+
+<!-- CURRICULUM -->
+<div class="screen" id="screen-curriculum">
+  <div class="curr-header">
+    <div style="display:flex;justify-content:center;align-items:center;position:relative;margin-bottom:12px">
+      <div style="font-family:'DM Serif Display',serif;font-size:24px;letter-spacing:-0.5px;font-style:italic;color:var(--text)">Nerv<span style="color:var(--accent)">less</span></div>
+      <button class="burger-btn" id="burger-btn" onclick="toggleMenu()" style="position:absolute;right:0;transform:scale(0.82);transform-origin:right center;"><span></span><span></span><span></span></button>
+    </div>
+    <div style="margin-bottom:4px">
+      <div class="curr-eyebrow">Your Journey</div>
+    </div>
+    <div class="curr-progress-strip">
+      <div class="curr-progress-top">
+        <div class="curr-progress-num" id="stat-done-num">0 <span>/ 59 sessions</span></div>
+        <div class="curr-phase-pill" id="stat-phase-pill">Phase 1 of 9</div>
       </div>
-
-      <div class="appbar">
-        <div class="wordmark">
-          <span class="wm-dot"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>
-          <span class="wm-text">Nerv<b>less</b></span>
-        </div>
-        <button class="appbar-btn" onclick="openTweaksHint()" aria-label="Menu">
-          <svg viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="14" y2="17"/></svg>
-        </button>
+      <div class="curr-track"><div class="curr-fill" id="journey-progress-fill"></div></div>
+      <div class="curr-endpoints">
+        <span class="curr-endpoint">Nervous</span>
+        <span class="curr-endpoint">Nervless</span>
       </div>
-
-      <div class="scroll" id="scroll">
-        <!-- ───── JOURNEY ───── -->
-        <div class="screen active" id="screen-journey">
-          <div style="padding:6px 4px 14px;">
-            <div class="eyebrow" style="margin-bottom:6px;">Your journey</div>
-            <div style="font-size:23px;font-weight:800;letter-spacing:-.5px;line-height:1.25;">Welcome back, Sam</div>
-          </div>
-
-          <!-- progress -->
-          <div class="prog-card">
-            <div class="prog-top">
-              <span class="eyebrow">Total score</span>
-              <span class="phase-pill">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-                Phase 3 of 9
-              </span>
-            </div>
-            <div class="prog-figure">
-              <span class="prog-big" id="prog-points">1,267<span class="slash"> / 5,900</span></span>
-              <span class="prog-unit">pts</span>
-            </div>
-            <div class="prog-cap" id="prog-cap">15 of 59 sessions complete</div>
-            <div class="track-wrap">
-              <div class="track">
-                <div class="track-fill" id="track-fill" style="width:21%"></div>
-                <div class="track-dot" id="track-dot" style="left:21%"></div>
-              </div>
-              <div class="track-ends">
-                <span>Nervous</span>
-                <span class="now">You're here</span>
-                <span>Nervless</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- continue -->
-          <div class="cont-card" onclick="openSheet('continue')">
-            <div class="cont-eyebrow">
-              <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
-              Continue · Phase 3 · Session 4
-            </div>
-            <div class="cont-title">The 60-Second Introduction</div>
-            <div class="steps">
-              <div class="step"><span class="step-ic"><svg viewBox="0 0 24 24"><path d="M2 4h7a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H2zM22 4h-7a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H22z"/></svg></span><span class="step-lbl">Read</span></div>
-              <span class="step-arrow">›</span>
-              <div class="step"><span class="step-ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="step-lbl">Check</span></div>
-              <span class="step-arrow">›</span>
-              <div class="step"><span class="step-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg></span><span class="step-lbl">Talk</span></div>
-            </div>
-            <button class="btn btn-accent" onclick="event.stopPropagation();openSheet('continue')">
-              Continue session
-              <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-            </button>
-          </div>
-
-          <div class="sec-head">
-            <span class="sec-title">All phases</span>
-            <span class="sec-meta">2 of 9 complete</span>
-          </div>
-          <div class="phase-list" id="phase-list"></div>
-
-          <div style="text-align:center;padding:26px 20px 6px;font-size:12px;color:var(--muted);font-weight:600;line-height:1.6;">
-            Private practice. No audience.<br>Your voice, your pace.
-          </div>
-        </div>
-
-        <!-- ───── PRACTICE (stub) ───── -->
-        <div class="screen" id="screen-practice">
-          <div class="placeholder">
-            <div class="ph-ic"><svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></svg></div>
-            <div class="ph-title">Free practice</div>
-            <div class="ph-text">Speak freely with no curriculum — vent, debate, or take a surprise prompt. Opening soon in this prototype.</div>
-          </div>
-        </div>
-
-        <!-- ───── PROGRESS (stub) ───── -->
-        <div class="screen" id="screen-progress">
-          <div class="placeholder">
-            <div class="ph-ic"><svg viewBox="0 0 24 24"><line x1="6" y1="20" x2="6" y2="13"/><line x1="12" y1="20" x2="12" y2="5"/><line x1="18" y1="20" x2="18" y2="10"/></svg></div>
-            <div class="ph-title">Your progress</div>
-            <div class="ph-text">Streaks, average scores and trends over time live here. Focused on the Journey screen for this pass.</div>
-          </div>
+    </div>
+    <div class="curr-rule"></div>
+  </div>
+  <!-- COURSE OVERVIEW -->
+  <div class="course-overview" id="course-overview">
+    <button class="course-overview-btn" onclick="document.getElementById('course-overview').classList.toggle('open')">
+      <div class="course-overview-left">
+        <div class="course-overview-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M6 17V9a6 6 0 0 1 6-6"/><path d="M18 7v8a6 6 0 0 1-6 6"/></svg></div>
+        <div>
+          <div class="course-overview-title">Your Journey — 9 Phases</div>
+          <div class="course-overview-sub">See how the experience evolves</div>
         </div>
       </div>
+      <div class="course-overview-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+    </button>
+    <div class="course-overview-body">
 
-      <!-- tab bar -->
-      <div class="tabbar">
-        <div class="tabbar-inner">
-          <button class="tab active" id="tab-journey" onclick="go('journey')">
-            <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>
-            <span class="tab-lbl">Journey</span>
-          </button>
-          <button class="tab" id="tab-practice" onclick="go('practice')">
-            <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></svg>
-            <span class="tab-lbl">Practice</span>
-          </button>
-          <button class="tab" id="tab-progress" onclick="go('progress')">
-            <svg viewBox="0 0 24 24"><line x1="6" y1="20" x2="6" y2="13"/><line x1="12" y1="20" x2="12" y2="5"/><line x1="18" y1="20" x2="18" y2="10"/></svg>
-            <span class="tab-lbl">Progress</span>
-          </button>
+      <div class="co-phase">
+        <div class="co-phase-label" style="color:#5B4FD9">Phase 1</div>
+        <div class="co-phase-header">
+          <div class="co-phase-dot" style="background:#5B4FD9"></div>
+          <div class="co-phase-name">Understanding the Fear</div>
+          <div class="co-phase-difficulty" style="background:#E4F7F1;color:#1E8449">Easy</div>
         </div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">🧠</span>Understand why your brain treats speaking like a threat</li>
+          <li><span class="co-bi">🔍</span>Map your personal triggers, symptoms, and anxiety history</li>
+          <li><span class="co-bi">🚪</span>Learn why avoidance makes fear worse — and what to do instead</li>
+        </ul>
       </div>
 
-      <!-- sheet -->
-      <div class="sheet-scrim" id="sheet-scrim" onclick="closeSheet()"></div>
-      <div class="sheet" id="sheet">
-        <div class="sheet-grab"></div>
-        <div class="sheet-eyebrow" id="sheet-eyebrow"></div>
-        <div class="sheet-title" id="sheet-title"></div>
-        <div class="sheet-desc" id="sheet-desc"></div>
-        <div class="sheet-steps">
-          <div class="sheet-step"><span class="ss-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M2 4h7a3 3 0 0 1 3 3v13a2.5 2.5 0 0 0-2.5-2.5H2zM22 4h-7a3 3 0 0 0-3 3v13a2.5 2.5 0 0 1 2.5-2.5H22z"/></svg></span><div class="ss-body"><div class="ss-name">Read</div><div class="ss-sub">The idea behind this session</div></div><span class="ss-time">2 min</span></div>
-          <div class="sheet-step"><span class="ss-ic"><svg viewBox="0 0 24 24" fill="none"><polyline points="20 6 9 17 4 12"/></svg></span><div class="ss-body"><div class="ss-name">Check</div><div class="ss-sub">Two quick questions</div></div><span class="ss-time">1 min</span></div>
-          <div class="sheet-step"><span class="ss-ic"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg></span><div class="ss-body"><div class="ss-name">Talk</div><div class="ss-sub">Speak it out loud — get AI feedback</div></div><span class="ss-time">3 min</span></div>
+      <div class="co-phase">
+        <div class="co-phase-label" style="color:#2E9E7A">Phase 2</div>
+        <div class="co-phase-header">
+          <div class="co-phase-dot" style="background:#2E9E7A"></div>
+          <div class="co-phase-name">The Body First</div>
+          <div class="co-phase-difficulty" style="background:#E4F7F1;color:#1E8449">Easy</div>
         </div>
-        <button class="btn btn-accent" id="sheet-btn" onclick="closeSheet()">Start session</button>
+        <ul class="co-bullets">
+          <li><span class="co-bi">🫁</span>Control your nervous system with breathing techniques</li>
+          <li><span class="co-bi">💪</span>Release physical tension before you speak</li>
+          <li><span class="co-bi">⚡</span>Reframe adrenaline as energy, not danger</li>
+        </ul>
+      </div>
+
+      <div class="co-phase">
+        <div class="co-phase-label" style="color:#C4922A">Phase 3</div>
+        <div class="co-phase-header">
+          <div class="co-phase-dot" style="background:#C4922A"></div>
+          <div class="co-phase-name">Gradual Exposure</div>
+          <div class="co-phase-difficulty" style="background:#FEF3E2;color:#C07000">Medium</div>
+        </div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">🪜</span>Build an anxiety ladder from low-stakes to high-stakes</li>
+          <li><span class="co-bi">🎯</span>Practice introductions, opinions, and spontaneous answers</li>
+          <li><span class="co-bi">📈</span>Experience what your voice sounds like when you're not afraid</li>
+        </ul>
+      </div>
+
+      <div class="co-phase">
+        <div class="co-phase-label" style="color:#2980B9">Phase 4</div>
+        <div class="co-phase-header">
+          <div class="co-phase-dot" style="background:#2980B9"></div>
+          <div class="co-phase-name">Changing the Narrative</div>
+          <div class="co-phase-difficulty" style="background:#FEF3E2;color:#C07000">Medium</div>
+        </div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">💭</span>Challenge the catastrophic thoughts that fuel anxiety</li>
+          <li><span class="co-bi">🔬</span>Reality-test your fears with actual evidence</li>
+          <li><span class="co-bi">🤝</span>Build a kinder, more accurate inner voice</li>
+        </ul>
+      </div>
+
+      <div class="co-phase">
+        <div class="co-phase-label" style="color:#D95470">Phase 5</div>
+        <div class="co-phase-header">
+          <div class="co-phase-dot" style="background:#D95470"></div>
+          <div class="co-phase-name">Finding Your Voice</div>
+          <div class="co-phase-difficulty" style="background:#FEF3E2;color:#C07000">Medium</div>
+        </div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">✨</span>Discover what makes your communication style uniquely powerful</li>
+          <li><span class="co-bi">📖</span>Craft stories that land — and practise telling them</li>
+          <li><span class="co-bi">😄</span>Learn to use humour and authenticity without forcing it</li>
+        </ul>
+      </div>
+
+      <div class="co-phase">
+        <div class="co-phase-label" style="color:#7B6FEF">Phase 6</div>
+        <div class="co-phase-header">
+          <div class="co-phase-dot" style="background:#7B6FEF"></div>
+          <div class="co-phase-name">Raising the Stakes</div>
+          <div class="co-phase-difficulty" style="background:#FDEAEE;color:#B52040">Hard</div>
+        </div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">👔</span>Present confidently to senior people and sceptical audiences</li>
+          <li><span class="co-bi">🔥</span>Handle hostile questions without losing composure</li>
+          <li><span class="co-bi">⏱️</span>Perform under timed pressure and surprise prompts</li>
+        </ul>
+      </div>
+
+      <div class="co-phase">
+        <div class="co-phase-label" style="color:#E67E22">Phase 7</div>
+        <div class="co-phase-header">
+          <div class="co-phase-dot" style="background:#E67E22"></div>
+          <div class="co-phase-name">In-the-Moment Tools</div>
+          <div class="co-phase-difficulty" style="background:#FDEAEE;color:#B52040">Hard</div>
+        </div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">🧩</span>Structure answers on the spot using the PREP framework</li>
+          <li><span class="co-bi">🔄</span>Recover when your mind goes blank mid-sentence</li>
+          <li><span class="co-bi">🎙️</span>Steady your voice and control pace under real pressure</li>
+        </ul>
+      </div>
+
+      <div class="co-phase">
+        <div class="co-phase-label" style="color:#8E44AD">Phase 8</div>
+        <div class="co-phase-header">
+          <div class="co-phase-dot" style="background:#8E44AD"></div>
+          <div class="co-phase-name">Performing Under Pressure</div>
+          <div class="co-phase-difficulty" style="background:#FDEAEE;color:#8B0000">Extra Hard</div>
+        </div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">🎤</span>Deliver full presentations with vocal variety and presence</li>
+          <li><span class="co-bi">👥</span>Read the room and adapt in real time</li>
+          <li><span class="co-bi">🏆</span>Perform at your peak when the stakes are highest</li>
+        </ul>
+      </div>
+
+      <div class="co-phase">
+        <div class="co-phase-label" style="color:#27AE60">Phase 9</div>
+        <div class="co-phase-header">
+          <div class="co-phase-dot" style="background:#27AE60"></div>
+          <div class="co-phase-name">Maintenance</div>
+          <div class="co-phase-difficulty" style="background:#EEF2F7;color:#5A7A9A">Ongoing</div>
+        </div>
+        <ul class="co-bullets">
+          <li><span class="co-bi">📊</span>Measure how far you've come with an updated anxiety ladder</li>
+          <li><span class="co-bi">🔁</span>Weekly sessions to keep your skills sharp</li>
+          <li><span class="co-bi">🌱</span>Build the long-term habits that make progress stick</li>
+        </ul>
       </div>
 
     </div>
   </div>
+  <div id="curriculum-list"></div>
+</div>
+<!-- LESSON (Read → Check → Talk) -->
+<div class="screen" id="screen-lesson">
+  <!-- Sticky header: back button + step bar as one unit -->
+  <div class="lesson-step-bar" id="lesson-step-bar">
+    <button class="lesson-step-back" onclick="showCurriculum()">←</button>
+    <div class="lesson-steps-group">
+      <div class="step-item active" id="step-read">
+        <div class="step-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+        <div class="step-label">Read</div>
+      </div>
+      <div class="step-connector" id="conn-1"></div>
+      <div class="step-item" id="step-check">
+        <div class="step-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div class="step-label">Check</div>
+      </div>
+      <div class="step-connector" id="conn-2"></div>
+      <div class="step-item" id="step-talk">
+        <div class="step-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg></div>
+        <div class="step-label">Talk</div>
+      </div>
+    </div>
+    <div class="lesson-step-spacer"></div>
+  </div>
+
+  <div class="lesson-header">
+    <div class="lesson-title" id="lesson-title">Session Title</div>
+  </div>
+
+  <!-- READ STEP -->
+  <div id="lesson-read" class="lesson-body" style="display:none">
+    <!-- Standard read content (used for read_speak, reflect, etc) -->
+    <div id="lesson-read-content"></div>
+    
+    <!-- Content cards mode (swipeable, for read_only format) -->
+    <div id="lesson-cards-wrap" style="display:none">
+      <div class="content-cards-wrap">
+        <div class="content-cards-track" id="cards-track"></div>
+      </div>
+      <div class="cards-dots" id="cards-dots"></div>
+      <div class="cards-nav">
+        <button class="cards-nav-btn" id="cards-prev-btn" onclick="cardsPrev()" disabled>← Back</button>
+        <div style="font-size:12px;font-weight:700;color:var(--text-muted)" id="cards-counter">1 / 3</div>
+        <button class="cards-nav-btn primary" id="cards-next-btn" onclick="cardsNext()">Next →</button>
+      </div>
+    </div>
+    
+    <!-- Reframe exercise (for reframe format) -->
+    <div id="lesson-reframe-wrap" style="display:none">
+      <div class="reframe-wrap">
+        <div class="reframe-label" id="reframe-label">Your thought</div>
+        <div class="reframe-prompt" id="reframe-prompt">Loading...</div>
+        <textarea class="reframe-input" id="reframe-input" placeholder="Type your thought here..." oninput="checkReframeInput()"></textarea>
+        <button class="btn-primary" id="reframe-submit-btn" style="margin-top:12px;max-width:100%" onclick="submitReframe()" disabled>Challenge this thought →</button>
+        <div class="reframe-response" id="reframe-response"></div>
+      </div>
+    </div>
+    
+    <!-- Scenario pick (for scenario format, shown before recording) -->
+    <div id="lesson-scenario-wrap" style="display:none">
+      <div style="padding:0 16px 8px">
+        <div style="font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--sc);margin-bottom:8px">SCENARIO</div>
+        <div style="font-size:15px;color:var(--text);line-height:1.6;margin-bottom:16px" id="scenario-desc"></div>
+        <div style="font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">CHOOSE YOUR APPROACH</div>
+      </div>
+      <div class="pick-options" id="pick-options"></div>
+    </div>
+    
+    <!-- Surprise prompt (hidden until revealed) -->
+    <div id="lesson-surprise-wrap" style="display:none">
+      <div style="text-align:center;padding:40px 20px;">
+        <div style="font-size:48px;margin-bottom:16px">⚡</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--text);margin-bottom:8px">Surprise prompt</div>
+        <div style="font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:24px">You won't see the question until you tap the button. No preparation — just speak.</div>
+        <div id="surprise-prompt-hidden" style="display:none">
+          <div style="background:var(--surface);border:1.5px solid var(--sc);border-radius:18px;padding:24px 20px;margin-bottom:16px;text-align:left">
+            <div style="font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--sc);margin-bottom:8px">YOUR PROMPT</div>
+            <div style="font-family:'DM Serif Display',serif;font-size:18px;line-height:1.45;color:var(--text)" id="surprise-prompt-text"></div>
+          </div>
+        </div>
+        <button class="btn-primary" id="surprise-reveal-btn" onclick="revealSurprise()" style="max-width:240px">Reveal prompt ⚡</button>
+      </div>
+    </div>
+    
+    <!-- Timed challenge info (shown before recording) -->
+    <div id="lesson-timed-wrap" style="display:none">
+      <div style="text-align:center;padding:20px 20px 0;">
+        <div style="font-size:10px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);margin-bottom:8px">TIMED CHALLENGE</div>
+        <div class="timed-countdown" id="timed-limit-display">60s</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:4px">Recording will stop automatically when time runs out.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECK STEP -->
+  <div id="lesson-check" class="lesson-body" style="display:none">
+    <div class="quiz-progress" id="quiz-progress-label">Answer all questions to continue</div>
+    <div id="lesson-quiz-container"></div>
+    <div class="quiz-all-correct" id="quiz-all-correct">
+      <div style="font-size:28px;margin-bottom:8px">✅</div>
+      <div style="font-size:16px;font-weight:700;color:var(--green);margin-bottom:4px">All correct!</div>
+      <div style="font-size:13px;color:var(--muted)">You've understood the lesson. Time to put it into practice.</div>
+    </div>
+  </div>
+
+  <!-- TALK STEP -->
+  <div id="lesson-talk" style="display:none">
+    <div class="lesson-body">
+      <div class="talk-intro">
+        <div class="talk-intro-label">Now apply it — speak out loud</div>
+        <div class="talk-prompt-text" id="talk-prompt-text">Loading...</div>
+        <div class="talk-meta">
+          <div class="talk-meta-item">🎯 <span id="talk-type"></span></div>
+          <div class="talk-meta-item">⏱ <span id="talk-duration"></span></div>
+        </div>
+        <div class="talk-coach" id="talk-coach"></div>
+      </div>
+    </div>
+    <div class="talk-recording-zone">
+      <div class="waveform" id="lesson-waveform"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
+      <div class="timer" id="lesson-timer">0:00</div>
+      <button class="record-btn" id="lesson-record-btn" onclick="toggleLessonRecording()"></button>
+      <div class="record-hint" id="lesson-record-hint">Tap to start recording</div>
+    </div>
+  </div>
+
+  <!-- Fixed bottom nav -->
+  <div class="lesson-nav" id="lesson-nav">
+    <button class="btn-primary" id="lesson-next-btn" onclick="lessonNext()">Continue →</button>
+  </div>
+</div>
+<!-- PRACTICE -->
+<div class="screen" id="screen-practice">
+  <div class="practice-header">
+    <div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px" id="session-phase-label">Phase 1 &middot; Session 1</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:20px;line-height:1.3" id="session-title-label">Session Title</div>
+    </div>
+    <div class="level-chip" id="practice-chip">Level 2</div>
+  </div>
+  <div class="prompt-card">
+    <div class="prompt-label">Your prompt</div>
+    <div class="prompt-text" id="prompt-text">Loading...</div>
+    <div class="prompt-meta">
+      <div class="meta-item">&#127919; <span id="prompt-type"></span></div>
+      <div class="meta-item">&#9201; <span id="prompt-duration"></span></div>
+    </div>
+    <div class="coaching-tip" id="coaching-tip"></div>
+  </div>
+  <div class="recording-zone">
+    <div class="waveform" id="waveform"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
+    <div class="timer" id="timer">0:00</div>
+    <button class="record-btn" id="record-btn" onclick="toggleRecording()"></button>
+    <div class="record-hint" id="record-hint">Tap to start recording</div>
+  </div>
+</div>
+<!-- FEEDBACK -->
+<div class="screen" id="screen-feedback">
+  <div class="feedback-header">
+    <div class="feedback-score" id="score-ring" style="--pct:0%"><div class="score-num" id="score-num">-</div></div>
+    <div class="feedback-title" id="feedback-title">Analysing...</div>
+    <div class="feedback-sub" id="feedback-sub">Here's what the AI noticed</div>
+  </div>
+  <div class="session-context-strip" id="session-context-strip"></div>
+
+  <!-- Pace & Filler — horizontal text cards -->
+  <div style="padding:0 24px 8px;display:flex;gap:10px;">
+    <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span style="font-size:11px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;font-weight:700;">Pace</span>
+      </div>
+      <div style="font-size:22px;font-weight:700;" id="m-pace">-</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.4;margin-top:4px;" id="m-pace-desc">words per minute</div>
+      <!-- Pace goal bar -->
+      <div id="pace-bar-wrap" style="margin-top:10px;">
+        <div style="position:relative;height:8px;background:var(--surface2);border-radius:4px;overflow:hidden;">
+          <div style="position:absolute;left:30%;width:30%;height:100%;background:rgba(46,158,122,0.15);border-radius:4px;"></div>
+          <div id="pace-marker" style="position:absolute;top:-2px;width:3px;height:12px;background:var(--accent);border-radius:2px;transition:left 1s cubic-bezier(0.4,0,0.2,1);left:0%;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:3px;font-size:9px;color:var(--muted);font-weight:700;">
+          <span>Too slow</span>
+          <span style="color:var(--green)">120–160</span>
+          <span>Too fast</span>
+        </div>
+      </div>
+    </div>
+    <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+        <span style="font-size:11px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;font-weight:700;">Fillers</span>
+      </div>
+      <div style="font-size:22px;font-weight:700;" id="m-fillers">-</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.4;margin-top:4px;" id="m-fillers-desc">detected</div>
+    </div>
+  </div>
+
+  <!-- 4 score widgets — single row with /10 bars -->
+  <div style="padding:0 24px 16px;display:flex;gap:8px;">
+    <div class="score-widget">
+      <div class="sw-icon">🎯</div>
+      <div class="sw-val" id="m-prompt">-</div>
+      <div class="sw-bar-wrap"><div class="sw-bar" id="bar-prompt"></div></div>
+      <div class="sw-lbl">Prompt</div>
+    </div>
+    <div class="score-widget">
+      <div class="sw-icon">💎</div>
+      <div class="sw-val" id="m-clarity">-</div>
+      <div class="sw-bar-wrap"><div class="sw-bar" id="bar-clarity"></div></div>
+      <div class="sw-lbl">Clarity</div>
+    </div>
+    <div class="score-widget">
+      <div class="sw-icon">💪</div>
+      <div class="sw-val" id="m-confidence">-</div>
+      <div class="sw-bar-wrap"><div class="sw-bar" id="bar-confidence"></div></div>
+      <div class="sw-lbl">Confidence</div>
+    </div>
+    <div class="score-widget">
+      <div class="sw-icon">💛</div>
+      <div class="sw-val" id="m-openness">-</div>
+      <div class="sw-bar-wrap"><div class="sw-bar" id="bar-openness"></div></div>
+      <div class="sw-lbl">Openness</div>
+    </div>
+  </div>
+
+  <!-- Voice analysis row -->
+  <div id="voice-analysis-row" style="display:none;padding:0 24px 16px;">
+    <div style="display:flex;gap:8px;">
+      <div class="score-widget">
+        <div class="sw-icon">🔊</div>
+        <div class="sw-val" id="m-volume">-</div>
+        <div class="sw-lbl" id="m-volume-desc">Volume</div>
+      </div>
+      <div class="score-widget">
+        <div class="sw-icon">🎵</div>
+        <div class="sw-val" id="m-pitch">-</div>
+        <div class="sw-lbl" id="m-pitch-desc">Pitch</div>
+      </div>
+      <div class="score-widget">
+        <div class="sw-icon">〰️</div>
+        <div class="sw-val" id="m-steady">-</div>
+        <div class="sw-lbl" id="m-steady-desc">Steady</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transcript — collapsible -->
+  <div style="padding:0 24px 8px;">
+    <button onclick="this.classList.toggle('open');document.getElementById('transcript-box').style.display=this.classList.contains('open')?'block':'none'" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:12px 16px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text);" id="transcript-toggle">
+      <span>📝 Show transcript</span>
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);transition:transform 0.3s"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="transcript-box" id="transcript-box" style="display:none;margin-top:8px;">Transcript will appear here...</div>
+  </div>
+
+  <div class="tips-section"><div class="tips-title">Coaching feedback</div><div id="tips-container"></div></div>
+  <div class="feedback-actions" id="feedback-actions">
+    <div id="pass-fail-banner" style="width:100%;border-radius:16px;padding:16px 18px;text-align:center;margin-bottom:4px;display:none;"></div>
+    <button class="btn-primary" id="complete-session-btn" onclick="completeSession()">Complete session ✓</button>
+    
+    <!-- Scoring feedback -->
+    <div id="score-feedback-widget" style="margin-top:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:18px;text-align:center;">
+      <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Was this feedback accurate?</div>
+      <div style="display:flex;justify-content:center;gap:12px;margin-bottom:10px;">
+        <button onclick="submitScoreFeedback('accurate')" class="fb-btn" id="fb-accurate" style="padding:8px 20px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text);transition:all 0.15s">👍 Yes</button>
+        <button onclick="submitScoreFeedback('too_high')" class="fb-btn" id="fb-too-high" style="padding:8px 20px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text);transition:all 0.15s">📈 Too high</button>
+        <button onclick="submitScoreFeedback('too_low')" class="fb-btn" id="fb-too-low" style="padding:8px 20px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text);transition:all 0.15s">📉 Too low</button>
+      </div>
+      <div id="fb-detail" style="display:none;">
+        <textarea id="fb-text" placeholder="What felt off? (optional)" style="width:100%;min-height:60px;border:1.5px solid var(--border);border-radius:12px;padding:10px 12px;font-size:13px;font-family:'Nunito',sans-serif;color:var(--text);background:var(--bg);resize:none;outline:none;margin-bottom:8px;"></textarea>
+        <button onclick="sendFeedbackDetail()" style="background:var(--accent);color:white;border:none;border-radius:100px;padding:10px 24px;font-size:13px;font-weight:700;font-family:'Nunito',sans-serif;cursor:pointer;">Send feedback</button>
+      </div>
+      <div id="fb-thanks" style="display:none;font-size:13px;color:var(--green);font-weight:700;padding:8px 0;">Thanks — this helps us improve ✓</div>
+    </div>
+  </div>
+</div>
+<!-- DASHBOARD -->
+<div class="screen" id="screen-dashboard">
+  <div class="dash-header">
+    <div class="dash-greeting">WELCOME BACK</div>
+    <div class="dash-title">Your journey so far</div>
+    <div class="streak-card"><div class="streak-icon">&#128293;</div><div><div class="streak-label">CURRENT STREAK</div><div class="streak-value" id="streak-value">Start today</div></div></div>
+  </div>
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-value" id="stat-sessions">0</div><div class="stat-label">Sessions</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-avg">-</div><div class="stat-label">Avg score</div></div>
+    <div class="stat-card"><div class="stat-value" id="stat-mins">0</div><div class="stat-label">Minutes</div></div>
+  </div>
+  <div id="progress-chart-wrap" style="display:none;margin:0 20px 8px;background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:18px 16px 12px;">
+    <div style="font-size:11px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;">Progress Trends</div>
+    <div style="position:relative;height:160px;">
+      <canvas id="progress-chart"></canvas>
+    </div>
+  </div>
+  <div class="section-title">Recent sessions</div>
+  <div class="history-list" id="history-list"><div style="text-align:center;color:var(--muted);padding:32px;font-size:15px">No sessions yet.</div></div>
+  <div class="dash-practice-btn">
+    <button class="btn-primary" onclick="showCurriculum()">Continue journey</button>
+    <button class="btn-secondary" onclick="showCurriculum()">Back to journey</button>
+  </div>
 </div>
 
-<div id="tweaks-root"></div>
+<!-- FREE PRACTICE SCREEN -->
+<div class="screen" id="screen-free">
+  <div class="free-header">
+    <div style="font-size:12px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px">FREE PRACTICE</div>
+    <h1 class="free-header" style="font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:6px;background:none;padding:0">Just Talk</h1>
+    <p style="font-size:14px;color:var(--muted);line-height:1.6">Pick a mode and speak freely. No curriculum, no pressure — just practice.</p>
+  </div>
+  <div class="free-section-title">Choose your mode</div>
+  <div class="free-mode-grid">
+    <div class="free-mode-card" id="free-card-vent" onclick="selectFreeMode('vent')">
+      <div class="free-mode-icon">🫁</div>
+      <div class="free-mode-title">Just Vent</div>
+      <div class="free-mode-desc">Talk through what's on your mind</div>
+    </div>
+    <div class="free-mode-card" id="free-card-debate" onclick="selectFreeMode('debate')">
+      <div class="free-mode-icon">⚡</div>
+      <div class="free-mode-title">Debate It</div>
+      <div class="free-mode-desc">Pick a side and argue it</div>
+    </div>
+    <div class="free-mode-card" id="free-card-random" onclick="selectFreeMode('random')">
+      <div class="free-mode-icon">🎲</div>
+      <div class="free-mode-title">Random Prompt</div>
+      <div class="free-mode-desc">Surprise question, no prep</div>
+    </div>
+    <div class="free-mode-card" id="free-card-open" onclick="selectFreeMode('open')">
+      <div class="free-mode-icon">🎤</div>
+      <div class="free-mode-title">Open Mic</div>
+      <div class="free-mode-desc">No prompt — just talk freely</div>
+    </div>
+    <div class="free-mode-card" id="free-card-hotseat" onclick="selectFreeMode('hotseat')" style="border-color:rgba(217,84,112,0.3);background:rgba(217,84,112,0.04)">
+      <div class="free-mode-icon">🔥</div>
+      <div class="free-mode-title">Hot Seat</div>
+      <div class="free-mode-desc">Answer, then face a follow-up</div>
+    </div>
+  </div>
 
-<script>
-/* ── data ── */
-const PICO = {
-  brain:'<svg viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.44 2.5 2.5 0 0 1-2.96-3.08A3 3 0 0 1 3.5 10.6a2.5 2.5 0 0 1 1.32-4.24A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .58-4.78 2.5 2.5 0 0 0-1.32-4.24A2.5 2.5 0 0 0 14.5 2Z"/></svg>',
-  wind:'<svg viewBox="0 0 24 24"><path d="M9.6 4.6A2 2 0 1 1 11 8H2"/><path d="M17.6 19.4A2 2 0 1 0 19 16H2"/><path d="M12.6 8.6A2 2 0 1 1 14 12H2"/></svg>',
-  steps:'<svg viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>',
-  chat:'<svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/></svg>',
-  mic:'<svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>',
-  target:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.5"/></svg>',
-  zap:'<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
-  users:'<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
-  repeat:'<svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>',
-};
-const PHASES = [
-  {n:1,name:'Understanding the Fear',sub:'Why your brain treats speaking as a threat',state:'done',done:5,total:5,
-    color:'#C77B5A',soft:'#F8EEEA',line:'#EFDAD1',icon:'brain',
-    sessions:['Why Speaking Feels Dangerous','Meet Your Amygdala','The Avoidance Trap','What Your Anxiety Protects','Map Your Anxiety Pattern']},
-  {n:2,name:'The Body First',sub:'Calm your nervous system on demand',state:'done',done:7,total:7,
-    color:'#6E8B7B',soft:'#ECF0EE',line:'#D6DEDA',icon:'wind',
-    sessions:['Box Breathing','The Body Scan','The Power of the Pause','5-4-3-2-1 Grounding','Find Your Volume','Your Pre-Speech Routine','Anxiety or Excitement?']},
-  {n:3,name:'Gradual Exposure',sub:'Build from zero-stakes to real audiences',state:'active',done:3,total:8,current:3,
-    color:'#5E7290',soft:'#EAEDF1',line:'#D2D7E0',icon:'steps',
-    sessions:['Build Your Anxiety Ladder','Narrate Your Morning','Talk About What You Love','The 60-Second Introduction','Answer With No Prep','State an Opinion Clearly','Point, Reason, Example','Present to an Imagined Room']},
-  {n:4,name:'Changing the Narrative',sub:'Reality-test the thoughts that fuel anxiety',state:'locked',done:0,total:6,color:'#8A6F94',soft:'#F0ECF1',line:'#DED7E1',icon:'chat'},
-  {n:5,name:'Finding Your Voice',sub:'Discover what makes you worth listening to',state:'locked',done:0,total:7,color:'#C29A4E',soft:'#F7F2E8',line:'#EEE3CD',icon:'mic'},
-  {n:6,name:'Raising the Stakes',sub:'Present to senior people and hold your ground',state:'locked',done:0,total:6,color:'#B5677A',soft:'#F5EBEE',line:'#EAD4DA',icon:'target'},
-  {n:7,name:'In-the-Moment Tools',sub:'Recover from blanks and shaky moments',state:'locked',done:0,total:6,color:'#4E8C86',soft:'#E8F0EF',line:'#CDDEDD',icon:'zap'},
-  {n:8,name:'Performing Under Pressure',sub:'Deliver with presence when it counts',state:'locked',done:0,total:8,color:'#6C6FA0',soft:'#ECECF3',line:'#D6D7E4',icon:'users'},
-  {n:9,name:'Maintenance',sub:'Keep your progress sharp for good',state:'locked',done:0,total:6,color:'#8A9A5B',soft:'#F0F2EA',line:'#DEE3D1',icon:'repeat'},
-];
-const SCORES = {1:[88,82,90,85,79],2:[81,86,84,77,89,83,91],3:[84,90,78]};
-const TOTAL_SESSIONS = PHASES.reduce((s,p)=>s+p.total,0);
-const MAX_POINTS = TOTAL_SESSIONS*100;
-const EARNED_POINTS = Object.values(SCORES).reduce((s,arr)=>s+arr.reduce((a,b)=>a+b,0),0);
-const DONE_SESSIONS = Object.values(SCORES).reduce((s,arr)=>s+arr.length,0);
-const fmt = n => n.toLocaleString('en-US');
+  <div class="free-prompt-area" id="free-prompt-area" style="display:none">
+    <div class="free-prompt-label" id="free-prompt-label-text">Your prompt</div>
+    <div class="free-prompt-text" id="free-prompt-text"></div>
+    <button onclick="selectFreeMode(freeState.mode)" style="background:none;border:none;font-size:13px;color:var(--muted);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;padding:0;">🔀 New prompt</button>
+  </div>
 
-const I = {
-  check:'<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',
-  lock:'<svg viewBox="0 0 24 24"><rect x="4.5" y="11" width="15" height="9.5" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/></svg>',
-  chev:'<svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>',
-  arrow:'<svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>',
-};
+  <div class="free-recording-zone" id="free-recording-wrap" style="display:none">
+    <div class="waveform" id="free-waveform"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
+    <div class="timer" id="free-timer">0:00</div>
+    <button class="record-btn" id="free-record-btn" onclick="toggleFreeRecording()"></button>
+    <div class="record-hint" id="free-record-hint">Tap to start recording</div>
+  </div>
+</div>
 
-function dotsFor(p){
-  let h='';
-  for(let i=0;i<p.total;i++){
-    if(i<p.done) h+=`<span class="dot" style="background:${p.color}"></span>`;
-    else if(p.state==='active'&&i===p.current) h+=`<span class="dot" style="background:#fff;border:2px solid ${p.color};width:8px;height:8px"></span>`;
-    else h+=`<span class="dot"></span>`;
-  }
-  return h;
-}
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav" id="bottom-nav">
+  <button class="nav-item active" id="nav-journey" onclick="showCurriculum();setActiveNav('journey')">
+    <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div>
+    <span class="nav-label">Journey</span>
+  </button>
+  <button class="nav-item" id="nav-free" onclick="showFreeTab()">
+    <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+    <span class="nav-label">Practice</span>
+  </button>
+  <button class="nav-item" id="nav-progress" onclick="showDashboard();setActiveNav('progress')">
+    <div class="nav-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+    <span class="nav-label">Progress</span>
+  </button>
+</nav>
 
-function renderPhases(){
-  const list=document.getElementById('phase-list');
-  list.innerHTML = PHASES.map(p=>{
-    const open = p.state==='active';
-    const ico = PICO[p.icon]||'';
-
-    // pmark with status (vivid=done, tinted+ring=active, grey=locked) + corner badge
-    let mark;
-    if(p.state==='done') mark=`<div class="pmark done">${ico}<span class="pmark-badge done">${I.check}</span></div>`;
-    else if(p.state==='active') mark=`<div class="pmark active">${ico}</div>`;
-    else mark=`<div class="pmark locked">${ico}<span class="pmark-badge locked">${I.lock}</span></div>`;
-
-    // right column — count shown on EVERY phase
-    const countColor = p.state==='locked' ? 'var(--muted)' : p.color;
-    const trail = p.state==='locked'
-      ? `<div class="chev locked-chev">${I.lock}</div>`
-      : `<div class="chev">${I.chev}</div>`;
-    const right = `<div class="mini-prog"><span class="mini-count" style="color:${countColor}">${p.done}/${p.total}</span><div class="dots">${dotsFor(p)}</div></div>${trail}`;
-
-    let sessionsHtml='';
-    if(p.state!=='locked'){
-      const rows = p.sessions.map((title,i)=>{
-        let cls,num,trailS,meta;
-        if(i<p.done){
-          cls='done';num=`<div class="snum done">${I.check}</div>`;
-          trailS=`<span class="sscore" style="color:${p.color}">${(SCORES[p.n]||[])[i]||''}</span>`;
-          meta='Passed';
-        }else if(p.state==='active'&&i===p.current){
-          cls='current';num=`<div class="snum current" style="background:${p.color};box-shadow:0 3px 9px -2px ${p.color}">${i+1}</div>`;
-          trailS=`<div class="sgo">${I.arrow}</div>`;
-          meta='Up next · tap to start';
-        }else{
-          cls='up';num=`<div class="snum up">${i+1}</div>`;
-          trailS=`<div class="sgo">${I.chev.replace('6 9 12 15 18 9','9 6 15 12 9 18')}</div>`;
-          meta='Locked';
-        }
-        return `<div class="srow ${cls}" onclick="openSheet('s',${p.n},${i})">
-          ${num}
-          <div class="sinfo"><div class="stitle">${title}</div><div class="smeta">${meta}</div></div>
-          ${trailS}
-        </div>`;
-      }).join('');
-      sessionsHtml=`<div class="sessions"><div class="sessions-inner">${rows}</div></div>`;
-    }else{
-      sessionsHtml=`<div class="lock-note">${I.lock} ${p.total} sessions · finish Phase ${p.n-1} to unlock</div>`;
-    }
-
-    const style=`--pc:${p.color};--pc-soft:${p.soft};--pc-line:${p.line}`;
-    return `<div class="phase is-${p.state}${open?' open':''}" id="ph-${p.n}" style="${style}">
-      <div class="phase-head" onclick="${p.state==='locked'?'':`togglePhase(${p.n})`}">
-        ${mark}
-        <div class="phase-mid">
-          <div class="phase-kicker" style="color:${p.color}">Phase ${p.n}</div>
-          <div class="phase-name">${p.name}</div>
-          <div class="phase-sub">${p.sub}</div>
-        </div>
-        <div class="phase-right">${right}</div>
-      </div>
-      ${sessionsHtml}
-    </div>`;
-  }).join('');
-}
-
-function togglePhase(n){
-  const el=document.getElementById('ph-'+n);
-  if(el.classList.contains('is-locked'))return;
-  el.classList.toggle('open');
-}
-
-/* ── nav ── */
-function go(screen){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('screen-'+screen).classList.add('active');
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+screen).classList.add('active');
-  document.getElementById('scroll').scrollTop=0;
-}
-
-/* ── sheet ── */
-const CONT = {
-  eyebrow:'Phase 3 · Session 4', color:'var(--accent)',
-  title:'The 60-Second Introduction',
-  desc:'The self-introduction is the most universally required — and feared — speaking moment. You\'ll practise a version you\'ve actually rehearsed: name, role, one thing you\'re into, one human detail.',
-  btn:'Continue session'
-};
-function openSheet(type,pn,si){
-  let d=CONT;
-  if(type==='s'){
-    const p=PHASES.find(x=>x.n===pn);
-    const title=p.sessions[si];
-    const passed=si<p.done;
-    const current=p.state==='active'&&si===p.current;
-    const locked=!passed&&!current;
-    d={
-      eyebrow:`Phase ${pn} · Session ${si+1}`,
-      title,
-      desc: passed?'You\'ve passed this session. Revisit the idea or re-record to beat your score.':
-            current?'This is your next session. Read the idea, check your understanding, then speak it out loud for AI feedback.':
-            'Complete the session before this one to unlock it. Each builds on the last.',
-      btn: passed?'Review session':current?'Start session':'Locked',
-      locked
-    };
-  }
-  document.getElementById('sheet-eyebrow').innerHTML = d.eyebrow;
-  document.getElementById('sheet-eyebrow').style.color='var(--accent)';
-  document.getElementById('sheet-title').textContent = d.title;
-  document.getElementById('sheet-desc').textContent = d.desc;
-  const btn=document.getElementById('sheet-btn');
-  btn.textContent = d.btn;
-  btn.style.opacity = d.locked?'.45':'1';
-  btn.style.pointerEvents = d.locked?'none':'auto';
-  document.getElementById('sheet-scrim').classList.add('open');
-  document.getElementById('sheet').classList.add('open');
-}
-function closeSheet(){
-  document.getElementById('sheet-scrim').classList.remove('open');
-  document.getElementById('sheet').classList.remove('open');
-}
-function openTweaksHint(){
-  const b=document.querySelector('.appbar-btn');
-  b.animate([{transform:'scale(1)'},{transform:'scale(.85)'},{transform:'scale(1)'}],{duration:240});
-}
-
-/* ── scaler ── */
-function fit(){
-  const p=document.getElementById('phone');
-  const pad=24;
-  const s=Math.min((window.innerWidth-pad)/390,(window.innerHeight-pad)/844,1);
-  p.style.transform='scale('+s+')';
-}
-window.addEventListener('resize',fit);
-
-function updateHero(){
-  const pct = Math.round(EARNED_POINTS/MAX_POINTS*100);
-  document.getElementById('prog-points').innerHTML = fmt(EARNED_POINTS)+'<span class="slash"> / '+fmt(MAX_POINTS)+'</span>';
-  document.getElementById('prog-cap').textContent = DONE_SESSIONS+' of '+TOTAL_SESSIONS+' sessions complete';
-  document.getElementById('track-fill').style.width = pct+'%';
-  document.getElementById('track-dot').style.left = pct+'%';
-}
-
-renderPhases();
-updateHero();
-fit();
-</script>
-
-<!-- React + Babel for the Tweaks panel only -->
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<script type="text/babel" src="tweaks-panel.jsx"></script>
-<script type="text/babel">
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accent": "#C77B5A",
-  "bg": "#F0F1F3",
-  "radius": 17,
-  "font": "Plus Jakarta Sans",
-  "descriptions": true
-}/*EDITMODE-END*/;
-
-const ACCENT_TINTS={
-  '#C77B5A':{soft:'#F7ECE8',line:'#EFDAD1'},
-  '#4A4458':{soft:'#E6E5E8',line:'#CCCBD0'},
-  '#6E8B7B':{soft:'#EBEFEC',line:'#D6DEDA'},
-  '#5E7290':{soft:'#E8EBF0',line:'#D2D7E0'},
-  '#B5704C':{soft:'#F5EBE6',line:'#EAD6CD'},
-};
-function TweaksApp(){
-  const [t,setTweak]=useTweaks(TWEAK_DEFAULTS);
-  React.useEffect(()=>{
-    const r=document.documentElement.style;
-    r.setProperty('--accent',t.accent);
-    const tint=ACCENT_TINTS[t.accent]||ACCENT_TINTS['#C77B5A'];
-    r.setProperty('--accent-soft',tint.soft);
-    r.setProperty('--accent-line',tint.line);
-    r.setProperty('--bg',t.bg);
-    r.setProperty('--radius',t.radius+'px');
-    r.setProperty('--radius-sm',Math.round(t.radius*0.66)+'px');
-    r.setProperty('--font',"'"+t.font+"'");
-    document.querySelectorAll('.phase-sub').forEach(e=>e.style.display=t.descriptions?'':'none');
-  },[t]);
-  return (
-    <TweaksPanel>
-      <TweakSection label="Theme" />
-      <TweakColor label="Accent" value={t.accent}
-        options={['#C77B5A','#4A4458','#6E8B7B','#5E7290','#B5704C']}
-        onChange={v=>setTweak('accent',v)} />
-      <TweakColor label="Background" value={t.bg}
-        options={['#F4F2EE','#F0F1F3','#F8F7F5','#EDEAE4']}
-        onChange={v=>setTweak('bg',v)} />
-      <TweakSection label="Shape & type" />
-      <TweakSlider label="Corner radius" value={t.radius} min={12} max={30} unit="px"
-        onChange={v=>setTweak('radius',v)} />
-      <TweakSelect label="Font" value={t.font}
-        options={['Plus Jakarta Sans','Manrope','Sora']}
-        onChange={v=>setTweak('font',v)} />
-      <TweakSection label="Content" />
-      <TweakToggle label="Phase descriptions" value={t.descriptions}
-        onChange={v=>setTweak('descriptions',v)} />
-    </TweaksPanel>
-  );
-}
-ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TweaksApp/>);
-</script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>
