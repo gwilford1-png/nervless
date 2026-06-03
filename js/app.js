@@ -85,13 +85,11 @@ function showScreen(id){
 }
 function goBack(){state.screenHistory.pop();showScreen(state.screenHistory[state.screenHistory.length-1]||'screen-curriculum');}
 function showCurriculum() {
-  // Reset sc to default purple for curriculum view
   const r = document.documentElement.style;
-  r.setProperty('--sc', '#5B4FD9');
-  r.setProperty('--sc-light', '#EEEAFF');
-  r.setProperty('--sc-mid', '#C8C0F5');
+  r.setProperty('--sc', '#C2724F');
+  r.setProperty('--sc-light', '#FAEDE5');
+  r.setProperty('--sc-mid', '#EAC9B6');
 
-  // Reload state from localStorage
   state.level = parseInt(localStorage.getItem('nervless_level') || state.level);
   state.currentSessionId = parseInt(localStorage.getItem('nervless_current_session') || LEVEL_ENTRY[state.level]);
   state.completedSessions = JSON.parse(localStorage.getItem('nervless_completed') || '[]');
@@ -100,323 +98,173 @@ function showCurriculum() {
   const DONE = passed;
   const CURRENT = state.currentSessionId;
   const entry = LEVEL_ENTRY[state.level];
-
-  // Update header
-  // level title removed from header
-  const totalDone = passed.length;
-  const currSession = CURRICULUM.find(s => s.id === CURRENT);
-  const currPhase = currSession ? currSession.phase : 1;
-  document.getElementById('stat-phase-pill').textContent = 'Phase ' + currPhase + ' of 9';
-  document.getElementById('stat-done-num').innerHTML = totalDone + ' <span>/ 59 sessions</span>';
-  const fill = document.getElementById('journey-progress-fill');
-  if (fill) fill.style.width = Math.min(100, Math.round((totalDone / 59) * 100)) + '%';
-
-  // Phase data
-  const V7_DESC = {
-    1:"Learn <strong>why your body reacts the way it does</strong> when you speak. You'll describe a real anxious moment out loud — building the self-awareness the whole programme is built on.",
-    2:"Understand <strong>why your brain treats an audience like a physical threat</strong>. You'll explain the science in your own words — saying it out loud starts to defuse it.",
-    3:"Discover <strong>why avoidance makes anxiety worse</strong>, not better. You'll name something real you've avoided and what it cost you — the first step to breaking the pattern.",
-    4:"Speak directly to your anxiety as if it were a person — asking <strong>what it's trying to protect you from</strong>. Unusual, but one of the most revealing sessions in the programme.",
-    5:"Build a <strong>precise map of your own anxiety</strong> — triggers, symptoms, history. The more specific you are here, the more targeted everything that follows will be.",
-    6:"Learn <strong>box breathing</strong> — used by surgeons and special forces under pressure — and practise it out loud. Even one cycle can measurably lower your heart rate.",
-    7:"Scan from head to toe and <strong>release the tension you're holding</strong> — jaw, shoulders, stomach. Most people discover they're far more tense than they realised.",
-    8:"Tell a story while <strong>replacing every filler word with deliberate silence</strong>. It feels uncomfortable at first — that's the point. A pause sounds like authority.",
-    9:"Work through the <strong>5-4-3-2-1 technique in real time</strong> — five senses, working down — and notice how quickly your body settles. A tool you can use anywhere, invisibly.",
-    10:"Read one sentence at three volumes and <strong>hear how projection changes your confidence</strong> — and how your confidence changes your voice. Volume is a learnable skill.",
-    11:"Build and perform <strong>your own 60-second pre-speaking routine</strong> — breathing, tension release and grounding combined into a sequence that's yours and works reliably.",
-    12:"Discover that <strong>anxiety and excitement are physiologically identical</strong>. You'll practise the one reframe that research shows measurably improves performance.",
-    13:"Create your <strong>personal hierarchy of speaking situations</strong> — at least six rungs from low-stakes to terrifying. This becomes the exact roadmap for every exposure session that follows.",
-    14:"Narrate your morning like a documentary voiceover — <strong>no audience, no stakes</strong>. The goal is simply to get comfortable with the sound of your own voice.",
-    15:"Speak for two minutes about something you genuinely love. <strong>This is the easiest speaking situation there is</strong> — and it helps you remember what fluency actually feels like.",
-    16:"Practise the introduction you'll use in real life — name, role, background, one excitement, one personal fact. You'll leave with <strong>a version you've actually rehearsed</strong>.",
-    17:"Answer a question with zero preparation, using <strong>a deliberate 2–3 second pause</strong> to buy yourself structure — without it being noticeable to anyone in the room.",
-    18:"State a position clearly, give three reasons, then <strong>acknowledge the strongest counterargument</strong>. Structured opinion-sharing is the antidote to competence anxiety.",
-    19:"Use <strong>Point-Reason-Example twice back to back</strong>. Once automatic, this framework lets you structure any spoken answer on the fly — in meetings, interviews or under pressure.",
-    20:"Present a real achievement to an imagined room of senior people. <strong>Imaginal exposure activates the same neural pathways as real exposure</strong> — this is the bridge to the real world.",
-    21:"Share three things about yourself most people don't know — <strong>not impressive, interesting</strong>. You'll discover the specific details that make you worth listening to.",
-    22:"Tell a real story using scene, problem, action, result. <strong>Most people rush the interesting parts</strong> — this session teaches you how to let them breathe.",
-    23:"Describe something that genuinely moved you — not analytically, but <strong>trying to make another person feel what you felt</strong>. Emotion is what makes words land.",
-    24:"Tell a real story about something absurd that happened to you — <strong>not a joke, just the truth told naturally</strong>. Genuine humour comes from specificity, not performance.",
-    25:"Describe your own communication style honestly — <strong>your natural strengths, what people respond to</strong> when you're at your best. Not who you want to be — who you actually are.",
-    26:"Explain what drives you to one imagined person you respect. <strong>Shifting from performing to connecting</strong> changes everything about how you show up.",
-    27:"Tell the story that would help someone <strong>understand something important about who you are</strong>. True, specific, with real stakes. Every effective communicator has one.",
-    28:"Answer 'tell me about yourself' in a structured 2-minute response. <strong>Interview anxiety is often preparation anxiety</strong> — leave this session with a version that works.",
-    29:"Present a recommendation to senior leaders — then <strong>hold your ground when they push back</strong>. Staying in position without collapsing or becoming defensive is a learnable skill.",
-    30:"Answer a deliberately challenging question <strong>without apologising or flinching</strong>. The technique: pause, acknowledge, answer directly. Never apologise for existing.",
-    31:"Deliver bad news clearly — <strong>what happened, impact, action, prevention</strong> — without over-explaining or hedging. Bad news with a plan is respected. Bad news buried in apology is alarming.",
-    32:"Make a clear salary ask and <strong>handle pushback without immediately retreating</strong>. Most people fold at the first sign of resistance. The anchor and the silence — this session builds both.",
-    33:"Deliver a full 3-minute presentation with a real structure. By this session <strong>you have every tool you need</strong> — this is about using them all under genuine pressure.",
-    34:"Learn the extended exhale — a single breath that <strong>reduces heart rate within seconds</strong>. Invisible to any audience. The fastest in-the-moment tool in the programme.",
-    35:"Stop mid-sentence, sit in silence, then <strong>practise three recovery techniques</strong>. The blank feels eternal to you. The audience barely notices — this session makes you believe that.",
-    36:"Read one sentence three times — each time <strong>slower and lower in pitch</strong>. These two counterintuitive fixes reduce the laryngeal tension that causes shaking.",
-    37:"Answer two questions using the <strong>PREP framework — one easy, one deliberately hard</strong>. After this session, PREP starts to become automatic when your brain is scrambling.",
-    38:"Tell a story, deliberately lose your place, then practise two recovery techniques. <strong>Nobody knows your planned sequence</strong>. This session makes you genuinely believe that.",
-    39:"Answer <strong>three questions in 90 seconds</strong> after speaking — then close the file deliberately. Replaces the hours-long anxiety spiral with a structured habit that takes under two minutes.",
-    40:"Contrast speaking while monitoring yourself with <strong>speaking focused entirely on whether your listener understands</strong>. That shift is the single biggest difference between anxious and confident speakers.",
-    41:"Place <strong>deliberate 2-second pauses before each key moment</strong> in a story. The pause creates anticipation and signals confidence. This session makes it feel natural rather than terrifying.",
-    42:"Read the same passage three times — monotone, varied pace, varied volume — and hear <strong>how delivery changes the meaning</strong>. Monotone loses audiences regardless of what you say.",
-    43:"Role-play three live scenarios — distracted, confused, highly engaged — and demonstrate <strong>a specific adaptation for each</strong>. Presence means noticing what's happening, not just talking.",
-    44:"Tell a real story using <strong>Situation-Complication-Resolution</strong> — the arc behind every great speech, film and TED talk. If you can tell a structured story under pressure, you can communicate anything.",
-    45:"Deliver a 2-minute opening to an imagined conference hall of 200 — <strong>projecting, slowing your pace, pausing between points</strong>. These adjustments feel wrong until you've practised them.",
-    46:"Answer three questions with <strong>zero preparation, using PREP for each</strong>. Good speakers appear not to think on their feet. They do — they just have frameworks like this one.",
-    47:"Answer honestly: <strong>who are you as a speaker — not who you wish you were</strong>? Define your strengths and own them as if writing your own conference introduction.",
-    48:"Reflect on where you started versus where you are now — then build <strong>a concrete weekly plan to sustain the progress you've made</strong>. Progress isn't linear. This session prepares you for that.",
-    49:"Review the past week — what came up, how you handled it, and <strong>whether you avoided anything</strong>. Designed to be repeated weekly. Avoidance is the first sign of regression.",
-    50:"Rebuild your anxiety ladder from memory and <strong>compare it honestly to where you started</strong>. Situations that were terrifying should now sit lower. Seeing that is concrete proof of progress.",
-    51:"Choose the scenario just above your current comfort level and simulate it in full. <strong>Mild ongoing challenge</strong> is what prevents avoidance from quietly creeping back.",
-    52:"Teach the technique that's helped you most to an imagined terrified friend. <strong>Teaching consolidates learning</strong> more than any other method — and it's a real speaking exercise too.",
-    53:"Answer four honest questions: where you started, where you are now, <strong>what changed</strong>, and what you'd say to someone who is where you were. The most important session in the programme.",
-    54:"List every worst-case scenario your brain predicts — then <strong>reality-test each one honestly</strong>. The realistic probability and consequences are almost always far smaller than the fear.",
-    55:"Name the voice that predicts failure, make it feel <strong>separate from you</strong>, then challenge its favourite line with real evidence from your own experience.",
-    56:"List five occasions where you spoke and <strong>it went OK — not perfect, just OK</strong>. Your anxiety has been running a highlight reel of every stumble. This session builds the counter-evidence.",
-    57:"Say to an imagined terrified friend exactly what they need to hear — then <strong>redirect every word to yourself</strong>. Most people are far harsher to themselves than to anyone else.",
-    58:"State what you assume the audience is thinking — then confront it with <strong>what you actually think when you're in an audience</strong>. The gap is almost always dramatic.",
-    59:"Write a speaking mantra that is <strong>grounded in evidence you actually believe</strong> — not wishful thinking. Say it three times. This is what you use before every speaking situation.",
-  };
-  const V7_PHASES = [
-    { num:1, name:'Understanding the Fear', color:'#5B4FD9', light:'#EEEAFF', mid:'#C8C0F5',
-      outcomes:[{icon:'brain',text:'Understand exactly why your brain treats speaking like a physical threat'},{icon:'eye',text:'Identify your personal triggers, symptoms and anxiety patterns'},{icon:'shield',text:'See avoidance for what it is — and why it\'s been making things worse'}]},
-    { num:2, name:'The Body First', color:'#2E9E7A', light:'#E4F7F1', mid:'#A8DFD0',
-      outcomes:[{icon:'zap',text:'Calm your nervous system in under 60 seconds before any speaking situation'},{icon:'mic',text:'Use your voice with more control, projection and steadiness'},{icon:'refresh',text:'Build a personal pre-speaking reset routine that actually works for you'}]},
-    { num:3, name:'Gradual Exposure', color:'#C4922A', light:'#FDF3E3', mid:'#F0D49A',
-      outcomes:[{icon:'trending',text:'Work up from zero-pressure speaking to imagined high-stakes audiences'},{icon:'message',text:'Introduce yourself, share opinions and handle unexpected questions with structure'},{icon:'layers',text:'Have the Point-Reason-Example framework automatic for any spoken answer'}]},
-    { num:4, name:'Changing the Narrative', color:'#2980B9', light:'#EBF5FB', mid:'#AED6F1',
-      outcomes:[{icon:'brain',text:'Reality-test catastrophic thinking and replace it with accurate assessment'},{icon:'heart',text:'Develop a kinder, evidence-based relationship with your own speaking ability'},{icon:'shield',text:'Create a personal mantra grounded in proof — not wishful thinking'}]},
-    { num:5, name:'Finding Your Voice', color:'#C0392B', light:'#FDEDEC', mid:'#F1948A',
-      outcomes:[{icon:'star',text:'Identify what makes you a genuinely memorable communicator'},{icon:'mic',text:'Tell stories that land — with emotion, structure and specificity'},{icon:'compass',text:'Articulate a speaking style that is fully, authentically yours'}]},
-    { num:6, name:'Raising the Stakes', color:'#7B6FEF', light:'#F0EEFF', mid:'#C8C0F5',
-      outcomes:[{icon:'users',text:'Present confidently to senior people and handle authority without flinching'},{icon:'shield',text:'Answer hostile questions and deliver bad news without losing composure'},{icon:'target',text:'Negotiate clearly, hold your position and make a case under pressure'}]},
-    { num:7, name:'In-the-Moment Tools', color:'#D68910', light:'#FEF9E7', mid:'#F9E79F',
-      outcomes:[{icon:'zap',text:'Recover from a blank mind, shaking voice or lost thread without the audience noticing'},{icon:'tool',text:'Use the PREP framework to structure any answer on the spot'},{icon:'refresh',text:'Debrief cleanly after speaking so anxiety doesn\'t spiral for hours'}]},
-    { num:8, name:'Performing Under Pressure', color:'#6C3483', light:'#F5EEF8', mid:'#C39BD3',
-      outcomes:[{icon:'users',text:'Shift attention from how you sound to whether your audience is understanding'},{icon:'mic',text:'Use silence, vocal variety and storytelling as deliberate tools — not accidents'},{icon:'award',text:'Define and own your speaker identity with confidence you\'ve actually earned'}]},
-    { num:9, name:'Maintenance', color:'#1E8449', light:'#E9F7EF', mid:'#A9DFBF',
-      outcomes:[{icon:'refresh',text:'Keep skills sharp with a weekly practice that takes under 10 minutes'},{icon:'trending',text:'Spot the early signs of regression before avoidance creeps back in'},{icon:'check',text:'Measure how far you\'ve come — concretely, against where you started'}]},
-  ];
-
-  const V7_ICONS = {
-    brain:`<svg viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.14Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.14Z"/></svg>`,
-    shield:`<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
-    mic:`<svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`,
-    zap:`<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
-    eye:`<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
-    heart:`<svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
-    target:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
-    users:`<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
-    compass:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>`,
-    refresh:`<svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>`,
-    trending:`<svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
-    award:`<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>`,
-    tool:`<svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>`,
-    star:`<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-    check:`<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,
-    message:`<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
-    layers:`<svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
-  };
-
-  function v7PhaseState(num) {
-    if (num === 1) return DONE.length >= 0 ? 'active' : 'active';
-    const relevant = CURRICULUM.filter(s => s.id >= entry);
-    const prev = relevant.filter(s => s.phase === num - 1);
-    if (prev.length === 0) return 'active';
-    const allPrevDone = prev.every(s => DONE.includes(s.id));
-    if (allPrevDone) {
-      const thisDone = relevant.filter(s => s.phase === num).every(s => DONE.includes(s.id));
-      return thisDone ? 'done' : 'active';
-    }
-    return 'locked';
-  }
-
   const relevant = CURRICULUM.filter(s => s.id >= entry);
 
-  const html = V7_PHASES.map((p, pi) => {
-    const phState = v7PhaseState(p.num);
+  const totalDone = passed.length;
+  const totalSessions = relevant.length;
+  const currSession = CURRICULUM.find(s => s.id === CURRENT);
+  const currPhase = currSession ? currSession.phase : 1;
+
+  // ── Score card ──
+  const scoredAll = relevant.filter(s => s.scored !== false);
+  const earnedPts = scoredAll.reduce((sum, s) => sum + getBestScore(s.id), 0)
+    + relevant.filter(s => s.scored === false && DONE.includes(s.id)).length * 100;
+  const maxPts = totalSessions * 100;
+  document.getElementById('stat-points').textContent = earnedPts.toLocaleString();
+  document.getElementById('stat-points-max').textContent = '/ ' + maxPts.toLocaleString();
+  document.getElementById('stat-sessions-line').textContent = totalDone + ' of ' + totalSessions + ' sessions complete';
+  document.getElementById('stat-phase-text').textContent = 'Phase ' + currPhase + ' of 9';
+  const fill = document.getElementById('journey-progress-fill');
+  const pct = totalSessions ? Math.round((totalDone / totalSessions) * 100) : 0;
+  if (fill) fill.style.width = Math.max(5, Math.min(100, pct)) + '%';
+
+  // ── Phase data: palette + representative icon + one-line benefit ──
+  const PHASES = [
+    { num:1, name:'Understanding the Fear',    benefit:'Why your brain treats speaking as a threat',    icon:'brain',    color:'#C2724F', light:'#FAEDE5', mid:'#EAC9B6' },
+    { num:2, name:'The Body First',            benefit:'Calm your nervous system on demand',            icon:'wind',     color:'#4F9E7E', light:'#E7F3EE', mid:'#BDE0D2' },
+    { num:3, name:'Gradual Exposure',          benefit:'Build from zero-stakes to real audiences',      icon:'trending', color:'#4A6FA5', light:'#E8EEF6', mid:'#BFD0E6' },
+    { num:4, name:'Changing the Narrative',    benefit:'Rewrite the thoughts that fuel the fear',       icon:'message',  color:'#5E6CB0', light:'#EBEDF7', mid:'#CBD1ED' },
+    { num:5, name:'Finding Your Voice',        benefit:'Discover what makes you worth listening to',    icon:'mic',      color:'#C19A45', light:'#F6EFDD', mid:'#E8D5A8' },
+    { num:6, name:'Raising the Stakes',        benefit:'Present to senior people and hold your ground', icon:'target',   color:'#CB7385', light:'#F8E9EC', mid:'#EEC6CF' },
+    { num:7, name:'In-the-Moment Tools',       benefit:'Recover from blanks and shaky moments',         icon:'zap',      color:'#4E9E8C', light:'#E7F3F0', mid:'#BCDED6' },
+    { num:8, name:'Performing Under Pressure', benefit:'Deliver with presence when it counts',          icon:'users',    color:'#8A77C4', light:'#EFEBF7', mid:'#D3C9EC' },
+    { num:9, name:'Maintenance',               benefit:'Keep your skills sharp for the long run',       icon:'refresh',  color:'#3FA86A', light:'#E4F4EB', mid:'#B6E1C5' },
+  ];
+
+  const ICONS = {
+    brain:`<svg viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.14Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.14Z"/></svg>`,
+    wind:`<svg viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>`,
+    trending:`<svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>`,
+    message:`<svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+    mic:`<svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`,
+    target:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+    zap:`<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+    users:`<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+    refresh:`<svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>`,
+  };
+  const CHECK = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`;
+  const LOCK  = `<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>`;
+  const CONT_ICONS = {
+    book:`<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+    check:`<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`,
+    talk:`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>`,
+  };
+
+  function phaseState(num) {
+    const ss = relevant.filter(s => s.phase === num);
+    if (ss.length === 0) return 'locked';
+    if (ss.every(s => DONE.includes(s.id))) return 'done';
+    if (num === 1) return 'active';
+    const prev = relevant.filter(s => s.phase === num - 1);
+    return (prev.length > 0 && prev.every(s => DONE.includes(s.id))) ? 'active' : 'locked';
+  }
+
+  // ── Continue card ──
+  const contCard = document.getElementById('j-continue-card');
+  if (currSession && phaseState(currSession.phase) !== 'done') {
+    const phaseSessions = relevant.filter(s => s.phase === currSession.phase);
+    const idxInPh = phaseSessions.findIndex(s => s.id === currSession.id) + 1;
+    document.getElementById('j-continue-meta').textContent =
+      'Continue · Phase ' + currSession.phase + ' · Session ' + (idxInPh > 0 ? idxInPh : 1);
+    document.getElementById('j-continue-title').textContent = currSession.title;
+    const lc = LESSON_CONTENT[currSession.id];
+    const hasQuiz = !!(lc && lc.quiz && lc.quiz.length);
+    const isScored = currSession.scored !== false;
+    const steps = [{ l:'Read', i:'book' }];
+    if (hasQuiz) steps.push({ l:'Check', i:'check' });
+    if (isScored) steps.push({ l:'Talk', i:'talk' });
+    document.getElementById('j-continue-steps').innerHTML = steps.map((st, i) =>
+      (i > 0 ? '<span class="j-step-sep">›</span>' : '') +
+      `<div class="j-step"><div class="j-step-ic">${CONT_ICONS[st.i]}</div><div class="j-step-label">${st.l}</div></div>`
+    ).join('');
+    if (contCard) { contCard.style.display = 'block'; contCard.onclick = () => loadSession(currSession.id); }
+  } else if (contCard) {
+    contCard.style.display = 'none';
+  }
+
+  // ── Phases-complete count ──
+  const phasesPresent = [...new Set(relevant.map(s => s.phase))];
+  const phasesDone = phasesPresent.filter(n => relevant.filter(s => s.phase === n).every(s => DONE.includes(s.id))).length;
+  document.getElementById('j-phases-count').textContent = phasesDone + ' of ' + phasesPresent.length + ' complete';
+
+  // ── Build phase cards ──
+  const html = PHASES.map((p, pi) => {
     const sessions = relevant.filter(s => s.phase === p.num);
     if (sessions.length === 0) return '';
-
+    const st = phaseState(p.num);
     const doneCount = sessions.filter(s => DONE.includes(s.id)).length;
-    const isOpen = phState === 'active' && sessions.some(s => s.id === CURRENT || DONE.includes(s.id));
+    const isOpen = st === 'active';
     const delay = (pi * 0.045).toFixed(3);
-    const style = `--pc:${p.color};--pc-light:${p.light};--pc-mid:${p.mid};animation-delay:${delay}s`;
 
-    // Status pill — text only, no icon
-    let badge = '';
-    if (phState === 'done')
-      badge = `<div class="phase-badge badge-done">Complete</div>`;
-    else if (phState === 'active')
-      badge = `<div class="phase-badge badge-active">In Progress</div>`;
-    else
-      badge = `<div class="phase-badge badge-locked">Locked</div>`;
+    const badge = st === 'done' ? `<div class="j-tile-badge done">${CHECK}</div>`
+      : st === 'locked' ? `<div class="j-tile-badge locked">${LOCK}</div>` : '';
 
     const dots = sessions.map(s => {
-      const isDone = DONE.includes(s.id);
-      const isCurr = s.id === CURRENT && !isDone;
-      return `<div class="dot ${isDone ? 'dot-done' : isCurr ? 'dot-current' : 'dot-todo'}"></div>`;
+      const d = DONE.includes(s.id), c = s.id === CURRENT && !d;
+      return `<span class="j-dot ${d ? 'done' : c ? 'current' : 'todo'}"></span>`;
     }).join('');
 
-    // Points: max 100 per scored session only (non-speaking sessions excluded)
-    const scoredSessions = sessions.filter(s => s.scored !== false);
-    const maxPts = scoredSessions.length * 100;
-    const earnedPts = scoredSessions.reduce((sum, s) => sum + getBestScore(s.id), 0);
-    const ptsPct = maxPts > 0 ? earnedPts / maxPts : 0;
-    const ptsColour = phState === 'locked' ? 'var(--text-faint)'
-      : earnedPts === 0 ? 'var(--text-faint)'
-      : ptsPct >= 0.95 ? '#C4922A'
-      : ptsPct >= 0.80 ? 'var(--green)'
-      : ptsPct >= 0.50 ? '#E67E22'
-      : 'var(--red)';
-    // Always show points — even on locked phases (shows 0/max, motivates unlocking)
-    const ptsDisplay = `<div style="display:flex;align-items:baseline;gap:2px;margin-left:8px;flex-shrink:0;">
-           <span style="font-size:14px;font-weight:900;color:${ptsColour};letter-spacing:-0.5px;">${earnedPts}</span>
-           <span style="font-size:10px;font-weight:700;color:var(--text-faint);">/ ${maxPts} pts</span>
-         </div>`;
+    const rightIc = st === 'locked'
+      ? `<div class="j-lock-ic">${LOCK}</div>`
+      : `<div class="j-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>`;
 
-    const pillLabel = phState === 'done' ? sessions.length + ' / ' + sessions.length : doneCount + ' / ' + sessions.length;
-
-    const outcomes = p.outcomes.map(o => `
-      <div class="outcome-item">
-        <div class="outcome-icon">${V7_ICONS[o.icon] || ''}</div>
-        <div class="outcome-text">${o.text}</div>
-      </div>`).join('');
-
-    const unlockNote = phState === 'locked'
-      ? `<div class="unlock-note">Complete Phase ${p.num - 1} to unlock</div>`
-      : '';
-
-    const triggerLabel = isOpen ? 'Hide sessions' : 'Show ' + sessions.length + ' sessions';
-    const trigger = phState !== 'locked' ? `
-      <button class="sessions-trigger" id="v7-trigger-${p.num}" onclick="v7ToggleCard(${p.num}, event)">
-        <div class="trigger-inner">
-          <span class="trigger-label" id="v7-trigger-label-${p.num}">${triggerLabel}</span>
-          <div class="trigger-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
-        </div>
-      </button>` : '';
-
-    let sessionsList = '';
-    if (phState !== 'locked') {
+    let body;
+    if (st === 'locked') {
+      body = `<div class="j-unlock">${LOCK} ${sessions.length} sessions · finish Phase ${p.num - 1} to unlock</div>`;
+    } else {
       const rows = sessions.map((s, si) => {
         const isDone = DONE.includes(s.id);
         const isCurrent = s.id === CURRENT && !isDone;
         const isScored = s.scored !== false;
-
-        // Real scores from localStorage
-        const bestScore = getBestScore(s.id);
-        const score = bestScore;
-        const t = getStarThresholds(s);
-
-        const scoreColour = isDone ? p.color : '';
-
-        let scoreBlock = '';
-        let passLabel = '';
-
-        if (isScored) {
-          // Mini arc gauge per session
-          const hasPassed = isDone && score >= t.star1;
-          const sessionArcId = 'sarc-' + s.id;
-          const passScore = t.star1;
-          scoreBlock = `
-            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;">
-              <div style="position:relative;width:48px;height:48px;">
-                <canvas id="${sessionArcId}" width="48" height="48" style="display:block;"></canvas>
-                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:15px;pointer-events:none;${hasPassed ? '' : 'opacity:0.3;'}">⭐</div>
-              </div>
-              <div style="font-size:12px;font-weight:900;color:${hasPassed ? '#C4922A' : score > 0 ? 'var(--text-muted)' : 'var(--text-faint)'};">${score}<span style="font-size:9px;font-weight:600;color:var(--text-faint);">/100</span></div>
-            </div>`;
-          passLabel = `<div style="font-size:10px;font-weight:800;color:${hasPassed ? '#C4922A' : 'var(--text-faint)'};letter-spacing:0.03em;text-transform:uppercase;margin-top:2px;">${hasPassed ? '★ Passed' : 'Pass: ' + passScore + '/100'}</div>`;
+        let cls, inner, sub, subCls = '', right;
+        if (isDone) {
+          cls = 'passed'; inner = CHECK;
+          sub = isScored ? 'Passed' : 'Done';
+          right = isScored ? `<div class="j-s-score">${getBestScore(s.id)}</div>` : '';
+        } else if (isCurrent) {
+          cls = 'current'; inner = si + 1;
+          sub = 'Up next · tap to start'; subCls = ' up';
+          right = '<div class="j-s-arrow">→</div>';
         } else {
-          // Completion-only: show checkmark or empty circle
-          const isComplete = isDone;
-          scoreBlock = `
-            <div style="display:flex;flex-direction:column;align-items:center;gap:3px;flex-shrink:0;">
-              <div style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid ${isComplete ? '#2E9E7A' : 'var(--border)'};background:${isComplete ? '#2E9E7A' : 'transparent'};">
-                ${isComplete ? '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
-              </div>
-              <div style="font-size:10px;font-weight:800;color:${isComplete ? '#2E9E7A' : 'var(--text-faint)'};letter-spacing:0.03em;text-transform:uppercase;">${isComplete ? 'Done' : 'Complete'}</div>
-            </div>`;
-          passLabel = `<div style="font-size:10px;font-weight:800;color:var(--text-faint);letter-spacing:0.03em;text-transform:uppercase;margin-top:2px;">No recording needed</div>`;
+          cls = 'locked'; inner = si + 1;
+          sub = 'Locked';
+          right = '<div class="j-s-chev">›</div>';
         }
-
-        const btn = isDone
-          ? (isScored ? `<button class="btn-redo-session" onclick="event.stopPropagation();loadSession(${s.id})">Redo Session</button>` : `<button class="btn-redo-session" onclick="event.stopPropagation();loadSession(${s.id})">Review</button>`)
-          : `<button class="btn-start-session" style="background:${p.color}" onclick="event.stopPropagation();loadSession(${s.id})">Start Session →</button>`;
-
-        return `
-          <div class="session-row" style="--pc:${p.color};--pc-light:${p.light}" onclick="loadSession(${s.id})">
-            <div class="session-header">
-              <div class="session-title-block">
-                <div class="session-label" style="color:${p.color}">Session ${si + 1}</div>
-                <div class="session-title">${s.title}</div>
-                <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                  ${passLabel}
-
-                </div>
-              </div>
-              ${scoreBlock}
-            </div>
-            <div class="session-desc" style="max-width:calc(100% - 64px);">${V7_DESC[s.id] || s.what || ''}</div>
-            <div class="session-btn-row">${btn}</div>
+        const click = (isDone || isCurrent) ? ` onclick="loadSession(${s.id})"` : '';
+        return `<div class="j-session ${cls}"${click}>
+            <div class="j-s-status ${cls}">${inner}</div>
+            <div class="j-s-mid"><div class="j-s-title">${s.title}</div><div class="j-s-sub${subCls}">${sub}</div></div>
+            <div class="j-s-right">${right}</div>
           </div>`;
       }).join('');
-      sessionsList = `<div class="phase-sessions">${rows}</div>`;
+      body = `<div class="j-sessions">${rows}</div>`;
     }
 
-    const canvasId = 'arc-' + p.num;
-
-    return `
-      <div class="phase-card state-${phState}${isOpen ? ' open' : ''}"
-           id="v7-pc-${p.num}"
-           style="${style}">
-        <div class="phase-accent"></div>
-        <div class="phase-body">
-          <!-- Top row: label + badge -->
-          <div class="phase-top-row">
-            <div class="phase-number" style="color:${p.color}">Phase ${p.num}</div>
-            <div>${badge}</div>
+    return `<div class="j-phase-card state-${st}${isOpen ? ' open' : ''}" style="--pc:${p.color};--pc-light:${p.light};--pc-mid:${p.mid};animation-delay:${delay}s">
+        <div class="j-phase-head"${st !== 'locked' ? ' data-toggle="1"' : ''}>
+          <div class="j-tile">${ICONS[p.icon] || ''}${badge}</div>
+          <div class="j-phase-mid">
+            <div class="j-phase-label">Phase ${p.num}</div>
+            <div class="j-phase-name">${p.name}</div>
+            <div class="j-phase-benefit">${p.benefit}</div>
           </div>
-          <!-- Name row -->
-          <div class="phase-name">${p.name}</div>
-          <!-- Progress dots + arc gauge aligned on same row -->
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;">
-            <div class="prog-pill" style="flex-shrink:0;">
-              <div class="prog-pill-count">${pillLabel}</div>
-              <div class="dots-inline">${dots}</div>
-            </div>
-            <!-- Arc gauge — same height as badge pill above it -->
-            <div style="flex-shrink:0;display:flex;align-items:center;gap:6px;">
-              <div style="position:relative;width:52px;height:52px;">
-                <canvas id="${canvasId}" width="52" height="52" style="display:block;"></canvas>
-                <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;pointer-events:none;">⭐</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:flex-start;">
-                <div style="display:flex;align-items:baseline;gap:1px;">
-                  <span id="arc-score-${p.num}" style="font-size:16px;font-weight:900;color:${ptsColour};letter-spacing:-0.5px;">${earnedPts}</span>
-                  <span style="font-size:10px;font-weight:700;color:var(--text-faint);">/${maxPts} pts</span>
-                </div>
-              </div>
-            </div>
+          <div class="j-phase-right">
+            <div class="j-count-col"><div class="j-count">${doneCount}/${sessions.length}</div><div class="j-dots">${dots}</div></div>
+            ${rightIc}
           </div>
-          <div style="font-size:10px;font-weight:900;letter-spacing:0.12em;text-transform:uppercase;color:var(--pc);opacity:0.7;margin-bottom:8px;">What you'll achieve</div>
-          <div class="outcomes">${outcomes}</div>
-          ${unlockNote}
         </div>
-        ${trigger}
-        ${sessionsList}
+        ${body}
       </div>`;
   }).join('');
 
-  document.getElementById('curriculum-list').innerHTML = '<div class="v7-phase-list">' + html + '</div>';
+  document.getElementById('curriculum-list').innerHTML = '<div class="j-phase-list">' + html + '</div>';
+
+  document.querySelectorAll('.j-phase-head[data-toggle]').forEach(head => {
+    head.onclick = () => { const c = head.closest('.j-phase-card'); if (c) c.classList.toggle('open'); };
+  });
+
   setActiveNav('journey');
   showScreen('screen-curriculum');
-  // Draw arc gauges after DOM is updated
-  requestAnimationFrame(() => {
-    drawAllArcs(V7_PHASES, relevant, DONE);
-    // Draw session arcs for any phase that starts open
-    V7_PHASES.forEach(p => {
-      const sessions = relevant.filter(s => s.phase === p.num);
-      const card = document.getElementById('v7-pc-' + p.num);
-      if (card && card.classList.contains('open')) drawSessionArcs(sessions);
-    });
-  });
 }
 
 function drawArcGauge(canvasId, earnedPts, maxPts, colour, animate) {
@@ -1317,15 +1165,15 @@ const lessonState = {
 
 function setSessionColor(phase) {
   const map = {
-    1:{c:'#5B4FD9',l:'#EEEAFF',m:'#C8C0F5'},
-    2:{c:'#2E9E7A',l:'#E4F7F1',m:'#A8DFD0'},
-    3:{c:'#C4922A',l:'#FDF3E3',m:'#F0D49A'},
-    4:{c:'#2980B9',l:'#EBF5FB',m:'#AED6F1'},
-    5:{c:'#D95470',l:'#FDEAEE',m:'#F4B8C4'},
-    6:{c:'#7B6FEF',l:'#F0EEFF',m:'#C8C0F5'},
-    7:{c:'#E67E22',l:'#FEF5E7',m:'#F5CBA7'},
-    8:{c:'#8E44AD',l:'#F5EEF8',m:'#D2B4DE'},
-    9:{c:'#27AE60',l:'#E8F8F0',m:'#A9DFBF'}
+    1:{c:'#C2724F',l:'#FAEDE5',m:'#EAC9B6'},
+    2:{c:'#4F9E7E',l:'#E7F3EE',m:'#BDE0D2'},
+    3:{c:'#4A6FA5',l:'#E8EEF6',m:'#BFD0E6'},
+    4:{c:'#5E6CB0',l:'#EBEDF7',m:'#CBD1ED'},
+    5:{c:'#C19A45',l:'#F6EFDD',m:'#E8D5A8'},
+    6:{c:'#CB7385',l:'#F8E9EC',m:'#EEC6CF'},
+    7:{c:'#4E9E8C',l:'#E7F3F0',m:'#BCDED6'},
+    8:{c:'#8A77C4',l:'#EFEBF7',m:'#D3C9EC'},
+    9:{c:'#3FA86A',l:'#E4F4EB',m:'#B6E1C5'}
   };
   const p = map[phase] || map[1];
   const r = document.documentElement.style;
@@ -1532,7 +1380,6 @@ function updateLessonStepUI(step) {
 let cardsState = { current: 0, total: 0 };
 
 function setupContentCards(cards) {
-  // cards = array of HTML strings, one per card
   cardsState.current = 0;
   cardsState.total = cards.length;
   
@@ -1572,7 +1419,6 @@ function updateCardsNav() {
     nextBtn.textContent = 'Next →';
     nextBtn.onclick = cardsNext;
   }
-  // Update dots
   for (let i = 0; i < cardsState.total; i++) {
     const dot = document.getElementById('card-dot-'+i);
     if (dot) dot.className = 'cards-dot' + (i === cardsState.current ? ' active' : '');
@@ -1601,14 +1447,13 @@ function setupReframe(prompt, label) {
   document.getElementById('reframe-response').style.display = 'none';
   document.getElementById('reframe-submit-btn').disabled = true;
   
-  document.getElementById('lesson-read-content').style.display = 'block'; // show the read content above
+  document.getElementById('lesson-read-content').style.display = 'block';
   document.getElementById('lesson-cards-wrap').style.display = 'none';
   document.getElementById('lesson-reframe-wrap').style.display = 'block';
   document.getElementById('lesson-scenario-wrap').style.display = 'none';
   document.getElementById('lesson-surprise-wrap').style.display = 'none';
   document.getElementById('lesson-timed-wrap').style.display = 'none';
   
-  // Disable the next button until reframe is done
   document.getElementById('lesson-next-btn').disabled = true;
   document.getElementById('lesson-next-btn').style.opacity = '0.45';
 }
@@ -1661,7 +1506,6 @@ Keep it conversational and kind. No bullet points.` }]
   }
   
   btn.textContent = 'Done ✓';
-  // Enable the main next/complete button
   document.getElementById('lesson-next-btn').disabled = false;
   document.getElementById('lesson-next-btn').style.opacity = '1';
 }
@@ -1691,7 +1535,6 @@ function selectPickOption(idx) {
     el.classList.toggle('selected', i === idx);
   });
   lessonState.pickedOption = idx;
-  // Enable the next button
   document.getElementById('lesson-next-btn').disabled = false;
   document.getElementById('lesson-next-btn').style.opacity = '1';
 }
@@ -1710,7 +1553,6 @@ function setupSurprise(prompt) {
   document.getElementById('lesson-surprise-wrap').style.display = 'block';
   document.getElementById('lesson-timed-wrap').style.display = 'none';
   
-  // Disable next until revealed
   document.getElementById('lesson-next-btn').disabled = true;
   document.getElementById('lesson-next-btn').style.opacity = '0.45';
 }
@@ -1718,7 +1560,6 @@ function setupSurprise(prompt) {
 function revealSurprise() {
   document.getElementById('surprise-prompt-hidden').style.display = 'block';
   document.getElementById('surprise-reveal-btn').style.display = 'none';
-  // Enable next button to proceed to recording
   document.getElementById('lesson-next-btn').disabled = false;
   document.getElementById('lesson-next-btn').style.opacity = '1';
   document.getElementById('lesson-next-btn').textContent = 'Start recording →';
@@ -1737,7 +1578,6 @@ function setupTimed(seconds) {
 }
 
 function resetInteractiveFormats() {
-  // Hide all interactive format wrappers, show standard read content
   document.getElementById('lesson-read-content').style.display = 'block';
   document.getElementById('lesson-cards-wrap').style.display = 'none';
   document.getElementById('lesson-reframe-wrap').style.display = 'none';
@@ -1757,7 +1597,6 @@ function lessonNext() {
       document.getElementById('lesson-next-btn').disabled = true;
       document.getElementById('lesson-next-btn').style.opacity = '0.45';
     } else if (lessonState.isScored) {
-      // Skip quiz, go to talk
       lessonState.step = 'talk';
       updateLessonStepUI('talk');
       document.getElementById('lesson-read').style.display = 'none';
@@ -1766,7 +1605,6 @@ function lessonNext() {
       document.getElementById('lesson-next-btn').disabled = true;
       document.getElementById('lesson-next-btn').style.opacity = '0.45';
     } else {
-      // Unscored, no quiz: complete the session
       completeUnscoredSession();
       return;
     }
@@ -1782,7 +1620,6 @@ function lessonNext() {
       document.getElementById('lesson-next-btn').disabled = true;
       document.getElementById('lesson-next-btn').style.opacity = '0.45';
     } else {
-      // Unscored session: quiz was the last step, complete it
       completeUnscoredSession();
       return;
     }
@@ -1796,7 +1633,6 @@ function lessonNext() {
 function completeUnscoredSession() {
   const sid = lessonState.sessionId;
   markSessionPassed(sid);
-  // Advance to next session
   const idx = CURRICULUM.findIndex(s => s.id === sid);
   if (idx >= 0 && idx < CURRICULUM.length - 1) {
     const next = CURRICULUM[idx + 1];
@@ -1821,7 +1657,7 @@ function lessonBack() {
       updateLessonStepUI('check');
       document.getElementById('lesson-talk').style.display = 'none';
       document.getElementById('lesson-check').style.display = 'block';
-      checkQuizComplete(); // re-evaluate button state
+      checkQuizComplete();
     } else {
       lessonState.step = 'read';
       updateLessonStepUI('read');
@@ -1837,13 +1673,11 @@ function lessonBack() {
 function selectQuizAnswer(qIdx, optIdx) {
   const lc = LESSON_CONTENT[lessonState.sessionId];
   const q = lc.quiz[qIdx];
-  // Ignore if already answered
   if (lessonState.quizAnswers[qIdx] !== undefined) return;
 
   lessonState.quizAnswers[qIdx] = optIdx;
   const isCorrect = optIdx === q.correct;
 
-  // Style all options
   q.options.forEach((_, j) => {
     const btn = document.getElementById(`quiz-opt-${qIdx}-${j}`);
     btn.classList.remove('selected');
@@ -1852,7 +1686,6 @@ function selectQuizAnswer(qIdx, optIdx) {
     btn.disabled = true;
   });
 
-  // Show explanation
   const fb = document.getElementById(`quiz-fb-${qIdx}`);
   fb.className = 'quiz-feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
   fb.textContent = (isCorrect ? '✓ ' : '✗ ') + q.explanation;
@@ -1922,7 +1755,6 @@ async function startLessonRecording() {
     document.getElementById('lesson-record-hint').textContent = 'Recording... tap to stop';
     document.getElementById('lesson-timer').classList.add('recording');
     document.getElementById('lesson-waveform').classList.add('active');
-    // Button becomes Stop & Submit when recording starts
     const nextBtn = document.getElementById('lesson-next-btn');
     nextBtn.disabled = false;
     nextBtn.style.opacity = '1';
@@ -1956,15 +1788,12 @@ function checkApiKeys() { return true; }
 const throttle = { lastCall: 0, cooldownMs: 15000, callsThisMinute: 0, minuteStart: 0, maxPerMinute: 6 };
 function checkThrottle() {
   const now = Date.now();
-  // Reset minute counter
   if (now - throttle.minuteStart > 60000) { throttle.callsThisMinute = 0; throttle.minuteStart = now; }
-  // Cooldown between calls
   if (now - throttle.lastCall < throttle.cooldownMs) {
     const wait = Math.ceil((throttle.cooldownMs - (now - throttle.lastCall)) / 1000);
     alert('Please wait ' + wait + ' seconds before recording again.');
     return false;
   }
-  // Max per minute
   if (throttle.callsThisMinute >= throttle.maxPerMinute) {
     alert('You\'ve reached the limit of ' + throttle.maxPerMinute + ' recordings per minute. Take a breath and try again shortly.');
     return false;
@@ -1978,7 +1807,6 @@ async function runAIPipeline(audioChunks, durationSeconds, session) {
   if (!checkThrottle()) { hideLoading(); return null; }
   const proxy = getProxyUrl();
 
-  // Step 1: Whisper transcription
   showLoading('Transcribing your speech...', 'Sending to Whisper...');
   const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
   const formData = new FormData();
@@ -2000,7 +1828,6 @@ async function runAIPipeline(audioChunks, durationSeconds, session) {
     transcript = '[Transcription failed — check your proxy is running]';
   }
 
-  // Step 2: Validate transcript
   const wordCount = transcript.trim().split(/\s+/).filter(w => w.length > 0).length;
   if (!transcript || transcript.trim() === '' || wordCount < 5) {
     hideLoading();
@@ -2027,14 +1854,12 @@ async function runAIPipeline(audioChunks, durationSeconds, session) {
     };
   }
 
-  // Step 3: Claude analysis
   showLoading('Claude is analysing...', 'Reading your response...');
 
   const wpm = durationSeconds > 0
     ? Math.round(((words.length || transcript.split(' ').length) / durationSeconds) * 60)
     : 0;
 
-  // Cadence analysis from word timestamps
   let cadenceData = '';
   if (words.length > 2 && words[0].start !== undefined) {
     const gaps = [];
@@ -2047,7 +1872,6 @@ async function runAIPipeline(audioChunks, durationSeconds, session) {
     const allGaps = gaps.map(g => g.gap).filter(g => g >= 0);
     const avgGap = allGaps.length > 0 ? Math.round((allGaps.reduce((a,b) => a+b, 0) / allGaps.length) * 100) / 100 : 0;
     
-    // Speaking rate in 10-second windows
     const windowSize = 10;
     const windows = [];
     for (let t = 0; t < durationSeconds; t += windowSize) {
@@ -2073,7 +1897,6 @@ Use this data to assess delivery quality: deliberate pauses show control, rushed
 
   const isReflective = session && (session.phase === 1 || session.phase === 4);
   
-  // Phase-specific scoring rubric
   let scoringRubric = '';
   const phase = session ? session.phase : 2;
   if (phase === 1) {
@@ -2278,7 +2101,6 @@ function processLessonFeedback() {
       renderFeedback(rec, result.transcript, result.analysis);
     } catch(err) {
       console.error('renderFeedback error:', err);
-      // Show feedback screen anyway with raw score
       document.getElementById('feedback-title').textContent = result.analysis.title || 'Done';
       document.getElementById('feedback-sub').textContent = result.analysis.subtitle || '';
       document.getElementById('score-num').textContent = result.analysis.overallScore || '-';
@@ -2327,20 +2149,17 @@ function renderFeedback(rec, transcript, analysis) {
   const a = analysis;
   resetFeedbackWidget();
 
-  // Score ring
   document.getElementById('score-ring').style.setProperty('--pct', a.overallScore + '%');
   document.getElementById('score-num').textContent = a.overallScore;
   document.getElementById('feedback-title').textContent = a.title;
   document.getElementById('feedback-sub').textContent = a.subtitle;
 
-  // Session context
   const session = CURRICULUM.find(s => s.id === (rec.sessionId || state.currentSessionId));
   if (session) {
     document.getElementById('session-context-strip').innerHTML =
       '<strong style="color:var(--sc)">Session ' + session.id + ': ' + session.title + '</strong><br><span style="font-size:12px">' + session.what + '</span>';
   }
 
-  // Metrics
   const wc = a.pace.wpm < 120 ? 'var(--gold)' : a.pace.wpm > 170 ? 'var(--red)' : 'var(--green)';
   const fc = a.fillerWords.count === 0 ? 'var(--green)' : a.fillerWords.count < 4 ? 'var(--gold)' : 'var(--red)';
   document.getElementById('m-pace').innerHTML = '<span style="color:' + wc + '">' + a.pace.wpm + ' <span style="font-size:12px;font-weight:600;color:var(--muted)">WPM</span></span>';
@@ -2348,7 +2167,6 @@ function renderFeedback(rec, transcript, analysis) {
   document.getElementById('m-fillers').innerHTML = '<span style="color:' + fc + '">' + a.fillerWords.count + '</span>';
   document.getElementById('m-fillers-desc').textContent = a.fillerWords.verdict;
 
-  // Pace goal bar — position marker (0-200+ WPM mapped to 0-100%)
   setTimeout(() => {
     const paceMarker = document.getElementById('pace-marker');
     if (paceMarker) {
@@ -2357,7 +2175,6 @@ function renderFeedback(rec, transcript, analysis) {
     }
   }, 200);
 
-  // Score widgets with /10, colour, and animated bar
   function renderScore(id, barId, score) {
     const colour = scoreColour(score);
     document.getElementById(id).innerHTML = '<span style="color:' + colour + '">' + score + '</span><span style="font-size:11px;color:var(--muted);font-weight:600">/10</span>';
@@ -2374,7 +2191,6 @@ function renderFeedback(rec, transcript, analysis) {
   renderScore('m-confidence', 'bar-confidence', a.scores.confidence);
   renderScore('m-openness', 'bar-openness', a.scores.openness);
 
-  // Voice analysis display
   const voiceRow = document.getElementById('voice-analysis-row');
   const va = audioAnalysis.volumeSamples.filter(d => d > -80);
   const pa = audioAnalysis.pitchSamples;
@@ -2393,7 +2209,6 @@ function renderFeedback(rec, transcript, analysis) {
       document.getElementById('m-pitch').innerHTML = '<span style="color:'+pitchColour+'">'+pitchLabel+'</span>';
       document.getElementById('m-pitch-desc').textContent = pitchRange + ' Hz range';
 
-      // Stability
       const windowSize = 5;
       const vars = [];
       for (let i = 0; i <= pa.length - windowSize; i++) {
@@ -2416,14 +2231,12 @@ function renderFeedback(rec, transcript, analysis) {
     voiceRow.style.display = 'none';
   }
 
-  // Transcript — highlight filler words
   const fillerPattern = /\b(um|uh|er|erm|you know|sort of|kind of|basically|literally|I mean)\b/gi;
   const highlightedTranscript = transcript
     ? transcript.replace(fillerPattern, w => '<span class="filler">' + w + '</span>')
     : '<em style="color:var(--muted)">No transcript available.</em>';
   document.getElementById('transcript-box').innerHTML = highlightedTranscript;
 
-  // Coaching points
   let tipsHtml = '';
   if (a.coachingPoints) {
     a.coachingPoints.forEach((tip, i) => {
@@ -2431,7 +2244,6 @@ function renderFeedback(rec, transcript, analysis) {
     });
   }
   
-  // Pace & cadence details
   if (a.pace.pauseVerdict || a.pace.variationVerdict) {
     tipsHtml += '<div class="tip-card" style="border-color:rgba(196,146,42,0.3);background:rgba(196,146,42,0.04)">'
       + '<div class="tip-num" style="background:rgba(196,146,42,0.15);color:var(--gold);border-color:rgba(196,146,42,0.3)">🎙</div>'
@@ -2445,7 +2257,6 @@ function renderFeedback(rec, transcript, analysis) {
     tipsHtml += '<div class="tip-card" style="border-color:rgba(91,79,217,0.3);background:rgba(91,79,217,0.04)"><div class="tip-num" style="background:rgba(91,79,217,0.15);color:var(--accent);border-color:rgba(91,79,217,0.3)">💬</div><div class="tip-text" style="font-style:italic">' + a.transcriptHighlight + '</div></div>';
   }
   
-  // Improvement plan (shown when score < pass threshold)
   if (a.improvementPlan && a.improvementPlan.focus) {
     tipsHtml += '<div style="background:var(--surface);border:1.5px solid rgba(91,79,217,0.25);border-radius:16px;padding:18px;margin-top:12px;">'
       + '<div style="font-size:11px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:10px;">🎯 Focus for next attempt</div>'
@@ -2457,7 +2268,6 @@ function renderFeedback(rec, transcript, analysis) {
   
   document.getElementById('tips-container').innerHTML = tipsHtml;
 
-  // Pass / fail banner — star system
   const sessionForScore = CURRICULUM.find(s => s.id === (rec.sessionId || state.currentSessionId));
   const thresholds = sessionForScore ? getStarThresholds(sessionForScore) : { star1: 55, star2: 70, star3: 85 };
   const isPhase1Session = sessionForScore && (sessionForScore.phase === 1 || sessionForScore.phase === 4);
@@ -2467,7 +2277,6 @@ function renderFeedback(rec, transcript, analysis) {
   const banner = document.getElementById('pass-fail-banner');
   const btn = document.getElementById('complete-session-btn');
 
-  // Reflective phase note above banner
   if (isPhase1Session) {
     const note = document.createElement('div');
     note.style.cssText = 'background:rgba(91,79,217,0.06);border:1px solid rgba(91,79,217,0.15);border-radius:14px;padding:14px 16px;margin-bottom:12px;font-size:13px;color:var(--muted);line-height:1.6;text-align:center;';
@@ -2480,16 +2289,6 @@ function renderFeedback(rec, transcript, analysis) {
       banner.parentNode.insertBefore(note, banner);
     }
   }
-
- // ─────────────────────────────────────────────────────────────────────────────
-// PASTE THIS BLOCK INTO app.js
-//
-// 1. Find the line:   // Star bar builder
-// 2. Select from there all the way down to (but NOT including) the line:
-//        showScreen('screen-feedback');
-// 3. Delete everything you selected
-// 4. Paste this block in its place
-// ─────────────────────────────────────────────────────────────────────────────
 
   if (banner) {
     banner.style.display = 'block';
@@ -2549,10 +2348,6 @@ function renderFeedback(rec, transcript, analysis) {
     }
   }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// END OF PASTE — the next line in app.js should be:
-//   showScreen('screen-feedback');
-// ─────────────────────────────────────────────────────────────────────────────
   showScreen('screen-feedback');
 }
 
@@ -2564,18 +2359,15 @@ function scoreColour(n) {
 let lastFeedbackType = '';
 function submitScoreFeedback(type) {
   lastFeedbackType = type;
-  // Highlight selected button
   document.querySelectorAll('.fb-btn').forEach(b => { b.style.borderColor = 'var(--border)'; b.style.background = 'var(--surface)'; });
   const btn = document.getElementById('fb-' + type.replace('_', '-'));
   if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.background = 'rgba(91,79,217,0.08)'; }
   
   if (type === 'accurate') {
-    // Just log it and say thanks
     logFeedback(type, '');
     document.getElementById('fb-detail').style.display = 'none';
     document.getElementById('fb-thanks').style.display = 'block';
   } else {
-    // Show the text area for detail
     document.getElementById('fb-detail').style.display = 'block';
     document.getElementById('fb-thanks').style.display = 'none';
     document.getElementById('fb-text').focus();
@@ -2588,7 +2380,6 @@ function sendFeedbackDetail() {
   document.getElementById('fb-thanks').style.display = 'block';
 }
 function logFeedback(type, detail) {
-  // Store locally for now — can be sent to a server later
   const feedback = JSON.parse(localStorage.getItem('nervless_feedback') || '[]');
   feedback.push({
     type,
@@ -2608,7 +2399,6 @@ function resetFeedbackWidget() {
 }
 
 function showModelAnswer(modelAnswer, session) {
-  // Show a modal-style overlay with the model answer
   const existing = document.getElementById('model-answer-overlay');
   if (existing) existing.remove();
 
@@ -2669,29 +2459,26 @@ function initAudioAnalysis(stream) {
     audioAnalysis.interval = setInterval(() => {
       audioAnalysis.analyser.getFloatTimeDomainData(dataArray);
 
-      // Volume (RMS)
       let sum = 0;
       for (let i = 0; i < bufferLength; i++) sum += dataArray[i] * dataArray[i];
       const rms = Math.sqrt(sum / bufferLength);
       const db = rms > 0 ? Math.round(20 * Math.log10(rms)) : -100;
       audioAnalysis.volumeSamples.push(db);
 
-      // Pitch (autocorrelation)
       const pitch = detectPitch(dataArray, sampleRate);
       if (pitch > 50 && pitch < 500) audioAnalysis.pitchSamples.push(pitch);
 
       audioAnalysis.samples.push({ t: audioAnalysis.samples.length * 0.2, db, pitch: pitch || 0 });
-    }, 200); // Sample 5x per second
+    }, 200);
   } catch (e) { console.warn('Audio analysis init failed:', e); }
 }
 
 function detectPitch(buf, sampleRate) {
-  // Simple autocorrelation pitch detection
   const size = buf.length;
   let rms = 0;
   for (let i = 0; i < size; i++) rms += buf[i] * buf[i];
   rms = Math.sqrt(rms / size);
-  if (rms < 0.01) return 0; // Too quiet
+  if (rms < 0.01) return 0;
 
   let r1 = 0, r2 = size - 1;
   const thresh = 0.2;
@@ -2715,7 +2502,7 @@ function detectPitch(buf, sampleRate) {
 }
 
 function getAudioAnalysisReport() {
-  const v = audioAnalysis.volumeSamples.filter(d => d > -80); // Ignore silence
+  const v = audioAnalysis.volumeSamples.filter(d => d > -80);
   const p = audioAnalysis.pitchSamples;
   if (v.length < 3) return '';
 
@@ -2731,8 +2518,7 @@ function getAudioAnalysisReport() {
     const minPitch = Math.round(Math.min(...p));
     const pitchRange = maxPitch - minPitch;
     
-    // Pitch stability — calculate variance over rolling 1-second windows
-    const windowSize = 5; // 5 samples = 1 second
+    const windowSize = 5;
     const pitchVariances = [];
     for (let i = 0; i <= p.length - windowSize; i++) {
       const window = p.slice(i, i + windowSize);
@@ -2779,11 +2565,7 @@ async function toggleRecording(){if(!state.isRecording)await startRecording();el
 async function startRecording(){
   try{
     const stream=await navigator.mediaDevices.getUserMedia({audio:true});
-    
-    // Init audio analysis
     initAudioAnalysis(stream);
-    
-    // Detect supported MIME type (iOS compatibility)
     const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 
                      MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
     state.mediaRecorder = mimeType ? new MediaRecorder(stream, {mimeType}) : new MediaRecorder(stream);
@@ -2815,7 +2597,6 @@ function completeSession() {
 
   if (score >= passScore) {
     markSessionPassed(id);
-    // Advance current pointer to next unpassed session
     const entry = LEVEL_ENTRY[state.level];
     const relevant = CURRICULUM.filter(s => s.id >= entry);
     const nextUnpassed = relevant.find(s => !hasPassedSession(s.id));
@@ -2859,14 +2640,12 @@ function renderProgressChart() {
   const fillers = slice.map(s => typeof s.fillers === 'number' ? s.fillers : null);
   const hasFillers = fillers.some(f => f !== null);
 
-  // Resolve CSS variables for chart colours
   const style = getComputedStyle(document.documentElement);
   const accentColor = style.getPropertyValue('--accent').trim() || '#5B4FD9';
   const greenColor  = style.getPropertyValue('--green').trim()  || '#2E9E7A';
   const mutedColor  = style.getPropertyValue('--text-faint').trim() || '#ADA89E';
   const borderColor = style.getPropertyValue('--border').trim() || '#E4E0D8';
 
-  // Destroy previous instance if it exists
   if (canvas._chartInstance) {
     canvas._chartInstance.destroy();
   }
@@ -2988,7 +2767,6 @@ window.addEventListener('load',()=>{
   const l=localStorage.getItem('nervless_level'),s=localStorage.getItem('nervless_current_session');
   if(l)state.level=parseInt(l);if(s)state.currentSessionId=parseInt(s);
   state.completedSessions=JSON.parse(localStorage.getItem('nervless_completed')||'[]');
-  // Pre-fill API key inputs if already saved
   const ok=localStorage.getItem('nervless_openai_key');
   const ak=localStorage.getItem('nervless_anthropic_key');
   if(ok && document.getElementById('input-openai-key')) document.getElementById('input-openai-key').value=ok;
@@ -3128,7 +2906,6 @@ async function toggleFreeRecording() {
 function processFreeRecording() {
   const mode = FREE_MODES[freeState.mode];
   
-  // Hot Seat: if round 1, get follow-up question first
   if (mode && mode.isInteractive && !freeState.round2) {
     processHotSeatRound1();
     return;
@@ -3143,7 +2920,6 @@ function processFreeRecording() {
     duration: '2 min'
   };
   
-  // For Hot Seat round 2, combine both transcripts
   const audioToProcess = freeState.round2 ? freeState.audioChunks : freeState.audioChunks;
   const duration = freeState.round2 ? freeState.seconds : freeState.seconds;
   
@@ -3151,7 +2927,6 @@ function processFreeRecording() {
     if (!result) return;
     hideLoading();
     
-    // If Hot Seat round 2, enhance the analysis context
     if (freeState.round2 && freeState.round1Transcript) {
       result.analysis.coachingPoints = result.analysis.coachingPoints || [];
       result.analysis.coachingPoints.unshift('Round 1 answer: "' + freeState.round1Transcript.slice(0, 100) + '..." → Follow-up: "' + freeState.followUpQuestion + '"');
@@ -3173,7 +2948,6 @@ function processFreeRecording() {
     const btn = document.getElementById('complete-session-btn');
     if(banner){ banner.style.display='none'; }
     if(btn){ btn.textContent='Back to practice'; btn.style.background=''; btn.onclick=showFreeTab; }
-    // Clean up hot seat state
     freeState.round2 = false;
     freeState.round1Transcript = '';
     freeState.followUpQuestion = '';
@@ -3185,7 +2959,6 @@ async function processHotSeatRound1() {
   showLoading('Transcribing round 1...', 'Preparing your follow-up...');
   const proxy = getProxyUrl();
   
-  // Transcribe round 1
   const audioBlob = new Blob(freeState.audioChunks, { type: freeState.mediaRecorder?.mimeType || 'audio/webm' });
   const formData = new FormData();
   formData.append('file', audioBlob, 'recording.webm');
@@ -3209,7 +2982,6 @@ async function processHotSeatRound1() {
   freeState.round1Transcript = transcript;
   freeState.round1Prompt = freeState.prompt;
   
-  // Ask Claude for a challenging follow-up question
   showLoading('Generating follow-up...', 'Claude is thinking of a tough one...');
   try {
     const claudeRes = await fetch(proxy + '/analyse', {
@@ -3241,7 +3013,6 @@ Return ONLY the follow-up question, nothing else.` }]
   
   hideLoading();
   
-  // Show the follow-up question and prompt round 2 recording
   freeState.round2 = true;
   freeState.audioChunks = [];
   
@@ -3263,11 +3034,7 @@ function setActiveNav(tab) {
   if(el) el.classList.add('active');
 }
 
-
 // ─── Global exposure for inline HTML handlers ─────────────────────────────────
-// Functions defined in this file are not automatically on window when loaded
-// as an external script in non-module mode in all environments.
-// Explicit assignment guarantees inline onclick/oninput handlers can reach them.
 window.showCurriculum        = showCurriculum;
 window.showDashboard         = showDashboard;
 window.renderProgressChart   = renderProgressChart;
@@ -3291,6 +3058,4 @@ window.selectPickOption      = selectPickOption;
 window.selectQuizAnswer      = selectQuizAnswer;
 window.toggleMenu            = toggleMenu;
 window.v7ToggleCard          = v7ToggleCard;
-// saveApiKeys is called from HTML but has no definition in the original source.
-// Providing a no-op prevents a ReferenceError if the button is clicked.
 window.saveApiKeys = window.saveApiKeys || function() {};
