@@ -84,169 +84,50 @@
 
 <!-- CURRICULUM -->
 <div class="screen" id="screen-curriculum">
-  <div class="curr-header">
-    <div style="display:flex;justify-content:center;align-items:center;position:relative;margin-bottom:12px">
-      <div style="font-family:'DM Serif Display',serif;font-size:24px;letter-spacing:-0.5px;font-style:italic;color:var(--text)">Nerv<span style="color:var(--accent)">less</span></div>
-      <button class="burger-btn" id="burger-btn" onclick="toggleMenu()" style="position:absolute;right:0;transform:scale(0.82);transform-origin:right center;"><span></span><span></span><span></span></button>
-    </div>
-    <div style="margin-bottom:4px">
-      <div class="curr-eyebrow">Your Journey</div>
-    </div>
-    <div class="curr-progress-strip">
-      <div class="curr-progress-top">
-        <div class="curr-progress-num" id="stat-done-num">0 <span>/ 59 sessions</span></div>
-        <div class="curr-phase-pill" id="stat-phase-pill">Phase 1 of 9</div>
+
+  <div class="j-appbar">
+    <div class="j-logo">
+      <div class="j-logo-tile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
       </div>
-      <div class="curr-track"><div class="curr-fill" id="journey-progress-fill"></div></div>
-      <div class="curr-endpoints">
-        <span class="curr-endpoint">Nervous</span>
-        <span class="curr-endpoint">Nervless</span>
-      </div>
+      <div class="j-logo-text">Nerv<span>less</span></div>
     </div>
-    <div class="curr-rule"></div>
-  </div>
-  <!-- COURSE OVERVIEW -->
-  <div class="course-overview" id="course-overview">
-    <button class="course-overview-btn" onclick="document.getElementById('course-overview').classList.toggle('open')">
-      <div class="course-overview-left">
-        <div class="course-overview-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M6 17V9a6 6 0 0 1 6-6"/><path d="M18 7v8a6 6 0 0 1-6 6"/></svg></div>
-        <div>
-          <div class="course-overview-title">Your Journey — 9 Phases</div>
-          <div class="course-overview-sub">See how the experience evolves</div>
-        </div>
-      </div>
-      <div class="course-overview-chevron"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>
+    <button class="j-menu-btn" id="burger-btn" onclick="toggleMenu()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
-    <div class="course-overview-body">
-
-      <div class="co-phase">
-        <div class="co-phase-label" style="color:#5B4FD9">Phase 1</div>
-        <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#5B4FD9"></div>
-          <div class="co-phase-name">Understanding the Fear</div>
-          <div class="co-phase-difficulty" style="background:#E4F7F1;color:#1E8449">Easy</div>
-        </div>
-        <ul class="co-bullets">
-          <li><span class="co-bi">🧠</span>Understand why your brain treats speaking like a threat</li>
-          <li><span class="co-bi">🔍</span>Map your personal triggers, symptoms, and anxiety history</li>
-          <li><span class="co-bi">🚪</span>Learn why avoidance makes fear worse — and what to do instead</li>
-        </ul>
-      </div>
-
-      <div class="co-phase">
-        <div class="co-phase-label" style="color:#2E9E7A">Phase 2</div>
-        <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#2E9E7A"></div>
-          <div class="co-phase-name">The Body First</div>
-          <div class="co-phase-difficulty" style="background:#E4F7F1;color:#1E8449">Easy</div>
-        </div>
-        <ul class="co-bullets">
-          <li><span class="co-bi">🫁</span>Control your nervous system with breathing techniques</li>
-          <li><span class="co-bi">💪</span>Release physical tension before you speak</li>
-          <li><span class="co-bi">⚡</span>Reframe adrenaline as energy, not danger</li>
-        </ul>
-      </div>
-
-      <div class="co-phase">
-        <div class="co-phase-label" style="color:#C4922A">Phase 3</div>
-        <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#C4922A"></div>
-          <div class="co-phase-name">Gradual Exposure</div>
-          <div class="co-phase-difficulty" style="background:#FEF3E2;color:#C07000">Medium</div>
-        </div>
-        <ul class="co-bullets">
-          <li><span class="co-bi">🪜</span>Build an anxiety ladder from low-stakes to high-stakes</li>
-          <li><span class="co-bi">🎯</span>Practice introductions, opinions, and spontaneous answers</li>
-          <li><span class="co-bi">📈</span>Experience what your voice sounds like when you're not afraid</li>
-        </ul>
-      </div>
-
-      <div class="co-phase">
-        <div class="co-phase-label" style="color:#2980B9">Phase 4</div>
-        <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#2980B9"></div>
-          <div class="co-phase-name">Changing the Narrative</div>
-          <div class="co-phase-difficulty" style="background:#FEF3E2;color:#C07000">Medium</div>
-        </div>
-        <ul class="co-bullets">
-          <li><span class="co-bi">💭</span>Challenge the catastrophic thoughts that fuel anxiety</li>
-          <li><span class="co-bi">🔬</span>Reality-test your fears with actual evidence</li>
-          <li><span class="co-bi">🤝</span>Build a kinder, more accurate inner voice</li>
-        </ul>
-      </div>
-
-      <div class="co-phase">
-        <div class="co-phase-label" style="color:#D95470">Phase 5</div>
-        <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#D95470"></div>
-          <div class="co-phase-name">Finding Your Voice</div>
-          <div class="co-phase-difficulty" style="background:#FEF3E2;color:#C07000">Medium</div>
-        </div>
-        <ul class="co-bullets">
-          <li><span class="co-bi">✨</span>Discover what makes your communication style uniquely powerful</li>
-          <li><span class="co-bi">📖</span>Craft stories that land — and practise telling them</li>
-          <li><span class="co-bi">😄</span>Learn to use humour and authenticity without forcing it</li>
-        </ul>
-      </div>
-
-      <div class="co-phase">
-        <div class="co-phase-label" style="color:#7B6FEF">Phase 6</div>
-        <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#7B6FEF"></div>
-          <div class="co-phase-name">Raising the Stakes</div>
-          <div class="co-phase-difficulty" style="background:#FDEAEE;color:#B52040">Hard</div>
-        </div>
-        <ul class="co-bullets">
-          <li><span class="co-bi">👔</span>Present confidently to senior people and sceptical audiences</li>
-          <li><span class="co-bi">🔥</span>Handle hostile questions without losing composure</li>
-          <li><span class="co-bi">⏱️</span>Perform under timed pressure and surprise prompts</li>
-        </ul>
-      </div>
-
-      <div class="co-phase">
-        <div class="co-phase-label" style="color:#E67E22">Phase 7</div>
-        <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#E67E22"></div>
-          <div class="co-phase-name">In-the-Moment Tools</div>
-          <div class="co-phase-difficulty" style="background:#FDEAEE;color:#B52040">Hard</div>
-        </div>
-        <ul class="co-bullets">
-          <li><span class="co-bi">🧩</span>Structure answers on the spot using the PREP framework</li>
-          <li><span class="co-bi">🔄</span>Recover when your mind goes blank mid-sentence</li>
-          <li><span class="co-bi">🎙️</span>Steady your voice and control pace under real pressure</li>
-        </ul>
-      </div>
-
-      <div class="co-phase">
-        <div class="co-phase-label" style="color:#8E44AD">Phase 8</div>
-        <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#8E44AD"></div>
-          <div class="co-phase-name">Performing Under Pressure</div>
-          <div class="co-phase-difficulty" style="background:#FDEAEE;color:#8B0000">Extra Hard</div>
-        </div>
-        <ul class="co-bullets">
-          <li><span class="co-bi">🎤</span>Deliver full presentations with vocal variety and presence</li>
-          <li><span class="co-bi">👥</span>Read the room and adapt in real time</li>
-          <li><span class="co-bi">🏆</span>Perform at your peak when the stakes are highest</li>
-        </ul>
-      </div>
-
-      <div class="co-phase">
-        <div class="co-phase-label" style="color:#27AE60">Phase 9</div>
-        <div class="co-phase-header">
-          <div class="co-phase-dot" style="background:#27AE60"></div>
-          <div class="co-phase-name">Maintenance</div>
-          <div class="co-phase-difficulty" style="background:#EEF2F7;color:#5A7A9A">Ongoing</div>
-        </div>
-        <ul class="co-bullets">
-          <li><span class="co-bi">📊</span>Measure how far you've come with an updated anxiety ladder</li>
-          <li><span class="co-bi">🔁</span>Weekly sessions to keep your skills sharp</li>
-          <li><span class="co-bi">🌱</span>Build the long-term habits that make progress stick</li>
-        </ul>
-      </div>
-
-    </div>
   </div>
+
+  <div class="j-greeting">
+    <div class="j-eyebrow">Your Journey</div>
+    <h1 class="j-welcome" id="j-welcome">Welcome back</h1>
+  </div>
+
+  <div class="j-score-card">
+    <div class="j-score-top">
+      <div class="j-score-label">Total Score</div>
+      <div class="j-phase-pill">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
+        <span id="stat-phase-text">Phase 1 of 9</span>
+      </div>
+    </div>
+    <div class="j-score-num"><span id="stat-points">0</span><span class="j-score-max" id="stat-points-max">/ 5,900</span><span class="j-score-unit">pts</span></div>
+    <div class="j-score-sub" id="stat-sessions-line">0 of 59 sessions complete</div>
+    <div class="j-track"><div class="j-fill" id="journey-progress-fill"><div class="j-knob"></div></div></div>
+    <div class="j-endpoints"><span>Nervous</span><span class="j-here">You're here</span><span>Nervless</span></div>
+  </div>
+
+  <div class="j-continue" id="j-continue-card">
+    <div class="j-continue-eyebrow"><svg viewBox="0 0 24 24"><polygon points="6 4 20 12 6 20 6 4"/></svg><span id="j-continue-meta">Continue</span></div>
+    <div class="j-continue-title" id="j-continue-title">Your next session</div>
+    <div class="j-continue-steps" id="j-continue-steps"></div>
+    <button class="j-continue-btn" id="j-continue-btn">Continue session <span>→</span></button>
+  </div>
+
+  <div class="j-phases-head">
+    <div class="j-phases-title">All phases</div>
+    <div class="j-phases-count" id="j-phases-count">0 of 9 complete</div>
+  </div>
+
   <div id="curriculum-list"></div>
 </div>
 <!-- LESSON (Read → Check → Talk) -->
