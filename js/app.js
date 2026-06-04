@@ -107,9 +107,8 @@ function showCurriculum() {
 
   // ── Score card ──
   const scoredAll = relevant.filter(s => s.scored !== false);
-  const earnedPts = scoredAll.reduce((sum, s) => sum + getBestScore(s.id), 0)
-    + relevant.filter(s => s.scored === false && hasPassedSession(s.id)).length * 100;
-  const maxPts = totalSessions * 100;
+  const earnedPts = scoredAll.reduce((sum, s) => sum + getBestScore(s.id), 0);
+  const maxPts = scoredAll.length * 100;
   document.getElementById('stat-points').textContent = earnedPts.toLocaleString();
   document.getElementById('stat-points-max').textContent = '/ ' + maxPts.toLocaleString();
   document.getElementById('stat-sessions-line').textContent = totalDone + ' of ' + totalSessions + ' sessions complete';
