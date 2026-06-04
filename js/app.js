@@ -108,7 +108,7 @@ function showCurriculum() {
   // ── Score card ──
   const scoredAll = relevant.filter(s => s.scored !== false);
   const earnedPts = scoredAll.reduce((sum, s) => sum + getBestScore(s.id), 0)
-    + relevant.filter(s => s.scored === false && DONE.includes(s.id)).length * 100;
+    + relevant.filter(s => s.scored === false && hasPassedSession(s.id)).length * 100;
   const maxPts = totalSessions * 100;
   document.getElementById('stat-points').textContent = earnedPts.toLocaleString();
   document.getElementById('stat-points-max').textContent = '/ ' + maxPts.toLocaleString();
@@ -153,10 +153,10 @@ function showCurriculum() {
   function phaseState(num) {
     const ss = relevant.filter(s => s.phase === num);
     if (ss.length === 0) return 'locked';
-    if (ss.every(s => DONE.includes(s.id))) return 'done';
+    if (ss.every(s => hasPassedSession(s.id))) return 'done';
     if (num === 1) return 'active';
     const prev = relevant.filter(s => s.phase === num - 1);
-    return (prev.length > 0 && prev.every(s => DONE.includes(s.id))) ? 'active' : 'locked';
+    return (prev.length > 0 && prev.every(s => hasPassedSession(s.id))) ? 'active' : 'locked';
   }
 
   // ── Continue card ──
@@ -184,7 +184,7 @@ function showCurriculum() {
 
   // ── Phases-complete count ──
   const phasesPresent = [...new Set(relevant.map(s => s.phase))];
-  const phasesDone = phasesPresent.filter(n => relevant.filter(s => s.phase === n).every(s => DONE.includes(s.id))).length;
+  const phasesDone = phasesPresent.filter(n => relevant.filter(s => s.phase === n).every(s => hasPassedSession(s.id))).length;
   document.getElementById('j-phases-count').textContent = phasesDone + ' of ' + phasesPresent.length + ' complete';
 
   // ── Build phase cards ──
@@ -192,7 +192,7 @@ function showCurriculum() {
     const sessions = relevant.filter(s => s.phase === p.num);
     if (sessions.length === 0) return '';
     const st = phaseState(p.num);
-    const doneCount = sessions.filter(s => DONE.includes(s.id)).length;
+    const doneCount = sessions.filter(s => hasPassedSession(s.id)).length;
     const isOpen = st === 'active';
     const delay = (pi * 0.045).toFixed(3);
 
@@ -200,7 +200,7 @@ function showCurriculum() {
       : st === 'locked' ? `<div class="j-tile-badge locked">${LOCK}</div>` : '';
 
     const dots = sessions.map(s => {
-      const d = DONE.includes(s.id), c = s.id === CURRENT && !d;
+      const d = hasPassedSession(s.id), c = s.id === CURRENT && !d;
       return `<span class="j-dot ${d ? 'done' : c ? 'current' : 'todo'}"></span>`;
     }).join('');
 
@@ -213,7 +213,7 @@ function showCurriculum() {
       body = `<div class="j-unlock">${LOCK} ${sessions.length} sessions · finish Phase ${p.num - 1} to unlock</div>`;
     } else {
       const rows = sessions.map((s, si) => {
-        const isDone = DONE.includes(s.id);
+        const isDone = hasPassedSession(s.id);
         const isCurrent = s.id === CURRENT && !isDone;
         const isScored = s.scored !== false;
         let cls, inner, sub, subCls = '', right;
@@ -413,7 +413,8 @@ function togglePhase(phaseId){
   sessions.style.display=isOpen?'none':'block';
   if(chevron)chevron.style.transform=isOpen?'rotate(0deg)':'rotate(180deg)';
 }
-// ── LESSON CONTENT (Read + Quiz for sessions 1–5, Phase 1) ──
+
+// ── LESSON CONTENT ──
 const LESSON_CONTENT = {
   1: {
     read: `
@@ -515,8 +516,6 @@ const LESSON_CONTENT = {
       { q: "What is the purpose of mapping your anxiety profile in detail?", options: ["To prove how anxious you are","To diagnose the problem precisely so you can work on it accurately","To find excuses to avoid certain situations","To compare yourself to other speakers"], correct: 1, explanation: "The anxiety profile is diagnostic, not self-critical. The clearer you can see the pattern, the more precisely we can target the work. It's information, not judgement." }
     ]
   },
-
-  // ── PHASE 5: RAISING THE STAKES ──
   28: {
     read: `
       <div class="lesson-content">
@@ -883,8 +882,6 @@ const LESSON_CONTENT = {
       { q: "Why is 'I'm excited' more effective than 'calm down' as a pre-speech strategy?", options: ["Because excitement is always better than calmness","Reframing works with the body's arousal state; trying to calm down fights it","Because saying it out loud makes you believe it","Because 'calm down' is too negative a phrase"], correct: 1, explanation: "Trying to calm down is trying to reduce physiological arousal — which is very difficult in the moment. Reframing to excitement keeps the same arousal level but channels it into a positive, approach-oriented emotion. You're working with your biology, not against it." }
     ]
   },
-
-  // ── PHASE 3: GRADUAL EXPOSURE ──
   13: {
     read: `
       <div class="lesson-content">
@@ -972,7 +969,7 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> You don't need to have an instant perfect answer. You need a reliable structure that organises your thinking under pressure. Position → Reason → Example works in almost any situation.</div>
       </div>`,
     quiz: [
-      { q: "What is the most effective thing to do in the first 2-3 seconds when called on unexpectedly?", options: ["Start speaking immediately to show confidence","Apologise for not being prepared","Take a visible breath and buy yourself a moment with a composure phrase","Ask someone else to answer instead"], correct: 1, explanation: "An immediate pause — a visible breath, a brief composure phrase — signals calm rather than panic. It buys your prefrontal cortex time to come back online after the initial amygdala spike. Jumping in immediately without thinking often produces the rambling answer you were trying to avoid." },
+      { q: "What is the most effective thing to do in the first 2-3 seconds when called on unexpectedly?", options: ["Start speaking immediately to show confidence","Apologise for not being prepared","Take a visible breath and buy yourself a moment with a composure phrase","Ask someone else to answer instead"], correct: 2, explanation: "An immediate pause — a visible breath, a brief composure phrase — signals calm rather than panic. It buys your prefrontal cortex time to come back online after the initial amygdala spike. Jumping in immediately without thinking often produces the rambling answer you were trying to avoid." },
       { q: "What is the Position → Reason → Example structure?", options: ["A way to extend your answer when you don't know enough","A structure that organises spontaneous answers — state your view, give one reason, give one example","A formal debate technique only useful in presentations","A way to sound more academic and credible"], correct: 1, explanation: "PRE (Position-Reason-Example) is the skeleton of clear verbal communication. It works in interviews, unexpected questions, meetings, and presentations. Because it has a natural endpoint, it prevents the rambling that comes from answering without structure." }
     ]
   },
@@ -1034,8 +1031,7 @@ const LESSON_CONTENT = {
   }
 };
 
-// ── LESSON CONTENT: PHASE 7-9 (Sessions 34-53) ──
-// These use shorter read content and varied formats
+// ── LESSON CONTENT: PHASES 7-9 (Sessions 34-53) ──
 Object.assign(LESSON_CONTENT, {
   34: {
     read: `<div class="lesson-content"><h3>The fastest reset you'll ever learn</h3><p>The extended exhale is a single-breath technique that reduces heart rate within seconds. Inhale for 4 counts. Exhale for 8. The longer exhale activates the vagus nerve and shifts your nervous system from fight-or-flight to rest-and-digest.</p><div class="highlight-box">This works because the exhale phase stimulates the parasympathetic nervous system. A 2:1 exhale-to-inhale ratio is the sweet spot. It's invisible to any audience.</div><p>You can do this mid-sentence. Between slides. While someone else is asking a question. Nobody sees it. But your body feels it immediately.</p></div><div class="key-insight"><div class="key-insight-icon">🫁</div><div class="key-insight-text"><strong>Key insight:</strong> One extended exhale can measurably lower your heart rate. It's the fastest in-the-moment tool in the programme — and nobody can see you doing it.</div></div>`,
@@ -1150,6 +1146,7 @@ Object.assign(LESSON_CONTENT, {
     read: `<div class="lesson-content"><h3>Your review</h3><p>This is the most important session in the programme. Not because of the score — because of what you hear.</p><div class="highlight-box">Answer four questions with full honesty: (1) What was your relationship with speaking when you started? (2) What is it now? (3) What's the single biggest thing that changed? (4) What would you say to someone who is where you were when you started?</div><p>Take your time. This is for you.</p></div><div class="key-insight"><div class="key-insight-icon">🏆</div><div class="key-insight-text"><strong>Key insight:</strong> The difference between your voice in Session 1 and your voice now is the evidence. You built that. It's real.</div></div>`,
   }
 });
+
 const lessonState = {
   step: 'read', // 'read' | 'check' | 'talk'
   sessionId: null,
@@ -1181,6 +1178,7 @@ function setSessionColor(phase) {
   r.setProperty('--sc-light', p.l);
   r.setProperty('--sc-mid', p.m);
 }
+
 function loadSession(id) {
   const s = CURRICULUM.find(s => s.id === id);
   if (!s) return;
@@ -1218,17 +1216,17 @@ function startLesson(s) {
   // Determine flow based on format
   const fmt = s.format || 'read_speak';
   lessonState.format = fmt;
-  
+
   // Some formats skip the quiz step
   const hasQuiz = lc.quiz && lc.quiz.length > 0;
   lessonState.hasQuiz = hasQuiz;
-  
+
   // Update step labels based on format
   const stepReadLabel = document.querySelector('#step-read .step-label');
   const stepCheckEl = document.getElementById('step-check');
   const stepTalkLabel = document.querySelector('#step-talk .step-label');
   const conn1 = document.getElementById('conn-1');
-  
+
   if (fmt === 'reflect') {
     stepReadLabel.textContent = 'Read';
     stepTalkLabel.textContent = 'Reflect';
@@ -1245,11 +1243,11 @@ function startLesson(s) {
     stepReadLabel.textContent = 'Read';
     stepTalkLabel.textContent = 'Talk';
   }
-  
+
   // Determine if this is a scored (recording) session
   const isScored = s.scored !== false;
   lessonState.isScored = isScored;
-  
+
   // Hide quiz step if no quiz
   if (!hasQuiz) {
     stepCheckEl.style.display = 'none';
@@ -1258,7 +1256,7 @@ function startLesson(s) {
     stepCheckEl.style.display = '';
     conn1.style.display = '';
   }
-  
+
   // Hide talk step for unscored sessions
   const stepTalkEl = document.getElementById('step-talk');
   const conn2 = document.getElementById('conn-2');
@@ -1276,10 +1274,10 @@ function startLesson(s) {
 
   // Populate read content
   document.getElementById('lesson-read-content').innerHTML = lc.read;
-  
+
   // Reset all interactive formats
   resetInteractiveFormats();
-  
+
   // Set up format-specific interactive elements
   if (lc.cards && (fmt === 'read_only')) {
     setupContentCards(lc.cards);
@@ -1336,7 +1334,7 @@ function startLesson(s) {
   document.getElementById('lesson-check').style.display = 'none';
   document.getElementById('lesson-talk').style.display = 'none';
   const nextBtn = document.getElementById('lesson-next-btn');
-  
+
   if (!isScored && !hasQuiz) {
     nextBtn.textContent = 'Complete session ✓';
   } else if (!isScored && hasQuiz) {
@@ -1355,7 +1353,7 @@ function updateLessonStepUI(step) {
   const steps = ['read', 'check', 'talk'];
   const idx = steps.indexOf(step);
   const hasQuiz = lessonState.hasQuiz;
-  
+
   steps.forEach((s, i) => {
     const item = document.getElementById('step-' + s);
     if (s === 'check' && !hasQuiz) {
@@ -1382,7 +1380,7 @@ let cardsState = { current: 0, total: 0 };
 function setupContentCards(cards) {
   cardsState.current = 0;
   cardsState.total = cards.length;
-  
+
   const track = document.getElementById('cards-track');
   track.innerHTML = cards.map((html, i) => `
     <div class="content-card-item">
@@ -1391,12 +1389,12 @@ function setupContentCards(cards) {
     </div>
   `).join('');
   track.style.transform = 'translateX(0%)';
-  
+
   const dots = document.getElementById('cards-dots');
   dots.innerHTML = cards.map((_, i) => `<div class="cards-dot${i===0?' active':''}" id="card-dot-${i}"></div>`).join('');
-  
+
   updateCardsNav();
-  
+
   document.getElementById('lesson-read-content').style.display = 'none';
   document.getElementById('lesson-cards-wrap').style.display = 'block';
   document.getElementById('lesson-reframe-wrap').style.display = 'none';
@@ -1411,7 +1409,7 @@ function updateCardsNav() {
   const nextBtn = document.getElementById('cards-next-btn');
   if (cardsState.current === cardsState.total - 1) {
     nextBtn.textContent = 'Done ✓';
-    nextBtn.onclick = function() { 
+    nextBtn.onclick = function() {
       document.getElementById('lesson-next-btn').disabled = false;
       document.getElementById('lesson-next-btn').style.opacity = '1';
     };
@@ -1446,14 +1444,14 @@ function setupReframe(prompt, label) {
   document.getElementById('reframe-input').value = '';
   document.getElementById('reframe-response').style.display = 'none';
   document.getElementById('reframe-submit-btn').disabled = true;
-  
+
   document.getElementById('lesson-read-content').style.display = 'block';
   document.getElementById('lesson-cards-wrap').style.display = 'none';
   document.getElementById('lesson-reframe-wrap').style.display = 'block';
   document.getElementById('lesson-scenario-wrap').style.display = 'none';
   document.getElementById('lesson-surprise-wrap').style.display = 'none';
   document.getElementById('lesson-timed-wrap').style.display = 'none';
-  
+
   document.getElementById('lesson-next-btn').disabled = true;
   document.getElementById('lesson-next-btn').style.opacity = '0.45';
 }
@@ -1466,14 +1464,14 @@ function checkReframeInput() {
 async function submitReframe() {
   const input = document.getElementById('reframe-input').value.trim();
   if (!input) return;
-  
+
   const btn = document.getElementById('reframe-submit-btn');
   btn.disabled = true;
   btn.textContent = 'Thinking...';
-  
+
   const s = CURRICULUM.find(s => s.id === lessonState.sessionId);
   const proxy = getProxyUrl();
-  
+
   try {
     const res = await fetch(proxy + '/analyse', {
       method: 'POST',
@@ -1504,7 +1502,7 @@ Keep it conversational and kind. No bullet points.` }]
     document.getElementById('reframe-response').textContent = "That's a common thought pattern. Ask yourself: what's the actual evidence that this will happen? And even if it did — would it really be as bad as your brain is predicting?";
     document.getElementById('reframe-response').style.display = 'block';
   }
-  
+
   btn.textContent = 'Done ✓';
   document.getElementById('lesson-next-btn').disabled = false;
   document.getElementById('lesson-next-btn').style.opacity = '1';
@@ -1521,7 +1519,7 @@ function setupScenario(description, options) {
     </div>
   `).join('');
   lessonState.pickedOption = -1;
-  
+
   document.getElementById('lesson-read-content').style.display = 'block';
   document.getElementById('lesson-cards-wrap').style.display = 'none';
   document.getElementById('lesson-reframe-wrap').style.display = 'none';
@@ -1545,14 +1543,14 @@ function setupSurprise(prompt) {
   document.getElementById('surprise-prompt-hidden').style.display = 'none';
   document.getElementById('surprise-reveal-btn').style.display = 'block';
   document.getElementById('surprise-reveal-btn').textContent = 'Reveal prompt ⚡';
-  
+
   document.getElementById('lesson-read-content').style.display = 'block';
   document.getElementById('lesson-cards-wrap').style.display = 'none';
   document.getElementById('lesson-reframe-wrap').style.display = 'none';
   document.getElementById('lesson-scenario-wrap').style.display = 'none';
   document.getElementById('lesson-surprise-wrap').style.display = 'block';
   document.getElementById('lesson-timed-wrap').style.display = 'none';
-  
+
   document.getElementById('lesson-next-btn').disabled = true;
   document.getElementById('lesson-next-btn').style.opacity = '0.45';
 }
@@ -1568,7 +1566,7 @@ function revealSurprise() {
 function setupTimed(seconds) {
   lessonState.timedLimit = seconds;
   document.getElementById('timed-limit-display').textContent = seconds + 's';
-  
+
   document.getElementById('lesson-read-content').style.display = 'block';
   document.getElementById('lesson-cards-wrap').style.display = 'none';
   document.getElementById('lesson-reframe-wrap').style.display = 'none';
@@ -1741,7 +1739,7 @@ async function startLessonRecording() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     initAudioAnalysis(stream);
-    const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' :
                      MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
     lessonState.mediaRecorder = mimeType ? new MediaRecorder(stream, {mimeType}) : new MediaRecorder(stream);
     lessonState.audioChunks = [];
@@ -1783,7 +1781,6 @@ const NERVLESS_PROXY = 'https://shark-app-3ywir.ondigitalocean.app';
 function getProxyUrl() { return NERVLESS_PROXY; }
 function checkApiKeys() { return true; }
 
-// ── SHARED AI PIPELINE ──
 // ── REQUEST THROTTLE ──
 const throttle = { lastCall: 0, cooldownMs: 15000, callsThisMinute: 0, minuteStart: 0, maxPerMinute: 6 };
 function checkThrottle() {
@@ -1871,7 +1868,7 @@ async function runAIPipeline(audioChunks, durationSeconds, session) {
     const medPauses = gaps.filter(g => g.gap > 0.5 && g.gap <= 1.0);
     const allGaps = gaps.map(g => g.gap).filter(g => g >= 0);
     const avgGap = allGaps.length > 0 ? Math.round((allGaps.reduce((a,b) => a+b, 0) / allGaps.length) * 100) / 100 : 0;
-    
+
     const windowSize = 10;
     const windows = [];
     for (let t = 0; t < durationSeconds; t += windowSize) {
@@ -1880,7 +1877,7 @@ async function runAIPipeline(audioChunks, durationSeconds, session) {
     }
     const wpmValues = windows.map(w => w.wpm).filter(w => w > 0);
     const wpmVariation = wpmValues.length > 1 ? Math.max(...wpmValues) - Math.min(...wpmValues) : 0;
-    
+
     cadenceData = `
 CADENCE DATA (from word-level timestamps):
 - Average gap between words: ${avgGap}s
@@ -1896,7 +1893,7 @@ Use this data to assess delivery quality: deliberate pauses show control, rushed
   const fillerCount = fillerMatches.length;
 
   const isReflective = session && (session.phase === 1 || session.phase === 4);
-  
+
   let scoringRubric = '';
   const phase = session ? session.phase : 2;
   if (phase === 1) {
@@ -2047,9 +2044,9 @@ Analyse this speech and return ONLY a JSON object with exactly this structure (n
     "<one concrete actionable improvement — name the technique, framework, or specific change>"
   ],
   "improvementPlan": {
-    "focus": "<the single most impactful thing to improve — e.g. 'structure', 'pace control', 'filler words', 'emotional range', 'prompt adherence'>",
-    "technique": "<name a specific framework or technique to try — e.g. 'Use the PREP framework: Position, Reason, Example, Position', 'Try the 2-second rule: pause for 2 seconds instead of saying um', 'Use the situation-complication-resolution story structure'>",
-    "example": "<rewrite one weak sentence from their transcript using the technique — show don't tell. If transcript is too short, give a brief example of how to start the prompt>"
+    "focus": "<the single most impactful thing to improve>",
+    "technique": "<name a specific framework or technique to try>",
+    "example": "<rewrite one weak sentence from their transcript using the technique>"
   },
   "transcriptHighlight": "<a specific phrase from their transcript worth noting, with a one-sentence observation>",
   "modelAnswer": ${isReflective ? '"" /* leave empty for reflective phases */' : '"<ONLY if overallScore < 70: write a 2-3 sentence example of how a strong answer to this prompt would sound. Use their topic/content where possible. If score >= 70, leave empty string.>"'}
@@ -2243,7 +2240,7 @@ function renderFeedback(rec, transcript, analysis) {
       tipsHtml += '<div class="tip-card"><div class="tip-num">' + (i + 1) + '</div><div class="tip-text">' + tip + '</div></div>';
     });
   }
-  
+
   if (a.pace.pauseVerdict || a.pace.variationVerdict) {
     tipsHtml += '<div class="tip-card" style="border-color:rgba(196,146,42,0.3);background:rgba(196,146,42,0.04)">'
       + '<div class="tip-num" style="background:rgba(196,146,42,0.15);color:var(--gold);border-color:rgba(196,146,42,0.3)">🎙</div>'
@@ -2252,35 +2249,33 @@ function renderFeedback(rec, transcript, analysis) {
       + (a.pace.variationVerdict ? '<div>' + a.pace.variationVerdict + '</div>' : '')
       + '</div></div>';
   }
-  
+
   if (a.transcriptHighlight) {
-    tipsHtml += '<div class="tip-card" style="border-color:rgba(91,79,217,0.3);background:rgba(91,79,217,0.04)"><div class="tip-num" style="background:rgba(91,79,217,0.15);color:var(--accent);border-color:rgba(91,79,217,0.3)">💬</div><div class="tip-text" style="font-style:italic">' + a.transcriptHighlight + '</div></div>';
+    tipsHtml += '<div class="tip-card" style="border-color:rgba(194,114,79,0.3);background:rgba(194,114,79,0.04)"><div class="tip-num" style="background:rgba(194,114,79,0.15);color:var(--accent);border-color:rgba(194,114,79,0.3)">💬</div><div class="tip-text" style="font-style:italic">' + a.transcriptHighlight + '</div></div>';
   }
-  
+
   if (a.improvementPlan && a.improvementPlan.focus) {
-    tipsHtml += '<div style="background:var(--surface);border:1.5px solid rgba(91,79,217,0.25);border-radius:16px;padding:18px;margin-top:12px;">'
-      + '<div style="font-size:11px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:10px;">🎯 Focus for next attempt</div>'
+    tipsHtml += '<div style="background:var(--surface);border:1.5px solid rgba(194,114,79,0.25);border-radius:16px;padding:18px;margin-top:12px;">'
+      + '<div style="font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:10px;">🎯 Focus for next attempt</div>'
       + '<div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px;">' + a.improvementPlan.focus + '</div>'
       + '<div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px;">' + a.improvementPlan.technique + '</div>'
-      + (a.improvementPlan.example ? '<div style="font-size:13px;color:var(--text);line-height:1.6;background:rgba(91,79,217,0.04);border-radius:10px;padding:12px 14px;font-style:italic;">"' + a.improvementPlan.example + '"</div>' : '')
+      + (a.improvementPlan.example ? '<div style="font-size:13px;color:var(--text);line-height:1.6;background:rgba(194,114,79,0.04);border-radius:10px;padding:12px 14px;font-style:italic;">"' + a.improvementPlan.example + '"</div>' : '')
       + '</div>';
   }
-  
+
   document.getElementById('tips-container').innerHTML = tipsHtml;
 
   const sessionForScore = CURRICULUM.find(s => s.id === (rec.sessionId || state.currentSessionId));
   const thresholds = sessionForScore ? getStarThresholds(sessionForScore) : { star1: 55, star2: 70, star3: 85 };
   const isPhase1Session = sessionForScore && (sessionForScore.phase === 1 || sessionForScore.phase === 4);
   const alreadyPassed = hasPassedSession(rec.sessionId || state.currentSessionId);
-  const starsEarned = sessionForScore ? getStars(a.overallScore, sessionForScore) : 0;
-  const bestStars = getBestStars(rec.sessionId || state.currentSessionId);
   const banner = document.getElementById('pass-fail-banner');
   const btn = document.getElementById('complete-session-btn');
 
   if (isPhase1Session) {
     const note = document.createElement('div');
-    note.style.cssText = 'background:rgba(91,79,217,0.06);border:1px solid rgba(91,79,217,0.15);border-radius:14px;padding:14px 16px;margin-bottom:12px;font-size:13px;color:var(--muted);line-height:1.6;text-align:center;';
-    const phaseNote = sessionForScore.phase === 1 
+    note.style.cssText = 'background:rgba(194,114,79,0.06);border:1px solid rgba(194,114,79,0.15);border-radius:14px;padding:14px 16px;margin-bottom:12px;font-size:13px;color:var(--muted);line-height:1.6;text-align:center;';
+    const phaseNote = sessionForScore.phase === 1
       ? '🫶 <strong style="color:var(--accent)">Phase 1 — no judgement.</strong> This phase is about speaking freely and building self-awareness.'
       : '💭 <strong style="color:var(--accent)">Reflective phase.</strong> This phase scores emotional honesty and self-awareness, not delivery technique.';
     note.innerHTML = phaseNote;
@@ -2315,7 +2310,6 @@ function renderFeedback(rec, transcript, analysis) {
           btn.onclick = showCurriculum;
         }
       }
-
     } else {
       banner.style.background = 'rgba(217,84,112,0.06)';
       banner.style.border = '1px solid rgba(217,84,112,0.2)';
@@ -2340,7 +2334,7 @@ function renderFeedback(rec, transcript, analysis) {
         const showHowBtn = document.createElement('button');
         showHowBtn.id = 'show-how-btn';
         showHowBtn.className = 'btn-secondary';
-        showHowBtn.style.cssText = 'width:100%;margin-top:10px;background:rgba(91,79,217,0.06);border-color:rgba(91,79,217,0.3);color:var(--accent);font-weight:700;';
+        showHowBtn.style.cssText = 'width:100%;margin-top:10px;background:rgba(194,114,79,0.06);border-color:rgba(194,114,79,0.3);color:var(--accent);font-weight:700;';
         showHowBtn.textContent = '💡 Show me how to improve';
         showHowBtn.onclick = () => showModelAnswer(a.modelAnswer, sessionForScore);
         actionsDiv.insertBefore(showHowBtn, actionsDiv.querySelector('.btn-secondary'));
@@ -2355,14 +2349,13 @@ function scoreColour(n) {
   return n >= 8 ? 'var(--green)' : n >= 5 ? 'var(--gold)' : 'var(--red)';
 }
 
-// ── SCORING FEEDBACK ──
 let lastFeedbackType = '';
 function submitScoreFeedback(type) {
   lastFeedbackType = type;
   document.querySelectorAll('.fb-btn').forEach(b => { b.style.borderColor = 'var(--border)'; b.style.background = 'var(--surface)'; });
   const btn = document.getElementById('fb-' + type.replace('_', '-'));
-  if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.background = 'rgba(91,79,217,0.08)'; }
-  
+  if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.background = 'rgba(194,114,79,0.08)'; }
+
   if (type === 'accurate') {
     logFeedback(type, '');
     document.getElementById('fb-detail').style.display = 'none';
@@ -2382,8 +2375,7 @@ function sendFeedbackDetail() {
 function logFeedback(type, detail) {
   const feedback = JSON.parse(localStorage.getItem('nervless_feedback') || '[]');
   feedback.push({
-    type,
-    detail,
+    type, detail,
     sessionId: state.currentSessionId,
     score: state.sessions.length > 0 ? state.sessions[0].score : null,
     timestamp: new Date().toISOString()
@@ -2408,12 +2400,12 @@ function showModelAnswer(modelAnswer, session) {
   overlay.innerHTML = `
     <div style="padding:52px 24px 24px;">
       <button onclick="document.getElementById('model-answer-overlay').remove()" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted);margin-bottom:20px;display:block;">←</button>
-      <div style="font-size:11px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px;">💡 HOW TO STRUCTURE THIS BETTER</div>
+      <div style="font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px;">💡 HOW TO STRUCTURE THIS BETTER</div>
       <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:6px;">${session ? session.title : 'Your session'}</div>
       <div style="font-size:14px;color:var(--muted);margin-bottom:24px;">Here's how a strong answer to this prompt could sound, based on what you were trying to say.</div>
     </div>
-    <div style="margin:0 24px 20px;background:var(--surface);border:1.5px solid rgba(91,79,217,0.25);border-radius:20px;padding:22px;">
-      <div style="font-size:11px;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:12px;">Example answer</div>
+    <div style="margin:0 24px 20px;background:var(--surface);border:1.5px solid rgba(194,114,79,0.25);border-radius:20px;padding:22px;">
+      <div style="font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:12px;">Example answer</div>
       <div style="font-size:15px;color:var(--text);line-height:1.75;">${modelAnswer}</div>
     </div>
     <div style="margin:0 24px 20px;background:var(--surface2);border-radius:16px;padding:18px;">
@@ -2517,7 +2509,7 @@ function getAudioAnalysisReport() {
     const maxPitch = Math.round(Math.max(...p));
     const minPitch = Math.round(Math.min(...p));
     const pitchRange = maxPitch - minPitch;
-    
+
     const windowSize = 5;
     const pitchVariances = [];
     for (let i = 0; i <= p.length - windowSize; i++) {
@@ -2528,8 +2520,8 @@ function getAudioAnalysisReport() {
     }
     const avgPitchVariance = pitchVariances.length > 0 ? Math.round(pitchVariances.reduce((a, b) => a + b, 0) / pitchVariances.length) : 0;
     const maxPitchVariance = pitchVariances.length > 0 ? Math.round(Math.max(...pitchVariances)) : 0;
-    
-    const stabilityLabel = maxPitchVariance > 800 ? 'UNSTABLE — possible voice shakiness detected' : 
+
+    const stabilityLabel = maxPitchVariance > 800 ? 'UNSTABLE — possible voice shakiness detected' :
                            maxPitchVariance > 400 ? 'SOMEWHAT UNSTABLE — moderate pitch fluctuation' :
                            avgPitchVariance < 50 ? 'VERY STABLE but potentially monotone' : 'STABLE — natural variation';
 
@@ -2566,7 +2558,7 @@ async function startRecording(){
   try{
     const stream=await navigator.mediaDevices.getUserMedia({audio:true});
     initAudioAnalysis(stream);
-    const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 
+    const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' :
                      MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
     state.mediaRecorder = mimeType ? new MediaRecorder(stream, {mimeType}) : new MediaRecorder(stream);
     state.audioChunks=[];
@@ -2607,6 +2599,7 @@ function completeSession() {
   }
   showCurriculum();
 }
+
 function showDashboard(){
   const sessions=state.sessions,count=sessions.length,avg=count?Math.round(sessions.reduce((a,s)=>a+s.score,0)/count):null,mins=Math.round(sessions.reduce((a,s)=>a+(s.duration||60),0)/60);
   document.getElementById('stat-sessions').textContent=count;document.getElementById('stat-avg').textContent=avg||'-';document.getElementById('stat-mins').textContent=mins;
@@ -2641,7 +2634,7 @@ function renderProgressChart() {
   const hasFillers = fillers.some(f => f !== null);
 
   const style = getComputedStyle(document.documentElement);
-  const accentColor = style.getPropertyValue('--accent').trim() || '#5B4FD9';
+  const accentColor = style.getPropertyValue('--accent').trim() || '#C2724F';
   const greenColor  = style.getPropertyValue('--green').trim()  || '#2E9E7A';
   const mutedColor  = style.getPropertyValue('--text-faint').trim() || '#ADA89E';
   const borderColor = style.getPropertyValue('--border').trim() || '#E4E0D8';
@@ -2756,6 +2749,7 @@ function renderProgressChart() {
     }
   });
 }
+
 function showLoading(t, sub){
   document.getElementById('loading-text').textContent=t;
   const subEl = document.getElementById('loading-sub');
@@ -2877,7 +2871,7 @@ async function toggleFreeRecording() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({audio:true});
       initAudioAnalysis(stream);
-      const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 
+      const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' :
                        MediaRecorder.isTypeSupported('audio/mp4') ? 'audio/mp4' : '';
       freeState.mediaRecorder = mimeType ? new MediaRecorder(stream, {mimeType}) : new MediaRecorder(stream);
       freeState.audioChunks = [];
@@ -2905,12 +2899,12 @@ async function toggleFreeRecording() {
 
 function processFreeRecording() {
   const mode = FREE_MODES[freeState.mode];
-  
+
   if (mode && mode.isInteractive && !freeState.round2) {
     processHotSeatRound1();
     return;
   }
-  
+
   const fakeSession = {
     title: mode?.title || 'Free Practice',
     what: freeState.round2 ? 'Hot Seat: Round 2 follow-up response' : 'Free practice session',
@@ -2919,19 +2913,16 @@ function processFreeRecording() {
     phase: 2,
     duration: '2 min'
   };
-  
-  const audioToProcess = freeState.round2 ? freeState.audioChunks : freeState.audioChunks;
-  const duration = freeState.round2 ? freeState.seconds : freeState.seconds;
-  
-  runAIPipeline(audioToProcess, duration, fakeSession).then(result => {
+
+  runAIPipeline(freeState.audioChunks, freeState.seconds, fakeSession).then(result => {
     if (!result) return;
     hideLoading();
-    
+
     if (freeState.round2 && freeState.round1Transcript) {
       result.analysis.coachingPoints = result.analysis.coachingPoints || [];
       result.analysis.coachingPoints.unshift('Round 1 answer: "' + freeState.round1Transcript.slice(0, 100) + '..." → Follow-up: "' + freeState.followUpQuestion + '"');
     }
-    
+
     const rec = {
       id: Date.now(), sessionId: 'free-'+Date.now(),
       sessionTitle: mode?.title || 'Free Practice',
@@ -2958,11 +2949,11 @@ function processFreeRecording() {
 async function processHotSeatRound1() {
   showLoading('Transcribing round 1...', 'Preparing your follow-up...');
   const proxy = getProxyUrl();
-  
+
   const audioBlob = new Blob(freeState.audioChunks, { type: freeState.mediaRecorder?.mimeType || 'audio/webm' });
   const formData = new FormData();
   formData.append('file', audioBlob, 'recording.webm');
-  
+
   let transcript = '';
   try {
     const whisperRes = await fetch(proxy + '/transcribe', { method: 'POST', body: formData });
@@ -2971,17 +2962,17 @@ async function processHotSeatRound1() {
       transcript = data.text || '';
     }
   } catch(e) { console.error('Hot Seat R1 transcription failed:', e); }
-  
+
   if (!transcript || transcript.trim().split(/\s+/).length < 5) {
     hideLoading();
     alert('We didn\'t catch enough speech for round 1. Try again and speak a bit more.');
     resetFreeRecording();
     return;
   }
-  
+
   freeState.round1Transcript = transcript;
   freeState.round1Prompt = freeState.prompt;
-  
+
   showLoading('Generating follow-up...', 'Claude is thinking of a tough one...');
   try {
     const claudeRes = await fetch(proxy + '/analyse', {
@@ -3010,12 +3001,12 @@ Return ONLY the follow-up question, nothing else.` }]
     console.error('Follow-up generation failed:', e);
     freeState.followUpQuestion = 'Can you give me a specific example of what you just described?';
   }
-  
+
   hideLoading();
-  
+
   freeState.round2 = true;
   freeState.audioChunks = [];
-  
+
   document.getElementById('free-prompt-label-text').textContent = '🔥 FOLLOW-UP QUESTION';
   document.getElementById('free-prompt-text').textContent = freeState.followUpQuestion;
   document.getElementById('free-record-hint').textContent = 'Tap to record your answer';
@@ -3034,7 +3025,7 @@ function setActiveNav(tab) {
   if(el) el.classList.add('active');
 }
 
-// ─── Global exposure for inline HTML handlers ─────────────────────────────────
+// ── Global window assignments ──
 window.showCurriculum        = showCurriculum;
 window.showDashboard         = showDashboard;
 window.renderProgressChart   = renderProgressChart;
