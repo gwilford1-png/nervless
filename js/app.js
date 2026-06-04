@@ -218,7 +218,9 @@ function showCurriculum() {
     } else {
       const rows = sessions.map((s, si) => {
         const isDone = hasPassedSession(s.id);
-        const isCurrent = s.id === CURRENT && !isDone;
+        // isCurrent: explicitly flagged, OR first unpassed session in an active phase
+        const firstUnpassed = sessions.find(ss => !hasPassedSession(ss.id));
+        const isCurrent = !isDone && (s.id === CURRENT || s === firstUnpassed);
         const isScored = s.scored !== false;
         let cls, inner, sub, subCls = '', right;
         if (isDone) {
@@ -230,11 +232,11 @@ function showCurriculum() {
           sub = 'Up next · tap to start'; subCls = ' up';
           right = '<div class="j-s-arrow">→</div>';
         } else {
-          cls = 'locked'; inner = si + 1;
-          sub = 'Locked';
+          cls = 'todo'; inner = si + 1;
+          sub = 'Tap to start';
           right = '<div class="j-s-chev">›</div>';
         }
-        const click = (isDone || isCurrent) ? ` onclick="loadSession(${s.id})"` : '';
+        const click = ` onclick="loadSession(${s.id})"`;
         return `<div class="j-session ${cls}"${click}>
             <div class="j-s-status ${cls}">${inner}</div>
             <div class="j-s-mid"><div class="j-s-title">${s.title}</div><div class="j-s-sub${subCls}">${sub}</div></div>
