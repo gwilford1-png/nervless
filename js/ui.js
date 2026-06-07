@@ -29,7 +29,9 @@ function showCurriculum() {
   const DONE = passed;
   const CURRENT = state.currentSessionId;
   const entry = LEVEL_ENTRY[state.level];
-  const relevant = CURRICULUM.filter(s => s.id >= entry);
+  const entrySession = CURRICULUM.find(s => s.id === entry);
+  const entryPhase = entrySession ? entrySession.phase : 1;
+  const relevant = CURRICULUM.filter(s => s.phase >= entryPhase);
 
   const totalDone = passed.length;
   const totalSessions = relevant.length;
@@ -1608,7 +1610,9 @@ async function startRecording(){
 function stopRecording(){if(state.mediaRecorder&&state.mediaRecorder.state!=='inactive'){clearInterval(state.timerInterval);state.isRecording=false;state.mediaRecorder.stop();}}
 function showPhaseLockedMsg(phaseNum) {
   const prevPhase = phaseNum - 1;
-  const relevant = CURRICULUM.filter(s => s.id >= LEVEL_ENTRY[state.level]);
+  const entrySession = CURRICULUM.find(s => s.id === LEVEL_ENTRY[state.level]);
+  const entryPhase = entrySession ? entrySession.phase : 1;
+  const relevant = CURRICULUM.filter(s => s.phase >= entryPhase);
   const prevSessions = relevant.filter(s => s.phase === prevPhase);
   const remaining = prevSessions.filter(s => !hasPassedSession(s.id)).length;
   alert('Phase ' + phaseNum + ' is locked. Pass all ' + prevSessions.length + ' sessions in Phase ' + prevPhase + ' to unlock it. You have ' + remaining + ' left to pass.');
@@ -1624,7 +1628,9 @@ function completeSession() {
   if (score >= passScore) {
     markSessionPassed(id);
     const entry = LEVEL_ENTRY[state.level];
-    const relevant = CURRICULUM.filter(s => s.id >= entry);
+    const entrySession = CURRICULUM.find(s => s.id === entry);
+    const entryPhase = entrySession ? entrySession.phase : 1;
+    const relevant = CURRICULUM.filter(s => s.phase >= entryPhase);
     const nextUnpassed = relevant.find(s => !hasPassedSession(s.id));
     if (nextUnpassed) {
       state.currentSessionId = nextUnpassed.id;
