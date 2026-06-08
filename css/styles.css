@@ -33,10 +33,6 @@
   --phase9:#27AE60; --phase9-bg:#E8F8F0; --phase9-border:#A9DFBF;
   --nav-h: 72px;
   --header-top: 52px;
-  /* alias: many inline styles reference var(--muted) — keep it resolving */
-  --muted: #7A7268;
-  /* shared soft card shadow used across the journey + session screens */
-  --card-shadow: 0 6px 20px rgba(80,55,30,0.06), 0 1px 3px rgba(80,55,30,0.04);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -558,6 +554,19 @@ body {
 
 /* Score card */
 .j-score-card{ margin:0 16px;background:var(--surface);border:none;border-radius:20px;padding:18px 18px 16px;box-shadow:0 8px 24px rgba(80,55,30,0.07),0 1px 4px rgba(80,55,30,0.05); }
+/* Score card — two-row stat layout */
+.j-stat-row{ display:flex;align-items:baseline;gap:6px;margin-bottom:4px; }
+.j-stat-sessions{ font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;color:var(--text);letter-spacing:-0.8px;line-height:1.1;margin-bottom:2px; }
+.j-stat-row--pts{ margin-bottom:14px;margin-top:2px; }
+.j-pts-val{ font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;color:var(--text);letter-spacing:-0.5px; }
+.j-pts-total{ font-size:15px;font-weight:700;color:var(--text-faint); }
+.j-pts-note{ font-size:11px;font-weight:700;color:var(--text-faint);margin-left:6px; }
+/* You're here tag — positioned under knob */
+.j-here-row{ position:relative;height:18px;margin-bottom:4px; }
+.j-here-tag{ position:absolute;top:2px;font-size:11px;font-weight:800;color:var(--accent);letter-spacing:0.04em;white-space:nowrap; }
+/* Locked phase session names header */
+.j-unlock-header{ display:flex;align-items:center;gap:7px;padding:0 16px 12px 16px;font-size:12px;font-weight:700;color:var(--text-faint); }
+.j-unlock-header svg{ width:13px;height:14px;fill:none;stroke:var(--text-faint);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0; }
 .j-score-top{ display:flex;align-items:center;justify-content:space-between;margin-bottom:12px; }
 .j-score-label{ font-size:12px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint); }
 .j-phase-pill{ display:flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--accent);background:var(--accent-light);border:1px solid transparent;border-radius:100px;padding:4px 11px 4px 9px;white-space:nowrap; }
@@ -649,111 +658,3 @@ body {
 .j-s-score{ font-size:17px;font-weight:900;color:var(--pc);letter-spacing:-0.4px; }
 .j-s-arrow{ font-size:18px;font-weight:700;color:var(--text-faint); }
 .j-s-chev{ font-size:18px;font-weight:700;color:var(--text-faint);opacity:0.55; }
-/* ════════════════════════════════════════════
-   JOURNEY POLISH + SESSION-SCREEN CONGRUENCE
-   (appended last so these win the cascade)
-   ════════════════════════════════════════════ */
-
-/* ── #2  Phase "Complete" state — obvious, not just a tick ── */
-.j-phase-label-row{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:3px; }
-.j-phase-label-row .j-phase-label{ margin-bottom:0; }
-.j-done-tag{
-  display:inline-flex; align-items:center; gap:4px;
-  font-size:10.5px; font-weight:900; letter-spacing:0.04em; text-transform:uppercase;
-  color:#1A7A42; background:#EBF9F1; border:1px solid #A9DFBF;
-  border-radius:100px; padding:2px 9px 2px 7px; white-space:nowrap;
-}
-.j-done-tag svg{ width:11px; height:11px; stroke:#1A7A42; stroke-width:3; fill:none; stroke-linecap:round; stroke-linejoin:round; }
-/* whole done card reads as finished at a glance, even collapsed */
-.j-phase-card.state-done{
-  border-color:#CDEBD9;
-  background:linear-gradient(180deg,#F4FBF7 0%, var(--surface) 60%);
-  box-shadow:0 6px 20px rgba(46,158,122,0.08), 0 1px 3px rgba(80,55,30,0.04);
-}
-.j-phase-card.state-done .j-count{ color:#1A7A42; }
-.j-phase-card.state-done .j-dot.done{ background:#2E9E7A; }
-
-/* ── #4  "Done" pill for completed unscored sessions ── */
-.j-s-done-pill{
-  display:inline-flex; align-items:center; gap:3px;
-  font-size:11px; font-weight:900; letter-spacing:0.02em; text-transform:uppercase;
-  color:#1A7A42; background:#EBF9F1; border:1px solid #A9DFBF;
-  border-radius:100px; padding:3px 9px 3px 7px; white-space:nowrap;
-}
-.j-s-done-pill svg{ width:10px; height:10px; stroke:#1A7A42; stroke-width:3; fill:none; stroke-linecap:round; stroke-linejoin:round; }
-
-/* ── #3  "You're here" now tracks the knob ── */
-.j-track{ position:relative; }
-.j-here-row{ position:relative; height:15px; margin-top:8px; }
-.j-here-tag{
-  position:absolute; top:0; transform:translateX(-50%); left:50%;
-  font-size:11px; font-weight:800; color:var(--accent); white-space:nowrap;
-  transition:left 1.1s cubic-bezier(0.4,0,0.2,1);
-}
-.j-here-tag::before{
-  content:''; position:absolute; top:-7px; left:50%; transform:translateX(-50%);
-  border-left:4px solid transparent; border-right:4px solid transparent;
-  border-bottom:5px solid var(--accent);
-}
-.j-endpoints{ margin-top:2px; }
-
-/* ════════════════════════════════════════════
-   #5  SESSION / LESSON / FEEDBACK SCREENS → match journey
-   soft shadows over hard borders · flat headers · Nunito headings
-   ════════════════════════════════════════════ */
-
-/* flat headers (drop the old --sc-light gradients) */
-.lesson-header{ background:none; padding:18px 20px 14px; }
-.practice-header{ background:none; }
-.feedback-header{ background:none; }
-.free-header{ background:none; }
-
-/* headings → bold Nunito to match .j-welcome / .j-phase-name */
-.lesson-title,
-.feedback-title,
-.prompt-text,
-.talk-prompt-text,
-.free-prompt-text,
-.dash-title{
-  font-family:'Nunito',sans-serif; font-weight:900; letter-spacing:-0.5px; line-height:1.18;
-}
-.lesson-content h3{ font-family:'Nunito',sans-serif; font-weight:900; letter-spacing:-0.3px; }
-.feedback-score .score-num{ font-family:'Nunito',sans-serif; font-weight:900; }
-
-/* cards → journey soft-shadow treatment */
-.lesson-content,
-.quiz-question,
-.talk-intro,
-.prompt-card,
-.reframe-wrap,
-.score-widget,
-.transcript-box,
-.tip-card,
-.stat-card,
-.streak-card,
-.history-card,
-.free-mode-card,
-.free-prompt-area{
-  border:none !important;
-  box-shadow:var(--card-shadow);
-}
-.lesson-content,
-.quiz-question,
-.talk-intro,
-.prompt-card,
-.reframe-wrap{ border-radius:20px; }
-.score-widget,
-.stat-card,
-.transcript-box,
-.tip-card,
-.history-card{ border-radius:16px; }
-
-/* tinted callouts: lose the hard border but keep the tint */
-.key-insight,
-.session-context-strip{ border:none; }
-
-/* selected/active states still read clearly */
-.free-mode-card.selected{ box-shadow:0 0 0 1.5px var(--accent), var(--card-shadow); }
-
-/* feedback score ring → phase colour, not always-green */
-.feedback-score{ background:conic-gradient(var(--sc) var(--pct), var(--surface2) 0); }
