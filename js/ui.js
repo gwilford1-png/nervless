@@ -153,9 +153,7 @@ function showCurriculum() {
       return `<span class="j-dot ${d ? 'done' : c ? 'current' : 'todo'}"></span>`;
     }).join('');
 
-    const rightIc = st === 'locked'
-      ? `<div class="j-lock-ic">${LOCK}</div>`
-      : `<div class="j-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>`;
+    const rightIc = `<div class="j-chev"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>`;
 
     let body;
     if (st === 'locked') {
@@ -167,7 +165,7 @@ function showCurriculum() {
             <div class="j-s-right"><div class="j-lock-ic">${LOCK}</div></div>
           </div>`
       ).join('');
-      body = `<div class="j-unlock-header">${LOCK} ${sessions.length} sessions · finish Phase ${p.num - 1} to unlock</div><div class="j-sessions" style="display:block">${lockedRows}</div>`;
+      body = `<div class="j-sessions"><div class="j-unlock-header">${LOCK} ${sessions.length} sessions · finish Phase ${p.num - 1} to unlock</div>${lockedRows}</div>`;
     } else {
       const rows = sessions.map((s, si) => {
         const isDone = hasPassedSession(s.id);
@@ -200,7 +198,7 @@ function showCurriculum() {
     }
 
     return `<div class="j-phase-card state-${st}${isOpen ? ' open' : ''}" style="--pc:${p.color};--pc-light:${p.light};--pc-mid:${p.mid};animation-delay:${delay}s">
-        <div class="j-phase-head"${st !== 'locked' ? ' data-toggle="1"' : ''}>
+        <div class="j-phase-head" data-toggle="1">
           <div class="j-tile">${ICONS[p.icon] || ''}${badge}</div>
           <div class="j-phase-mid">
             <div class="j-phase-label">Phase ${p.num}</div>
