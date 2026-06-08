@@ -22,16 +22,16 @@ function showCurriculum() {
   r.setProperty('--sc-mid', '#C8C0F5');
 
   state.level = parseInt(localStorage.getItem('nervless_level') || state.level);
-  state.currentSessionId = parseInt(localStorage.getItem('nervless_current_session') || LEVEL_ENTRY[state.level]);
+  // Always start from Phase 1 — level determines coaching framing, not entry point
+  state.currentSessionId = parseInt(localStorage.getItem('nervless_current_session') || 1);
   state.completedSessions = JSON.parse(localStorage.getItem('nervless_completed') || '[]');
 
   const passed = JSON.parse(localStorage.getItem('nervless_passed') || '[]');
   const DONE = passed;
   const CURRENT = state.currentSessionId;
-  const entry = LEVEL_ENTRY[state.level];
-  const entrySession = CURRICULUM.find(s => s.id === entry);
-  const entryPhase = entrySession ? entrySession.phase : 1;
-  const relevant = CURRICULUM.filter(s => s.phase >= entryPhase);
+  // Always show the full curriculum from Phase 1
+  const entryPhase = 1;
+  const relevant = CURRICULUM;
 
   const totalDone = passed.length;
   const totalSessions = relevant.length;
@@ -42,34 +42,26 @@ function showCurriculum() {
   const scoredAll = relevant.filter(s => showsGrade(s) && s.scored !== false);
   const earnedPts = scoredAll.reduce((sum, s) => sum + getBestScore(s.id), 0);
   const maxPts = scoredAll.length * 100;
-  // Scoreboard flips from "lessons complete" (foundational phases) to "points" (skill phases 5-8),
-  // so a gamified user sees a number climb from day one instead of a frozen 0 until Phase 5.
-  const scoringActive = (currSession && showsGrade(currSession)) || earnedPts > 0;
-  const scoreLabelEl = document.querySelector('.j-score-label');
-  const scoreUnitEl = document.querySelector('.j-score-unit');
-  if (scoringActive) {
-    if (scoreLabelEl) scoreLabelEl.textContent = 'POINTS';
-    if (scoreUnitEl) scoreUnitEl.textContent = 'pts';
-    document.getElementById('stat-points').textContent = earnedPts.toLocaleString();
-    document.getElementById('stat-points-max').textContent = '/ ' + maxPts.toLocaleString();
-    document.getElementById('stat-sessions-line').textContent = totalDone + ' of ' + totalSessions + ' sessions complete';
-  } else {
-    const gradedNums = [...new Set(relevant.filter(s => showsGrade(s)).map(s => s.phase))].sort((a, b) => a - b);
-    const fgNum = gradedNums[0];
-    const fgSession = fgNum ? relevant.find(s => s.phase === fgNum) : null;
-    const fgName = fgSession ? fgSession.phaseName : '';
-    if (scoreLabelEl) scoreLabelEl.textContent = 'LESSONS COMPLETE';
-    if (scoreUnitEl) scoreUnitEl.textContent = 'done';
-    document.getElementById('stat-points').textContent = totalDone;
-    document.getElementById('stat-points-max').textContent = '/ ' + totalSessions;
-    document.getElementById('stat-sessions-line').textContent = fgName
-      ? '🔓 Scoring unlocks in Phase ' + fgNum + ' · ' + fgName
-      : 'Complete the lessons to unlock scoring';
-  }
+  // Sessions row — always visible
+  const sessionsEl = document.getElementById('stat-sessions-done');
+  if (sessionsEl) sessionsEl.textContent = totalDone + ' / ' + totalSessions + ' sessions done';
+  // Points row — always visible; shows 0 until Phase 5
+  const ptsEl = document.getElementById('stat-pts-value');
+  const ptsTotalEl = document.getElementById('stat-pts-total');
+  if (ptsEl) ptsEl.textContent = earnedPts.toLocaleString();
+  if (ptsTotalEl) ptsTotalEl.textContent = '/ ' + maxPts.toLocaleString() + ' pts';
   document.getElementById('stat-phase-text').textContent = 'Phase ' + currPhase + ' of 9';
   const fill = document.getElementById('journey-progress-fill');
   const pct = totalSessions ? Math.round((totalDone / totalSessions) * 100) : 0;
-  if (fill) fill.style.width = Math.max(5, Math.min(100, pct)) + '%';
+  const clampedPct = Math.max(5, Math.min(100, pct));
+  if (fill) fill.style.width = clampedPct + '%';
+  // Position "You're here" tag under the knob
+  const hereTag = document.getElementById('j-here-tag');
+  if (hereTag) {
+    // offset by half the tag's approx width (~44px) scaled to pct so it stays on screen
+    const tagOffset = Math.round(clampedPct * 0.44);
+    hereTag.style.left = 'calc(' + clampedPct + '% - ' + tagOffset + 'px)';
+  }
 
   // ── Phase data: palette + representative icon + one-line benefit ──
   const PHASES = [
@@ -150,7 +142,7 @@ function showCurriculum() {
     if (sessions.length === 0) return '';
     const st = phaseState(p.num);
     const doneCount = sessions.filter(s => hasPassedSession(s.id)).length;
-    const isOpen = st === 'active';
+    const isOpen = false; // always closed on load; user clicks to open
     const delay = (pi * 0.045).toFixed(3);
 
     const badge = st === 'done' ? `<div class="j-tile-badge done">${CHECK}</div>`
@@ -167,7 +159,15 @@ function showCurriculum() {
 
     let body;
     if (st === 'locked') {
-      body = `<div class="j-unlock">${LOCK} ${sessions.length} sessions · finish Phase ${p.num - 1} to unlock</div>`;
+      // Show session names so people can see what's inside locked phases
+      const lockedRows = sessions.map((s, si) =>
+        `<div class="j-session locked">
+            <div class="j-s-status locked" style="background:var(--surface2);color:var(--text-faint)">${si + 1}</div>
+            <div class="j-s-mid"><div class="j-s-title" style="color:var(--text-faint)">${s.title}</div></div>
+            <div class="j-s-right"><div class="j-lock-ic">${LOCK}</div></div>
+          </div>`
+      ).join('');
+      body = `<div class="j-unlock-header">${LOCK} ${sessions.length} sessions · finish Phase ${p.num - 1} to unlock</div><div class="j-sessions" style="display:block">${lockedRows}</div>`;
     } else {
       const rows = sessions.map((s, si) => {
         const isDone = hasPassedSession(s.id);
@@ -243,8 +243,9 @@ function showCurriculum() {
       : 'You\'re <strong style="color:var(--accent)">' + phasesDone + ' of ' + phasesTotal + ' phases</strong> in. Keep going — the skills compound.';
     footerCard =
       '<div style="margin:22px 16px 8px;background:var(--surface);border:1.5px solid rgba(194,114,79,0.22);border-radius:22px;padding:22px 20px;box-shadow:0 8px 24px rgba(80,55,30,0.07),0 1px 4px rgba(80,55,30,0.05);">'
-      + '<div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:var(--accent);margin-bottom:10px;">Where this is heading</div>'
-      + '<div style="font-size:15px;color:var(--text);line-height:1.65;margin-bottom:10px;">Every session here is building a toolkit you\'ll keep for good. Finish the journey and you reach the part that lasts — a weekly rhythm that holds your progress, plus Practice: your gym for pushing as far as you want and getting ready for the real thing.</div>'
+      + '<div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:var(--accent);margin-bottom:10px;">Where this leads</div>'
+      + '<div style="font-size:15px;color:var(--text);line-height:1.65;margin-bottom:12px;">Finish the journey and Practice unlocks — an open training ground where you can go as hard as you like and get ready for the real thing.</div>'
+      + '<div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:6px;">Or if you\'re already up for a test, Practice is waiting under the mic tab.</div>'
       + '<div style="font-size:13px;color:var(--muted);line-height:1.6;">' + progressLine + '</div>'
       + '</div>';
   }
