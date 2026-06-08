@@ -42,9 +42,30 @@ function showCurriculum() {
   const scoredAll = relevant.filter(s => showsGrade(s) && s.scored !== false);
   const earnedPts = scoredAll.reduce((sum, s) => sum + getBestScore(s.id), 0);
   const maxPts = scoredAll.length * 100;
-  document.getElementById('stat-points').textContent = earnedPts.toLocaleString();
-  document.getElementById('stat-points-max').textContent = '/ ' + maxPts.toLocaleString();
-  document.getElementById('stat-sessions-line').textContent = totalDone + ' of ' + totalSessions + ' sessions complete';
+  // Scoreboard flips from "lessons complete" (foundational phases) to "points" (skill phases 5-8),
+  // so a gamified user sees a number climb from day one instead of a frozen 0 until Phase 5.
+  const scoringActive = (currSession && showsGrade(currSession)) || earnedPts > 0;
+  const scoreLabelEl = document.querySelector('.j-score-label');
+  const scoreUnitEl = document.querySelector('.j-score-unit');
+  if (scoringActive) {
+    if (scoreLabelEl) scoreLabelEl.textContent = 'POINTS';
+    if (scoreUnitEl) scoreUnitEl.textContent = 'pts';
+    document.getElementById('stat-points').textContent = earnedPts.toLocaleString();
+    document.getElementById('stat-points-max').textContent = '/ ' + maxPts.toLocaleString();
+    document.getElementById('stat-sessions-line').textContent = totalDone + ' of ' + totalSessions + ' sessions complete';
+  } else {
+    const gradedNums = [...new Set(relevant.filter(s => showsGrade(s)).map(s => s.phase))].sort((a, b) => a - b);
+    const fgNum = gradedNums[0];
+    const fgSession = fgNum ? relevant.find(s => s.phase === fgNum) : null;
+    const fgName = fgSession ? fgSession.phaseName : '';
+    if (scoreLabelEl) scoreLabelEl.textContent = 'LESSONS COMPLETE';
+    if (scoreUnitEl) scoreUnitEl.textContent = 'done';
+    document.getElementById('stat-points').textContent = totalDone;
+    document.getElementById('stat-points-max').textContent = '/ ' + totalSessions;
+    document.getElementById('stat-sessions-line').textContent = fgName
+      ? '🔓 Scoring unlocks in Phase ' + fgNum + ' · ' + fgName
+      : 'Complete the lessons to unlock scoring';
+  }
   document.getElementById('stat-phase-text').textContent = 'Phase ' + currPhase + ' of 9';
   const fill = document.getElementById('journey-progress-fill');
   const pct = totalSessions ? Math.round((totalDone / totalSessions) * 100) : 0;
