@@ -113,7 +113,8 @@
     <div class="j-score-num"><span id="stat-points">0</span><span class="j-score-max" id="stat-points-max">/ 5,900</span><span class="j-score-unit">pts</span></div>
     <div class="j-score-sub" id="stat-sessions-line">0 of 59 sessions complete</div>
     <div class="j-track"><div class="j-fill" id="journey-progress-fill"><div class="j-knob"></div></div></div>
-    <div class="j-endpoints"><span>Nervous</span><span class="j-here">You're here</span><span>Nervless</span></div>
+    <div class="j-here-row"><div class="j-here-tag" id="j-here-tag">You're here</div></div>
+    <div class="j-endpoints"><span>Nervous</span><span>Nervless</span></div>
   </div>
 
   <div class="j-continue" id="j-continue-card">
@@ -296,7 +297,7 @@
 
   <!-- Pace & Filler — horizontal text cards -->
   <div style="padding:0 24px 8px;display:flex;gap:10px;">
-    <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;">
+    <div style="flex:1;background:var(--surface);border:none;box-shadow:var(--card-shadow);border-radius:16px;padding:14px 16px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         <span style="font-size:11px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;font-weight:700;">Pace</span>
@@ -316,7 +317,7 @@
         </div>
       </div>
     </div>
-    <div style="flex:1;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 16px;">
+    <div style="flex:1;background:var(--surface);border:none;box-shadow:var(--card-shadow);border-radius:16px;padding:14px 16px;">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
         <span style="font-size:11px;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;font-weight:700;">Fillers</span>
@@ -377,7 +378,7 @@
 
   <!-- Transcript — collapsible -->
   <div style="padding:0 24px 8px;">
-    <button onclick="this.classList.toggle('open');document.getElementById('transcript-box').style.display=this.classList.contains('open')?'block':'none'" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:14px;padding:12px 16px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text);" id="transcript-toggle">
+    <button onclick="this.classList.toggle('open');document.getElementById('transcript-box').style.display=this.classList.contains('open')?'block':'none'" style="display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--surface);border:none;box-shadow:var(--card-shadow);border-radius:14px;padding:12px 16px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text);" id="transcript-toggle">
       <span>📝 Show transcript</span>
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);transition:transform 0.3s"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
@@ -390,7 +391,7 @@
     <button class="btn-primary" id="complete-session-btn" onclick="completeSession()">Complete session ✓</button>
     
     <!-- Scoring feedback -->
-    <div id="score-feedback-widget" style="margin-top:16px;background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:18px;text-align:center;">
+    <div id="score-feedback-widget" style="margin-top:16px;background:var(--surface);border:none;box-shadow:var(--card-shadow);border-radius:16px;padding:18px;text-align:center;">
       <div style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Was this feedback accurate?</div>
       <div style="display:flex;justify-content:center;gap:12px;margin-bottom:10px;">
         <button onclick="submitScoreFeedback('accurate')" class="fb-btn" id="fb-accurate" style="padding:8px 20px;border-radius:100px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-size:14px;font-family:'Nunito',sans-serif;font-weight:700;color:var(--text);transition:all 0.15s">👍 Yes</button>
@@ -417,7 +418,7 @@
     <div class="stat-card"><div class="stat-value" id="stat-avg">-</div><div class="stat-label">Avg score</div></div>
     <div class="stat-card"><div class="stat-value" id="stat-mins">0</div><div class="stat-label">Minutes</div></div>
   </div>
-  <div id="progress-chart-wrap" style="display:none;margin:0 20px 8px;background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:18px 16px 12px;">
+  <div id="progress-chart-wrap" style="display:none;margin:0 20px 8px;background:var(--surface);border:none;box-shadow:var(--card-shadow);border-radius:18px;padding:18px 16px 12px;">
     <div style="font-size:11px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;">Progress Trends</div>
     <div style="position:relative;height:160px;">
       <canvas id="progress-chart"></canvas>
@@ -435,7 +436,7 @@
 <div class="screen" id="screen-free">
   <div class="free-header">
     <div style="font-size:12px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px">FREE PRACTICE</div>
-    <h1 class="free-header" style="font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:6px;background:none;padding:0">Just Talk</h1>
+    <h1 class="free-header" style="font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.6px;margin-bottom:6px;background:none;padding:0">Just Talk</h1>
     <p style="font-size:14px;color:var(--muted);line-height:1.6">Pick a mode and speak freely. No curriculum, no pressure — just practice.</p>
   </div>
   <div class="free-section-title">Choose your mode</div>
