@@ -39,7 +39,7 @@ function showCurriculum() {
   const currPhase = currSession ? currSession.phase : 1;
 
   // ── Score card ──
-  const scoredAll = relevant.filter(s => s.scored !== false);
+  const scoredAll = relevant.filter(s => showsGrade(s) && s.scored !== false);
   const earnedPts = scoredAll.reduce((sum, s) => sum + getBestScore(s.id), 0);
   const maxPts = scoredAll.length * 100;
   document.getElementById('stat-points').textContent = earnedPts.toLocaleString();
@@ -48,10 +48,7 @@ function showCurriculum() {
   document.getElementById('stat-phase-text').textContent = 'Phase ' + currPhase + ' of 9';
   const fill = document.getElementById('journey-progress-fill');
   const pct = totalSessions ? Math.round((totalDone / totalSessions) * 100) : 0;
-  const fillPct = Math.max(5, Math.min(100, pct));
-  if (fill) fill.style.width = fillPct + '%';
-  const hereTag = document.getElementById('j-here-tag');
-  if (hereTag) hereTag.style.left = Math.max(7, Math.min(93, fillPct)) + '%';
+  if (fill) fill.style.width = Math.max(5, Math.min(100, pct)) + '%';
 
   // ── Phase data: palette + representative icon + one-line benefit ──
   const PHASES = [
@@ -78,7 +75,6 @@ function showCurriculum() {
     refresh:`<svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>`,
   };
   const CHECK = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`;
-  const CHECK_SM = `<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
   const LOCK  = `<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>`;
   const CONT_ICONS = {
     book:`<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
@@ -133,7 +129,7 @@ function showCurriculum() {
     if (sessions.length === 0) return '';
     const st = phaseState(p.num);
     const doneCount = sessions.filter(s => hasPassedSession(s.id)).length;
-    const isOpen = false; // all phases start collapsed — tap to open
+    const isOpen = st === 'active';
     const delay = (pi * 0.045).toFixed(3);
 
     const badge = st === 'done' ? `<div class="j-tile-badge done">${CHECK}</div>`
@@ -157,12 +153,12 @@ function showCurriculum() {
         // isCurrent: explicitly flagged, OR first unpassed session in an active phase
         const firstUnpassed = sessions.find(ss => !hasPassedSession(ss.id));
         const isCurrent = !isDone && (s.id === CURRENT || s === firstUnpassed);
-        const isScored = s.scored !== false;
+        const showGrade = showsGrade(s) && s.scored !== false;
         let cls, inner, sub, subCls = '', right;
         if (isDone) {
           cls = 'passed'; inner = CHECK;
-          sub = isScored ? 'Passed' : 'Done';
-          right = isScored ? `<div class="j-s-score">${getBestScore(s.id)}</div>` : `<div class="j-s-done-pill">${CHECK_SM}Done</div>`;
+          sub = showGrade ? 'Passed' : 'Done';
+          right = showGrade ? `<div class="j-s-score">${getBestScore(s.id)}</div>` : '';
         } else if (isCurrent) {
           cls = 'current'; inner = si + 1;
           sub = 'Up next · tap to start'; subCls = ' up';
@@ -186,10 +182,7 @@ function showCurriculum() {
         <div class="j-phase-head"${st !== 'locked' ? ' data-toggle="1"' : ''}>
           <div class="j-tile">${ICONS[p.icon] || ''}${badge}</div>
           <div class="j-phase-mid">
-            <div class="j-phase-label-row">
-              <div class="j-phase-label">Phase ${p.num}</div>
-              ${st === 'done' ? `<span class="j-done-tag">${CHECK_SM}Complete</span>` : ''}
-            </div>
+            <div class="j-phase-label">Phase ${p.num}</div>
             <div class="j-phase-name">${p.name}</div>
             <div class="j-phase-benefit">${p.benefit}</div>
           </div>
@@ -1316,8 +1309,20 @@ function renderFeedback(rec, transcript, analysis) {
   const a = analysis;
   resetFeedbackWidget();
 
-  document.getElementById('score-ring').style.setProperty('--pct', a.overallScore + '%');
-  document.getElementById('score-num').textContent = a.overallScore;
+  const fbSession = CURRICULUM.find(s => s.id === (rec.sessionId || state.currentSessionId));
+  const gradeVisible = showsGrade(fbSession);
+
+  const ringEl = document.getElementById('score-ring');
+  const numEl = document.getElementById('score-num');
+  if (gradeVisible) {
+    ringEl.style.setProperty('--pct', a.overallScore + '%');
+    numEl.textContent = a.overallScore;
+    numEl.style.fontSize = '';
+  } else {
+    ringEl.style.setProperty('--pct', '100%');
+    numEl.textContent = '✓';
+    numEl.style.fontSize = '40px';
+  }
   document.getElementById('feedback-title').textContent = a.title;
   document.getElementById('feedback-sub').textContent = a.subtitle;
 
@@ -1353,15 +1358,31 @@ function renderFeedback(rec, transcript, analysis) {
       }
     }, 300);
   }
-  renderScore('m-prompt', 'bar-prompt', a.scores.promptAdherence);
-  renderScore('m-clarity', 'bar-clarity', a.scores.clarity);
-  renderScore('m-confidence', 'bar-confidence', a.scores.confidence);
-  renderScore('m-openness', 'bar-openness', a.scores.openness);
+  function setScoreCardVisible(valueId, visible) {
+    const el = document.getElementById(valueId);
+    if (!el) return;
+    const paceEl = document.getElementById('m-pace');
+    let card = el.closest('[class*="card"]') || el.parentElement;
+    if (card && paceEl && card.contains(paceEl)) card = el.parentElement;
+    if (card && !(paceEl && card.contains(paceEl))) card.style.display = visible ? '' : 'none';
+    if (!visible) el.innerHTML = '';
+  }
+  if (gradeVisible) {
+    ['m-prompt','m-clarity','m-confidence','m-openness'].forEach(id => setScoreCardVisible(id, true));
+    renderScore('m-prompt', 'bar-prompt', a.scores.promptAdherence);
+    renderScore('m-clarity', 'bar-clarity', a.scores.clarity);
+    renderScore('m-confidence', 'bar-confidence', a.scores.confidence);
+    renderScore('m-openness', 'bar-openness', a.scores.openness);
+  } else {
+    ['m-prompt','m-clarity','m-confidence','m-openness'].forEach(id => setScoreCardVisible(id, false));
+  }
 
   const voiceRow = document.getElementById('voice-analysis-row');
   const va = audioAnalysis.volumeSamples.filter(d => d > -80);
   const pa = audioAnalysis.pitchSamples;
-  if (va.length > 3 && voiceRow) {
+  if (!gradeVisible) {
+    if (voiceRow) voiceRow.style.display = 'none';
+  } else if (va.length > 3 && voiceRow) {
     voiceRow.style.display = 'block';
     const avgVol = Math.round(va.reduce((a,b)=>a+b,0)/va.length);
     const volLabel = avgVol < -35 ? 'Quiet' : avgVol > -15 ? 'Strong' : 'Good';
@@ -1421,45 +1442,67 @@ function renderFeedback(rec, transcript, analysis) {
   }
 
   if (a.transcriptHighlight) {
-    tipsHtml += '<div class="tip-card" style="border-color:var(--sc-mid);background:var(--sc-light)"><div class="tip-num" style="background:var(--sc-light);color:var(--accent);border-color:var(--sc-mid)">💬</div><div class="tip-text" style="font-style:italic">' + a.transcriptHighlight + '</div></div>';
+    tipsHtml += '<div class="tip-card" style="border-color:rgba(194,114,79,0.3);background:rgba(194,114,79,0.04)"><div class="tip-num" style="background:rgba(194,114,79,0.15);color:var(--accent);border-color:rgba(194,114,79,0.3)">💬</div><div class="tip-text" style="font-style:italic">' + a.transcriptHighlight + '</div></div>';
   }
 
   if (a.improvementPlan && a.improvementPlan.focus) {
-    tipsHtml += '<div style="background:var(--surface);border:1.5px solid var(--sc-mid);border-radius:16px;padding:18px;margin-top:12px;">'
+    tipsHtml += '<div style="background:var(--surface);border:1.5px solid rgba(194,114,79,0.25);border-radius:16px;padding:18px;margin-top:12px;">'
       + '<div style="font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:10px;">🎯 Focus for next attempt</div>'
       + '<div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px;">' + a.improvementPlan.focus + '</div>'
       + '<div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px;">' + a.improvementPlan.technique + '</div>'
-      + (a.improvementPlan.example ? '<div style="font-size:13px;color:var(--text);line-height:1.6;background:var(--sc-light);border-radius:10px;padding:12px 14px;font-style:italic;">"' + a.improvementPlan.example + '"</div>' : '')
+      + (a.improvementPlan.example ? '<div style="font-size:13px;color:var(--text);line-height:1.6;background:rgba(194,114,79,0.04);border-radius:10px;padding:12px 14px;font-style:italic;">"' + a.improvementPlan.example + '"</div>' : '')
       + '</div>';
   }
 
   document.getElementById('tips-container').innerHTML = tipsHtml;
 
-  const sessionForScore = CURRICULUM.find(s => s.id === (rec.sessionId || state.currentSessionId));
+  const sessionForScore = fbSession;
   const thresholds = sessionForScore ? getStarThresholds(sessionForScore) : { star1: 55, star2: 70, star3: 85 };
-  const isPhase1Session = sessionForScore && (sessionForScore.phase === 1 || sessionForScore.phase === 4);
   const alreadyPassed = hasPassedSession(rec.sessionId || state.currentSessionId);
   const banner = document.getElementById('pass-fail-banner');
   const btn = document.getElementById('complete-session-btn');
 
-  if (isPhase1Session) {
+  ['fb-too-high','fb-too-low'].forEach(id => { const b = document.getElementById(id); if (b) b.style.display = gradeVisible ? '' : 'none'; });
+
+  const oldNote = document.getElementById('phase-note');
+  if (oldNote) oldNote.remove();
+  if (!gradeVisible && sessionForScore && banner) {
+    const ph = sessionForScore.phase;
+    const noteText =
+      ph === 1 ? '🫶 <strong style="color:var(--accent)">Phase 1 — no judgement.</strong> This phase is about speaking freely and building self-awareness.'
+      : ph === 2 ? '🌬️ <strong style="color:var(--accent)">Building your toolkit.</strong> This phase is about practising the techniques, not scoring them.'
+      : ph === 3 ? '🪜 <strong style="color:var(--accent)">Showing up is the win.</strong> Exposure works through doing — getting it perfect is not the point.'
+      : ph === 9 ? '🔄 <strong style="color:var(--accent)">Maintenance.</strong> Keeping the habit alive matters more than any score.'
+      : '💭 <strong style="color:var(--accent)">Reflective phase.</strong> This is about honesty and self-awareness, not delivery technique.';
     const note = document.createElement('div');
-    note.style.cssText = 'background:var(--sc-light);border:1px solid var(--sc-light);border-radius:14px;padding:14px 16px;margin-bottom:12px;font-size:13px;color:var(--muted);line-height:1.6;text-align:center;';
-    const phaseNote = sessionForScore.phase === 1
-      ? '🫶 <strong style="color:var(--accent)">Phase 1 — no judgement.</strong> This phase is about speaking freely and building self-awareness.'
-      : '💭 <strong style="color:var(--accent)">Reflective phase.</strong> This phase scores emotional honesty and self-awareness, not delivery technique.';
-    note.innerHTML = phaseNote;
-    if (banner && !document.getElementById('phase1-note')) {
-      note.id = 'phase1-note';
-      banner.parentNode.insertBefore(note, banner);
-    }
+    note.id = 'phase-note';
+    note.style.cssText = 'background:rgba(194,114,79,0.06);border:1px solid rgba(194,114,79,0.15);border-radius:14px;padding:14px 16px;margin-bottom:12px;font-size:13px;color:var(--muted);line-height:1.6;text-align:center;';
+    note.innerHTML = noteText;
+    banner.parentNode.insertBefore(note, banner);
   }
 
   if (banner) {
     banner.style.display = 'block';
-    const passed = a.overallScore >= thresholds.star1;
 
-    if (passed) {
+    if (!gradeVisible) {
+      banner.style.background = 'rgba(46,158,122,0.1)';
+      banner.style.border = '1px solid rgba(46,158,122,0.3)';
+      banner.innerHTML =
+        '<div style="font-size:32px;margin-bottom:6px;">✓</div>'
+        + '<div style="font-weight:800;color:var(--green);font-size:18px;margin-bottom:4px;">Session complete</div>'
+        + '<div style="font-size:13px;color:var(--muted);">You showed up and did the work — that\'s exactly what this phase is for.</div>';
+      if (btn) {
+        btn.textContent = alreadyPassed ? 'Back to journey' : 'Continue →';
+        btn.style.background = alreadyPassed ? '' : 'var(--green)';
+        btn.style.width = '100%';
+        btn.onclick = alreadyPassed ? showCurriculum : completeSession;
+      }
+      const staleHow = document.getElementById('show-how-btn');
+      if (staleHow) staleHow.remove();
+    } else {
+      const passed = a.overallScore >= thresholds.star1;
+
+      if (passed) {
       banner.style.background = 'rgba(46,158,122,0.1)';
       banner.style.border = '1px solid rgba(46,158,122,0.3)';
       banner.innerHTML =
@@ -1500,15 +1543,16 @@ function renderFeedback(rec, transcript, analysis) {
       const existingShowHow = document.getElementById('show-how-btn');
       if (existingShowHow) existingShowHow.remove();
 
-      if (!isPhase1Session && a.modelAnswer && actionsDiv) {
+      if (a.modelAnswer && actionsDiv) {
         const showHowBtn = document.createElement('button');
         showHowBtn.id = 'show-how-btn';
         showHowBtn.className = 'btn-secondary';
-        showHowBtn.style.cssText = 'width:100%;margin-top:10px;background:var(--sc-light);border-color:var(--sc-mid);color:var(--accent);font-weight:700;';
+        showHowBtn.style.cssText = 'width:100%;margin-top:10px;background:rgba(194,114,79,0.06);border-color:rgba(194,114,79,0.3);color:var(--accent);font-weight:700;';
         showHowBtn.textContent = '💡 Show me how to improve';
         showHowBtn.onclick = () => showModelAnswer(a.modelAnswer, sessionForScore);
         actionsDiv.insertBefore(showHowBtn, actionsDiv.querySelector('.btn-secondary'));
       }
+    }
     }
   }
 
@@ -1520,7 +1564,7 @@ function submitScoreFeedback(type) {
   lastFeedbackType = type;
   document.querySelectorAll('.fb-btn').forEach(b => { b.style.borderColor = 'var(--border)'; b.style.background = 'var(--surface)'; });
   const btn = document.getElementById('fb-' + type.replace('_', '-'));
-  if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.background = 'var(--sc-light)'; }
+  if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.background = 'rgba(194,114,79,0.08)'; }
 
   if (type === 'accurate') {
     logFeedback(type, '');
@@ -1570,7 +1614,7 @@ function showModelAnswer(modelAnswer, session) {
       <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:6px;">${session ? session.title : 'Your session'}</div>
       <div style="font-size:14px;color:var(--muted);margin-bottom:24px;">Here's how a strong answer to this prompt could sound, based on what you were trying to say.</div>
     </div>
-    <div style="margin:0 24px 20px;background:var(--surface);border:1.5px solid var(--sc-mid);border-radius:20px;padding:22px;">
+    <div style="margin:0 24px 20px;background:var(--surface);border:1.5px solid rgba(194,114,79,0.25);border-radius:20px;padding:22px;">
       <div style="font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:12px;">Example answer</div>
       <div style="font-size:15px;color:var(--text);line-height:1.75;">${modelAnswer}</div>
     </div>
@@ -1631,8 +1675,9 @@ function completeSession() {
   const lastRec = state.sessions.find(s => s.sessionId === id);
   const score = lastRec ? lastRec.score : 0;
   const passScore = session ? getPassScore(session) : 55;
+  const completionPasses = session && !showsGrade(session); // foundational/reflective phases: completing = passing
 
-  if (score >= passScore) {
+  if (completionPasses || score >= passScore) {
     markSessionPassed(id);
     const entry = LEVEL_ENTRY[state.level];
     const entrySession = CURRICULUM.find(s => s.id === entry);
