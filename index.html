@@ -440,50 +440,63 @@
 <!-- FREE PRACTICE SCREEN -->
 <div class="screen" id="screen-free">
   <div class="free-header">
-    <div style="font-size:12px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px">FREE PRACTICE</div>
-    <h1 class="free-header" style="font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-0.6px;margin-bottom:6px;background:none;padding:0">Just Talk</h1>
-    <p style="font-size:14px;color:var(--muted);line-height:1.6">Pick a mode and speak freely. No curriculum, no pressure — just practice.</p>
+    <div class="free-eyebrow">Free Practice</div>
+    <h1>Just Talk</h1>
+    <p>Pick a mode and speak freely. No curriculum, no pressure — just practice.</p>
   </div>
   <div class="free-section-title">Choose your mode</div>
-  <div class="free-mode-grid">
-    <div class="free-mode-card" id="free-card-vent" onclick="selectFreeMode('vent')">
-      <div class="free-mode-icon">🫁</div>
-      <div class="free-mode-title">Just Vent</div>
-      <div class="free-mode-desc">Talk through what's on your mind</div>
+  <div id="free-mode-grid"></div>
+</div>
+
+<!-- PRACTICE MODE DETAIL (immersive) -->
+<div class="screen" id="screen-practice-detail">
+  <div class="pd-header" id="pd-header">
+    <button class="pd-back" onclick="showFreeTab()" aria-label="Back">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="pd-head-inner">
+      <div class="pd-tile" id="pd-tile"></div>
+      <div class="pd-head-text">
+        <div class="pd-eyebrow" id="pd-eyebrow">Free Practice</div>
+        <h1 class="pd-title" id="pd-title">Mode</h1>
+      </div>
     </div>
-    <div class="free-mode-card" id="free-card-debate" onclick="selectFreeMode('debate')">
-      <div class="free-mode-icon">⚡</div>
-      <div class="free-mode-title">Debate It</div>
-      <div class="free-mode-desc">Pick a side and argue it</div>
-    </div>
-    <div class="free-mode-card" id="free-card-random" onclick="selectFreeMode('random')">
-      <div class="free-mode-icon">🎲</div>
-      <div class="free-mode-title">Random Prompt</div>
-      <div class="free-mode-desc">Surprise question, no prep</div>
-    </div>
-    <div class="free-mode-card" id="free-card-open" onclick="selectFreeMode('open')">
-      <div class="free-mode-icon">🎤</div>
-      <div class="free-mode-title">Open Mic</div>
-      <div class="free-mode-desc">No prompt — just talk freely</div>
-    </div>
-    <div class="free-mode-card" id="free-card-hotseat" onclick="selectFreeMode('hotseat')" style="border-color:rgba(217,84,112,0.3);background:rgba(217,84,112,0.04)">
-      <div class="free-mode-icon">🔥</div>
-      <div class="free-mode-title">Hot Seat</div>
-      <div class="free-mode-desc">Answer, then face a follow-up</div>
-    </div>
+    <p class="pd-tagline" id="pd-tagline"></p>
   </div>
 
-  <div class="free-prompt-area" id="free-prompt-area" style="display:none">
-    <div class="free-prompt-label" id="free-prompt-label-text">Your prompt</div>
-    <div class="free-prompt-text" id="free-prompt-text"></div>
-    <button onclick="selectFreeMode(freeState.mode)" style="background:none;border:none;font-size:13px;color:var(--muted);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;padding:0;">🔀 New prompt</button>
-  </div>
+  <div class="pd-body">
+    <div class="pd-prompt-card" id="pd-prompt-card">
+      <div class="pd-prompt-label" id="pd-prompt-label">Your prompt</div>
+      <div class="pd-prompt-text" id="pd-prompt-text"></div>
+      <button class="pd-shuffle" id="pd-shuffle" onclick="shufflePracticePrompt()">
+        <svg viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+        New prompt
+      </button>
+    </div>
 
-  <div class="free-recording-zone" id="free-recording-wrap" style="display:none">
-    <div class="waveform" id="free-waveform"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
-    <div class="timer" id="free-timer">0:00</div>
-    <button class="record-btn" id="free-record-btn" onclick="toggleFreeRecording()"></button>
-    <div class="record-hint" id="free-record-hint">Tap to start recording</div>
+    <div class="pd-why" id="pd-why">
+      <div class="pd-why-label">Why this helps</div>
+      <div class="pd-why-text" id="pd-why-text"></div>
+    </div>
+
+    <div class="pd-record-zone">
+      <div class="waveform" id="free-waveform"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>
+      <div class="timer" id="free-timer">0:00</div>
+      <button class="record-btn" id="free-record-btn" onclick="toggleFreeRecording()"></button>
+      <div class="record-hint" id="free-record-hint">Tap to start recording</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODE INFO POPOVER -->
+<div class="pd-info-overlay" id="pd-info-overlay" onclick="closeModeInfo(event)">
+  <div class="pd-info-sheet" onclick="event.stopPropagation()">
+    <div class="pd-info-head">
+      <div class="pd-info-tile" id="pd-info-tile"></div>
+      <div class="pd-info-title" id="pd-info-title"></div>
+    </div>
+    <div class="pd-info-body" id="pd-info-body"></div>
+    <button class="pd-info-close" onclick="closeModeInfo()">Got it</button>
   </div>
 </div>
 
