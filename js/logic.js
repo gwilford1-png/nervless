@@ -4,6 +4,20 @@
    ============================================================ */
 
 function getStarThresholds(session) { return STAR_THRESHOLDS[session.phase] || { star1: 55, star2: 70, star3: 85 }; }
+
+// ── GRADE VISIBILITY ──
+// Numeric grading is shown to the user only once the journey shifts from MANAGING FEAR to
+// BUILDING SKILL. Foundational + reflective phases (Understanding the Fear, The Body First,
+// Gradual Exposure, Cognitive Reframing, Maintenance) are completion-only: still recorded and
+// analysed for warm written feedback, but never shown a 0-100 score, /10 dimensions, or pass/fail.
+// Skill/performance phases (Finding Your Voice 5, Raising the Stakes 6, In-the-Moment 7,
+// Performing Under Pressure 8) show the full graded card.
+// NOTE: keyed to the phase NUMBERS used in data.js (your code's source of truth), not the doc numbering.
+const GRADED_PHASES = [5, 6, 7, 8];
+function showsGrade(session) {
+  if (!session) return true;                 // free practice / unknown session -> show full analysis
+  return GRADED_PHASES.indexOf(session.phase) !== -1;
+}
 function getStars(score, session) {
   const t = getStarThresholds(session);
   if (score >= t.star3) return 3;
