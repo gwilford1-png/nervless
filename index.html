@@ -104,14 +104,19 @@
 
   <div class="j-score-card">
     <div class="j-score-top">
-      <div class="j-score-label">Total Score</div>
       <div class="j-phase-pill">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg>
         <span id="stat-phase-text">Phase 1 of 9</span>
       </div>
     </div>
-    <div class="j-score-num"><span id="stat-points">0</span><span class="j-score-max" id="stat-points-max">/ 5,900</span><span class="j-score-unit">pts</span></div>
-    <div class="j-score-sub" id="stat-sessions-line">0 of 59 sessions complete</div>
+    <div class="j-stat-row">
+      <div class="j-stat-sessions" id="stat-sessions-done">0 / 58 sessions done</div>
+    </div>
+    <div class="j-stat-row j-stat-row--pts">
+      <span class="j-pts-val" id="stat-pts-value">0</span>
+      <span class="j-pts-total" id="stat-pts-total">/ 0 pts</span>
+      <span class="j-pts-note">Points start at Phase 5</span>
+    </div>
     <div class="j-track"><div class="j-fill" id="journey-progress-fill"><div class="j-knob"></div></div></div>
     <div class="j-here-row"><div class="j-here-tag" id="j-here-tag">You're here</div></div>
     <div class="j-endpoints"><span>Nervous</span><span>Nervless</span></div>
