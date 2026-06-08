@@ -195,7 +195,40 @@ function showCurriculum() {
       </div>`;
   }).join('');
 
-  document.getElementById('curriculum-list').innerHTML = '<div class="j-phase-list">' + html + '</div>';
+  // ── Journey footer: completion hand-off, or a "where this leads" pull while in progress ──
+  const journeyComplete = totalSessions > 0 && totalDone >= totalSessions;
+  let footerCard = '';
+  if (journeyComplete) {
+    const weekly = CURRICULUM.find(s => s.phase === 9 && /check[\s-]?in/i.test(s.title))
+                || CURRICULUM.find(s => s.phase === 9 && s.scored !== false);
+    const weeklyBtn = weekly
+      ? '<button onclick="loadSession(' + weekly.id + ')" style="width:100%;padding:15px;border-radius:14px;border:none;background:var(--green);color:#fff;font-family:\'Nunito\',sans-serif;font-weight:800;font-size:15px;cursor:pointer;">Your weekly check-in →</button>'
+      : '';
+    footerCard =
+      '<div style="margin:22px 16px 8px;background:var(--surface);border:1.5px solid rgba(46,158,122,0.3);border-radius:22px;padding:24px 20px;box-shadow:0 8px 24px rgba(80,55,30,0.07),0 1px 4px rgba(80,55,30,0.05);text-align:center;">'
+      + '<div style="font-size:34px;margin-bottom:10px;">🎉</div>'
+      + '<div style="font-family:\'DM Serif Display\',serif;font-size:23px;color:var(--text);margin-bottom:10px;">You finished the journey</div>'
+      + '<div style="font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:18px;">The fear you started with doesn\'t get the last word anymore — and that\'s work most people never do. This isn\'t the end. It\'s the part that keeps it.</div>'
+      + '<div style="display:flex;flex-direction:column;gap:10px;">'
+      + weeklyBtn
+      + '<button onclick="showFreeTab()" style="width:100%;padding:15px;border-radius:14px;border:1.5px solid rgba(194,114,79,0.35);background:rgba(194,114,79,0.06);color:var(--accent);font-family:\'Nunito\',sans-serif;font-weight:800;font-size:15px;cursor:pointer;">Open Practice — push further →</button>'
+      + '</div>'
+      + '<div style="font-size:12px;color:var(--muted);line-height:1.55;margin-top:16px;">Your weekly check-in holds the progress in place. Practice is your gym — go as hard as you like, or sharpen up before something real.</div>'
+      + '</div>';
+  } else {
+    const phasesTotal = phasesPresent.length;
+    const progressLine = phasesDone === 0
+      ? 'You\'re just getting started — every session compounds.'
+      : 'You\'re <strong style="color:var(--accent)">' + phasesDone + ' of ' + phasesTotal + ' phases</strong> in. Keep going — the skills compound.';
+    footerCard =
+      '<div style="margin:22px 16px 8px;background:var(--surface);border:1.5px solid rgba(194,114,79,0.22);border-radius:22px;padding:22px 20px;box-shadow:0 8px 24px rgba(80,55,30,0.07),0 1px 4px rgba(80,55,30,0.05);">'
+      + '<div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:var(--accent);margin-bottom:10px;">Where this is heading</div>'
+      + '<div style="font-size:15px;color:var(--text);line-height:1.65;margin-bottom:10px;">Every session here is building a toolkit you\'ll keep for good. Finish the journey and you reach the part that lasts — a weekly rhythm that holds your progress, plus Practice: your gym for pushing as far as you want and getting ready for the real thing.</div>'
+      + '<div style="font-size:13px;color:var(--muted);line-height:1.6;">' + progressLine + '</div>'
+      + '</div>';
+  }
+
+  document.getElementById('curriculum-list').innerHTML = '<div class="j-phase-list">' + html + footerCard + '</div>';
 
   document.querySelectorAll('.j-phase-head[data-toggle]').forEach(head => {
     head.onclick = () => { const c = head.closest('.j-phase-card'); if (c) c.classList.toggle('open'); };
