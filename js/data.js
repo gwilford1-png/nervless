@@ -845,7 +845,9 @@ Object.assign(LESSON_CONTENT, {
 // ── FREE PRACTICE ──
 const FREE_MODES = {
   vent: {
-    icon: '🫁', title: 'Just Vent', desc: 'Talk about something that\'s been on your mind. No structure needed.',
+    icon: '🫁', iconKey:'wind', color:'#1FA98F', light:'#C9EDE5', title: 'Just Vent', desc: 'Talk about something that\'s been on your mind. No structure needed.',
+    tagline: 'Talk through what\'s on your mind.',
+    why: 'The lowest-pressure way to get your voice moving. No structure, no judgement — just you, talking. It loosens the grip before you tackle anything harder, and it builds the simple habit of hearing yourself speak out loud.',
     prompts: [
       'Something has been bothering you lately. Talk about it — what happened, how it made you feel, what\'s still unresolved.',
       'Describe a recent situation where you felt anxious or uncomfortable. What was going on? How did you handle it?',
@@ -853,7 +855,9 @@ const FREE_MODES = {
     ]
   },
   debate: {
-    icon: '⚡', title: 'Debate It', desc: 'Pick a side and argue it. Build your confidence making a case.',
+    icon: '⚡', iconKey:'zap', color:'#3B82C4', light:'#D6E6F6', title: 'Debate It', desc: 'Pick a side and argue it. Build your confidence making a case.',
+    tagline: 'Pick a side and argue it.',
+    why: 'Holding a position out loud is the muscle behind speaking up in meetings and standing your ground. You take a side and make the case — which trains you to structure an argument and commit to it, instead of hedging.',
     prompts: [
       'Argue that working from home is better than working in an office. Make your case.',
       'Take a position: social media has done more harm than good to society. Argue for or against.',
@@ -863,7 +867,9 @@ const FREE_MODES = {
     ]
   },
   random: {
-    icon: '🎲', title: 'Random Prompt', desc: 'A surprise question. No time to prepare — just answer.',
+    icon: '🎲', iconKey:'dice', color:'#8E6FC0', light:'#E6DDF4', title: 'Random Prompt', desc: 'A surprise question. No time to prepare — just answer.',
+    tagline: 'A surprise question, no prep.',
+    why: 'Real speaking rarely comes with a script. A question lands, you answer. This trains you to think on your feet and trust that you can begin before you\'ve worked out exactly how it ends.',
     prompts: [
       'What would you do with a completely free day — no obligations, no phone, unlimited money for 24 hours?',
       'Describe a person who has influenced how you think, without saying their name.',
@@ -875,13 +881,17 @@ const FREE_MODES = {
     ]
   },
   open: {
-    icon: '🎤', title: 'Open Mic', desc: 'Just talk. No prompt. Say whatever comes to mind for 2 minutes.',
+    icon: '🎤', iconKey:'mic', color:'#D89B25', light:'#F6E6BE', title: 'Open Mic', desc: 'Just talk. No prompt. Say whatever comes to mind for 2 minutes.',
+    tagline: 'No prompt — just talk freely.',
+    why: 'A blank page for your voice. Two minutes, no prompt, nowhere to hide and nothing to react to — just sustained speaking. It builds stamina and proves you can fill the space on your own.',
     prompts: [
       'No prompt. Just talk. Whatever is on your mind right now — start speaking and keep going for 2 minutes.',
     ]
   },
   hotseat: {
-    icon: '🔥', title: 'Hot Seat', desc: 'You answer. Then Claude fires back a follow-up. Can you handle both?',
+    icon: '🔥', iconKey:'flame', color:'#DB6098', light:'#F7D9E6', title: 'Hot Seat', desc: 'You answer. Then Claude fires back a follow-up. Can you handle both?',
+    tagline: 'Answer, then face a sharp follow-up.',
+    why: 'The closest thing to real pressure. You answer, then a follow-up comes back — built from exactly what you just said. It\'s the interview, the panel, the difficult question, simulated. If you can hold steady here, the real thing feels lighter.',
     isInteractive: true,
     prompts: [
       'What\'s the biggest challenge your team is facing right now — and what do you think should be done about it?',
