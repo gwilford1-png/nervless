@@ -10,7 +10,7 @@ function showScreen(id){
   if(state.screenHistory[state.screenHistory.length-1]!==id)state.screenHistory.push(id);
   window.scrollTo(0,0);
   // Show nav on main app screens, hide on onboarding
-  const noNav=['screen-apikeys','screen-lesson','screen-feedback','screen-practice'];
+  const noNav=['screen-apikeys','screen-lesson','screen-feedback','screen-practice','screen-practice-detail'];
   const nav=document.getElementById('bottom-nav');
   if(nav) nav.style.display=noNav.includes(id)?'none':'flex';
 }
@@ -1905,6 +1905,46 @@ function hideLoading(){document.getElementById('loading').classList.remove('acti
 
 let freeState = { mode: null, prompt: '', isRecording: false, seconds: 0, timerInterval: null, mediaRecorder: null, audioChunks: [] };
 
+// SVG icons for practice modes (reuses the journey j-* visual language)
+const PRACTICE_ICONS = {
+  wind:`<svg viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>`,
+  zap:`<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+  dice:`<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/></svg>`,
+  mic:`<svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`,
+  flame:`<svg viewBox="0 0 24 24"><path d="M12 2c1 3 4 4.5 4 8a4 4 0 0 1-8 0c0-1 .3-1.8.8-2.5C8 8.5 8 6 9 4c.5 2 1.5 2.5 2 3 .5-1.5.5-3.5 1-5z"/><path d="M8.5 14a3.5 3.5 0 0 0 7 0c0-1.5-1-2.5-1.5-3.2-.4 1-1 1.5-1.5 1.8-.3-1-.8-1.3-1-1.8-.6.8-1.5 1.7-2 2.4-.3.3-1 .9-1 .8z"/></svg>`,
+};
+const PRACTICE_ORDER = ['hotseat','vent','debate','random','open'];
+
+function renderFreeGrid() {
+  const grid = document.getElementById('free-mode-grid');
+  if (!grid) return;
+  const infoBtn = (key) => `<button class="pm-info" onclick="event.stopPropagation();openModeInfo('${key}')" aria-label="About this mode"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>`;
+
+  const hot = FREE_MODES.hotseat;
+  const heroHtml = `<div class="pm-card pm-hero" style="--pm:${hot.color};--pm-light:${hot.light};animation-delay:0s" onclick="openPracticeMode('hotseat')">
+      ${infoBtn('hotseat')}
+      <div class="pm-hero-flag">Most challenging</div>
+      <div class="pm-tile">${PRACTICE_ICONS[hot.iconKey] || ''}</div>
+      <div class="pm-hero-text">
+        <div class="pm-title">${hot.title}</div>
+        <div class="pm-desc">${hot.tagline}</div>
+      </div>
+    </div>`;
+
+  const rest = PRACTICE_ORDER.filter(k => k !== 'hotseat').map((key, i) => {
+    const m = FREE_MODES[key];
+    const delay = ((i + 1) * 0.05).toFixed(3);
+    return `<div class="pm-card" style="--pm:${m.color};--pm-light:${m.light};animation-delay:${delay}s" onclick="openPracticeMode('${key}')">
+        ${infoBtn(key)}
+        <div class="pm-tile">${PRACTICE_ICONS[m.iconKey] || ''}</div>
+        <div class="pm-title">${m.title}</div>
+        <div class="pm-desc">${m.tagline}</div>
+      </div>`;
+  }).join('');
+
+  grid.innerHTML = heroHtml + '<div class="pm-grid">' + rest + '</div>';
+}
+
 function showFreeTab() {
   setActiveNav('free');
   freeState.mode = null;
@@ -1913,30 +1953,78 @@ function showFreeTab() {
   freeState.round1Transcript = '';
   freeState.followUpQuestion = '';
   freeState.round1Prompt = '';
-  document.getElementById('free-prompt-area').style.display = 'none';
-  document.getElementById('free-recording-wrap').style.display = 'none';
-  document.querySelectorAll('.free-mode-card').forEach(c => c.classList.remove('selected'));
+  renderFreeGrid();
   resetFreeRecording();
   showScreen('screen-free');
 }
 
-function selectFreeMode(mode) {
+function openModeInfo(key) {
+  const m = FREE_MODES[key];
+  if (!m) return;
+  const icon = PRACTICE_ICONS[m.iconKey] || '';
+  const tile = document.getElementById('pd-info-tile');
+  tile.innerHTML = icon;
+  tile.style.setProperty('--pm', m.color);
+  tile.style.setProperty('--pm-light', m.light);
+  document.getElementById('pd-info-title').textContent = m.title;
+  document.getElementById('pd-info-body').textContent = m.why;
+  document.getElementById('pd-info-overlay').classList.add('open');
+}
+function closeModeInfo(e) {
+  if (e && e.target && e.target.id !== 'pd-info-overlay' && !e.target.classList.contains('pd-info-close')) return;
+  document.getElementById('pd-info-overlay').classList.remove('open');
+}
+
+function openPracticeMode(mode) {
   freeState.mode = mode;
   freeState.round2 = false;
   freeState.round1Transcript = '';
   freeState.followUpQuestion = '';
   freeState.round1Prompt = '';
-  document.querySelectorAll('.free-mode-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('free-card-' + mode).classList.add('selected');
   const m = FREE_MODES[mode];
+
+  // Theme the whole screen to the mode colour (waveform, accents)
+  document.documentElement.style.setProperty('--sc', m.color);
+
+  // Header theming
+  const header = document.getElementById('pd-header');
+  header.style.setProperty('--pm', m.color);
+  header.style.setProperty('--pm-light', m.light);
+  const tile = document.getElementById('pd-tile');
+  tile.innerHTML = PRACTICE_ICONS[m.iconKey] || '';
+  document.getElementById('pd-title').textContent = m.title;
+  document.getElementById('pd-tagline').textContent = m.tagline || m.desc;
+  document.getElementById('pd-why-text').textContent = m.why || '';
+
+  // Prompt
   const prompts = m.prompts;
   freeState.prompt = prompts[Math.floor(Math.random() * prompts.length)];
-  document.getElementById('free-prompt-text').textContent = freeState.prompt;
-  document.getElementById('free-prompt-label-text').textContent = m.isInteractive ? '🔥 Round 1' : 'Your prompt';
-  document.getElementById('free-prompt-area').style.display = 'block';
-  document.getElementById('free-recording-wrap').style.display = 'flex';
+  document.getElementById('pd-prompt-text').textContent = freeState.prompt;
+  document.getElementById('pd-prompt-label').textContent = m.isInteractive ? '🔥 Round 1' : 'Your prompt';
+  // Single-prompt modes (Open Mic) don't need a shuffle button
+  document.getElementById('pd-shuffle').style.display = prompts.length > 1 ? 'inline-flex' : 'none';
+
+  resetFreeRecording();
+  showScreen('screen-practice-detail');
+}
+
+function shufflePracticePrompt() {
+  const m = FREE_MODES[freeState.mode];
+  if (!m) return;
+  const prompts = m.prompts;
+  let next = freeState.prompt;
+  if (prompts.length > 1) {
+    while (next === freeState.prompt) next = prompts[Math.floor(Math.random() * prompts.length)];
+  }
+  freeState.prompt = next;
+  freeState.round2 = false;
+  document.getElementById('pd-prompt-text').textContent = freeState.prompt;
+  document.getElementById('pd-prompt-label').textContent = m.isInteractive ? '🔥 Round 1' : 'Your prompt';
   resetFreeRecording();
 }
+
+// Back-compat shim: any old caller of selectFreeMode now opens the detail page
+function selectFreeMode(mode) { openPracticeMode(mode); }
 
 function resetFreeRecording() {
   freeState.isRecording = false; freeState.seconds = 0;
@@ -2091,8 +2179,9 @@ Return ONLY the follow-up question, nothing else.` }]
   freeState.round2 = true;
   freeState.audioChunks = [];
 
-  document.getElementById('free-prompt-label-text').textContent = '🔥 FOLLOW-UP QUESTION';
-  document.getElementById('free-prompt-text').textContent = freeState.followUpQuestion;
+  document.getElementById('pd-prompt-label').textContent = '🔥 Follow-up question';
+  document.getElementById('pd-prompt-text').textContent = freeState.followUpQuestion;
+  document.getElementById('pd-shuffle').style.display = 'none';
   document.getElementById('free-record-hint').textContent = 'Tap to record your answer';
   document.getElementById('free-timer').textContent = '0:00';
   document.getElementById('free-timer').classList.remove('recording');
