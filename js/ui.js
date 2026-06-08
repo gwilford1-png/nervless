@@ -48,7 +48,10 @@ function showCurriculum() {
   document.getElementById('stat-phase-text').textContent = 'Phase ' + currPhase + ' of 9';
   const fill = document.getElementById('journey-progress-fill');
   const pct = totalSessions ? Math.round((totalDone / totalSessions) * 100) : 0;
-  if (fill) fill.style.width = Math.max(5, Math.min(100, pct)) + '%';
+  const fillPct = Math.max(5, Math.min(100, pct));
+  if (fill) fill.style.width = fillPct + '%';
+  const hereTag = document.getElementById('j-here-tag');
+  if (hereTag) hereTag.style.left = Math.max(7, Math.min(93, fillPct)) + '%';
 
   // ── Phase data: palette + representative icon + one-line benefit ──
   const PHASES = [
@@ -75,6 +78,7 @@ function showCurriculum() {
     refresh:`<svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>`,
   };
   const CHECK = `<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>`;
+  const CHECK_SM = `<svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
   const LOCK  = `<svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>`;
   const CONT_ICONS = {
     book:`<svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
@@ -129,7 +133,7 @@ function showCurriculum() {
     if (sessions.length === 0) return '';
     const st = phaseState(p.num);
     const doneCount = sessions.filter(s => hasPassedSession(s.id)).length;
-    const isOpen = st === 'active';
+    const isOpen = false; // all phases start collapsed — tap to open
     const delay = (pi * 0.045).toFixed(3);
 
     const badge = st === 'done' ? `<div class="j-tile-badge done">${CHECK}</div>`
@@ -158,7 +162,7 @@ function showCurriculum() {
         if (isDone) {
           cls = 'passed'; inner = CHECK;
           sub = isScored ? 'Passed' : 'Done';
-          right = isScored ? `<div class="j-s-score">${getBestScore(s.id)}</div>` : '';
+          right = isScored ? `<div class="j-s-score">${getBestScore(s.id)}</div>` : `<div class="j-s-done-pill">${CHECK_SM}Done</div>`;
         } else if (isCurrent) {
           cls = 'current'; inner = si + 1;
           sub = 'Up next · tap to start'; subCls = ' up';
@@ -182,7 +186,10 @@ function showCurriculum() {
         <div class="j-phase-head"${st !== 'locked' ? ' data-toggle="1"' : ''}>
           <div class="j-tile">${ICONS[p.icon] || ''}${badge}</div>
           <div class="j-phase-mid">
-            <div class="j-phase-label">Phase ${p.num}</div>
+            <div class="j-phase-label-row">
+              <div class="j-phase-label">Phase ${p.num}</div>
+              ${st === 'done' ? `<span class="j-done-tag">${CHECK_SM}Complete</span>` : ''}
+            </div>
             <div class="j-phase-name">${p.name}</div>
             <div class="j-phase-benefit">${p.benefit}</div>
           </div>
@@ -1414,15 +1421,15 @@ function renderFeedback(rec, transcript, analysis) {
   }
 
   if (a.transcriptHighlight) {
-    tipsHtml += '<div class="tip-card" style="border-color:rgba(194,114,79,0.3);background:rgba(194,114,79,0.04)"><div class="tip-num" style="background:rgba(194,114,79,0.15);color:var(--accent);border-color:rgba(194,114,79,0.3)">💬</div><div class="tip-text" style="font-style:italic">' + a.transcriptHighlight + '</div></div>';
+    tipsHtml += '<div class="tip-card" style="border-color:var(--sc-mid);background:var(--sc-light)"><div class="tip-num" style="background:var(--sc-light);color:var(--accent);border-color:var(--sc-mid)">💬</div><div class="tip-text" style="font-style:italic">' + a.transcriptHighlight + '</div></div>';
   }
 
   if (a.improvementPlan && a.improvementPlan.focus) {
-    tipsHtml += '<div style="background:var(--surface);border:1.5px solid rgba(194,114,79,0.25);border-radius:16px;padding:18px;margin-top:12px;">'
+    tipsHtml += '<div style="background:var(--surface);border:1.5px solid var(--sc-mid);border-radius:16px;padding:18px;margin-top:12px;">'
       + '<div style="font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:10px;">🎯 Focus for next attempt</div>'
       + '<div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:6px;">' + a.improvementPlan.focus + '</div>'
       + '<div style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px;">' + a.improvementPlan.technique + '</div>'
-      + (a.improvementPlan.example ? '<div style="font-size:13px;color:var(--text);line-height:1.6;background:rgba(194,114,79,0.04);border-radius:10px;padding:12px 14px;font-style:italic;">"' + a.improvementPlan.example + '"</div>' : '')
+      + (a.improvementPlan.example ? '<div style="font-size:13px;color:var(--text);line-height:1.6;background:var(--sc-light);border-radius:10px;padding:12px 14px;font-style:italic;">"' + a.improvementPlan.example + '"</div>' : '')
       + '</div>';
   }
 
@@ -1437,7 +1444,7 @@ function renderFeedback(rec, transcript, analysis) {
 
   if (isPhase1Session) {
     const note = document.createElement('div');
-    note.style.cssText = 'background:rgba(194,114,79,0.06);border:1px solid rgba(194,114,79,0.15);border-radius:14px;padding:14px 16px;margin-bottom:12px;font-size:13px;color:var(--muted);line-height:1.6;text-align:center;';
+    note.style.cssText = 'background:var(--sc-light);border:1px solid var(--sc-light);border-radius:14px;padding:14px 16px;margin-bottom:12px;font-size:13px;color:var(--muted);line-height:1.6;text-align:center;';
     const phaseNote = sessionForScore.phase === 1
       ? '🫶 <strong style="color:var(--accent)">Phase 1 — no judgement.</strong> This phase is about speaking freely and building self-awareness.'
       : '💭 <strong style="color:var(--accent)">Reflective phase.</strong> This phase scores emotional honesty and self-awareness, not delivery technique.';
@@ -1497,7 +1504,7 @@ function renderFeedback(rec, transcript, analysis) {
         const showHowBtn = document.createElement('button');
         showHowBtn.id = 'show-how-btn';
         showHowBtn.className = 'btn-secondary';
-        showHowBtn.style.cssText = 'width:100%;margin-top:10px;background:rgba(194,114,79,0.06);border-color:rgba(194,114,79,0.3);color:var(--accent);font-weight:700;';
+        showHowBtn.style.cssText = 'width:100%;margin-top:10px;background:var(--sc-light);border-color:var(--sc-mid);color:var(--accent);font-weight:700;';
         showHowBtn.textContent = '💡 Show me how to improve';
         showHowBtn.onclick = () => showModelAnswer(a.modelAnswer, sessionForScore);
         actionsDiv.insertBefore(showHowBtn, actionsDiv.querySelector('.btn-secondary'));
@@ -1513,7 +1520,7 @@ function submitScoreFeedback(type) {
   lastFeedbackType = type;
   document.querySelectorAll('.fb-btn').forEach(b => { b.style.borderColor = 'var(--border)'; b.style.background = 'var(--surface)'; });
   const btn = document.getElementById('fb-' + type.replace('_', '-'));
-  if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.background = 'rgba(194,114,79,0.08)'; }
+  if (btn) { btn.style.borderColor = 'var(--accent)'; btn.style.background = 'var(--sc-light)'; }
 
   if (type === 'accurate') {
     logFeedback(type, '');
@@ -1563,7 +1570,7 @@ function showModelAnswer(modelAnswer, session) {
       <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:6px;">${session ? session.title : 'Your session'}</div>
       <div style="font-size:14px;color:var(--muted);margin-bottom:24px;">Here's how a strong answer to this prompt could sound, based on what you were trying to say.</div>
     </div>
-    <div style="margin:0 24px 20px;background:var(--surface);border:1.5px solid rgba(194,114,79,0.25);border-radius:20px;padding:22px;">
+    <div style="margin:0 24px 20px;background:var(--surface);border:1.5px solid var(--sc-mid);border-radius:20px;padding:22px;">
       <div style="font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:12px;">Example answer</div>
       <div style="font-size:15px;color:var(--text);line-height:1.75;">${modelAnswer}</div>
     </div>
