@@ -1903,46 +1903,34 @@ function showLoading(t, sub){
 }
 function hideLoading(){document.getElementById('loading').classList.remove('active');}
 
-let freeState = { mode: null, prompt: '', isRecording: false, seconds: 0, timerInterval: null, mediaRecorder: null, audioChunks: [] };
+let freeState = { mode: null, prompt: '', isRecording: false, seconds: 0, timerInterval: null, mediaRecorder: null, audioChunks: [], round2: false, round1Transcript: '', followUpQuestion: '', round1Prompt: '', debateTopics: [], selectedTopic: '', hotSeatRevealed: false };
 
 // SVG icons for practice modes (reuses the journey j-* visual language)
 const PRACTICE_ICONS = {
-  wind:`<svg viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>`,
   zap:`<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
-  dice:`<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/></svg>`,
-  mic:`<svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`,
   flame:`<svg viewBox="0 0 24 24"><path d="M12 2c1 3 4 4.5 4 8a4 4 0 0 1-8 0c0-1 .3-1.8.8-2.5C8 8.5 8 6 9 4c.5 2 1.5 2.5 2 3 .5-1.5.5-3.5 1-5z"/><path d="M8.5 14a3.5 3.5 0 0 0 7 0c0-1.5-1-2.5-1.5-3.2-.4 1-1 1.5-1.5 1.8-.3-1-.8-1.3-1-1.8-.6.8-1.5 1.7-2 2.4-.3.3-1 .9-1 .8z"/></svg>`,
 };
-const PRACTICE_ORDER = ['hotseat','vent','debate','random','open'];
+const PRACTICE_ORDER = ['hotseat','debate'];
 
 function renderFreeGrid() {
   const grid = document.getElementById('free-mode-grid');
   if (!grid) return;
   const infoBtn = (key) => `<button class="pm-info" onclick="event.stopPropagation();openModeInfo('${key}')" aria-label="About this mode"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>`;
 
-  const hot = FREE_MODES.hotseat;
-  const heroHtml = `<div class="pm-card pm-hero" style="--pm:${hot.color};--pm-light:${hot.light};animation-delay:0s" onclick="openPracticeMode('hotseat')">
-      ${infoBtn('hotseat')}
-      <div class="pm-hero-flag">Most challenging</div>
-      <div class="pm-tile">${PRACTICE_ICONS[hot.iconKey] || ''}</div>
-      <div class="pm-hero-text">
-        <div class="pm-title">${hot.title}</div>
-        <div class="pm-desc">${hot.tagline}</div>
-      </div>
-    </div>`;
-
-  const rest = PRACTICE_ORDER.filter(k => k !== 'hotseat').map((key, i) => {
+  const cards = PRACTICE_ORDER.map((key, i) => {
     const m = FREE_MODES[key];
-    const delay = ((i + 1) * 0.05).toFixed(3);
-    return `<div class="pm-card" style="--pm:${m.color};--pm-light:${m.light};animation-delay:${delay}s" onclick="openPracticeMode('${key}')">
-        ${infoBtn(key)}
-        <div class="pm-tile">${PRACTICE_ICONS[m.iconKey] || ''}</div>
+    const delay = (i * 0.07).toFixed(3);
+    return `<div class="pm-card pm-hero" style="--pm:${m.color};--pm-light:${m.light};animation-delay:${delay}s" onclick="openPracticeMode('${key}')">
+      ${infoBtn(key)}
+      <div class="pm-tile">${PRACTICE_ICONS[m.iconKey] || ''}</div>
+      <div class="pm-hero-text">
         <div class="pm-title">${m.title}</div>
         <div class="pm-desc">${m.tagline}</div>
-      </div>`;
+      </div>
+    </div>`;
   }).join('');
 
-  grid.innerHTML = heroHtml + '<div class="pm-grid">' + rest + '</div>';
+  grid.innerHTML = cards;
 }
 
 function showFreeTab() {
@@ -1953,6 +1941,9 @@ function showFreeTab() {
   freeState.round1Transcript = '';
   freeState.followUpQuestion = '';
   freeState.round1Prompt = '';
+  freeState.debateTopics = [];
+  freeState.selectedTopic = '';
+  freeState.hotSeatRevealed = false;
   renderFreeGrid();
   resetFreeRecording();
   showScreen('screen-free');
@@ -1981,12 +1972,13 @@ function openPracticeMode(mode) {
   freeState.round1Transcript = '';
   freeState.followUpQuestion = '';
   freeState.round1Prompt = '';
+  freeState.hotSeatRevealed = false;
+  freeState.debateTopics = [];
+  freeState.selectedTopic = '';
   const m = FREE_MODES[mode];
 
-  // Theme the whole screen to the mode colour (waveform, accents)
+  // Theme screen to mode colour
   document.documentElement.style.setProperty('--sc', m.color);
-
-  // Header theming
   const header = document.getElementById('pd-header');
   header.style.setProperty('--pm', m.color);
   header.style.setProperty('--pm-light', m.light);
@@ -1996,31 +1988,253 @@ function openPracticeMode(mode) {
   document.getElementById('pd-tagline').textContent = m.tagline || m.desc;
   document.getElementById('pd-why-text').textContent = m.why || '';
 
-  // Prompt
-  const prompts = m.prompts;
-  freeState.prompt = prompts[Math.floor(Math.random() * prompts.length)];
-  document.getElementById('pd-prompt-text').textContent = freeState.prompt;
-  document.getElementById('pd-prompt-label').textContent = m.isInteractive ? '🔥 Round 1' : 'Your prompt';
-  // Single-prompt modes (Open Mic) don't need a shuffle button
-  document.getElementById('pd-shuffle').style.display = prompts.length > 1 ? 'inline-flex' : 'none';
+  const promptCard = document.getElementById('pd-prompt-card');
+  const shuffle = document.getElementById('pd-shuffle');
+  const recordZone = document.querySelector('.pd-record-zone');
+
+  if (mode === 'hotseat') {
+    // Hide question — show Start button instead; question revealed only on tap
+    if (promptCard) promptCard.style.display = 'none';
+    if (shuffle) shuffle.style.display = 'none';
+    if (recordZone) recordZone.style.display = 'none';
+
+    // Pick question silently (user can't see it yet)
+    const prompts = m.prompts;
+    freeState.prompt = prompts[Math.floor(Math.random() * prompts.length)];
+
+    renderHotSeatStartState();
+
+  } else if (mode === 'debate') {
+    // Show topic picker — hide record zone until topic selected
+    if (promptCard) promptCard.style.display = 'none';
+    if (shuffle) shuffle.style.display = 'none';
+    if (recordZone) recordZone.style.display = 'none';
+
+    renderDebateTopicPicker(true);
+  }
 
   resetFreeRecording();
   showScreen('screen-practice-detail');
 }
 
+function renderHotSeatStartState() {
+  const body = document.getElementById('pd-body') || document.querySelector('.pd-body');
+  if (!body) return;
+
+  // Remove any existing hot-seat overlay
+  const existing = document.getElementById('hs-start-zone');
+  if (existing) existing.remove();
+
+  const m = FREE_MODES['hotseat'];
+  const zone = document.createElement('div');
+  zone.id = 'hs-start-zone';
+  zone.style.cssText = 'padding:20px;text-align:center;';
+  zone.innerHTML = `
+    <div style="background:var(--surface);border-radius:16px;padding:28px 20px;box-shadow:0 4px 16px rgba(0,0,0,0.06);margin-bottom:20px;">
+      <div style="font-size:32px;margin-bottom:12px;">🎯</div>
+      <div style="font-family:'Nunito',sans-serif;font-size:17px;font-weight:800;color:var(--text);margin-bottom:8px;">You won't see the question until you're ready.</div>
+      <div style="font-size:14px;color:var(--text-muted);line-height:1.5;">Hit Start — the question appears. You answer immediately. No prep, no script.<br>A follow-up will come back based on what you say.</div>
+    </div>
+    <button id="hs-start-btn" onclick="revealHotSeatQuestion()" style="width:100%;background:${m.color};color:#fff;border:none;border-radius:100px;padding:15px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 8px 20px rgba(219,96,152,0.30);letter-spacing:-0.2px;">Start — hear your question</button>
+  `;
+  body.prepend(zone);
+}
+
+function revealHotSeatQuestion() {
+  freeState.hotSeatRevealed = true;
+  const zone = document.getElementById('hs-start-zone');
+  if (zone) zone.remove();
+
+  const promptCard = document.getElementById('pd-prompt-card');
+  const recordZone = document.querySelector('.pd-record-zone');
+  const promptLabel = document.getElementById('pd-prompt-label');
+  const promptText = document.getElementById('pd-prompt-text');
+
+  if (promptCard) {
+    promptCard.style.display = '';
+    // Animate in
+    promptCard.style.opacity = '0';
+    promptCard.style.transform = 'translateY(8px)';
+    requestAnimationFrame(() => {
+      promptCard.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+      promptCard.style.opacity = '1';
+      promptCard.style.transform = 'translateY(0)';
+    });
+  }
+  if (promptLabel) promptLabel.textContent = '🔥 Your question — answer now';
+  if (promptText) promptText.textContent = freeState.prompt;
+  if (recordZone) recordZone.style.display = '';
+
+  resetFreeRecording();
+}
+
+async function renderDebateTopicPicker(generateNew) {
+  const body = document.getElementById('pd-body') || document.querySelector('.pd-body');
+  if (!body) return;
+
+  const existing = document.getElementById('debate-picker-zone');
+  if (existing) existing.remove();
+
+  const m = FREE_MODES['debate'];
+  const zone = document.createElement('div');
+  zone.id = 'debate-picker-zone';
+  zone.style.cssText = 'padding:0 20px 20px;';
+
+  if (generateNew) {
+    zone.innerHTML = `
+      <div style="text-align:center;padding:32px 0;">
+        <div style="font-size:13px;font-weight:700;color:var(--text-muted);">Generating topics…</div>
+      </div>`;
+    body.prepend(zone);
+    await generateDebateTopics();
+  } else {
+    body.prepend(zone);
+  }
+
+  renderDebateTopicCards(zone, m);
+}
+
+async function generateDebateTopics() {
+  const proxy = getProxyUrl();
+  try {
+    const res = await fetch(proxy + '/analyse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 300,
+        messages: [{ role: 'user', content: `Generate exactly 3 debate topics suitable for a speaking confidence practice app. Each topic should:
+- Be genuinely arguable with a clear "for" and "against"
+- Be relevant to work, society, career, or modern life
+- Be specific and provocative (not vague)
+- Be 1 sentence maximum
+
+Return ONLY a JSON array of 3 strings. No markdown, no preamble, no explanation. Example format: ["Topic one","Topic two","Topic three"]` }]
+      })
+    });
+    if (!res.ok) throw new Error('API error');
+    const data = await res.json();
+    const raw = data.content[0].text.trim().replace(/```json|```/g, '').trim();
+    freeState.debateTopics = JSON.parse(raw);
+  } catch(e) {
+    console.error('Debate topic generation failed:', e);
+    freeState.debateTopics = [
+      'Remote working is better for productivity than office working.',
+      'It is better to be honest and risk hurting someone\'s feelings than to protect them with a white lie.',
+      'The best leaders are made through experience, not natural talent.',
+    ];
+  }
+}
+
+function renderDebateTopicCards(zone, m) {
+  const topics = freeState.debateTopics;
+  const selected = freeState.selectedTopic;
+
+  const topicCards = topics.map((t, i) => {
+    const isSelected = t === selected;
+    const selStyle = isSelected
+      ? `background:${m.color};color:#fff;border-color:${m.color};`
+      : `background:var(--surface);color:var(--text);border-color:var(--border-strong);`;
+    return `<div onclick="selectDebateTopic(${i})" style="cursor:pointer;border-radius:14px;border:1.5px solid;padding:14px 16px;margin-bottom:10px;font-size:15px;font-weight:700;line-height:1.45;transition:all 0.15s;${selStyle}">${t}</div>`;
+  }).join('');
+
+  const customInput = `
+    <div style="margin-top:4px;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;">Or enter your own</div>
+      <div style="display:flex;gap:8px;">
+        <input id="debate-custom-input" type="text" placeholder="Type a topic…" style="flex:1;border:1.5px solid var(--border-strong);border-radius:100px;padding:11px 16px;font-size:14px;font-family:'Nunito',sans-serif;background:var(--surface);color:var(--text);outline:none;" />
+        <button onclick="useCustomDebateTopic()" style="background:var(--sc);color:#fff;border:none;border-radius:100px;padding:11px 18px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:800;cursor:pointer;white-space:nowrap;">Use this</button>
+      </div>
+    </div>`;
+
+  const regenBtn = `<button onclick="regenDebateTopics()" style="display:flex;align-items:center;gap:6px;background:none;border:1.5px solid var(--border-strong);border-radius:100px;padding:10px 18px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--text-muted);cursor:pointer;margin:16px auto 0;"><svg viewBox="0 0 24 24" style="width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>New topics</button>`;
+
+  const startBtn = selected
+    ? `<button onclick="startDebateSession()" style="width:100%;background:${m.color};color:#fff;border:none;border-radius:100px;padding:15px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 8px 20px rgba(59,130,196,0.28);letter-spacing:-0.2px;margin-top:20px;">Start debating →</button>`
+    : `<button disabled style="width:100%;background:var(--border);color:var(--text-faint);border:none;border-radius:100px;padding:15px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:900;cursor:not-allowed;margin-top:20px;">Pick a topic to start</button>`;
+
+  zone.innerHTML = `
+    <div style="font-size:11px;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-faint);margin-bottom:12px;padding-top:4px;">Choose your topic</div>
+    ${topicCards}
+    ${regenBtn}
+    ${customInput}
+    ${startBtn}
+  `;
+}
+
+function selectDebateTopic(index) {
+  freeState.selectedTopic = freeState.debateTopics[index];
+  const zone = document.getElementById('debate-picker-zone');
+  if (zone) renderDebateTopicCards(zone, FREE_MODES['debate']);
+}
+
+function useCustomDebateTopic() {
+  const input = document.getElementById('debate-custom-input');
+  const val = input ? input.value.trim() : '';
+  if (!val) return;
+  freeState.selectedTopic = val;
+  // Add to topics list so it renders as a selected card
+  if (!freeState.debateTopics.includes(val)) {
+    freeState.debateTopics.push(val);
+  }
+  const zone = document.getElementById('debate-picker-zone');
+  if (zone) renderDebateTopicCards(zone, FREE_MODES['debate']);
+}
+
+async function regenDebateTopics() {
+  freeState.selectedTopic = '';
+  freeState.debateTopics = [];
+  const zone = document.getElementById('debate-picker-zone');
+  if (zone) {
+    zone.innerHTML = `<div style="text-align:center;padding:32px 0;"><div style="font-size:13px;font-weight:700;color:var(--text-muted);">Generating new topics…</div></div>`;
+  }
+  await generateDebateTopics();
+  if (zone) renderDebateTopicCards(zone, FREE_MODES['debate']);
+}
+
+function startDebateSession() {
+  if (!freeState.selectedTopic) return;
+  freeState.prompt = `Debate topic: "${freeState.selectedTopic}". Pick a side — argue for OR against. Commit to your position and make the strongest possible case.`;
+
+  const zone = document.getElementById('debate-picker-zone');
+  if (zone) zone.remove();
+
+  const promptCard = document.getElementById('pd-prompt-card');
+  const recordZone = document.querySelector('.pd-record-zone');
+  const promptLabel = document.getElementById('pd-prompt-label');
+  const promptText = document.getElementById('pd-prompt-text');
+  const shuffle = document.getElementById('pd-shuffle');
+
+  if (promptCard) {
+    promptCard.style.display = '';
+    promptCard.style.opacity = '0';
+    promptCard.style.transform = 'translateY(8px)';
+    requestAnimationFrame(() => {
+      promptCard.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+      promptCard.style.opacity = '1';
+      promptCard.style.transform = 'translateY(0)';
+    });
+  }
+  if (promptLabel) promptLabel.textContent = '⚡ Your debate topic';
+  if (promptText) promptText.textContent = `"${freeState.selectedTopic}" — pick a side and argue it.`;
+  if (shuffle) shuffle.style.display = 'none';
+  if (recordZone) recordZone.style.display = '';
+
+  resetFreeRecording();
+}
+
 function shufflePracticePrompt() {
   const m = FREE_MODES[freeState.mode];
   if (!m) return;
-  const prompts = m.prompts;
-  let next = freeState.prompt;
-  if (prompts.length > 1) {
-    while (next === freeState.prompt) next = prompts[Math.floor(Math.random() * prompts.length)];
+  // Shuffle only applies to hot seat (before question is revealed)
+  if (freeState.mode === 'hotseat' && !freeState.hotSeatRevealed) {
+    const prompts = m.prompts;
+    let next = freeState.prompt;
+    if (prompts.length > 1) {
+      while (next === freeState.prompt) next = prompts[Math.floor(Math.random() * prompts.length)];
+    }
+    freeState.prompt = next;
   }
-  freeState.prompt = next;
-  freeState.round2 = false;
-  document.getElementById('pd-prompt-text').textContent = freeState.prompt;
-  document.getElementById('pd-prompt-label').textContent = m.isInteractive ? '🔥 Round 1' : 'Your prompt';
-  resetFreeRecording();
 }
 
 // Back-compat shim: any old caller of selectFreeMode now opens the detail page
@@ -2196,4 +2410,4 @@ function setActiveNav(tab) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   const el = document.getElementById('nav-'+tab);
   if(el) el.classList.add('active');
-}
+}=
