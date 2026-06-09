@@ -640,10 +640,9 @@ function setupContentCards(cards) {
   cardsState.total = cards.length;
 
   const track = document.getElementById('cards-track');
-  track.innerHTML = cards.map((html, i) => `
+  track.innerHTML = cards.map((html) => `
     <div class="content-card-item">
       <div class="lesson-content">${html}</div>
-      <div style="text-align:right;font-size:11px;font-weight:700;color:var(--text-faint);margin-top:8px">${i+1} of ${cards.length}</div>
     </div>
   `).join('');
   track.style.transform = 'translateX(0%)';
@@ -655,6 +654,7 @@ function setupContentCards(cards) {
 
   document.getElementById('lesson-read-content').style.display = 'none';
   document.getElementById('lesson-cards-wrap').style.display = 'block';
+  document.getElementById('screen-lesson').classList.add('cards-mode');
   document.getElementById('lesson-reframe-wrap').style.display = 'none';
   document.getElementById('lesson-scenario-wrap').style.display = 'none';
   document.getElementById('lesson-surprise-wrap').style.display = 'none';
@@ -663,16 +663,13 @@ function setupContentCards(cards) {
 
 function updateCardsNav() {
   document.getElementById('cards-prev-btn').disabled = cardsState.current === 0;
-  document.getElementById('cards-counter').textContent = `${cardsState.current+1} / ${cardsState.total}`;
   const nextBtn = document.getElementById('cards-next-btn');
+  const arrow = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   if (cardsState.current === cardsState.total - 1) {
-    nextBtn.textContent = 'Done ✓';
-    nextBtn.onclick = function() {
-      document.getElementById('lesson-next-btn').disabled = false;
-      document.getElementById('lesson-next-btn').style.opacity = '1';
-    };
+    nextBtn.innerHTML = 'I\'ve read this ' + arrow;
+    nextBtn.onclick = lessonNext;
   } else {
-    nextBtn.textContent = 'Next →';
+    nextBtn.innerHTML = 'Next ' + arrow;
     nextBtn.onclick = cardsNext;
   }
   for (let i = 0; i < cardsState.total; i++) {
@@ -834,6 +831,7 @@ function setupTimed(seconds) {
 }
 
 function resetInteractiveFormats() {
+  document.getElementById('screen-lesson').classList.remove('cards-mode');
   document.getElementById('lesson-read-content').style.display = 'block';
   document.getElementById('lesson-cards-wrap').style.display = 'none';
   document.getElementById('lesson-reframe-wrap').style.display = 'none';
@@ -843,6 +841,7 @@ function resetInteractiveFormats() {
 }
 
 function lessonNext() {
+  document.getElementById('screen-lesson').classList.remove('cards-mode');
   if (lessonState.step === 'read') {
     if (lessonState.hasQuiz) {
       lessonState.step = 'check';
