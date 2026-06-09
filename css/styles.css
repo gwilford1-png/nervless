@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap');
 
 /* ─────────────────────────────────────────
    V7 DESIGN SYSTEM — matches curriculum v7
@@ -236,17 +236,17 @@ body {
   flex: 1; justify-content: center;
 }
 .lesson-step-spacer { width: 32px; flex-shrink: 0; }
-.step-item { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 0 0 auto; width: 64px; }
-.step-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--border); background: var(--bg); transition: all 0.3s; }
-.step-icon svg { width: 14px; height: 14px; stroke: var(--text-muted); stroke-width: 2.5; fill: none; }
-.step-item.active .step-icon { border-color: var(--sc); background: var(--sc); }
+.step-item { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 0 0 auto; width: 60px; }
+.step-icon { width: 34px; height: 34px; border-radius: 12px; display: flex; align-items: center; justify-content: center; border: 1.5px solid var(--border-strong); background: var(--surface); transition: all 0.3s; }
+.step-icon svg { width: 16px; height: 16px; stroke: var(--text-faint); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.step-item.active .step-icon { border-color: var(--sc); background: var(--sc); box-shadow: 0 4px 12px color-mix(in srgb, var(--sc) 32%, transparent); }
 .step-item.active .step-icon svg { stroke: white; }
 .step-item.done .step-icon { border-color: var(--sc); background: var(--sc); }
 .step-item.done .step-icon svg { stroke: white; }
-.step-label { font-size: 11px; font-weight: 700; color: var(--border); letter-spacing: 0.4px; text-transform: uppercase; transition: color 0.3s; }
+.step-label { font-family: 'Hanken Grotesk', sans-serif; font-size: 10px; font-weight: 700; color: var(--text-faint); letter-spacing: 0.06em; text-transform: uppercase; transition: color 0.3s; }
 .step-item.active .step-label { color: var(--sc); }
 .step-item.done .step-label { color: var(--sc); }
-.step-connector { width: 28px; height: 1.5px; background: var(--border); margin: 0 -2px; margin-bottom: 16px; transition: background 0.3s; }
+.step-connector { width: 26px; height: 2px; border-radius: 2px; background: var(--border-strong); margin: 0 -1px; margin-bottom: 19px; transition: background 0.3s; }
 .step-connector.done { background: var(--sc); }
 .lesson-header { padding: 24px 20px 16px; background: linear-gradient(180deg, var(--sc-light) 0%, var(--bg) 100%); }
 .lesson-title { font-family: 'DM Serif Display', serif; font-size: 22px; line-height: 1.25; color: var(--text); }
@@ -534,17 +534,26 @@ body {
 
 
 /* ── CONTENT CARDS (swipeable read) ── */
-.content-cards-wrap { position: relative; overflow: hidden; border-radius: 16px; margin-bottom: 14px; }
+.content-cards-wrap { position: relative; overflow: hidden; border-radius: 20px; margin-bottom: 6px; }
 .content-cards-track { display: flex; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); }
-.content-card-item { min-width: 100%; padding: 24px 22px; box-sizing: border-box; }
+.content-card-item { min-width: 100%; padding: 0; box-sizing: border-box; }
 .content-card-item .lesson-content { margin-bottom: 0; }
-.cards-dots { display: flex; justify-content: center; gap: 6px; padding: 10px 0; }
-.cards-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: all 0.2s; }
+.cards-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 4px 0; }
+.cards-nav-btn { height: 50px; min-width: 112px; padding: 0 22px; border-radius: 100px; font-size: 15px; font-weight: 700; font-family: 'Hanken Grotesk', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; border: 1.5px solid var(--border-strong); background: transparent; color: var(--text-muted); transition: transform 0.12s; }
+.cards-nav-btn svg { width: 17px; height: 17px; stroke: currentColor; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.cards-nav-btn:active { transform: scale(0.97); }
+.cards-nav-btn:disabled { opacity: 0.3; cursor: default; }
+.cards-nav-btn.primary { background: var(--sc); color: white; border: none; box-shadow: 0 8px 20px color-mix(in srgb, var(--sc) 30%, transparent); }
+.cards-nav-btn.primary svg { stroke: #fff; }
+.cards-dots { display: flex; justify-content: center; gap: 6px; flex-shrink: 0; }
+.cards-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-strong); transition: all 0.2s; }
 .cards-dot.active { background: var(--sc); width: 18px; border-radius: 3px; }
-.cards-nav { display: flex; justify-content: space-between; padding: 0 16px; }
-.cards-nav-btn { background: none; border: 1.5px solid var(--border); border-radius: 100px; padding: 8px 20px; font-size: 13px; font-weight: 700; color: var(--text-muted); cursor: pointer; font-family: 'Nunito', sans-serif; transition: all 0.15s; }
-.cards-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.cards-nav-btn.primary { background: var(--sc); color: white; border-color: var(--sc); }
+
+/* In cards mode the in-card Next completes the step — hide the duplicate bottom bar */
+#screen-lesson.cards-mode .lesson-nav { display: none; }
+
+/* Display type — Hanken Grotesk at heading weight (overrides legacy DM Serif rules) */
+.curr-title, .phase-header-name, .lesson-title, .lesson-content h3, .prompt-text, .talk-prompt-text, .score-num, .feedback-title, .dash-title, .free-header h1, .j-welcome, .j-phase-name { font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; letter-spacing: -0.02em; }
 
 /* ── REFRAME EXERCISE ── */
 .reframe-wrap { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 20px; margin: 0 16px 14px; }
