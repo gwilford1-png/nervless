@@ -466,6 +466,7 @@ function startLesson(s) {
   lessonState.step = 'read';
   lessonState.quizAnswers = {};
   lessonState.quizCorrect = 0;
+  lessonState.quizCurrent = 0;
 
   const lc = LESSON_CONTENT[s.id];
   if (!lc) { console.error('No lesson content for session', s.id); return; }
@@ -562,7 +563,7 @@ function startLesson(s) {
     let quizHtml = '';
     lc.quiz.forEach((q, i) => {
       const letters = ['A', 'B', 'C', 'D'];
-      quizHtml += `<div class="quiz-question" id="quiz-q-${i}">
+      quizHtml += `<div class="quiz-question${i === 0 ? ' active' : ''}" id="quiz-q-${i}">
         <div class="quiz-q-num">Question ${i + 1} of ${lc.quiz.length}</div>
         <div class="quiz-q-text">${q.q}</div>
         <div class="quiz-options">`;
@@ -571,11 +572,14 @@ function startLesson(s) {
           <span class="quiz-option-letter">${letters[j]}</span>${opt}
         </button>`;
       });
-      quizHtml += `<div class="quiz-feedback" id="quiz-fb-${i}"></div></div></div>`;
+      quizHtml += `</div>
+        <div class="quiz-feedback" id="quiz-fb-${i}"></div>
+        <button class="quiz-next-btn" id="quiz-next-${i}" style="display:none"></button>
+      </div>`;
     });
     document.getElementById('lesson-quiz-container').innerHTML = quizHtml;
     document.getElementById('quiz-all-correct').classList.remove('show');
-    document.getElementById('quiz-progress-label').textContent = 'Answer all questions to continue';
+    document.getElementById('quiz-progress-label').textContent = `Question 1 of ${lc.quiz.length}`;
   }
 
   // Populate talk (only for scored sessions)
@@ -831,7 +835,8 @@ function setupTimed(seconds) {
 }
 
 function resetInteractiveFormats() {
-  document.getElementById('screen-lesson').classList.remove('cards-mode');
+  const jn = document.getElementById('journey-nudge'); if (jn) jn.style.display = 'none';
+  document.getElementById('screen-lesson').classList.remove('cards-mode', 'quiz-mode');
   document.getElementById('lesson-read-content').style.display = 'block';
   document.getElementById('lesson-cards-wrap').style.display = 'none';
   document.getElementById('lesson-reframe-wrap').style.display = 'none';
@@ -841,13 +846,14 @@ function resetInteractiveFormats() {
 }
 
 function lessonNext() {
-  document.getElementById('screen-lesson').classList.remove('cards-mode');
+  document.getElementById('screen-lesson').classList.remove('cards-mode', 'quiz-mode');
   if (lessonState.step === 'read') {
     if (lessonState.hasQuiz) {
       lessonState.step = 'check';
       updateLessonStepUI('check');
       document.getElementById('lesson-read').style.display = 'none';
       document.getElementById('lesson-check').style.display = 'block';
+      document.getElementById('screen-lesson').classList.add('quiz-mode');
       document.getElementById('lesson-next-btn').textContent = 'Continue →';
       document.getElementById('lesson-next-btn').disabled = true;
       document.getElementById('lesson-next-btn').style.opacity = '0.45';
@@ -903,6 +909,7 @@ function lessonBack() {
     updateLessonStepUI('read');
     document.getElementById('lesson-check').style.display = 'none';
     document.getElementById('lesson-read').style.display = 'block';
+    document.getElementById('screen-lesson').classList.remove('quiz-mode');
     document.getElementById('lesson-next-btn').textContent = 'I\'ve read this →';
     document.getElementById('lesson-next-btn').disabled = false;
     document.getElementById('lesson-next-btn').style.opacity = '1';
@@ -912,7 +919,8 @@ function lessonBack() {
       updateLessonStepUI('check');
       document.getElementById('lesson-talk').style.display = 'none';
       document.getElementById('lesson-check').style.display = 'block';
-      checkQuizComplete();
+      document.getElementById('screen-lesson').classList.add('quiz-mode');
+      quizRestoreComplete();
     } else {
       lessonState.step = 'read';
       updateLessonStepUI('read');
@@ -928,47 +936,72 @@ function lessonBack() {
 function selectQuizAnswer(qIdx, optIdx) {
   const lc = LESSON_CONTENT[lessonState.sessionId];
   const q = lc.quiz[qIdx];
-  if (lessonState.quizAnswers[qIdx] !== undefined) return;
+  if (lessonState.quizAnswers[qIdx] !== undefined) return; // already answered correctly & locked
 
-  lessonState.quizAnswers[qIdx] = optIdx;
   const isCorrect = optIdx === q.correct;
+  const total = lessonState.totalQuestions;
+  const fb = document.getElementById(`quiz-fb-${qIdx}`);
+  const arrow = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
+  if (!isCorrect) {
+    // Wrong — flash red, prompt a retry, do not advance or reveal the answer
+    const wrongBtn = document.getElementById(`quiz-opt-${qIdx}-${optIdx}`);
+    wrongBtn.classList.add('wrong');
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.textContent = '✗ Not quite — give it another try.';
+    setTimeout(() => { wrongBtn.classList.remove('wrong'); }, 900);
+    return;
+  }
+
+  // Correct — lock the question and reveal the explanation
+  lessonState.quizAnswers[qIdx] = optIdx;
+  lessonState.quizCorrect++;
   q.options.forEach((_, j) => {
     const btn = document.getElementById(`quiz-opt-${qIdx}-${j}`);
-    btn.classList.remove('selected');
+    btn.classList.remove('selected', 'wrong');
     if (j === q.correct) btn.classList.add('correct');
-    else if (j === optIdx && !isCorrect) btn.classList.add('wrong');
     btn.disabled = true;
   });
+  fb.className = 'quiz-feedback show correct-fb';
+  fb.textContent = '✓ ' + q.explanation;
 
-  const fb = document.getElementById(`quiz-fb-${qIdx}`);
-  fb.className = 'quiz-feedback show ' + (isCorrect ? 'correct-fb' : 'wrong-fb');
-  fb.textContent = (isCorrect ? '✓ ' : '✗ ') + q.explanation;
-
-  if (isCorrect) lessonState.quizCorrect++;
-  checkQuizComplete();
+  const nbtn = document.getElementById(`quiz-next-${qIdx}`);
+  if (qIdx < total - 1) {
+    nbtn.innerHTML = 'Next question ' + arrow;
+    nbtn.onclick = function() { quizAdvance(qIdx); };
+  } else {
+    nbtn.innerHTML = lessonState.isScored ? ('Now let\'s talk ' + arrow) : 'Complete session ✓';
+    nbtn.onclick = lessonNext;
+    document.getElementById('quiz-all-correct').classList.add('show');
+    document.getElementById('quiz-progress-label').textContent = 'Perfect score!';
+  }
+  nbtn.style.display = '';
 }
 
-function checkQuizComplete() {
+function quizAdvance(qIdx) {
   const total = lessonState.totalQuestions;
-  const answered = Object.keys(lessonState.quizAnswers).length;
-  const allCorrect = lessonState.quizCorrect === total && answered === total;
+  const next = qIdx + 1;
+  if (next >= total) return;
+  const cur = document.getElementById(`quiz-q-${qIdx}`);
+  const nxt = document.getElementById(`quiz-q-${next}`);
+  if (cur) cur.classList.remove('active');
+  if (nxt) nxt.classList.add('active');
+  lessonState.quizCurrent = next;
+  document.getElementById('quiz-progress-label').textContent = `Question ${next + 1} of ${total}`;
+  document.getElementById('screen-lesson').scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-  document.getElementById('quiz-progress-label').textContent =
-    answered < total ? `${answered} of ${total} answered` : allCorrect ? 'Perfect score!' : `${lessonState.quizCorrect} of ${total} correct`;
-
-  if (answered === total) {
-    if (allCorrect) {
-      document.getElementById('quiz-all-correct').classList.add('show');
-    }
-    document.getElementById('lesson-next-btn').disabled = false;
-    document.getElementById('lesson-next-btn').style.opacity = '1';
-    if (!lessonState.isScored) {
-      document.getElementById('lesson-next-btn').textContent = 'Complete session ✓';
-    } else {
-      document.getElementById('lesson-next-btn').textContent = allCorrect ? 'Now let\'s talk →' : 'Continue anyway →';
-    }
+function quizRestoreComplete() {
+  const total = lessonState.totalQuestions;
+  for (let i = 0; i < total; i++) {
+    const el = document.getElementById(`quiz-q-${i}`);
+    if (el) el.classList.toggle('active', i === total - 1);
   }
+  lessonState.quizCurrent = total - 1;
+  document.getElementById('quiz-progress-label').textContent = 'Perfect score!';
+  document.getElementById('quiz-all-correct').classList.add('show');
+  const nbtn = document.getElementById(`quiz-next-${total - 1}`);
+  if (nbtn) nbtn.style.display = '';
 }
 
 // ── LESSON RECORDING ──
@@ -1902,56 +1935,83 @@ function showLoading(t, sub){
 }
 function hideLoading(){document.getElementById('loading').classList.remove('active');}
 
-let freeState = { mode: null, prompt: '', isRecording: false, seconds: 0, timerInterval: null, mediaRecorder: null, audioChunks: [] };
+let freeState = { mode: null, prompt: '', isRecording: false, seconds: 0, timerInterval: null, mediaRecorder: null, audioChunks: [],
+  difficulty: null, scenario: null, runKey: null, roundIndex: 0, roundsTotal: 1, history: [],
+  debateTopic: '', debateTopics: [] };
 
 // SVG icons for practice modes (reuses the journey j-* visual language)
 const PRACTICE_ICONS = {
   wind:`<svg viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg>`,
   zap:`<svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
-  dice:`<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.3" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.3" fill="currentColor" stroke="none"/></svg>`,
   mic:`<svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`,
   flame:`<svg viewBox="0 0 24 24"><path d="M12 2c1 3 4 4.5 4 8a4 4 0 0 1-8 0c0-1 .3-1.8.8-2.5C8 8.5 8 6 9 4c.5 2 1.5 2.5 2 3 .5-1.5.5-3.5 1-5z"/><path d="M8.5 14a3.5 3.5 0 0 0 7 0c0-1.5-1-2.5-1.5-3.2-.4 1-1 1.5-1.5 1.8-.3-1-.8-1.3-1-1.8-.6.8-1.5 1.7-2 2.4-.3.3-1 .9-1 .8z"/></svg>`,
+  briefcase:`<svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
+  glass:`<svg viewBox="0 0 24 24"><path d="M8 22h8M12 15v7M17 2l-1.5 8.5a3.5 3.5 0 0 1-7 0L7 2z"/></svg>`,
+  users:`<svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
 };
-const PRACTICE_ORDER = ['hotseat','vent','debate','random','open'];
+const PRACTICE_ORDER = ['hotseat','debate','scenarios','open'];
 
+// ── VOICE (browser speech synthesis) ──
+function voicePrefOn() { return localStorage.getItem('nervless_voice') !== '0'; }
+function toggleVoicePref() {
+  localStorage.setItem('nervless_voice', voicePrefOn() ? '0' : '1');
+  if (!voicePrefOn()) stopSpeaking();
+  renderVoicePref();
+}
+function renderVoicePref() {
+  const on = voicePrefOn();
+  const sw = document.getElementById('ps-voice-switch');
+  if (sw) sw.classList.toggle('on', on);
+  const pv = document.getElementById('pd-voice');
+  if (pv) pv.classList.toggle('off', !on);
+}
+function speak(text) {
+  if (!voicePrefOn() || !('speechSynthesis' in window) || !text) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    const voices = speechSynthesis.getVoices() || [];
+    const gb = voices.find(v => v.lang === 'en-GB') || voices.find(v => (v.lang||'').startsWith('en'));
+    if (gb) u.voice = gb;
+    u.rate = 1;
+    speechSynthesis.speak(u);
+  } catch(e) { /* voice is a nice-to-have — never block practice on it */ }
+}
+function stopSpeaking() { try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} }
+
+// ── MODE GRID ──
 function renderFreeGrid() {
   const grid = document.getElementById('free-mode-grid');
   if (!grid) return;
   const infoBtn = (key) => `<button class="pm-info" onclick="event.stopPropagation();openModeInfo('${key}')" aria-label="About this mode"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>`;
 
-  const hot = FREE_MODES.hotseat;
-  const heroHtml = `<div class="pm-card pm-hero" style="--pm:${hot.color};--pm-light:${hot.light};animation-delay:0s" onclick="openPracticeMode('hotseat')">
-      ${infoBtn('hotseat')}
-      <div class="pm-hero-flag">Most challenging</div>
-      <div class="pm-tile">${PRACTICE_ICONS[hot.iconKey] || ''}</div>
-      <div class="pm-hero-text">
-        <div class="pm-title">${hot.title}</div>
-        <div class="pm-desc">${hot.tagline}</div>
-      </div>
-    </div>`;
-
-  const rest = PRACTICE_ORDER.filter(k => k !== 'hotseat').map((key, i) => {
+  const cards = PRACTICE_ORDER.map((key, i) => {
     const m = FREE_MODES[key];
-    const delay = ((i + 1) * 0.05).toFixed(3);
+    const delay = (i * 0.05).toFixed(3);
+    const flag = key === 'scenarios' ? '<div class="pm-new">New</div>' : '';
     return `<div class="pm-card" style="--pm:${m.color};--pm-light:${m.light};animation-delay:${delay}s" onclick="openPracticeMode('${key}')">
-        ${infoBtn(key)}
+        ${infoBtn(key)}${flag}
         <div class="pm-tile">${PRACTICE_ICONS[m.iconKey] || ''}</div>
         <div class="pm-title">${m.title}</div>
         <div class="pm-desc">${m.tagline}</div>
       </div>`;
   }).join('');
 
-  grid.innerHTML = heroHtml + '<div class="pm-grid">' + rest + '</div>';
+  grid.innerHTML = '<div class="pm-grid">' + cards + '</div>';
 }
 
 function showFreeTab() {
   setActiveNav('free');
+  stopSpeaking();
   freeState.mode = null;
   freeState.prompt = '';
-  freeState.round2 = false;
-  freeState.round1Transcript = '';
-  freeState.followUpQuestion = '';
-  freeState.round1Prompt = '';
+  freeState.difficulty = null;
+  freeState.scenario = null;
+  freeState.runKey = null;
+  freeState.roundIndex = 0;
+  freeState.roundsTotal = 1;
+  freeState.history = [];
+  freeState.debateTopic = '';
   renderFreeGrid();
   resetFreeRecording();
   showScreen('screen-free');
@@ -1974,57 +2034,208 @@ function closeModeInfo(e) {
   document.getElementById('pd-info-overlay').classList.remove('open');
 }
 
+// ── ENTRY ROUTER ──
 function openPracticeMode(mode) {
   freeState.mode = mode;
-  freeState.round2 = false;
-  freeState.round1Transcript = '';
-  freeState.followUpQuestion = '';
-  freeState.round1Prompt = '';
+  freeState.difficulty = null;
+  freeState.scenario = null;
+  freeState.roundIndex = 0;
+  freeState.history = [];
+  freeState.debateTopic = '';
+
+  if (mode === 'open') {
+    // No setup needed — straight in
+    freeState.runKey = 'open';
+    freeState.roundsTotal = 1;
+    enterPracticeDetail(FREE_MODES.open, FREE_MODES.open.prompts[0], 'Your prompt');
+    return;
+  }
+  openPracticeSetup(mode);
+}
+
+// ── SETUP SCREEN ──
+function openPracticeSetup(mode) {
   const m = FREE_MODES[mode];
-
-  // Theme the whole screen to the mode colour (waveform, accents)
   document.documentElement.style.setProperty('--sc', m.color);
-
-  // Header theming
-  const header = document.getElementById('pd-header');
+  const header = document.getElementById('ps-header');
   header.style.setProperty('--pm', m.color);
   header.style.setProperty('--pm-light', m.light);
-  const tile = document.getElementById('pd-tile');
-  tile.innerHTML = PRACTICE_ICONS[m.iconKey] || '';
-  document.getElementById('pd-title').textContent = m.title;
-  document.getElementById('pd-tagline').textContent = m.tagline || m.desc;
-  document.getElementById('pd-why-text').textContent = m.why || '';
+  document.getElementById('ps-tile').innerHTML = PRACTICE_ICONS[m.iconKey] || '';
+  document.getElementById('ps-title').textContent = m.title;
+  document.getElementById('ps-tagline').textContent = m.tagline;
 
-  // Prompt
-  const prompts = m.prompts;
-  freeState.prompt = prompts[Math.floor(Math.random() * prompts.length)];
-  document.getElementById('pd-prompt-text').textContent = freeState.prompt;
-  document.getElementById('pd-prompt-label').textContent = m.isInteractive ? '🔥 Round 1' : 'Your prompt';
-  // Single-prompt modes (Open Mic) don't need a shuffle button
-  document.getElementById('pd-shuffle').style.display = prompts.length > 1 ? 'inline-flex' : 'none';
+  const scSec = document.getElementById('ps-scenario-section');
+  const tpSec = document.getElementById('ps-topic-section');
+  scSec.style.display = mode === 'scenarios' ? 'block' : 'none';
+  tpSec.style.display = mode === 'debate' ? 'block' : 'none';
+
+  if (mode === 'scenarios') renderScenarioList();
+  if (mode === 'debate') { document.getElementById('ps-own-input').value = ''; loadDebateTopics(); }
+
+  renderDiffPills();
+  renderVoicePref();
+  updateStartState();
+  showScreen('screen-practice-setup');
+}
+
+function renderScenarioList() {
+  const list = document.getElementById('ps-scenario-list');
+  list.innerHTML = Object.keys(SCENARIOS).map(key => {
+    const s = SCENARIOS[key];
+    const sel = freeState.scenario === key ? ' sel' : '';
+    return `<button class="ps-row${sel}" onclick="selectScenario('${key}')">
+        <span class="ps-row-ic">${PRACTICE_ICONS[s.iconKey] || ''}</span>
+        <span class="ps-row-text"><span class="ps-row-title">${s.title}</span><span class="ps-row-sub">${s.tagline}</span></span>
+      </button>`;
+  }).join('');
+}
+function selectScenario(key) {
+  freeState.scenario = key;
+  renderScenarioList();
+  updateStartState();
+}
+
+function renderDiffPills() {
+  const wrap = document.getElementById('ps-diff');
+  wrap.innerHTML = DIFFICULTIES.map(d => {
+    const sel = freeState.difficulty === d.key ? ' sel' : '';
+    return `<button class="ps-pill${sel}" onclick="selectDifficulty('${d.key}')">
+        <span class="ps-pill-label">${d.label}</span><span class="ps-pill-sub">${d.blurb}</span>
+      </button>`;
+  }).join('');
+}
+function selectDifficulty(key) {
+  freeState.difficulty = key;
+  renderDiffPills();
+  updateStartState();
+}
+
+function updateStartState() {
+  const m = freeState.mode;
+  let ready = !!freeState.difficulty;
+  if (m === 'debate') ready = ready && !!freeState.debateTopic;
+  if (m === 'scenarios') ready = ready && !!freeState.scenario;
+  const btn = document.getElementById('ps-start');
+  btn.disabled = !ready;
+}
+
+// ── DEBATE TOPICS (AI-generated) ──
+async function loadDebateTopics() {
+  const list = document.getElementById('ps-topic-list');
+  freeState.debateTopic = '';
+  updateStartState();
+  list.innerHTML = '<div class="ps-topics-loading">Thinking up motions…</div>';
+  let topics = null;
+  try {
+    const res = await fetch(getProxyUrl() + '/analyse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 250,
+        messages: [{ role: 'user', content: `Generate 3 debate motions for a speaking-practice exercise. One everyday and playful, one about work or modern life, one genuinely contentious but safe for general audiences (no politics, religion, or tragedy). Each must be a single arguable statement of 14 words or fewer that someone can argue for or against out loud. Return ONLY a JSON array of 3 strings, nothing else.` }]
+      })
+    });
+    if (!res.ok) throw new Error('topic gen failed');
+    const data = await res.json();
+    const raw = (data.content && data.content[0] && data.content[0].text || '').replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length >= 3) topics = parsed.slice(0, 3).map(String);
+  } catch(e) { console.error('Debate topic generation failed:', e); }
+  freeState.debateTopics = topics || DEBATE_FALLBACK_TOPICS.slice();
+  renderTopicList();
+}
+function regenTopics() { loadDebateTopics(); }
+
+function renderTopicList() {
+  const list = document.getElementById('ps-topic-list');
+  list.innerHTML = freeState.debateTopics.map((t, i) => {
+    const sel = freeState.debateTopic === t ? ' sel' : '';
+    return `<button class="ps-row ps-topic${sel}" onclick="selectDebateTopic(${i})"><span class="ps-row-text"><span class="ps-row-title">${t}</span></span></button>`;
+  }).join('');
+}
+function selectDebateTopic(i) {
+  freeState.debateTopic = freeState.debateTopics[i] || '';
+  document.getElementById('ps-own-input').value = '';
+  renderTopicList();
+  updateStartState();
+}
+function useOwnTopic() {
+  const v = (document.getElementById('ps-own-input').value || '').trim();
+  if (v.length < 8) { alert('Give your motion a few more words.'); return; }
+  freeState.debateTopic = v;
+  renderTopicList();
+  updateStartState();
+}
+
+// ── RUN START ──
+function pickFrom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function currentOpenerPool() {
+  const d = freeState.difficulty;
+  if (freeState.mode === 'hotseat') return HOTSEAT_BANK[d] || [];
+  if (freeState.mode === 'scenarios' && freeState.scenario) return (SCENARIOS[freeState.scenario].openers[d]) || [];
+  return [];
+}
+
+function startPracticeRun() {
+  const mode = freeState.mode;
+  const m = FREE_MODES[mode];
+  freeState.runKey = mode === 'scenarios' ? freeState.scenario : mode;
+  freeState.roundsTotal = (ROUNDS_BY_MODE[freeState.runKey] || { low:1, medium:1, high:1, veryhigh:1 })[freeState.difficulty] || 1;
+  freeState.roundIndex = 0;
+  freeState.history = [];
+
+  let opener, label;
+  if (mode === 'debate') {
+    opener = `The motion: "${freeState.debateTopic}" — take a clear side and open your argument.`;
+    label = freeState.roundsTotal > 1 ? `Your opening · Round 1 of ${freeState.roundsTotal}` : 'Your opening';
+  } else {
+    opener = pickFrom(currentOpenerPool()) || 'Talk for two minutes about something you know well.';
+    label = mode === 'scenarios' && freeState.scenario === 'bestman' ? 'Your brief'
+          : (freeState.roundsTotal > 1 ? `Round 1 of ${freeState.roundsTotal}` : 'Your prompt');
+  }
+
+  const display = mode === 'scenarios' ? SCENARIOS[freeState.scenario] : m;
+  enterPracticeDetail({ ...m, title: display.title, tagline: display.tagline || m.tagline, why: display.why || m.why, iconKey: display.iconKey || m.iconKey }, opener, label);
+}
+
+function enterPracticeDetail(meta, opener, label) {
+  const diff = DIFFICULTIES.find(d => d.key === freeState.difficulty);
+  document.documentElement.style.setProperty('--sc', meta.color);
+  const header = document.getElementById('pd-header');
+  header.style.setProperty('--pm', meta.color);
+  header.style.setProperty('--pm-light', meta.light);
+  document.getElementById('pd-tile').innerHTML = PRACTICE_ICONS[meta.iconKey] || '';
+  document.getElementById('pd-title').textContent = meta.title;
+  document.getElementById('pd-eyebrow').textContent = diff ? `Free Practice · ${diff.label}` : 'Free Practice';
+  document.getElementById('pd-tagline').textContent = meta.tagline || '';
+  document.getElementById('pd-why-text').textContent = meta.why || '';
+
+  freeState.prompt = opener;
+  document.getElementById('pd-prompt-text').textContent = opener;
+  document.getElementById('pd-prompt-label').textContent = label;
+  const pool = currentOpenerPool();
+  document.getElementById('pd-shuffle').style.display = (pool.length > 1 && freeState.mode !== 'debate') ? 'inline-flex' : 'none';
 
   resetFreeRecording();
+  renderVoicePref();
   showScreen('screen-practice-detail');
+  speak(opener);
 }
 
 function shufflePracticePrompt() {
-  const m = FREE_MODES[freeState.mode];
-  if (!m) return;
-  const prompts = m.prompts;
+  if (freeState.roundIndex > 0) return;
+  const pool = currentOpenerPool();
+  if (pool.length < 2) return;
   let next = freeState.prompt;
-  if (prompts.length > 1) {
-    while (next === freeState.prompt) next = prompts[Math.floor(Math.random() * prompts.length)];
-  }
+  while (next === freeState.prompt) next = pickFrom(pool);
   freeState.prompt = next;
-  freeState.round2 = false;
-  document.getElementById('pd-prompt-text').textContent = freeState.prompt;
-  document.getElementById('pd-prompt-label').textContent = m.isInteractive ? '🔥 Round 1' : 'Your prompt';
-  resetFreeRecording();
+  document.getElementById('pd-prompt-text').textContent = next;
+  speak(next);
 }
 
-// Back-compat shim: any old caller of selectFreeMode now opens the detail page
-function selectFreeMode(mode) { openPracticeMode(mode); }
-
+// ── RECORDING ──
 function resetFreeRecording() {
   freeState.isRecording = false; freeState.seconds = 0;
   clearInterval(freeState.timerInterval);
@@ -2039,6 +2250,7 @@ function resetFreeRecording() {
 
 async function toggleFreeRecording() {
   if (!freeState.isRecording) {
+    stopSpeaking();
     try {
       const stream = await navigator.mediaDevices.getUserMedia({audio:true});
       initAudioAnalysis(stream);
@@ -2068,19 +2280,28 @@ async function toggleFreeRecording() {
   }
 }
 
+// ── ROUND PIPELINE ──
 function processFreeRecording() {
-  const mode = FREE_MODES[freeState.mode];
-
-  if (mode && mode.isInteractive && !freeState.round2) {
-    processHotSeatRound1();
+  if (freeState.roundIndex < freeState.roundsTotal - 1) {
+    processInterimRound();
     return;
   }
 
+  const mode = FREE_MODES[freeState.mode] || {};
+  const display = freeState.mode === 'scenarios' && freeState.scenario ? SCENARIOS[freeState.scenario] : mode;
+  const diff = DIFFICULTIES.find(d => d.key === freeState.difficulty);
+
+  let promptContext = '';
+  freeState.history.forEach((h, i) => {
+    promptContext += `Q${i+1}: ${h.q}\nTheir answer: "${h.a.slice(0, 220)}"\n`;
+  });
+  promptContext += (freeState.history.length ? 'FINAL QUESTION: ' : '') + freeState.prompt;
+
   const fakeSession = {
-    title: mode?.title || 'Free Practice',
-    what: freeState.round2 ? 'Hot Seat: Round 2 follow-up response' : 'Free practice session',
-    prompt: freeState.round2 ? freeState.round1Prompt + ' | FOLLOW-UP: ' + freeState.followUpQuestion : freeState.prompt,
-    type: freeState.mode,
+    title: display.title || 'Free Practice',
+    what: freeState.history.length ? `${display.title}: multi-round exchange (${freeState.roundsTotal} rounds${diff ? ', ' + diff.label.toLowerCase() + ' difficulty' : ''})` : 'Free practice session',
+    prompt: promptContext,
+    type: freeState.runKey || freeState.mode,
     phase: 2,
     duration: '2 min'
   };
@@ -2089,14 +2310,15 @@ function processFreeRecording() {
     if (!result) return;
     hideLoading();
 
-    if (freeState.round2 && freeState.round1Transcript) {
+    if (freeState.history.length) {
       result.analysis.coachingPoints = result.analysis.coachingPoints || [];
-      result.analysis.coachingPoints.unshift('Round 1 answer: "' + freeState.round1Transcript.slice(0, 100) + '..." → Follow-up: "' + freeState.followUpQuestion + '"');
+      const last = freeState.history[freeState.history.length - 1];
+      result.analysis.coachingPoints.unshift(`This was round ${freeState.roundsTotal} of ${freeState.roundsTotal}. Previous round: "${last.a.slice(0, 90)}..." → "${freeState.prompt.slice(0, 90)}"`);
     }
 
     const rec = {
       id: Date.now(), sessionId: 'free-'+Date.now(),
-      sessionTitle: mode?.title || 'Free Practice',
+      sessionTitle: display.title || 'Free Practice',
       score: result.analysis.overallScore, wpm: result.wpm, fillers: result.fillerCount,
       clarity: result.analysis.scores.clarity, confidence: result.analysis.scores.confidence,
       promptAdherence: result.analysis.scores.promptAdherence, openness: result.analysis.scores.openness,
@@ -2110,15 +2332,16 @@ function processFreeRecording() {
     const btn = document.getElementById('complete-session-btn');
     if(banner){ banner.style.display='none'; }
     if(btn){ btn.textContent='Back to practice'; btn.style.background=''; btn.onclick=showFreeTab; }
-    freeState.round2 = false;
-    freeState.round1Transcript = '';
-    freeState.followUpQuestion = '';
-    freeState.round1Prompt = '';
+    const nudge = document.getElementById('journey-nudge');
+    if (nudge) nudge.style.display = freeState.mode === 'scenarios' ? 'block' : 'none';
+    freeState.roundIndex = 0;
+    freeState.history = [];
   });
 }
 
-async function processHotSeatRound1() {
-  showLoading('Transcribing round 1...', 'Preparing your follow-up...');
+async function processInterimRound() {
+  const roundNo = freeState.roundIndex + 1;
+  showLoading(`Round ${roundNo} heard…`, 'Preparing what comes next…');
   const proxy = getProxyUrl();
 
   const audioBlob = new Blob(freeState.audioChunks, { type: freeState.mediaRecorder?.mimeType || 'audio/webm' });
@@ -2132,54 +2355,35 @@ async function processHotSeatRound1() {
       const data = await whisperRes.json();
       transcript = data.text || '';
     }
-  } catch(e) { console.error('Hot Seat R1 transcription failed:', e); }
+  } catch(e) { console.error('Interim transcription failed:', e); }
 
   if (!transcript || transcript.trim().split(/\s+/).length < 5) {
     hideLoading();
-    alert('We didn\'t catch enough speech for round 1. Try again and speak a bit more.');
+    alert('We didn\'t catch enough speech that round. Have another go at the same question.');
     resetFreeRecording();
     return;
   }
 
-  freeState.round1Transcript = transcript;
-  freeState.round1Prompt = freeState.prompt;
+  freeState.history.push({ q: freeState.prompt, a: transcript });
 
-  showLoading('Generating follow-up...', 'Claude is thinking of a tough one...');
-  try {
-    const claudeRes = await fetch(proxy + '/analyse', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 200,
-        messages: [{ role: 'user', content: `You are an interviewer in a speaking practice exercise. The speaker was asked: "${freeState.prompt}"
-
-Their answer was: "${transcript}"
-
-Generate ONE sharp, specific follow-up question that:
-- Directly challenges, probes, or extends something they said
-- Requires them to think on their feet
-- Feels like a real follow-up a manager, interviewer, or audience member would ask
-- Is 1-2 sentences maximum
-
-Return ONLY the follow-up question, nothing else.` }]
-      })
-    });
-    if (!claudeRes.ok) throw new Error('Claude error');
-    const data = await claudeRes.json();
-    freeState.followUpQuestion = data.content[0].text.trim();
-  } catch(e) {
-    console.error('Follow-up generation failed:', e);
-    freeState.followUpQuestion = 'Can you give me a specific example of what you just described?';
-  }
-
+  showLoading('Generating the next round…', 'Built from what you just said…');
+  const challenge = await generateChallenge(transcript);
   hideLoading();
 
-  freeState.round2 = true;
+  freeState.roundIndex++;
   freeState.audioChunks = [];
+  const n = freeState.roundIndex + 1, N = freeState.roundsTotal;
 
-  document.getElementById('pd-prompt-label').textContent = '🔥 Follow-up question';
-  document.getElementById('pd-prompt-text').textContent = freeState.followUpQuestion;
+  const labels = {
+    debate: `Their counter · Round ${n} of ${N}`,
+    interview: `Next question · Round ${n} of ${N}`,
+    meeting: `The pushback · Round ${n} of ${N}`,
+  };
+  const label = labels[freeState.runKey] || `Follow-up · Round ${n} of ${N}`;
+
+  freeState.prompt = challenge;
+  document.getElementById('pd-prompt-label').textContent = label;
+  document.getElementById('pd-prompt-text').textContent = challenge;
   document.getElementById('pd-shuffle').style.display = 'none';
   document.getElementById('free-record-hint').textContent = 'Tap to record your answer';
   document.getElementById('free-timer').textContent = '0:00';
@@ -2188,6 +2392,56 @@ Return ONLY the follow-up question, nothing else.` }]
   document.getElementById('free-record-btn').textContent = '';
   document.getElementById('free-waveform').classList.remove('active');
   freeState.isRecording = false;
+  speak(challenge);
+}
+
+async function generateChallenge(lastTranscript) {
+  const tone = DIFFICULTY_TONE[freeState.difficulty] || DIFFICULTY_TONE.medium;
+  const personas = {
+    hotseat: 'a sharp interviewer in a speaking-practice exercise',
+    debate: 'their debate opponent',
+    interview: (SCENARIOS.interview && SCENARIOS.interview.persona) || 'the interviewer',
+    meeting: (SCENARIOS.meeting && SCENARIOS.meeting.persona) || 'a colleague pushing back',
+  };
+  const persona = personas[freeState.runKey] || personas.hotseat;
+
+  let exchange = '';
+  freeState.history.forEach((h, i) => {
+    exchange += `Q${i+1}: "${h.q}"\nTheir answer: "${h.a.slice(0, 400)}"\n`;
+  });
+
+  const task = freeState.runKey === 'debate'
+    ? 'Produce a strong counter-argument to their position in 1-2 sentences, then end with one direct challenge question. 45 words maximum total.'
+    : 'Generate ONE follow-up question that directly builds on something they said. 1-2 sentences maximum.';
+
+  const fallbacks = {
+    debate: 'A strong case — but plenty of people see it the opposite way. What\'s the best argument against your position, and why does it fail?',
+    interview: 'Can you give me a specific example that backs up what you just said?',
+    meeting: 'Playing devil\'s advocate — what would you say to someone who thinks that\'s the wrong call?',
+  };
+
+  try {
+    const res = await fetch(getProxyUrl() + '/analyse', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 200,
+        messages: [{ role: 'user', content: `You are ${persona} in a speaking-practice exercise. Your tone: ${tone}.
+
+The exchange so far:
+${exchange}
+${task}
+
+Return ONLY the line you would say to them, nothing else.` }]
+      })
+    });
+    if (!res.ok) throw new Error('challenge gen failed');
+    const data = await res.json();
+    const text = (data.content && data.content[0] && data.content[0].text || '').trim();
+    if (text) return text;
+  } catch(e) { console.error('Challenge generation failed:', e); }
+  return fallbacks[freeState.runKey] || 'Can you give me a specific example of what you just described?';
 }
 
 // ── NAV ──
