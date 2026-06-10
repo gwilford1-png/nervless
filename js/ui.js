@@ -2035,6 +2035,9 @@ function closeModeInfo(e) {
 }
 
 // ── ENTRY ROUTER ──
+// Back-compat: app.js still exports window.selectFreeMode
+function selectFreeMode(mode) { openPracticeMode(mode); }
+
 function openPracticeMode(mode) {
   freeState.mode = mode;
   freeState.difficulty = null;
