@@ -59,7 +59,6 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> You can't stop the amygdala from firing — but you can train your brain to recover faster and let the rational mind take back control.</div>
       </div>`,
     quiz: [
-      { q: "What is the amygdala's primary role?", options: ["Controlling speech and language","Storing long-term memories","Scanning for threat and triggering alarm responses","Managing social relationships"], correct: 2, explanation: "The amygdala is your brain's alarm system — fast, powerful, and not very nuanced. It fires first, asks questions later." },
       { q: "Why do physical symptoms of anxiety appear before you've 'decided' to be nervous?", options: ["Because anxiety is irrational","Because the amygdala acts faster than your conscious mind","Because your body is weaker than your mind","Because you haven't trained yourself enough yet"], correct: 1, explanation: "The amygdala bypasses your rational prefrontal cortex — it's a faster circuit. Your hands are shaking before you've consciously processed the situation." }
     ]
   },
@@ -117,8 +116,6 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Your anxiety pattern is specific to you — your triggers, history, and fears. Mapping it precisely is more valuable than generic reassurance.</div>
       </div>`,
     quiz: [
-      { q: "Why is understanding your specific anxiety pattern more useful than general anxiety advice?", options: ["It isn't — general advice works for everyone","Because it lets you avoid your specific triggers","Because targeted work on your actual pattern is more efficient than generic approaches","Because it helps you explain your anxiety to others"], correct: 2, explanation: "General advice addresses average patterns. Your anxiety has a specific shape — specific triggers, specific fears, specific history. Working with that specificity is far more powerful." },
-      { q: "What is the purpose of mapping your anxiety profile in detail?", options: ["To prove how anxious you are","To diagnose the problem precisely so you can work on it accurately","To find excuses to avoid certain situations","To compare yourself to other speakers"], correct: 1, explanation: "The anxiety profile is diagnostic, not self-critical. The clearer you can see the pattern, the more precisely we can target the work. It's information, not judgement." }
     ]
   },
   28: {
@@ -135,9 +132,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Interviewers expect nerves. What they're assessing is clarity, relevance, and whether you can hold a coherent thought under pressure — not whether you're perfectly calm.</div>
       </div>`,
     scenario: { description: "The interviewer asks: 'Tell me about yourself.' You have about 2 minutes.", options: ["Chronological: education, career path, where you are now", "Problem-solver: focus on a challenge you solved and what it shows about you", "Future-focused: where you're headed and why this role fits"] },
+    reminder: "Hold a structure, not a script — frames survive pressure; memorised answers don't.",
     quiz: [
-      { q: "What are interviewers actually assessing when they ask 'Tell me about yourself'?", options: ["How impressive your CV is","Whether you can recite your work history accurately","Clarity, relevance, and whether you can hold a coherent story under pressure","How confident and polished you sound"], correct: 2, explanation: "The question is an invitation to demonstrate structured thinking and self-awareness under mild pressure. Interviewers know it triggers anxiety. They're watching for coherence and relevance — not perfection." },
-      { q: "Why is having a prepared structure more useful than memorising answers?", options: ["Because memorised answers sound robotic","Structures are flexible frames that hold answers together when anxiety empties the mind","Because structures are easier to remember than specific answers","Because every interview question is different"], correct: 1, explanation: "Memorised answers fail when you get a slightly different question — you have nowhere to go. Structures (situation-action-result, who-what-why-offer) are frameworks you can fill in real time, giving you direction even when anxiety is high." }
     ]
   },
   29: {
@@ -155,7 +151,6 @@ const LESSON_CONTENT = {
       </div>`,
     scenario: { description: "You're presenting a recommendation to the leadership team. Someone senior pushes back: 'I'm not sure this is the right approach.'", options: ["Acknowledge their concern, then restate your evidence calmly", "Ask what specifically concerns them before responding", "Stand firm and explain why the data supports your position"] },
     quiz: [
-      { q: "What is the 'authority trap' in speaking?", options: ["Being too aggressive when speaking to people above you","Shrinking — hedging, over-explaining, pre-emptively apologising — in response to a felt status difference","Trying to impress senior people with technical knowledge","Speaking too formally in hierarchical situations"], correct: 1, explanation: "The authority trap is the instinctive shrinking that happens when status anxiety activates. It shows up in language — hedges, apologies, qualifications — that signals uncertainty rather than the confidence the speaker actually has." },
       { q: "What is the difference between intellectual integrity and capitulation when handling pushback?", options: ["Capitulation is faster","Intellectual integrity means always holding your position","Changing your view because of a good argument is integrity; changing it because of a question or authority is capitulation","There is no meaningful difference"], correct: 2, explanation: "Immediately conceding when a senior person questions you isn't humility — it's anxiety-driven capitulation. Genuinely updating your view when presented with better evidence or reasoning is intellectual integrity. The distinction matters for credibility." }
     ]
   },
@@ -173,9 +168,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> A calm, direct answer to a hostile question is the most powerful response. Defensiveness signals the attack landed. Composure signals it didn't.</div>
       </div>`,
     scenario: { description: "After your presentation, someone asks a pointed question designed to expose a weakness in your argument.", options: ["Pause, acknowledge the valid part, then answer directly", "Redirect to the strengths of your overall argument", "Be honest that you don't have a complete answer yet"] },
+    reminder: "Pause before you answer — and never open with an apology.",
     quiz: [
-      { q: "Why is the pause before answering a difficult question so important?", options: ["To show you're taking the question seriously","It signals composure, gives your rational brain time to engage, and is itself a confidence signal","To buy time to think of a deflection","Because silence makes the questioner uncomfortable"], correct: 1, explanation: "The pause does multiple things simultaneously: it prevents a defensive reflex, allows the prefrontal cortex to re-engage after the amygdala spike, and signals to the room that you are not rattled. Most people rush because silence feels dangerous — which is why taking it signals the opposite." },
-      { q: "Why should you never begin a response to a difficult question with an apology?", options: ["Because apologies are unprofessional","Apologising signals that the challenge was accurate before you've even answered it","Because it wastes valuable answer time","Because senior people find it irritating"], correct: 1, explanation: "An opening apology — 'I'm sorry, I should have...' — concedes the questioner's implicit criticism before you've addressed it. It signals that the attack landed. A direct answer without apology signals that you're engaging with the substance, not the subtext." }
     ]
   },
   31: {
@@ -192,9 +186,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Bad news delivered clearly with a plan is respected. Bad news buried in hedges and apology is alarming. Structure and directness are acts of respect for the listener.</div>
       </div>`,
     timedSeconds: 90,
+    reminder: "What happened → impact → action → prevention.",
     quiz: [
-      { q: "What is the four-part structure for effective crisis communication?", options: ["Apologise, explain, reassure, close","What happened, impact, action, prevention","Context, problem, blame, solution","Acknowledge, justify, minimise, move on"], correct: 1, explanation: "What happened (facts), impact (consequences), action (what you're doing), prevention (what stops this recurring). This structure answers the four questions the listener needs before they can regulate their response. It signals accountability and control simultaneously." },
-      { q: "Why does over-explaining during crisis communication make things worse?", options: ["Because it wastes time","It signals that you are trying to manage the listener's reaction rather than inform them — which looks like panic, not control","Because listeners don't have time for detail","Because it reveals more problems than necessary"], correct: 1, explanation: "Over-explanation is an anxiety response — filling silence to avoid the discomfort of the listener's reaction. But listeners read it as loss of control. State the facts, the impact, the plan, and stop. Silence after delivering difficult news is a sign of steadiness, not weakness." }
     ]
   },
   32: {
@@ -211,9 +204,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Negotiating is professional and expected. The most powerful move is to make a clear, specific ask and then stay silent. Retreating immediately after pushback signals you didn't believe in your own position.</div>
       </div>`,
     scenario: { description: "You're asking for a raise. Your manager says: 'That's above our budget for this cycle.'", options: ["Acknowledge the constraint, then ask what flexibility exists", "Restate your value and the market data supporting your ask", "Suggest a phased approach — partial now, remainder at next review"] },
+    reminder: "Don't retreat at the first pushback — hold your position, or trade. Never fold.",
     quiz: [
-      { q: "What is the 'anchor effect' in negotiation and why does it matter?", options: ["The feeling of being stuck in a negotiation","The first number stated has disproportionate influence on the final outcome","The technique of repeating your position multiple times","When both sides refuse to move"], correct: 1, explanation: "Anchoring is a well-documented cognitive bias — the first number mentioned in a negotiation sets a reference point that all subsequent discussion orbits around. If you anchor high (with justification), you'll settle higher. If you anchor low or let the other side anchor first, you'll typically settle lower." },
-      { q: "What does immediately retreating after pushback signal to the other party?", options: ["That you're reasonable and flexible","That you didn't believe in your original position — which undermines your credibility","That you understand their constraints","That you're eager to reach an agreement"], correct: 1, explanation: "Immediate retreat after 'That's too much' signals that your opening position was inflated — which the other side will remember. Holding your position, acknowledging their constraint, and asking what flexibility exists is both more credible and more likely to result in a better outcome." }
     ]
   },
   33: {
@@ -230,9 +222,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> The measure of a good presentation isn't perfection — it's coherence under stress. Can you hold your structure when anxiety peaks? That's the real skill.</div>
       </div>`,
     timedSeconds: 180,
+    reminder: "Hook → problem → evidence → solution → call to action.",
     quiz: [
-      { q: "What are the five elements of a well-structured presentation?", options: ["Introduction, background, content, summary, conclusion","Hook, problem, evidence, solution, call to action","Opening, body, examples, argument, close","Context, issue, analysis, recommendation, next steps"], correct: 1, explanation: "Hook (earns attention), Problem (creates stakes), Evidence (builds credibility), Solution (answers the problem), Call to action (gives the listener something to do). This structure works because each element answers a specific question in the listener's mind." },
-      { q: "Why do most presentations fail to hook the audience at the start?", options: ["Because they don't practise the opening enough","They start with context ('Today I want to talk about...') which gives the audience no reason to lean in","Because audiences have short attention spans","Because the opening is the hardest part to prepare"], correct: 1, explanation: "Context-first openings ('Today I'll be covering...') are the default because they feel safe. But they give the audience no reason to pay attention. A hook starts with something surprising, provocative, or immediately relevant to the listener's situation — earning their attention rather than assuming it." }
     ]
   },
   21: {
@@ -248,9 +239,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-icon">💬</div>
         <div class="key-insight-text"><strong>Key insight:</strong> The goal is never to sound like a good speaker in general. It's to sound like the most fully developed version of yourself as a speaker specifically.</div>
       </div>`,
+    reminder: "Specificity is the engine — the details only you could give.",
     quiz: [
-      { q: "Why does trying to sound like a 'good speaker' often backfire?", options: ["Because audiences prefer informal speech","It produces generic confidence that is forgettable rather than distinctive and memorable","Because it requires too much preparation","Good speakers are intimidating to listen to"], correct: 1, explanation: "Generic polish sounds like everyone else who has tried to improve their speaking. What makes speakers memorable is specificity — the particular details, perspectives, and stories that only they could deliver. Trying to sound impressive often erases exactly what makes someone worth listening to." },
-      { q: "What is the engine of memorable communication?", options: ["Volume and projection","Confidence and authority","Specificity — the particular details that only you could provide","Polish and preparation"], correct: 2, explanation: "Specific details — the exact place, the precise feeling, the particular story — are what lodge in memory. Generalities wash over listeners. The more specific you are, the more real and human you become to your audience." }
     ]
   },
   22: {
@@ -266,9 +256,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-icon">📖</div>
         <div class="key-insight-text"><strong>Key insight:</strong> A story's power comes from the complication — what was at stake, what went wrong, what had to be navigated. Without complication, there is no story, just a sequence of events.</div>
       </div>`,
+    reminder: "Don't linger on the setup. The complication and the action are where the interest lives.",
     quiz: [
-      { q: "What is 'neural coupling' and why does it matter for storytelling?", options: ["A technique for memorising stories","When the listener's brain mirrors the storyteller's, creating shared experience","The connection between emotion and memory","How the brain stores narrative information"], correct: 1, explanation: "Neural coupling means the listener's brain activates as if experiencing the events of the story directly. This is why stories bypass analytical evaluation — they create experience rather than just transmitting information. It's the neurological basis of why stories are so persuasive." },
-      { q: "What is the most common storytelling mistake?", options: ["Making the story too personal","Too much detail in the complication","Spending too long on the situation and rushing the complication and action — where the interest lives","Not having a clear beginning"], correct: 2, explanation: "People instinctively over-explain the setup and rush what actually matters — the problem, the tension, the choice. The complication and action are where listener engagement peaks. The situation should be brief; the complication should breathe." }
     ]
   },
   23: {
@@ -286,7 +275,6 @@ const LESSON_CONTENT = {
       </div>`,
     quiz: [
       { q: "Why do anxious speakers tend to strip emotion from their voice?", options: ["Because emotion makes them sound less credible","As a control mechanism — if I don't show emotion, I can't lose control of it","Because audiences prefer neutral delivery","Because emotional speaking uses more cognitive resources"], correct: 1, explanation: "Emotional neutrality is a coping strategy for anxiety — it feels like control. But the cost is connection. Words without feeling don't land in the same way. The listener can hear that something is being withheld, even if they can't name it." },
-      { q: "What is the difference between performed emotion and genuine emotion in speaking?", options: ["There is no difference — all emotion in speaking is performance","Performed emotion feels manipulative; genuine emotion that's been allowed to surface feels human","Performed emotion is more effective because it's controlled","Genuine emotion is only appropriate in personal conversations"], correct: 1, explanation: "Audiences are extremely sensitive to authenticity. Performed emotion — laid on top of neutral delivery — reads as manipulation. Genuine emotion that the speaker has given themselves permission to feel reads as human and trustworthy. The difference is felt, not analysed." }
     ]
   },
   24: {
@@ -303,8 +291,6 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Genuine humour comes from truth and specificity, not from trying to be funny. The more honest and specific the observation, the more naturally the comedy emerges.</div>
       </div>`,
     quiz: [
-      { q: "Why does trying to be funny usually make speaking less funny?", options: ["Because audiences don't appreciate humour in professional contexts","When you can see someone trying to be funny, the comedy dies — performed humour lacks authenticity","Because humour requires rehearsal to land properly","Because funny people are naturally funny and it can't be learned"], correct: 1, explanation: "Performed humour — where the intention to be funny is visible — creates distance. The audience becomes a judge rather than a participant. Genuine humour emerges naturally from honest observation of real situations. You can't perform your way to funny; you can notice your way there." },
-      { q: "What makes self-deprecating humour effective for speakers?", options: ["It makes the speaker seem less threatening","It signals both confidence and humanity — and disarms the evaluative stance of listeners","It gets a guaranteed laugh","It shifts attention away from the speaker's weaknesses"], correct: 1, explanation: "Self-deprecation works on multiple levels: it signals that you're secure enough to laugh at yourself (confidence), that you're human and imperfect (relatability), and that you're not performing a polished persona (authenticity). All of these reduce the distance between speaker and listener." }
     ]
   },
   25: {
@@ -321,8 +307,6 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Developing your voice isn't about adding things — it's about removing the interference that stops your natural voice from coming through clearly.</div>
       </div>`,
     quiz: [
-      { q: "What is the most persistent myth about improving as a speaker?", options: ["That practice makes perfect","That there's an ideal speaking style to move toward — when actually the goal is to develop your own","That confidence is the most important quality","That preparation eliminates anxiety"], correct: 1, explanation: "The idea that there's a correct speaking style causes enormous damage — it makes people try to speak like someone else, which erases specificity and authenticity. The goal is never to speak like a great speaker in general. It's to speak like the most developed version of yourself specifically." },
-      { q: "What does 'developing your voice' actually involve?", options: ["Adding new techniques and frameworks","Copying successful communicators you admire","Removing the anxiety, performance, and self-consciousness that interfere with your natural voice","Practising until speaking feels effortless"], correct: 2, explanation: "Your natural voice — the one that emerges when you're relaxed, engaged, and not performing — is already good. The work isn't about adding a better voice on top of it. It's about removing the interference that suppresses it: the anxiety, the self-monitoring, the performance." }
     ]
   },
   26: {
@@ -338,9 +322,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-icon">🤝</div>
         <div class="key-insight-text"><strong>Key insight:</strong> Performance anxiety is self-focused attention. Connection is other-focused attention. Shifting from "how am I doing?" to "is this landing for them?" changes everything downstream.</div>
       </div>`,
+    reminder: "Speak to one person, not the room — make it a conversation.",
     quiz: [
-      { q: "What is the difference between 'performance orientation' and 'connection orientation'?", options: ["Performance orientation is more professional; connection is more casual","Performance orientation focuses on how you're coming across; connection orientation focuses on whether it's landing for the listener","Connection orientation is less prepared","Performance orientation requires an audience; connection orientation works one-on-one"], correct: 1, explanation: "Performance orientation keeps attention on the self — being evaluated, being judged. Connection orientation shifts attention to the other person — their understanding, their response, their needs. This shift resolves much of the self-consciousness that drives anxiety." },
-      { q: "Why does speaking to 'one person' rather than 'the room' reduce anxiety?", options: ["Because individuals are less intimidating than groups","It transforms performance into conversation — a context where most people are naturally comfortable","Because you can make eye contact with one person","Because one person gives more feedback than a group"], correct: 1, explanation: "Most people who struggle with public speaking are comfortable in conversation. Speaking to one real person — even imagined — activates the same neural and emotional systems as conversation rather than performance. The anxiety of 'audience' disappears when it becomes 'person'." }
     ]
   },
   27: {
@@ -356,9 +339,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-icon">⭐</div>
         <div class="key-insight-text"><strong>Key insight:</strong> A signature story isn't about being impressive — it's about being specific and true. The best ones end with insight, not triumph. Insight is more relatable than success.</div>
       </div>`,
+    reminder: "Signature means specific, true and revealing — a story only you could tell.",
     quiz: [
-      { q: "What makes a signature story 'signature'?", options: ["It's your most impressive achievement","It's dramatic and emotionally powerful","It's specific, true, reveals character, and only you could tell it","It's rehearsed until it's perfectly delivered"], correct: 2, explanation: "A signature story isn't defined by its drama or impressiveness. It's defined by specificity and character — it reveals something genuine about who you are and what you've learned. Its value is that it's unrepeatable by anyone else." },
-      { q: "Why do the most powerful signature stories end with insight rather than triumph?", options: ["Because audiences are cynical about success stories","Because insight is more relatable than triumph — everyone has struggled, not everyone has succeeded","Because triumph sounds arrogant","Because insight is more memorable than outcomes"], correct: 1, explanation: "Triumph creates distance — not everyone relates to winning. Insight — something genuinely learned from difficulty, failure, or unexpected experience — creates connection. It signals honesty and self-awareness, which are far more compelling than achievement." }
     ]
   },
   6: {
@@ -375,8 +357,6 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Breathing is the only autonomic function you can consciously control — making it the fastest, most accessible tool for managing anxiety in real time.</div>
       </div>`,
     quiz: [
-      { q: "Why does shallow, fast breathing make anxiety worse rather than better?", options: ["It doesn't — fast breathing always helps calm you down","It signals danger to the brain, which releases more adrenaline","It reduces oxygen to the brain","It makes your voice sound nervous"], correct: 1, explanation: "Shallow breathing is part of the fight-or-flight response. It signals to your brain that you're in danger, which triggers more adrenaline — creating a feedback loop that escalates anxiety." },
-      { q: "What specifically makes box breathing effective at reducing anxiety?", options: ["It distracts your mind from being nervous","The exhale activates the vagus nerve, slowing the heart rate","It increases oxygen levels in the blood","It gives you something to count instead of worrying"], correct: 1, explanation: "The exhale phase activates the vagus nerve — the main pathway of the parasympathetic nervous system. This directly signals the heart to slow down. It's a physiological response, not just distraction." }
     ]
   },
   7: {
@@ -393,7 +373,6 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Physical tension and anxiety reinforce each other. Releasing tension in the body directly reduces the feeling of anxiety — not just the symptoms of it.</div>
       </div>`,
     quiz: [
-      { q: "Why is jaw tension particularly important for speakers to address?", options: ["Because it causes headaches","Because jaw tension directly affects voice quality and resonance","Because it makes you look nervous","Because it affects how clearly you pronounce words"], correct: 1, explanation: "The jaw is directly connected to vocal resonance. A tense jaw produces a tighter, less resonant voice. Releasing it opens your natural vocal range and lowers your register — making you sound more calm and authoritative." },
       { q: "What is the relationship between physical tension and the feeling of anxiety?", options: ["Tension is just a symptom — it doesn't affect anxiety itself","They reinforce each other — releasing tension reduces anxiety, not just its symptoms","Tension is always caused by anxiety, never the other way around","Physical relaxation only affects the body, not the mind"], correct: 1, explanation: "The body-mind connection runs both ways. Just as anxiety creates tension, releasing tension signals safety to the nervous system — directly reducing the experience of anxiety, not just its physical symptoms." }
     ]
   },
@@ -410,9 +389,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-icon">🤫</div>
         <div class="key-insight-text"><strong>Key insight:</strong> Silence feels much longer to the speaker than to the listener. A 2-second pause that feels uncomfortable to you sounds like authority to the room.</div>
       </div>`,
+    reminder: "A pause beats an 'um' every time. Silence isn't a threat — let it sit.",
     quiz: [
-      { q: "Why do filler words like 'um' and 'like' appear when we speak?", options: ["Because we haven't prepared enough","As a nervous reflex to fill silence that feels uncomfortable","Because our vocabulary isn't strong enough","Because we're speaking too quickly"], correct: 1, explanation: "Filler words are a comfort reflex — silence feels threatening, so we fill it automatically. It's not about vocabulary or preparation. It's about your relationship with silence." },
-      { q: "What is the most effective way to reduce filler words?", options: ["Think hard about not saying them","Prepare more thoroughly before speaking","Get comfortable with silence so your brain stops treating it as a threat","Speak faster so there's less time for fillers"], correct: 2, explanation: "Telling yourself 'don't say um' creates self-consciousness that makes things worse. The real fix is practising silence — letting gaps exist and breathe — until your nervous system stops treating silence as dangerous." }
     ]
   },
   9: {
@@ -429,8 +407,6 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Anxiety lives in anticipation of the future or rumination about the past. Sensory grounding forces the brain into the present — where anxiety cannot survive.</div>
       </div>`,
     quiz: [
-      { q: "What is an 'amygdala hijack' and why does it cause mind blanks?", options: ["When you forget what you were going to say","When the threat system fires so strongly it temporarily takes the thinking brain offline","When you speak too fast and lose your train of thought","When physical anxiety symptoms become too distracting"], correct: 1, explanation: "An amygdala hijack is when the fear response is so intense it overrides the prefrontal cortex — your thinking brain. This is why mind blanks feel sudden and total. The rational mind has literally been taken offline by the survival system." },
-      { q: "Why must the 5-4-3-2-1 technique be done slowly and genuinely?", options: ["To make it last long enough to work","Because rushing it signals more anxiety to the brain","It works through genuine sensory attention, not just recitation","To give yourself time to remember the next step"], correct: 2, explanation: "The technique works by genuinely engaging the senses — which activates different neural pathways to the anxiety loop. Rushing through it as a checklist doesn't engage the senses. You need to actually see, feel, and hear each item." }
     ]
   },
   10: {
@@ -446,9 +422,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-icon">🎙️</div>
         <div class="key-insight-text"><strong>Key insight:</strong> Your voice isn't just communicating to others — it's communicating to you. A projected, chest-resonant voice signals confidence to your own nervous system.</div>
       </div>`,
+    reminder: "Project, don't shout — it's direction and resonance, not raw volume.",
     quiz: [
-      { q: "Why does speaking quietly when anxious tend to make anxiety worse?", options: ["Because people ask you to repeat yourself, which is embarrassing","Your brain interprets your own quiet voice as evidence of low confidence, increasing anxiety","Because you can't hear your own mistakes","Because quiet speaking uses more energy"], correct: 1, explanation: "The feedback loop runs both ways. Just as anxiety makes you speak quietly, speaking quietly sends a 'I'm not confident' signal to your own brain — which increases the anxiety. Deliberately projecting breaks this loop." },
-      { q: "What is the difference between projecting and shouting?", options: ["There is no real difference — both are just louder","Projection is about direction and resonance, not raw volume","Shouting is for large rooms, projection is for small ones","Projection uses the chest voice, shouting uses the throat voice"], correct: 1, explanation: "Projection is intentional — directing your voice with energy and resonance toward your audience. Shouting is just increased volume without control. Projected speech comes from the chest and feels grounded; shouting feels forced and tight." }
     ]
   },
   11: {
@@ -465,8 +440,6 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> A pre-speech routine works through conditioned association — the more consistently you use it, the stronger the automatic calm response becomes.</div>
       </div>`,
     quiz: [
-      { q: "Why do elite performers use pre-performance routines?", options: ["To pass the time before performing","Because predictability signals safety to the nervous system — 'we've done this before'","To show the audience they take it seriously","To physically warm up their body"], correct: 1, explanation: "Routines work through neural conditioning. Repeating the same sequence before a high-stakes moment teaches the nervous system to associate that sequence with safety and readiness. Over time, starting the routine triggers an automatic calm response." },
-      { q: "What are the three elements of an effective pre-speaking routine?", options: ["Preparation, rehearsal, and review","Breathing, physical tension release, and a grounding moment","Visualisation, affirmation, and movement","Warm-up, practice, and recovery"], correct: 1, explanation: "These three elements address the three levels of the anxiety response: breathing addresses the physiological (heart rate, breath); tension release addresses the physical (muscle tension); grounding addresses the mental (pulling attention to the present)." }
     ]
   },
   12: {
@@ -483,7 +456,6 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Anxiety and excitement are physiologically identical. The only difference is the label. Saying "I'm excited" out loud shifts the interpretation — and measurably improves performance.</div>
       </div>`,
     quiz: [
-      { q: "What did Harvard research find about reframing anxiety as excitement?", options: ["It made people more anxious because they were pretending","It had no effect compared to calming techniques","People who said 'I am excited' performed measurably better","It only works for mild anxiety, not severe cases"], correct: 2, explanation: "Alison Wood Brooks' research showed that saying 'I am excited' out loud — compared to trying to calm down — improved performance on public speaking, math tests, and singing. The reframe works because it uses the arousal rather than fighting it." },
       { q: "Why is 'I'm excited' more effective than 'calm down' as a pre-speech strategy?", options: ["Because excitement is always better than calmness","Reframing works with the body's arousal state; trying to calm down fights it","Because saying it out loud makes you believe it","Because 'calm down' is too negative a phrase"], correct: 1, explanation: "Trying to calm down is trying to reduce physiological arousal — which is very difficult in the moment. Reframing to excitement keeps the same arousal level but channels it into a positive, approach-oriented emotion. You're working with your biology, not against it." }
     ]
   },
@@ -502,7 +474,6 @@ const LESSON_CONTENT = {
       </div>`,
     quiz: [
       { q: "What is the critical rule when working through an anxiety hierarchy?", options: ["Move up as quickly as possible to build momentum","Skip rungs that seem too similar","Never skip rungs — work each level until anxiety drops before moving up","Always start at the most feared situation for maximum impact"], correct: 2, explanation: "Moving too fast defeats the purpose. You need to stay at each rung long enough for your nervous system to habituate — to learn that this level is safe. Only when your anxiety at that level has significantly reduced should you move up." },
-      { q: "Why is a specific fear more useful than a general one in exposure therapy?", options: ["Because specific fears are less serious","General fears can't be treated","Specificity gives you something concrete to practice and measure progress against","Because specific fears are easier to avoid"], correct: 2, explanation: "Vague fears ('public speaking') are hard to address because there's nothing concrete to practise. Specific fears ('answering an unexpected question in a team meeting') give you an exact situation to rehearse, approach gradually, and measure your response to." }
     ]
   },
   14: {
@@ -519,7 +490,6 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> The discomfort of hearing your recorded voice is itself exposure work. Getting comfortable with how you sound is a prerequisite for getting comfortable with how others hear you.</div>
       </div>`,
     quiz: [
-      { q: "Why do most people dislike the sound of their recorded voice?", options: ["Because recording equipment distorts the voice","Because the recorded voice is different from the internally-heard voice, which has added bass and resonance","Because anxious people have objectively worse voices","Because we're more self-critical when we can't change what's happening"], correct: 1, explanation: "You hear your own voice through bone conduction as well as air — which adds lower frequencies. Others only hear the air-conducted version. Your recorded voice is actually what everyone hears; the internal version is a distortion." },
       { q: "Why is 'speaking to yourself with a recording' a meaningful first step even though there's no audience?", options: ["It isn't — you need an audience for real exposure practice","For many people with anxiety, even this step produces anxiety — making it real exposure work","It's mainly useful for getting used to the sound of your voice","It's a warm-up before the real practice begins"], correct: 1, explanation: "The anxiety hierarchy starts where anxiety actually exists — and for many people, even speaking alone with a microphone produces measurable anxiety. This is real exposure, not a warm-up. The nervous system is being trained from the very first recording." }
     ]
   },
@@ -537,8 +507,6 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Passion shifts attention from self-monitoring to subject — which is the same mental shift that reduces performance anxiety. Talking about what you love is the clearest window into your natural speaking voice.</div>
       </div>`,
     quiz: [
-      { q: "Why do filler words and anxiety symptoms reduce when people talk about something they love?", options: ["Because they've rehearsed those topics more","Passion shifts attention from self-monitoring to subject, reducing the anxiety feedback loop","Because passion topics are always simpler to explain","Because the brain relaxes when talking about positive things"], correct: 1, explanation: "Speaking anxiety is partly maintained by self-focused attention — monitoring your own performance. Passion shifts attention outward to the topic and the ideas. This reduces the self-monitoring that fuels anxiety, allowing natural speaking to emerge." },
-      { q: "What is the purpose of an 'easy' passion session early in the exposure phase?", options: ["To give you a break from challenging work","To experience what your natural voice feels like — giving you something concrete to aim for","To build confidence before the hard sessions","Because passion topics are the only safe starting point"], correct: 1, explanation: "You need to know what you're working toward. Experiencing your natural, unguarded voice — the one that emerges when you're talking about something you love — gives you a felt sense of the goal. That embodied reference point is essential." }
     ]
   },
   16: {
@@ -555,9 +523,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Most people fear introductions because they've never practised them. Preparation doesn't make you sound fake — it makes you sound ready.</div>
       </div>`,
     scenario: { description: "You've just joined a new team. The manager says: 'Let\'s go around the room — name, role, and one interesting thing about you.'", options: ["Keep it brief and professional", "Lead with something personal or funny", "Focus on what you bring to the team"] },
+    reminder: "Aim for ready, not rehearsed: confident, clear, warm.",
     quiz: [
-      { q: "What is the specific anxiety that makes introductions harder than other speaking situations?", options: ["They're usually unplanned","The length is hard to judge","You are the subject — people are forming first impressions with nowhere to hide behind a topic","They happen in front of strangers"], correct: 2, explanation: "In most speaking situations, attention is on a topic or task. In an introduction, attention is on you. This activates evaluation anxiety — the fear of being judged — more directly than almost any other speaking scenario." },
-      { q: "What is the difference between sounding 'rehearsed' and sounding 'ready'?", options: ["There is no real difference","Rehearsed sounds stilted and robotic; ready sounds confident, clear, and warm","Ready means you've practised more times","Rehearsed is for formal situations; ready is for casual ones"], correct: 1, explanation: "Over-rehearsal can produce mechanical delivery — because you're reciting rather than communicating. The goal of practice is to internalise the structure and content so you can deliver it naturally. Prepared but flexible, not scripted." }
     ]
   },
   17: {
@@ -573,9 +540,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-icon">💭</div>
         <div class="key-insight-text"><strong>Key insight:</strong> You don't need to have an instant perfect answer. You need a reliable structure that organises your thinking under pressure. Position → Reason → Example works in almost any situation.</div>
       </div>`,
+    reminder: "Caught off guard? Take a visible breath, buy a moment with a composure phrase, then: Position → Reason → Example.",
     quiz: [
-      { q: "What is the most effective thing to do in the first 2-3 seconds when called on unexpectedly?", options: ["Start speaking immediately to show confidence","Apologise for not being prepared","Take a visible breath and buy yourself a moment with a composure phrase","Ask someone else to answer instead"], correct: 2, explanation: "An immediate pause — a visible breath, a brief composure phrase — signals calm rather than panic. It buys your prefrontal cortex time to come back online after the initial amygdala spike. Jumping in immediately without thinking often produces the rambling answer you were trying to avoid." },
-      { q: "What is the Position → Reason → Example structure?", options: ["A way to extend your answer when you don't know enough","A structure that organises spontaneous answers — state your view, give one reason, give one example","A formal debate technique only useful in presentations","A way to sound more academic and credible"], correct: 1, explanation: "PRE (Position-Reason-Example) is the skeleton of clear verbal communication. It works in interviews, unexpected questions, meetings, and presentations. Because it has a natural endpoint, it prevents the rambling that comes from answering without structure." }
     ]
   },
   18: {
@@ -592,9 +558,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Acknowledging a counterargument doesn't weaken your position — it strengthens it. It signals that you've thought carefully, not that you're unsure.</div>
       </div>`,
     scenario: { description: "In a team meeting, your manager asks: 'What does everyone think about this new approach?' The room goes quiet.", options: ["State your position directly with one clear reason", "Acknowledge both sides before giving your view", "Ask a clarifying question first to buy time"] },
+    reminder: "Acknowledge the counterargument — it makes your position stronger, not weaker.",
     quiz: [
-      { q: "What is 'competence anxiety' and how is it different from general speaking anxiety?", options: ["It's the same thing — just a different name","Competence anxiety is the fear of being judged for your thinking, not just your delivery","Competence anxiety only affects experts","General anxiety is about physical symptoms; competence anxiety is about not having enough to say"], correct: 1, explanation: "General speaking anxiety is often about performance — voice, delivery, forgetting. Competence anxiety is specifically about content — being judged naive, uninformed, or intellectually inadequate. These often coexist but require different work." },
-      { q: "Why does acknowledging a counterargument make your position stronger, not weaker?", options: ["It doesn't — admitting doubt always reduces credibility","It shows you've considered multiple perspectives, signalling careful thinking rather than defensiveness","It gives you more to talk about","It makes the audience feel you're being fair"], correct: 1, explanation: "Refusing to acknowledge counterarguments looks defensive or naive. Engaging with the strongest objection to your view — and explaining why you still hold it — demonstrates intellectual confidence and careful reasoning. This is what credible thinking looks like." }
     ]
   },
   19: {
@@ -610,9 +575,8 @@ const LESSON_CONTENT = {
         <div class="key-insight-icon">🗂️</div>
         <div class="key-insight-text"><strong>Key insight:</strong> Most communication problems are structure problems. PRE — Point, Reason, Example — works in almost every spoken context because it leads with the conclusion and then explains it.</div>
       </div>`,
+    reminder: "Lead with your point. Destination first, then the journey.",
     quiz: [
-      { q: "What is the most common structural mistake in verbal communication?", options: ["Using too many examples","Speaking for too long","Burying the point — giving context and reasoning before stating the conclusion","Not using formal enough language"], correct: 2, explanation: "People naturally deliver ideas in the order they thought of them — which is often background first, conclusion last. But listeners need the point first to make sense of everything that follows. Burying the conclusion makes even good thinking sound disorganised." },
-      { q: "Why does leading with your point feel counterintuitive but work better?", options: ["Because it's shorter","Because audiences have short attention spans","We instinctively build up to conclusions, but listeners need the destination first to follow the journey","Because it's the formal academic convention"], correct: 2, explanation: "Verbally, we tend to work our way toward a conclusion the same way we reasoned toward it. But listeners haven't done that reasoning — they need the conclusion first so they know what they're listening for. PRE restructures delivery for the listener, not the speaker." }
     ]
   },
   20: {
@@ -630,8 +594,6 @@ const LESSON_CONTENT = {
       </div>`,
     scenario: { description: "You're presenting a project update to a group that includes your skip-level manager. You have 2 minutes.", options: ["Lead with the headline result, then fill in context", "Walk through the timeline chronologically", "Start with what's at risk and what you need from them"] },
     quiz: [
-      { q: "Why does imaginal exposure work as a therapeutic technique?", options: ["Because it's safer than real exposure","Because the brain processes vivid imagination similarly to direct experience, activating the same neural pathways","Because it's easier than real practice","Because it allows unlimited repetition without consequences"], correct: 1, explanation: "Neuroscience shows that vivid imagination activates overlapping brain regions to direct experience. This is why athletes use visualisation, and why imaginal exposure therapy is effective for anxiety — the nervous system is still being trained, even without a real audience." },
-      { q: "What does completing 20 sessions represent in terms of the exposure process?", options: ["The end of the programme — you're done","A checkpoint to assess whether to continue","The bridge between safe practice and real-world speaking — foundations built, ready for live exposure","Proof that the anxiety is cured"], correct: 2, explanation: "Phase 3 completes the foundation: you understand your anxiety, you have body regulation tools, and you've built exposure experience in safe conditions. The next phase takes these skills into real-world situations — which is where permanent change happens." }
     ]
   }
 };
@@ -640,9 +602,8 @@ const LESSON_CONTENT = {
 Object.assign(LESSON_CONTENT, {
   34: {
     read: `<div class="lesson-content"><h3>The fastest reset you'll ever learn</h3><p>The extended exhale is a single-breath technique that reduces heart rate within seconds. Inhale for 4 counts. Exhale for 8. The longer exhale activates the vagus nerve and shifts your nervous system from fight-or-flight to rest-and-digest.</p><div class="highlight-box">This works because the exhale phase stimulates the parasympathetic nervous system. A 2:1 exhale-to-inhale ratio is the sweet spot. It's invisible to any audience.</div><p>You can do this mid-sentence. Between slides. While someone else is asking a question. Nobody sees it. But your body feels it immediately.</p></div><div class="key-insight"><div class="key-insight-icon">🫁</div><div class="key-insight-text"><strong>Key insight:</strong> One extended exhale can measurably lower your heart rate. It's the fastest in-the-moment tool in the programme — and nobody can see you doing it.</div></div>`,
+    reminder: "Exhale twice as long as you inhale — 2:1.",
     quiz: [
-      { q: "Why does the extended exhale work so quickly?", options: ["It distracts your mind from anxiety","The longer exhale activates the parasympathetic nervous system via the vagus nerve","It increases oxygen to the brain","It slows your speaking pace"], correct: 1, explanation: "The vagus nerve is the body's brake pedal for fight-or-flight. A longer exhale than inhale directly stimulates it, shifting the nervous system toward calm. The effect is measurable within a single breath." },
-      { q: "What is the ideal exhale-to-inhale ratio?", options: ["1:1 — equal length","1:2 — inhale twice as long","2:1 — exhale twice as long as inhale","3:1 — exhale three times as long"], correct: 2, explanation: "A 2:1 ratio (e.g. 4 counts in, 8 counts out) is the sweet spot — long enough to activate the parasympathetic response, short enough to do discreetly." }
     ]
   },
   35: {
@@ -654,14 +615,13 @@ Object.assign(LESSON_CONTENT, {
   36: {
     read: `<div class="lesson-content"><h3>Slower and lower</h3><p>When anxiety hits, your voice does two things: it speeds up and it rises in pitch. Both are caused by tension in the larynx — the muscles around your voice box tighten, producing a thinner, faster, higher sound.</p><p>The counterintuitive fix: deliberately slow down and drop your pitch. Not dramatically — just 10-15%. Speak from your chest rather than your throat. This reduces the physical tension that causes the shake.</p><div class="highlight-box">A shaking voice is not a sign of weakness. It's a sign of laryngeal tension caused by adrenaline. It's muscular, not emotional — and muscular problems have muscular solutions.</div></div><div class="key-insight"><div class="key-insight-icon">🎙️</div><div class="key-insight-text"><strong>Key insight:</strong> Slowing down and dropping pitch by 10-15% counteracts the laryngeal tension that makes your voice shake. It's a physical fix for a physical symptom.</div></div>`,
     quiz: [
-      { q: "What causes a shaking voice during anxiety?", options: ["Emotional weakness","Lack of preparation","Laryngeal tension — the muscles around the voice box tightening due to adrenaline","Breathing too deeply"], correct: 2, explanation: "Voice shaking is a muscular response to adrenaline, not an emotional one. The larynx tightens, producing a thinner, faster, higher sound. Knowing it's physical — not a character flaw — means you can address it with physical techniques." }
     ]
   },
   37: {
     read: `<div class="lesson-content"><h3>PREP under pressure</h3><p>The PREP framework — Position, Reason, Example, Position — gives you a skeleton for any answer. Under pressure, your brain scrambles for structure. PREP provides it automatically once practised enough.</p><div class="highlight-box">Position: state your view. Reason: explain why. Example: make it concrete. Position: restate. This takes any question from "I have no idea what to say" to "I have a clear, structured answer."</div><p>This is a timed session. You'll answer two questions using PREP — one easy, one hard. The timer adds the pressure that makes the framework stick.</p></div><div class="key-insight"><div class="key-insight-icon">⏱️</div><div class="key-insight-text"><strong>Key insight:</strong> PREP works because it removes the "what should I say?" panic. You always know the next move: state it, explain it, prove it, restate it.</div></div>`,
     timedSeconds: 60,
+    reminder: "PREP: Position, Reason, Example, Position.",
     quiz: [
-      { q: "What does PREP stand for?", options: ["Prepare, Rehearse, Execute, Perfect","Position, Reason, Example, Position","Plan, Research, Evidence, Persuade","Point, Rationale, Experience, Point"], correct: 1, explanation: "Position (state your view), Reason (explain why), Example (make it concrete with a specific instance), Position (restate your view). The repetition of Position bookends the answer and creates a sense of completeness." }
     ]
   },
   38: {
@@ -679,51 +639,46 @@ Object.assign(LESSON_CONTENT, {
   40: {
     read: `<div class="lesson-content"><h3>Stop monitoring yourself. Start monitoring them.</h3><p>Anxious speakers spend their speaking time monitoring themselves — "How do I sound? Am I going too fast? Can they see my hands shaking?" This self-focused attention is both the symptom and the fuel of speaking anxiety.</p><div class="highlight-box">The single biggest shift between anxious and confident speaking is attention direction. Confident speakers focus outward — on whether the listener understands, on how the message is landing, on the room. Anxious speakers focus inward — on their own symptoms.</div><p>This session practises the shift. You'll speak twice — once monitoring yourself, once focused entirely on whether an imagined listener is following you. The difference is dramatic.</p></div><div class="key-insight"><div class="key-insight-icon">👁️</div><div class="key-insight-text"><strong>Key insight:</strong> Attention is a limited resource. If you're using it to monitor your own anxiety, you can't use it to connect with your audience. The shift outward is the shift to confidence.</div></div>`,
     quiz: [
-      { q: "What is the key difference between anxious and confident speakers?", options: ["Confident speakers don't feel anxiety","Anxious speakers focus attention inward on themselves; confident speakers focus outward on the audience","Confident speakers prepare more thoroughly","Anxious speakers care more about the outcome"], correct: 1, explanation: "Both may feel anxiety. The difference is where attention goes. Self-focused attention amplifies every symptom. Audience-focused attention redirects that energy into connection and communication. The anxiety doesn't disappear — it just stops running the show." }
     ]
   },
   41: {
     read: `<div class="lesson-content"><h3>Silence is a weapon</h3><p>Most speakers rush to fill every gap. Anxious speakers fill gaps compulsively — with filler words, with extra sentences, with anything to avoid the terror of silence.</p><p>But silence is one of the most powerful tools in speaking. A 2-second pause before a key point creates anticipation. A pause after a key point lets it land. A pause when you've lost your thread looks like deliberation, not panic.</p><div class="highlight-box">The pause feels 5x longer to you than to the audience. What feels like an agonising silence is, to the listener, a speaker who is measured, confident, and in control.</div></div><div class="key-insight"><div class="key-insight-icon">🤫</div><div class="key-insight-text"><strong>Key insight:</strong> Deliberate silence signals confidence. Filling every gap signals anxiety. The pause is your friend — this session makes you believe it.</div></div>`,
     quiz: [
-      { q: "Why do anxious speakers rush to fill silence?", options: ["Because silence is genuinely awkward for the audience","Silence feels threatening — the brain interprets it as loss of control and rushes to fill it","Because faster speaking covers more content","Because they've been taught to avoid pauses"], correct: 1, explanation: "The anxiety brain reads silence as danger — a gap where judgement might rush in. But this is a misperception. The audience reads a pause as confidence and deliberation. The compulsion to fill silence is the anxiety talking, not reality." }
     ]
   },
   42: {
     read: `<div class="lesson-content"><h3>Monotone is the enemy</h3><p>Monotone delivery loses audiences regardless of content quality. The human brain is wired to tune out unchanging stimuli — it's the same reason you stop noticing background noise after a few minutes.</p><p>Vocal variety means three things: pace (faster on connecting phrases, slower on key points), pitch (higher for energy, lower for authority), and volume (louder for emphasis, softer for intimacy).</p><div class="highlight-box">The fix isn't to perform. It's to mean what you say. When you genuinely care about a point, your voice naturally varies. The exercise trains you to notice and amplify what your voice already wants to do.</div></div><div class="key-insight"><div class="key-insight-icon">🎵</div><div class="key-insight-text"><strong>Key insight:</strong> Vocal variety isn't performing — it's caring out loud. When you mean what you say, your voice does the work automatically.</div></div>`,
+    reminder: "Three dials: pace, pitch, volume. Use all of them.",
     quiz: [
-      { q: "What are the three dimensions of vocal variety?", options: ["Volume, clarity, and projection","Pace, pitch, and volume","Speed, tone, and emphasis","Rhythm, melody, and dynamics"], correct: 1, explanation: "Pace (speed variation), pitch (high/low), and volume (loud/soft) are the three levers. Using all three makes your delivery feel alive and engaging. Monotone — flat across all three — makes any content forgettable." }
     ]
   },
   43: {
     read: `<div class="lesson-content"><h3>Presence means noticing</h3><p>Reading the room is the skill of noticing what's happening in real time rather than being trapped inside your own head. It requires shifting from self-monitoring to other-monitoring — looking outward at your audience instead of inward at your anxiety.</p><div class="highlight-box">Every audience gives signals: nodding, confusion, distraction, engagement. The question is whether you're available to see them. Most anxious speakers aren't — their attention is consumed by self-monitoring.</div><p>This session practises three specific adaptations: re-engaging a distracted listener, clarifying for a confused one, and capitalising on an engaged decision-maker.</p></div><div class="key-insight"><div class="key-insight-icon">👥</div><div class="key-insight-text"><strong>Key insight:</strong> Reading the room is an attention skill, not a personality trait. It starts with looking outward — and practising specific responses to specific signals.</div></div>`,
     scenario: { description: "You're presenting and notice: one person checking their phone, one looking confused, the decision-maker leaning forward.", options: ["Re-engage the phone-checker with a direct question", "Pause and ask if anything needs clarifying", "Focus your energy on the engaged decision-maker"] },
     quiz: [
-      { q: "What prevents most anxious speakers from reading the room?", options: ["They don't know what to look for","Their attention is consumed by self-monitoring — they're focused inward, not outward","They're too focused on their slides","They don't make enough eye contact"], correct: 1, explanation: "Attention is a limited resource. If all of it is directed inward — monitoring your own symptoms, judging your own delivery — none is available for noticing what the audience is doing. The shift to outward attention is what enables presence." }
     ]
   },
   44: {
     read: `<div class="lesson-content"><h3>The arc behind every great speech</h3><p>Situation, Complication, Resolution — this three-part narrative arc is behind every compelling piece of communication. Set the scene, introduce the stakes, show what happened. It's the structure our brains are wired to follow.</p><div class="highlight-box">The complication is where all the interest lives. Without stakes, there is no story — just a sequence of events. "I worked on a project and it went well" is not a story. "The project was about to be cancelled and I had one week to save it" — that's a story.</div><p>If you can tell a structured story under pressure, you can communicate almost anything. This session builds that skill with a real story from your life.</p></div><div class="key-insight"><div class="key-insight-icon">📖</div><div class="key-insight-text"><strong>Key insight:</strong> Data informs. Stories persuade. If you can tell a story with real stakes under pressure, you can communicate anything.</div></div>`,
+    reminder: "The complication carries the story — give it genuine stakes.",
     quiz: [
-      { q: "What makes a story compelling?", options: ["Length and detail","The complication — genuine stakes that create tension","A happy ending","Dramatic delivery"], correct: 1, explanation: "Without complication (stakes, tension, risk), there is no story — just a sequence of events. The complication is what makes the audience lean in and want to know what happens next." }
     ]
   },
   45: {
     read: `<div class="lesson-content"><h3>The big room changes everything</h3><p>Presenting to 200 people requires physical adjustments: more projection, slower pace, broader gestures, and deliberate eye contact across zones — left, centre, right.</p><div class="highlight-box">The instinct when exposed on a big stage is to speed up. The fix is the opposite — slow down by 20%, pause between points, and let your voice fill the space. These adjustments feel wrong until you've practised them.</div><p>This is a timed 2-minute session. Imagine the conference hall. Project your voice. Slow your pace. Fill the room.</p></div><div class="key-insight"><div class="key-insight-icon">🏟️</div><div class="key-insight-text"><strong>Key insight:</strong> Big rooms require bigger delivery — slower, louder, more deliberate. It feels unnatural until you practise it. Then it feels powerful.</div></div>`,
     timedSeconds: 120,
+    reminder: "Big room: more projection, slower pace, broader gestures, eye contact zone by zone.",
     quiz: [
-      { q: "What physical adjustments does a large room require?", options: ["Speaking faster to keep the audience's attention","More projection, slower pace, broader gestures, and deliberate eye contact across zones","Using more slides and visual aids","Speaking louder and more aggressively"], correct: 1, explanation: "Large rooms amplify everything — including mistakes. Slowing down, projecting, and using deliberate eye contact across the room (left, centre, right) ensures you fill the space rather than shrinking in it." }
     ]
   },
   46: {
     read: `<div class="lesson-content"><h3>Think on your feet</h3><p>Improvised speaking feels terrifying because of the illusion that good speakers don't need to think. They do — they just have frameworks that turn thinking time into structure.</p><div class="highlight-box">PREP gives you a skeleton for any answer. The "and" technique — "and another thing..." — buys you time while sounding deliberate. Both work because they turn chaos into something that sounds intentional.</div><p>This is a surprise session. Three questions, 45 seconds each, zero preparation. Use PREP for each.</p></div><div class="key-insight"><div class="key-insight-icon">⚡</div><div class="key-insight-text"><strong>Key insight:</strong> Good improvisers aren't thinking faster. They have frameworks that turn any input into structured output. PREP is that framework.</div></div>`,
     quiz: [
-      { q: "Why does improvised speaking feel harder than it actually is?", options: ["Because you genuinely can't think fast enough","The illusion that good speakers don't need to think — when in reality they use frameworks to structure their answers quickly","Because preparation is always better","Because audiences judge spontaneous answers more harshly"], correct: 1, explanation: "Spontaneous-sounding answers are rarely truly spontaneous. Skilled speakers have frameworks (like PREP) that provide instant structure, turning any question into a coherent answer. The framework does the organising so the brain can focus on content." }
     ]
   },
   47: {
     read: `<div class="lesson-content"><h3>Who are you as a speaker?</h3><p>You've been through 46 sessions. You know your fear. You can manage your body. You've practised exposure. You've found your voice. You've handled pressure and built real-time tools.</p><p>Now answer this: who are you as a speaker? Not who you wish you were — who you actually are. What's your natural strength? What makes people listen to you?</p><div class="highlight-box">Authentic speaking beats polished performance every time. The goal was never to become someone else — it was to become a more confident version of yourself.</div></div><div class="key-insight"><div class="key-insight-icon">🌟</div><div class="key-insight-text"><strong>Key insight:</strong> Your speaker identity is the intersection of what you know, what you care about, and how you naturally communicate. This session is about naming it and claiming it.</div></div>`,
     quiz: [
-      { q: "What is the ultimate goal of this programme?", options: ["To eliminate anxiety completely","To become a polished, professional speaker","To become a more confident version of yourself as a speaker","To learn advanced presentation techniques"], correct: 2, explanation: "The goal was never to turn you into someone else. It was to remove the barriers — the anxiety, the avoidance, the self-doubt — that were preventing you from being the speaker you already are. Authenticity beats polish every time." }
     ]
   },
   48: {
@@ -744,7 +699,6 @@ Object.assign(LESSON_CONTENT, {
   52: {
     read: `<div class="lesson-content"><h3>Teaching is the deepest learning</h3><p>When you explain a technique to someone else, you deepen your own understanding of it. Teaching forces you to organise, simplify, and make concrete — which are themselves core speaking skills.</p><div class="highlight-box">Pick the one technique from this programme that has helped you most. Now teach it to an imagined friend who is terrified of an upcoming presentation. Explain what it is, why it works, and exactly how to do it.</div></div><div class="key-insight"><div class="key-insight-icon">🎓</div><div class="key-insight-text"><strong>Key insight:</strong> Teaching consolidates learning more than any other method. And it's a real speaking exercise — clear, structured, audience-focused communication.</div></div>`,
     quiz: [
-      { q: "Why does teaching consolidate learning?", options: ["Because repetition helps memory","Teaching forces you to organise, simplify, and make knowledge concrete — deepening your own understanding","Because explaining to others is a form of rehearsal","Because it builds confidence through repetition"], correct: 1, explanation: "Teaching requires you to transform implicit knowledge into explicit, structured communication. This process reveals gaps in understanding and strengthens the neural pathways associated with the knowledge. It's why the best way to learn something is to teach it." }
     ]
   },
   53: {
@@ -799,9 +753,9 @@ Object.assign(LESSON_CONTENT, {
         <div class="key-insight-text"><strong>Key insight:</strong> Hiding self-view, looking at the lens, and leaving a beat for the lag do more for how you land than anything you say.</div>
       </div>`,
     scenario: { description: "You're on a video call about to give an update. You can see your own face in the corner, six faces in a grid, and there's a slight audio delay.", options: ["Hide your self-view and look at the camera lens as you speak","Leave a deliberate beat before and after others speak to handle the lag","Bring a bit more energy than feels natural so you don't read as flat"] },
+    reminder: "Leave a beat before and after others speak — absorb the lag.",
     quiz: [
       { q: "Why is hiding your self-view on a video call so useful?", options: ["It saves screen space","Watching your own face feeds the self-monitoring that drives anxiety","It makes the call run faster","It stops others seeing you"], correct: 1, explanation: "Your own face in the corner turns a call into constant self-surveillance. Hiding self-view removes it, the same way you'd never watch yourself in a real meeting." },
-      { q: "Why leave a deliberate beat before and after others speak on a call?", options: ["To seem more thoughtful","To absorb the audio lag so you don't talk over people or rush","Because pauses are always good","To check your notes"], correct: 1, explanation: "The slight delay breaks natural turn-taking. A clear beat handles the lag, prevents talking over each other, and reads as composure." }
     ]
   },
   63: {
@@ -818,8 +772,6 @@ Object.assign(LESSON_CONTENT, {
         <div class="key-insight-text"><strong>Key insight:</strong> The easiest anxiety win is often the night before and the morning of — not the moment itself.</div>
       </div>`,
     quiz: [
-      { q: "Why can caffeine work against you before a speaking situation?", options: ["It makes you too relaxed to focus","It raises heart rate and amplifies the jittery, racing symptoms you're trying to manage","It has no real effect on anxiety","It only affects you if you're already nervous"], correct: 1, explanation: "Caffeine produces the same physical arousal — racing heart, jitters — that anxiety does. On a high-stakes day it stacks on top of your nerves." },
-      { q: "What's the most useful way to think about sleep and caffeine here?", options: ["Strict rules you must follow","Awareness — not unknowingly stacking the deck against yourself","They don't matter compared to in-the-moment technique","Things to give up permanently"], correct: 1, explanation: "It's about noticing the conditions for anxiety are partly set before you speak — and making one or two small adjustments on the days that matter." }
     ]
   },
   64: {
