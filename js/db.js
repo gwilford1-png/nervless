@@ -138,6 +138,61 @@ const DB = (function () {
     } catch (e) { console.warn('[DB] saveSuds failed:', e); }
   }
 
+  async function saveJournalEvent(ev) {
+    if (!_session || !_sb) return;
+    try {
+      await _sb.from('journal_events').insert({
+        id: ev.id.startsWith('je_') ? undefined : ev.id,
+        user_id: _session.user.id,
+        title: ev.title,
+        event_date: ev.event_date || null,
+        status: ev.status || 'upcoming'
+      });
+    } catch (e) { console.warn('[DB] saveJournalEvent failed:', e); }
+  }
+
+  async function saveJournalLog(log) {
+    if (!_session || !_sb) return;
+    try {
+      await _sb.from('journal_logs').insert({
+        user_id: _session.user.id,
+        event_id: (log.event_id && !String(log.event_id).startsWith('je_')) ? log.event_id : null,
+        kind: log.kind,
+        title: log.title || null,
+        phase: log.phase || null,
+        mission_id: log.mission_id || null,
+        predicted_anxiety: typeof log.predicted_anxiety === 'number' ? log.predicted_anxiety : null,
+        actual_anxiety: typeof log.actual_anxiety === 'number' ? log.actual_anxiety : null,
+        feared_text: log.feared_text || null,
+        happened_text: log.happened_text || null,
+        outcome: log.outcome || null,
+        bailed: !!log.bailed,
+        transcript: log.transcript || null,
+        ai_feedback: log.ai_feedback || null
+      });
+    } catch (e) { console.warn('[DB] saveJournalLog failed:', e); }
+  }
+
+  async function loadJournal() {
+    if (!_session || !_sb) return null;
+    try {
+      const uid = _session.user.id;
+      const [ev, lg] = await Promise.all([
+        _sb.from('journal_events').select('*').eq('user_id', uid).order('created_at', { ascending: false }),
+        _sb.from('journal_logs').select('*').eq('user_id', uid).order('created_at', { ascending: false })
+      ]);
+      return {
+        events: (ev.data || []).map(e => ({ id: e.id, title: e.title, event_date: e.event_date, status: e.status, created_at: e.created_at })),
+        logs: (lg.data || []).map(l => ({
+          id: l.id, event_id: l.event_id, kind: l.kind, title: l.title, phase: l.phase, mission_id: l.mission_id,
+          predicted_anxiety: l.predicted_anxiety, actual_anxiety: l.actual_anxiety,
+          feared_text: l.feared_text, happened_text: l.happened_text, outcome: l.outcome,
+          bailed: l.bailed, transcript: l.transcript, ai_feedback: l.ai_feedback, created_at: l.created_at
+        }))
+      };
+    } catch (e) { console.warn('[DB] loadJournal failed:', e); return null; }
+  }
+
   function maybeShowSaveBanner() {
     if (_session || _bannerDismissed) return;
     const el = document.getElementById('db-save-banner');
@@ -158,7 +213,7 @@ const DB = (function () {
     if (typeof showCurriculum === 'function') showCurriculum();
   }
 
-  return { init, isSignedIn: () => !!_session, getUser: () => _session ? _session.user : null, saveCompletedSession, saveProfile, saveSuds, maybeShowSaveBanner, dismissSaveBanner, signOut };
+  return { init, isSignedIn: () => !!_session, getUser: () => _session ? _session.user : null, getClient: () => _sb, saveCompletedSession, saveProfile, saveSuds, saveJournalEvent, saveJournalLog, loadJournal, maybeShowSaveBanner, dismissSaveBanner, signOut };
 })();
 
 // ── Auth screen ──
