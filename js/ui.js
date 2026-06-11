@@ -120,7 +120,7 @@ function showCurriculum() {
     const hasQuiz = !!(lc && lc.quiz && lc.quiz.length);
     const isScored = currSession.scored !== false;
     const steps = [{ l:'Read', i:'book' }];
-    if (hasQuiz) steps.push({ l:'Check', i:'check' });
+    if (hasQuiz) steps.push({ l:'Lock in', i:'check' });
     if (isScored) steps.push({ l:'Talk', i:'talk' });
     document.getElementById('j-continue-steps').innerHTML = steps.map((st, i) =>
       (i > 0 ? '<span class="j-step-sep">›</span>' : '') +
@@ -588,6 +588,15 @@ function startLesson(s) {
     document.getElementById('talk-type').textContent = s.type;
     document.getElementById('talk-duration').textContent = s.duration;
     document.getElementById('talk-coach').innerHTML = '<strong>Coach:</strong> ' + s.coaching;
+    const remEl = document.getElementById('talk-reminder');
+    if (remEl) {
+      if (lc.reminder) {
+        remEl.innerHTML = '<div class="talk-reminder-label">Before you record</div>' + lc.reminder;
+        remEl.style.display = 'block';
+      } else {
+        remEl.style.display = 'none';
+      }
+    }
     resetLessonRecording();
   }
 
