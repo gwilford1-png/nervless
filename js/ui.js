@@ -443,6 +443,7 @@ function loadSession(id) {
   setSessionColor(s.phase);
   state.currentSessionId = id;
   lessonState.sessionId = id;
+  lessonState.sudsPreCaptured = false;
 
   // Sessions with lesson content use the new flow; others use old practice screen
   const hasLesson = !!LESSON_CONTENT[id];
@@ -1030,7 +1031,15 @@ function resetLessonRecording() {
 }
 
 async function toggleLessonRecording() {
-  if (!lessonState.isRecording) await startLessonRecording();
+  if (!lessonState.isRecording) {
+    // SUDS pre-rating before the first record start
+    if (!lessonState.sudsPreCaptured && typeof SUDS !== 'undefined') {
+      lessonState.sudsPreCaptured = true;
+      SUDS.pre('session', lessonState.sessionId, () => { startLessonRecording(); });
+      return;
+    }
+    await startLessonRecording();
+  }
   else stopLessonRecording();
 }
 
@@ -1651,9 +1660,12 @@ function renderFeedback(rec, transcript, analysis) {
   }
 
   showScreen('screen-feedback');
-}
 
-let lastFeedbackType = '';
+  // SUDS post-rating — only if a pre-rating was captured this rep
+  if (typeof SUDS !== 'undefined') {
+    setTimeout(() => { SUDS.post(); }, 600);
+  }
+}
 function submitScoreFeedback(type) {
   lastFeedbackType = type;
   document.querySelectorAll('.fb-btn').forEach(b => { b.style.borderColor = 'var(--border)'; b.style.background = 'var(--surface)'; });
@@ -2014,6 +2026,7 @@ function showFreeTab() {
   stopSpeaking();
   freeState.mode = null;
   freeState.prompt = '';
+  freeState.sudsPreCaptured = false;
   freeState.difficulty = null;
   freeState.scenario = null;
   freeState.runKey = null;
@@ -2050,6 +2063,7 @@ function selectFreeMode(mode) { openPracticeMode(mode); }
 function openPracticeMode(mode) {
   freeState.mode = mode;
   freeState.difficulty = null;
+  freeState.sudsPreCaptured = false;
   freeState.scenario = null;
   freeState.roundIndex = 0;
   freeState.history = [];
@@ -2262,6 +2276,12 @@ function resetFreeRecording() {
 
 async function toggleFreeRecording() {
   if (!freeState.isRecording) {
+    // SUDS pre-rating before first record start in this practice run
+    if (!freeState.sudsPreCaptured && typeof SUDS !== 'undefined') {
+      freeState.sudsPreCaptured = true;
+      SUDS.pre('practice', freeState.mode || 'practice', () => { toggleFreeRecording(); });
+      return;
+    }
     stopSpeaking();
     try {
       const stream = await navigator.mediaDevices.getUserMedia({audio:true});
