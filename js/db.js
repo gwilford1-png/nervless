@@ -124,6 +124,20 @@ const DB = (function () {
     } catch (e) { console.warn('[DB] saveProfile failed:', e); }
   }
 
+  async function saveSuds(rec) {
+    if (!_session || !_sb) return;
+    try {
+      await _sb.from('suds_ratings').insert({
+        user_id: _session.user.id,
+        context: rec.context,
+        ref_id: rec.refId,
+        pre_rating: rec.pre,
+        post_rating: rec.post,
+        created_at: rec.date
+      });
+    } catch (e) { console.warn('[DB] saveSuds failed:', e); }
+  }
+
   function maybeShowSaveBanner() {
     if (_session || _bannerDismissed) return;
     const el = document.getElementById('db-save-banner');
@@ -144,7 +158,7 @@ const DB = (function () {
     if (typeof showCurriculum === 'function') showCurriculum();
   }
 
-  return { init, isSignedIn: () => !!_session, getUser: () => _session ? _session.user : null, saveCompletedSession, saveProfile, maybeShowSaveBanner, dismissSaveBanner, signOut };
+  return { init, isSignedIn: () => !!_session, getUser: () => _session ? _session.user : null, saveCompletedSession, saveProfile, saveSuds, maybeShowSaveBanner, dismissSaveBanner, signOut };
 })();
 
 // ── Auth screen ──
