@@ -141,6 +141,8 @@
     <button class="j-continue-btn" id="j-continue-btn">Continue session <span>→</span></button>
   </div>
 
+  <div id="j-mission-prompt" style="display:none"></div>
+
   <div class="j-phases-head">
     <div class="j-phases-title">All phases</div>
     <div class="j-phases-count" id="j-phases-count">0 of 9 complete</div>
@@ -582,16 +584,51 @@
     <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
     <span class="nav-label">Practice</span>
   </button>
+  <button class="nav-item" id="nav-journal" onclick="showJournal()">
+    <div class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 4a2 2 0 0 1 2-2h12a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2z"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/></svg></div>
+    <span class="nav-label">Journal</span>
+  </button>
   <button class="nav-item" id="nav-progress" onclick="showDashboard();setActiveNav('progress')">
     <div class="nav-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
     <span class="nav-label">Progress</span>
   </button>
 </nav>
 
+<!-- JOURNAL SCREEN -->
+<div class="screen" id="screen-journal">
+  <div class="jr-header">
+    <div class="jr-h-title">Journal</div>
+    <div class="jr-h-sub">Your evidence record — what you feared, what actually happened.</div>
+  </div>
+  <div class="jr-evidence" id="jr-evidence" style="display:none"></div>
+  <div class="jr-actions">
+    <button class="jr-action-primary" onclick="startSpeakingSoon()">
+      <span class="jr-action-ic">🎤</span>
+      <span class="jr-action-txt"><strong>I'm speaking soon</strong><span>Prep + log an upcoming moment</span></span>
+    </button>
+    <button class="jr-action-secondary" onclick="startSpontaneousLog()">
+      <span class="jr-action-ic">✍️</span>
+      <span class="jr-action-txt"><strong>Log a moment that just happened</strong><span>Something made you anxious? Record it.</span></span>
+    </button>
+  </div>
+  <div class="jr-events" id="jr-events"></div>
+  <div class="jr-history" id="jr-history"></div>
+</div>
+
+<!-- JOURNAL COMPOSER MODAL -->
+<div id="jr-composer" class="jr-composer" style="display:none">
+  <div class="jr-composer-card">
+    <button class="jr-composer-close" onclick="closeComposer()">✕</button>
+    <div class="jr-composer-body" id="jr-composer-body"></div>
+  </div>
+</div>
+
 <script src="js/data.js"></script>
 <script src="js/logic.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/suds.js"></script>
+<script src="js/journal.js"></script>
+<script src="js/journal-ui.js"></script>
 <script src="js/db.js"></script>
 <script src="js/app.js"></script>
 
