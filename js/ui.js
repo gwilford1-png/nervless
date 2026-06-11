@@ -255,7 +255,44 @@ function showCurriculum() {
   });
 
   setActiveNav('journey');
+  renderMissionPrompt();
   showScreen('screen-curriculum');
+}
+
+// ── Real-world mission prompt on the journey screen ──
+function renderMissionPrompt() {
+  const host = document.getElementById('j-mission-prompt');
+  if (!host || typeof Journal === 'undefined') return;
+  // Current phase the user is on
+  const cur = CURRICULUM.find(s => s.id === state.currentSessionId);
+  if (!cur) { host.style.display = 'none'; return; }
+  const mission = Journal.mission(cur.phase);
+  if (!mission) { host.style.display = 'none'; return; }
+
+  Journal.load().then(() => {
+    const done = Journal.hasLoggedMission(cur.phase);
+    if (done) {
+      host.innerHTML = `<div class="j-mission-card done">
+        <div class="j-mission-ic">✓</div>
+        <div class="j-mission-body"><div class="j-mission-label">Real-world mission · logged</div><div class="j-mission-title">${_jesc(mission.title)}</div></div>
+      </div>`;
+    } else {
+      host.innerHTML = `<div class="j-mission-card" onclick="startMissionLog(${cur.phase})">
+        <div class="j-mission-ic">🎯</div>
+        <div class="j-mission-body"><div class="j-mission-label">Your real-world mission</div><div class="j-mission-title">${_jesc(mission.title)}</div><div class="j-mission-cta">Tap to take it on →</div></div>
+      </div>`;
+    }
+    host.style.display = 'block';
+  });
+}
+
+function _jesc(s) { return (s||'').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function refreshMissionGate() {
+  if (document.getElementById('screen-curriculum').classList.contains('active') ||
+      document.getElementById('screen-curriculum').style.display !== 'none') {
+    renderMissionPrompt();
+  }
 }
 
 function drawArcGauge(canvasId, earnedPts, maxPts, colour, animate) {
