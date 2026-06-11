@@ -51,3 +51,24 @@ window.selectQuizAnswer      = selectQuizAnswer;
 window.toggleMenu            = toggleMenu;
 window.v7ToggleCard          = v7ToggleCard;
 window.saveApiKeys = window.saveApiKeys || function() {};
+
+// ── PWA: Register service worker ──
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => {
+        console.log('[SW] Registered, scope:', reg.scope);
+        // Check for updates on each load
+        reg.addEventListener('updatefound', () => {
+          const newWorker = reg.installing;
+          newWorker.addEventListener('statechange', () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New version available — could show a toast here later
+              console.log('[SW] New version available');
+            }
+          });
+        });
+      })
+      .catch(err => console.warn('[SW] Registration failed:', err));
+  });
+}
