@@ -1845,6 +1845,7 @@ function showDashboard(){
   setActiveNav('progress');
   showScreen('screen-dashboard');
   renderProgressChart();
+  if(typeof renderJournalEvidence==='function') renderJournalEvidence();
 }
 
 function renderProgressChart() {
