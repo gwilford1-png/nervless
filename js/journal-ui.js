@@ -38,16 +38,17 @@ function renderJournalHome() {
   if (evList) {
     if (events.length) {
       evList.innerHTML = '<div class="jr-section-label">Coming up</div>' + events.map(ev => {
-        const preLogs = Journal.logs().filter(l => l.event_id === ev.id && l.kind === 'pre').length;
+        const c = Journal.eventLogCounts(ev.id);
+        const meta = [c.pre ? `${c.pre} before` : '', c.after ? `${c.after} after` : ''].filter(Boolean).join(' · ') || 'nothing logged yet';
         const dateStr = ev.event_date ? new Date(ev.event_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '';
         return `<div class="jr-event-card" onclick="openEventLog('${ev.id}')">
           <div class="jr-event-main">
             <div class="jr-event-title">${_esc(ev.title)}</div>
-            <div class="jr-event-meta">${dateStr ? dateStr + ' · ' : ''}${preLogs} check-in${preLogs===1?'':'s'} logged</div>
+            <div class="jr-event-meta">${dateStr ? dateStr + ' · ' : ''}${meta}</div>
           </div>
           <div class="jr-event-actions">
-            <button class="jr-mini-btn" onclick="event.stopPropagation();openEventLog('${ev.id}')">Log</button>
-            <button class="jr-mini-btn jr-mini-done" onclick="event.stopPropagation();startDebrief('${ev.id}')">It happened</button>
+            <button class="jr-mini-btn" onclick="event.stopPropagation();openEventLog('${ev.id}')">Before</button>
+            <button class="jr-mini-btn jr-mini-done" onclick="event.stopPropagation();startDebrief('${ev.id}')">After</button>
           </div>
         </div>`;
       }).join('');
@@ -56,14 +57,15 @@ function renderJournalHome() {
     }
   }
 
-  // History
+  // History — grouped by moment
   const histList = document.getElementById('jr-history');
   if (histList) {
-    if (logs.length) {
-      histList.innerHTML = '<div class="jr-section-label">Your record</div>' + logs.map(_renderLogCard).join('');
+    const series = _buildSeries();
+    if (series.length) {
+      histList.innerHTML = '<div class="jr-section-label">Your record</div>' + series.map((g, i) => _renderSeriesCard(g, i)).join('');
     } else {
       histList.innerHTML = `<div class="jr-empty">
-        <div class="jr-empty-icon">📓</div>
+        <div class="jr-empty-icon"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="var(--muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/><line x1="9" y1="7" x2="15" y2="7"/></svg></div>
         <div class="jr-empty-title">Your evidence record starts here</div>
         <div class="jr-empty-sub">Log a real speaking moment — what you feared, what actually happened. Over time this becomes proof that the fear lies.</div>
       </div>`;
@@ -71,9 +73,112 @@ function renderJournalHome() {
   }
 }
 
+// ════════════════════════════════════════════════════════════
+//  MOMENT SERIES — grouping, averages, detail view
+// ════════════════════════════════════════════════════════════
+let _seriesCache = [];
+
+function _seriesStatsFromLogs(logsArr) {
+  // "before" ratings: pre logs + the in-the-moment rating on spontaneous/mission logs
+  // (debrief logs carry a COPY of the pre prediction — excluded to avoid double counting)
+  const beforeVals = logsArr.filter(l => l.kind !== 'debrief' && typeof l.predicted_anxiety === 'number').map(l => l.predicted_anxiety);
+  const afterVals  = logsArr.filter(l => typeof l.actual_anxiety === 'number' && !l.bailed).map(l => l.actual_anxiety);
+  const outcomes   = logsArr.filter(l => l.outcome && !l.bailed);
+  const avg = a => a.length ? Math.round((a.reduce((x, y) => x + y, 0) / a.length) * 10) / 10 : null;
+  return {
+    avgPred: avg(beforeVals),
+    avgActual: avg(afterVals),
+    beforeN: logsArr.filter(l => l.kind === 'pre').length,
+    afterN: logsArr.filter(l => l.kind === 'debrief' || l.kind === 'spontaneous' || (l.kind === 'mission' && !l.bailed)).length,
+    notHappened: outcomes.filter(l => l.outcome === 'no').length,
+    outcomeN: outcomes.length
+  };
+}
+
+function _buildSeries() {
+  const groups = {};
+  const order = [];
+  Journal.logs().forEach(l => {
+    const key = l.event_id || ('t:' + (l.title || '').trim().toLowerCase() || l.id);
+    if (!groups[key]) { groups[key] = { key, title: l.title || 'Untitled moment', logs: [] }; order.push(key); }
+    groups[key].logs.push(l);
+    if (!groups[key].title && l.title) groups[key].title = l.title;
+  });
+  _seriesCache = order.map(k => Object.assign(groups[k], _seriesStatsFromLogs(groups[k].logs)));
+  return _seriesCache;
+}
+
+function _fmtAvg(n) { return n === null ? '–' : (Number.isInteger(n) ? n : n.toFixed(1)); }
+
+function _renderSeriesCard(g, i) {
+  const date = new Date(g.logs[0].created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+  const meta = [g.beforeN ? `${g.beforeN} before` : '', g.afterN ? `${g.afterN} after` : ''].filter(Boolean).join(' · ');
+  let score = '';
+  if (g.avgPred !== null && g.avgActual !== null) {
+    const drop = Math.round((g.avgPred - g.avgActual) * 10) / 10;
+    score = `<div class="jr-log-anx">Feared <strong>${_fmtAvg(g.avgPred)}</strong> → felt <strong>${_fmtAvg(g.avgActual)}</strong>${drop > 0 ? ` <span class="jr-drop">↓${_fmtAvg(drop)}</span>` : ''}${g.logs.length > 1 ? ' <span class="jr-avg-tag">avg</span>' : ''}</div>`;
+  } else if (g.avgPred !== null) {
+    score = `<div class="jr-log-anx">Anticipated: <strong>${_fmtAvg(g.avgPred)}/10</strong>${g.beforeN > 1 ? ' <span class="jr-avg-tag">avg</span>' : ''}</div>`;
+  }
+  let outcome = '';
+  if (g.outcomeN) {
+    const good = g.notHappened === g.outcomeN;
+    outcome = `<div class="jr-log-outcome ${good ? 'jr-out-good' : 'jr-out-mid'}">${g.outcomeN === 1
+      ? (good ? 'The feared thing didn\u2019t happen' : { partly: 'It partly happened', yes: 'It happened' }[g.logs.find(l => l.outcome && !l.bailed).outcome] || '')
+      : `${g.notHappened} of ${g.outcomeN} feared outcomes didn\u2019t happen`}</div>`;
+  }
+  return `<div class="jr-log-card jr-series-card" onclick="openSeriesDetail(${i})">
+    <div class="jr-log-head"><span class="jr-log-kind">${meta || 'Moment'}</span><span class="jr-log-date">${date}</span></div>
+    <div class="jr-log-title">${_esc(g.title)}</div>
+    ${score}${outcome}
+    <div class="jr-series-more">Tap for the full story ›</div>
+  </div>`;
+}
+
+function openSeriesDetail(i) {
+  const g = _seriesCache[i];
+  if (!g) return;
+  const modal = document.getElementById('jr-composer');
+  const body = document.getElementById('jr-composer-body');
+  if (!modal || !body) return;
+  const rows = g.logs.map((l, j) => {
+    const date = new Date(l.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+    const kindLabel = { pre: 'Before', debrief: 'After', spontaneous: 'After', mission: 'Mission' }[l.kind] || '';
+    let line = '';
+    if (l.bailed) line = 'Attempted — didn\u2019t complete';
+    else if (typeof l.predicted_anxiety === 'number' && typeof l.actual_anxiety === 'number') line = `Feared ${l.predicted_anxiety} → felt ${l.actual_anxiety}`;
+    else if (typeof l.predicted_anxiety === 'number') line = `Anticipated ${l.predicted_anxiety}/10`;
+    let detail = '';
+    if (l.feared_text) detail += `<div class="jr-d-feared">\u201C${_esc(l.feared_text)}\u201D</div>`;
+    if (l.outcome) {
+      const oTxt = { no: 'The feared thing didn\u2019t happen', partly: 'It partly happened', yes: 'It happened' }[l.outcome];
+      const oCls = { no: 'jr-out-good', partly: 'jr-out-mid', yes: 'jr-out-bad' }[l.outcome];
+      detail += `<div class="jr-log-outcome ${oCls}">${oTxt}</div>`;
+    }
+    if (l.ai_feedback) detail += `<div class="jr-log-ai">${_esc(l.ai_feedback)}</div>`;
+    return `<div class="jr-d-row" onclick="this.classList.toggle('open')">
+      <div class="jr-d-row-head">
+        <span class="jr-log-kind">${kindLabel}</span>
+        <span class="jr-d-row-line">${line}</span>
+        <span class="jr-log-date">${date}</span>
+      </div>
+      ${detail ? `<div class="jr-d-row-body">${detail}</div>` : ''}
+    </div>`;
+  }).join('');
+  let summary = '';
+  if (g.avgPred !== null && g.avgActual !== null && g.logs.length > 1) {
+    summary = `<div class="jr-d-summary">Average — feared <strong>${_fmtAvg(g.avgPred)}</strong>, felt <strong>${_fmtAvg(g.avgActual)}</strong>${g.outcomeN ? ` · ${g.notHappened}/${g.outcomeN} fears didn\u2019t happen` : ''}</div>`;
+  }
+  body.innerHTML = `<div class="jr-c-title" style="margin-bottom:4px">${_esc(g.title)}</div>${summary}
+    <div class="jr-d-list">${rows}</div>
+    <button class="btn-primary jr-c-btn" onclick="closeComposer()">Done</button>`;
+  modal.style.display = 'flex';
+  requestAnimationFrame(() => modal.classList.add('show'));
+}
+
 function _renderLogCard(l) {
   const date = new Date(l.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-  const kindLabel = { pre: 'Looking ahead', debrief: 'Afterwards', spontaneous: 'Real moment', mission: 'Mission' }[l.kind] || '';
+  const kindLabel = { pre: 'Before', debrief: 'After', spontaneous: 'After', mission: 'Mission' }[l.kind] || '';
   let body = '';
   if (l.bailed) {
     body = `<div class="jr-log-bail">Attempted — didn't complete. That still counts.</div>`;
@@ -125,6 +230,79 @@ function startMissionLog(phase) {
 function startSpeakingSoon() {
   Journal.draft = { kind: 'spontaneous', title: '', _speakingSoon: true };
   _openComposer('speaking-soon');
+}
+
+// ── BEFORE / AFTER entry points (with recurring-moment picker) ──
+function startBeforeLog() { _openMomentPicker('before'); }
+function startAfterLog()  { _openMomentPicker('after'); }
+
+function _openMomentPicker(which) {
+  const modal = document.getElementById('jr-composer');
+  if (!modal) return;
+  const series = Journal.momentSeries();
+  const isBefore = which === 'before';
+
+  let chips = '';
+  if (series.length) {
+    chips = '<div class="jr-c-sub" style="margin-bottom:8px">Same moment as before? Tap it — all your befores and afters stay linked.</div>' +
+      '<div class="jr-moment-chips">' +
+      series.slice(0, 6).map(m => {
+        const meta = [m.pre ? `${m.pre} before` : '', m.after ? `${m.after} after` : ''].filter(Boolean).join(' · ') || 'no logs yet';
+        return `<button class="jr-moment-chip" onclick="_pickMoment('${which}','${m.id}')">
+          <span class="jr-moment-chip-title">${_esc(m.title)}</span>
+          <span class="jr-moment-chip-meta">${meta}</span>
+        </button>`;
+      }).join('') + '</div>';
+  }
+
+  const body = document.getElementById('jr-composer-body');
+  body.innerHTML = `<div class="jr-c-title">${isBefore ? 'What\u2019s coming up?' : 'What just happened?'}</div>
+    ${chips}
+    <div class="jr-c-sub" style="margin-top:${series.length ? '14px' : '0'}">${series.length ? 'Or name a new moment:' : 'A few words is enough — \u201Cteam standup\u201D, \u201Cclient call\u201D, \u201Cbest man speech\u201D.'}</div>
+    <input class="jr-c-input" id="jr-c-moment-in" placeholder="Name the moment">
+    <button class="btn-primary jr-c-btn" onclick="_pickMoment('${which}', null)">Next \u2192</button>`;
+
+  modal.style.display = 'flex';
+  requestAnimationFrame(() => modal.classList.add('show'));
+}
+
+async function _pickMoment(which, eventId) {
+  let ev = null;
+  if (eventId) {
+    ev = Journal.events().find(e => e.id === eventId) || null;
+  } else {
+    const inp = document.getElementById('jr-c-moment-in');
+    const title = inp ? inp.value.trim() : '';
+    if (!title) { if (inp) inp.focus(); return; }
+    // typed a title that matches an existing moment → link to its series
+    ev = Journal.findEventByTitle(title);
+    if (!ev && which === 'after') {
+      // brand-new after-the-fact moment → spontaneous flow with title prefilled
+      Journal.draft = { kind: 'spontaneous', title };
+      _composerMode = 'spontaneous';
+      _composerStep = _steps().indexOf('predicted');
+      _renderComposerStep();
+      return;
+    }
+    if (!ev) {
+      // brand-new upcoming moment → pre flow, create the event on finish
+      Journal.draft = { kind: 'pre', event_id: null, title, _speakingSoon: true };
+      _composerMode = 'pre';
+      _composerStep = _steps().indexOf('predicted');
+      _renderComposerStep();
+      return;
+    }
+  }
+  // Existing moment selected
+  if (which === 'before') {
+    Journal.reopenEvent(ev.id); // recurring moment comes back under "Coming up"
+    Journal.draft = { kind: 'pre', event_id: ev.id, title: ev.title };
+    _composerMode = 'pre';
+    _composerStep = _steps().indexOf('predicted');
+    _renderComposerStep();
+  } else {
+    startDebrief(ev.id); // carries the latest pre-log's feared text forward
+  }
 }
 
 function _openComposer(mode) {
@@ -551,3 +729,118 @@ function _renderDebriefStep() {
 }
 
 function d_outcome(o) { Journal.draft.outcome = o; _debriefStep++; _renderDebriefStep(); }
+
+// ════════════════════════════════════════════════════════════
+//  PROGRESS TAB — real-world evidence panel
+// ════════════════════════════════════════════════════════════
+async function renderJournalEvidence() {
+  const wrap = document.getElementById('jr-dash');
+  if (!wrap || typeof Journal === 'undefined') return;
+  await Journal.load();
+  const logs = Journal.logs();
+  if (!logs.length) { wrap.style.display = 'none'; return; }
+
+  const all = _seriesStatsFromLogs(logs);
+  const statsEl = document.getElementById('jr-dash-stats');
+  if (statsEl) {
+    const drop = (all.avgPred !== null && all.avgActual !== null) ? Math.round((all.avgPred - all.avgActual) * 10) / 10 : null;
+    statsEl.innerHTML = `
+      <div class="jr-dash-stat"><div class="jr-dash-num">${_fmtAvg(all.avgPred)}</div><div class="jr-dash-lbl">Avg feared</div></div>
+      <div class="jr-dash-stat"><div class="jr-dash-num">${_fmtAvg(all.avgActual)}</div><div class="jr-dash-lbl">Avg felt</div></div>
+      <div class="jr-dash-stat"><div class="jr-dash-num" style="${drop !== null && drop > 0 ? 'color:var(--green)' : ''}">${drop === null ? '–' : (drop > 0 ? '↓' + _fmtAvg(drop) : _fmtAvg(Math.abs(drop)))}</div><div class="jr-dash-lbl">Gap</div></div>
+      <div class="jr-dash-stat"><div class="jr-dash-num">${all.outcomeN ? all.notHappened + '/' + all.outcomeN : '–'}</div><div class="jr-dash-lbl">Fears didn't happen</div></div>`;
+  }
+
+  // Per-moment rows (only moments with both a before and an after)
+  const momentsEl = document.getElementById('jr-dash-moments');
+  if (momentsEl) {
+    const series = _buildSeries().filter(g => g.avgPred !== null && g.avgActual !== null).slice(0, 5);
+    momentsEl.innerHTML = series.length ? series.map(g => {
+      const drop = Math.round((g.avgPred - g.avgActual) * 10) / 10;
+      return `<div class="jr-dash-row">
+        <div class="jr-dash-row-title">${_esc(g.title)}</div>
+        <div class="jr-dash-row-score">${_fmtAvg(g.avgPred)} → ${_fmtAvg(g.avgActual)}${drop > 0 ? ` <span class="jr-drop">↓${_fmtAvg(drop)}</span>` : ''}</div>
+      </div>`;
+    }).join('') : '';
+  }
+  _renderEvidenceChart(logs);
+  wrap.style.display = 'block';
+}
+
+// Feared vs felt over time — the "your brain over-predicts" graph
+function _renderEvidenceChart(logs) {
+  const wrap = document.getElementById('jr-dash-chart-wrap');
+  const canvas = document.getElementById('jr-dash-chart');
+  if (!wrap || !canvas || typeof Chart === 'undefined') return;
+
+  // completed moments with both numbers, oldest → newest
+  const pts = logs
+    .filter(l => !l.bailed && typeof l.predicted_anxiety === 'number' && typeof l.actual_anxiety === 'number')
+    .slice(0, 20)
+    .reverse();
+
+  if (pts.length < 2) { wrap.style.display = 'none'; return; }
+  wrap.style.display = 'block';
+
+  const labels = pts.map(l => new Date(l.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }));
+  const style = getComputedStyle(document.documentElement);
+  const accentColor = style.getPropertyValue('--accent').trim() || '#5B4FD9';
+  const greenColor  = style.getPropertyValue('--green').trim()  || '#2E9E7A';
+  const mutedColor  = style.getPropertyValue('--text-faint').trim() || '#ADA89E';
+  const borderColor = style.getPropertyValue('--border').trim() || '#E4E0D8';
+
+  if (canvas._chartInstance) canvas._chartInstance.destroy();
+  canvas._chartInstance = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Feared',
+          data: pts.map(l => l.predicted_anxiety),
+          borderColor: accentColor,
+          backgroundColor: accentColor + '14',
+          borderWidth: 2,
+          borderDash: [5, 4],
+          pointRadius: 3,
+          pointBackgroundColor: accentColor,
+          tension: 0.35,
+          fill: '+1' // shade the gap down to the Felt line
+        },
+        {
+          label: 'Felt',
+          data: pts.map(l => l.actual_anxiety),
+          borderColor: greenColor,
+          backgroundColor: 'transparent',
+          borderWidth: 2.5,
+          pointRadius: 3,
+          pointBackgroundColor: greenColor,
+          tension: 0.35,
+          fill: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          display: true,
+          labels: { color: mutedColor, font: { family: 'Nunito', size: 11, weight: '700' }, boxWidth: 12, padding: 12 }
+        }
+      },
+      scales: {
+        y: {
+          min: 0, max: 10,
+          ticks: { stepSize: 2, color: mutedColor, font: { family: 'Nunito', size: 10 } },
+          grid: { color: borderColor + '66' }
+        },
+        x: {
+          ticks: { color: mutedColor, font: { family: 'Nunito', size: 10 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 6 },
+          grid: { display: false }
+        }
+      }
+    }
+  });
+}
