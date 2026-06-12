@@ -442,6 +442,14 @@
     <div class="stat-card"><div class="stat-value" id="stat-avg">-</div><div class="stat-label">Avg score</div></div>
     <div class="stat-card"><div class="stat-value" id="stat-mins">0</div><div class="stat-label">Minutes</div></div>
   </div>
+  <div id="jr-dash" style="display:none;margin:0 20px 8px;background:var(--surface);box-shadow:var(--card-shadow);border-radius:18px;padding:18px 16px 14px;">
+    <div style="font-size:11px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">Real-world evidence</div>
+    <div class="jr-dash-stats" id="jr-dash-stats"></div>
+    <div id="jr-dash-chart-wrap" style="display:none;position:relative;height:150px;margin:4px 0 10px;">
+      <canvas id="jr-dash-chart"></canvas>
+    </div>
+    <div id="jr-dash-moments"></div>
+  </div>
   <div id="progress-chart-wrap" style="display:none;margin:0 20px 8px;background:var(--surface);border:none;box-shadow:var(--card-shadow);border-radius:18px;padding:18px 16px 12px;">
     <div style="font-size:11px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:14px;">Progress Trends</div>
     <div style="position:relative;height:160px;">
@@ -602,13 +610,13 @@
   </div>
   <div class="jr-evidence" id="jr-evidence" style="display:none"></div>
   <div class="jr-actions">
-    <button class="jr-action-primary" onclick="startSpeakingSoon()">
-      <span class="jr-action-ic">🎤</span>
-      <span class="jr-action-txt"><strong>I'm speaking soon</strong><span>Prep + log an upcoming moment</span></span>
+    <button class="jr-action-primary" onclick="startBeforeLog()">
+      <span class="jr-action-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></span>
+      <span class="jr-action-txt"><strong>Before — it's coming up</strong><span>Log the fear before the moment</span></span>
     </button>
-    <button class="jr-action-secondary" onclick="startSpontaneousLog()">
-      <span class="jr-action-ic">✍️</span>
-      <span class="jr-action-txt"><strong>Log a moment that just happened</strong><span>Something made you anxious? Record it.</span></span>
+    <button class="jr-action-secondary" onclick="startAfterLog()">
+      <span class="jr-action-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="8 12.5 11 15.5 16 9.5"/></svg></span>
+      <span class="jr-action-txt"><strong>After — how did it go?</strong><span>Debrief it, voice or skip</span></span>
     </button>
   </div>
   <div class="jr-events" id="jr-events"></div>
