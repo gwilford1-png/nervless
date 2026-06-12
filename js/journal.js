@@ -137,7 +137,15 @@ const Journal = (function () {
     _events.unshift(ev);
     _saveLocal();
     if (typeof DB !== 'undefined' && DB.isSignedIn && DB.isSignedIn() && DB.saveJournalEvent) {
-      try { await DB.saveJournalEvent(ev); } catch (e) { console.warn('[Journal] event save failed:', e); }
+      try {
+        const realId = await DB.saveJournalEvent(ev);
+        if (realId) {
+          const oldId = ev.id;
+          ev.id = realId; // adopt the database's UUID
+          _logs.forEach(l => { if (l.event_id === oldId) l.event_id = realId; });
+          _saveLocal();
+        }
+      } catch (e) { console.warn('[Journal] event save failed:', e); }
     }
     return ev;
   }
@@ -147,8 +155,50 @@ const Journal = (function () {
   function logs() { return _logs; }
   function mission(phase) { return MISSIONS[phase] || null; }
 
+  // ── Moment series (recurring events) ──
+  function _norm(t) { return (t || '').trim().toLowerCase(); }
+
+  // Counts of before/after logs attached to an event
+  function eventLogCounts(eventId) {
+    let pre = 0, after = 0;
+    _logs.forEach(l => {
+      if (l.event_id !== eventId) return;
+      if (l.kind === 'pre') pre++;
+      else if (l.kind === 'debrief' || l.kind === 'spontaneous') after++;
+    });
+    return { pre, after };
+  }
+
+  // Deduped list of past moments by title — newest first
+  function momentSeries() {
+    const seen = {};
+    const out = [];
+    _events.forEach(ev => {
+      const key = _norm(ev.title);
+      if (!key || seen[key]) return;
+      seen[key] = true;
+      const c = eventLogCounts(ev.id);
+      out.push({ id: ev.id, title: ev.title, status: ev.status, pre: c.pre, after: c.after, last: ev.created_at });
+    });
+    return out;
+  }
+
+  function findEventByTitle(title) {
+    const key = _norm(title);
+    if (!key) return null;
+    return _events.find(e => _norm(e.title) === key) || null;
+  }
+
+  // Re-open a completed event so it shows under "Coming up" again
+  function reopenEvent(eventId) {
+    const ev = _events.find(e => e.id === eventId);
+    if (ev && ev.status !== 'upcoming') { ev.status = 'upcoming'; _saveLocal(); }
+    return ev || null;
+  }
+
   return {
     load, stats, evidenceLine, hasLoggedMission, events, logs, mission,
+    momentSeries, findEventByTitle, eventLogCounts, reopenEvent,
     _commitLog, _commitEvent,
     get rec() { return rec; },
     get draft() { return _draft; },
