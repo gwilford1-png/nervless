@@ -139,16 +139,17 @@ const DB = (function () {
   }
 
   async function saveJournalEvent(ev) {
-    if (!_session || !_sb) return;
+    if (!_session || !_sb) return null;
     try {
-      await _sb.from('journal_events').insert({
-        id: ev.id.startsWith('je_') ? undefined : ev.id,
+      const { data, error } = await _sb.from('journal_events').insert({
         user_id: _session.user.id,
         title: ev.title,
         event_date: ev.event_date || null,
         status: ev.status || 'upcoming'
-      });
-    } catch (e) { console.warn('[DB] saveJournalEvent failed:', e); }
+      }).select('id').single();
+      if (error) { console.warn('[DB] saveJournalEvent failed:', error); return null; }
+      return data ? data.id : null; // the real UUID the database generated
+    } catch (e) { console.warn('[DB] saveJournalEvent failed:', e); return null; }
   }
 
   async function saveJournalLog(log) {
