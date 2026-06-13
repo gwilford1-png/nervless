@@ -3,7 +3,7 @@
    Global state, startup redirect, load wiring, window exports. MUST load last (after data.js, logic.js, ui.js).
    ============================================================ */
 
-let state={currentQuestion:0,answers:[],level:2,currentSessionId:6,isRecording:false,timerInterval:null,seconds:0,mediaRecorder:null,audioChunks:[],sessions:JSON.parse(localStorage.getItem('nervless_sessions')||'[]'),completedSessions:JSON.parse(localStorage.getItem('nervless_completed')||'[]'),screenHistory:['screen-curriculum']};
+let state={currentQuestion:0,answers:[],level:2,currentSessionId:1,isRecording:false,timerInterval:null,seconds:0,mediaRecorder:null,audioChunks:[],sessions:JSON.parse(localStorage.getItem('nervless_sessions')||'[]'),completedSessions:JSON.parse(localStorage.getItem('nervless_completed')||'[]'),screenHistory:['screen-curriculum']};
 
 // Redirect to /start if no saved level — user hasn't done the assessment yet
 (function(){
@@ -13,7 +13,13 @@ let state={currentQuestion:0,answers:[],level:2,currentSessionId:6,isRecording:f
   }
   // Load saved state and show curriculum
   state.level=parseInt(localStorage.getItem('nervless_level'));
-  state.currentSessionId=parseInt(localStorage.getItem('nervless_current_session')||6);
+  state.currentSessionId=parseInt(localStorage.getItem('nervless_current_session')||localStorage.getItem('nervless_entry')||1);
+  // Fresh from the start page (?go=1): drop straight into the recommended session
+  if(/[?&]go=1\b/.test(window.location.search)){
+    if(window.history&&history.replaceState)history.replaceState(null,'',window.location.pathname);
+    setTimeout(function(){ if(typeof loadSession==='function')loadSession(state.currentSessionId); else showCurriculum(); },0);
+    return;
+  }
   setTimeout(function(){showCurriculum();},0);
 })();
 window.addEventListener('load',()=>{
@@ -31,9 +37,6 @@ window.showCurriculum        = showCurriculum;
 window.showDashboard         = showDashboard;
 window.showJournal           = showJournal;
 window.startSpeakingSoon     = startSpeakingSoon;
-window.startBeforeLog        = startBeforeLog;
-window.startAfterLog         = startAfterLog;
-window._pickMoment           = _pickMoment;
 window.startSpontaneousLog   = startSpontaneousLog;
 window.startMissionLog       = startMissionLog;
 window.openEventLog          = openEventLog;
@@ -46,11 +49,8 @@ window._setOutcome           = _setOutcome;
 window._logBail              = _logBail;
 window.d_outcome             = d_outcome;
 window.renderJournalHome     = renderJournalHome;
-window.openSeriesDetail      = openSeriesDetail;
-window.renderJournalEvidence = renderJournalEvidence;
 window.refreshMissionGate    = refreshMissionGate;
 window._advanceTo            = _advanceTo;
-window.renderWeeklyRing      = renderWeeklyRing;
 window.renderProgressChart   = renderProgressChart;
 window.showFreeTab           = showFreeTab;
 window.showScreen            = showScreen;
