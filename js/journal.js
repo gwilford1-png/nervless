@@ -124,6 +124,7 @@ const Journal = (function () {
     log.created_at = new Date().toISOString();
     _logs.unshift(log);
     _saveLocal();
+    if (typeof WeeklyRing !== 'undefined') WeeklyRing.logRep();
     if (typeof DB !== 'undefined' && DB.isSignedIn && DB.isSignedIn() && DB.saveJournalLog) {
       try { await DB.saveJournalLog(log); } catch (e) { console.warn('[Journal] save failed:', e); }
     }
