@@ -41,8 +41,7 @@ const LESSON_CONTENT = {
       `<h3>What this programme does</h3><p>Through <strong>graduated exposure</strong> — speaking in progressively more challenging situations — your brain learns that speaking is survivable. Even manageable.</p><p>Each session you complete rewires your threat register. You're not fighting your biology. You're updating it.</p><div class="highlight-box">You don't need to feel ready to start. Waiting until you feel ready is the thing that keeps you stuck.</div>`
     ],
     quiz: [
-      { q: "Why does your body react physically when you have to speak publicly?", options: ["You haven't practised enough","Your brain treats social threat the same as physical danger","You lack confidence","Anxiety is a sign of poor preparation"], correct: 1, explanation: "The fight-or-flight response evolved for physical danger — but your brain fires it in social situations too. It's the same system, wrong context." },
-      { q: "What does a racing heart and dry mouth before speaking actually mean?", options: ["Something is seriously wrong with you","You're not cut out for public speaking","Your body is doing exactly what it was designed to do","You need more experience before trying"], correct: 2, explanation: "These symptoms are your biology working as intended — not evidence of inadequacy. The goal is learning to work with the system, not fight it." }
+      { q: "Why does your body react physically when you have to speak publicly?", options: ["You haven't practised enough","Your brain treats social threat the same as physical danger","You lack confidence","Anxiety is a sign of poor preparation"], correct: 1, explanation: "The fight-or-flight response evolved for physical danger — but your brain fires it in social situations too. It's the same system, wrong context." }
     ]
   },
   2: {
@@ -77,8 +76,7 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Avoidance feels like relief but functions like fuel — it feeds the fear. Gradual, repeated exposure is the only proven way to reduce anxiety long-term.</div>
       </div>`,
     quiz: [
-      { q: "What does avoidance teach your brain about the feared situation?", options: ["That you need more preparation next time","That the situation was genuinely dangerous","That your anxiety is improving","That speaking isn't important to you"], correct: 1, explanation: "When you avoid a feared situation, your brain registers: 'We escaped danger.' This confirms the threat and makes the anxiety stronger next time." },
-      { q: "What is the proven way to reduce speaking anxiety over time?", options: ["Avoiding all high-pressure situations until you feel ready","Thinking positively about speaking","Gradual, repeated exposure to speaking situations","Watching other confident speakers and copying them"], correct: 2, explanation: "Exposure therapy — starting with low-anxiety situations and gradually increasing — is the gold standard treatment for anxiety. Each session you do here is exactly that." }
+      { q: "What does avoidance teach your brain about the feared situation?", options: ["That you need more preparation next time","That the situation was genuinely dangerous","That your anxiety is improving","That speaking isn't important to you"], correct: 1, explanation: "When you avoid a feared situation, your brain registers: 'We escaped danger.' This confirms the threat and makes the anxiety stronger next time." }
     ],
     reframe: { label: "Your avoidance pattern", prompt: "What's one speaking situation you've avoided recently? It could be speaking up in a meeting, turning down a presentation, or staying quiet when you had something to say. What did avoiding it cost you?" }
   },
@@ -97,8 +95,7 @@ const LESSON_CONTENT = {
         <div class="key-insight-text"><strong>Key insight:</strong> Anxiety protects against something specific — usually rejection, humiliation, or being judged incompetent. Naming the exact fear is the first step to reducing its power.</div>
       </div>`,
     quiz: [
-      { q: "What is the most useful way to think about speaking anxiety?", options: ["As a sign you're not ready","As a character weakness to overcome","As a misguided protector with a positive intention","As something that will disappear with enough experience"], correct: 2, explanation: "Anxiety evolved to protect us. Understanding what yours is protecting against — specifically — transforms your relationship with it from enemy to something you can work with." },
-      { q: "What does anxiety typically do with the probability of the feared outcome?", options: ["Estimates it accurately","Underestimates it","Overestimates it significantly","Ignores it completely"], correct: 2, explanation: "Anxiety almost always overestimates both the likelihood and the severity of the feared outcome. The feared humiliation rarely happens — and even when things go imperfectly, it's rarely as catastrophic as feared." }
+      { q: "What is the most useful way to think about speaking anxiety?", options: ["As a sign you're not ready","As a character weakness to overcome","As a misguided protector with a positive intention","As something that will disappear with enough experience"], correct: 2, explanation: "Anxiety evolved to protect us. Understanding what yours is protecting against — specifically — transforms your relationship with it from enemy to something you can work with." }
     ]
   },
   5: {
@@ -371,10 +368,7 @@ const LESSON_CONTENT = {
       <div class="key-insight">
         <div class="key-insight-icon">🧘</div>
         <div class="key-insight-text"><strong>Key insight:</strong> Physical tension and anxiety reinforce each other. Releasing tension in the body directly reduces the feeling of anxiety — not just the symptoms of it.</div>
-      </div>`,
-    quiz: [
-      { q: "What is the relationship between physical tension and the feeling of anxiety?", options: ["Tension is just a symptom — it doesn't affect anxiety itself","They reinforce each other — releasing tension reduces anxiety, not just its symptoms","Tension is always caused by anxiety, never the other way around","Physical relaxation only affects the body, not the mind"], correct: 1, explanation: "The body-mind connection runs both ways. Just as anxiety creates tension, releasing tension signals safety to the nervous system — directly reducing the experience of anxiety, not just its physical symptoms." }
-    ]
+      </div>`
   },
   8: {
     read: `
@@ -471,10 +465,7 @@ const LESSON_CONTENT = {
       <div class="key-insight">
         <div class="key-insight-icon">🪜</div>
         <div class="key-insight-text"><strong>Key insight:</strong> Exposure therapy works by teaching the nervous system through experience, not logic. Your brain doesn't update its threat register through reassurance — only through doing.</div>
-      </div>`,
-    quiz: [
-      { q: "What is the critical rule when working through an anxiety hierarchy?", options: ["Move up as quickly as possible to build momentum","Skip rungs that seem too similar","Never skip rungs — work each level until anxiety drops before moving up","Always start at the most feared situation for maximum impact"], correct: 2, explanation: "Moving too fast defeats the purpose. You need to stay at each rung long enough for your nervous system to habituate — to learn that this level is safe. Only when your anxiety at that level has significantly reduced should you move up." },
-    ]
+      </div>`
   },
   14: {
     read: `
@@ -721,7 +712,6 @@ Object.assign(LESSON_CONTENT, {
         <div class="key-insight-text"><strong>Key insight:</strong> A technique used to communicate better is a tool. The same technique used to avoid feeling exposed is a crutch. The difference is the why — and your brain learns most when you let go of the crutch.</div>
       </div>`,
     quiz: [
-      { q: "What is a 'safety behaviour' in speaking?", options: ["Any technique that calms your nerves","Something you do to prevent a feared disaster but never actually put to the test","Preparing thoroughly for a talk","Speaking slowly and clearly"], correct: 1, explanation: "Safety behaviours — scripting every word, never pausing, avoiding eye contact — feel protective but stop your brain from learning the situation is safe. The catastrophe they guard against never gets tested." },
       { q: "How do you tell a useful tool from a safety behaviour?", options: ["Tools are taught; crutches are not","By the reason — to communicate better, or just to feel less exposed","Tools are physical; crutches are mental","There's no real difference"], correct: 1, explanation: "The same action can be either. Breathing to settle yourself so you can communicate is a tool. The same breathing done only to dodge the discomfort of feeling exposed is a crutch that keeps the fear alive." }
     ]
   },
@@ -753,10 +743,7 @@ Object.assign(LESSON_CONTENT, {
         <div class="key-insight-text"><strong>Key insight:</strong> Hiding self-view, looking at the lens, and leaving a beat for the lag do more for how you land than anything you say.</div>
       </div>`,
     scenario: { description: "You're on a video call about to give an update. You can see your own face in the corner, six faces in a grid, and there's a slight audio delay.", options: ["Hide your self-view and look at the camera lens as you speak","Leave a deliberate beat before and after others speak to handle the lag","Bring a bit more energy than feels natural so you don't read as flat"] },
-    reminder: "Leave a beat before and after others speak — absorb the lag.",
-    quiz: [
-      { q: "Why is hiding your self-view on a video call so useful?", options: ["It saves screen space","Watching your own face feeds the self-monitoring that drives anxiety","It makes the call run faster","It stops others seeing you"], correct: 1, explanation: "Your own face in the corner turns a call into constant self-surveillance. Hiding self-view removes it, the same way you'd never watch yourself in a real meeting." },
-    ]
+    reminder: "Leave a beat before and after others speak — absorb the lag."
   },
   63: {
     read: `
@@ -788,8 +775,7 @@ Object.assign(LESSON_CONTENT, {
         <div class="key-insight-text"><strong>Key insight:</strong> Aiming attention outward doesn't remove the anxiety — it just stops it running the show. It's the single biggest shift from anxious to confident speaking.</div>
       </div>`,
     quiz: [
-      { q: "Why does monitoring yourself while speaking make anxiety worse?", options: ["It doesn't — self-awareness always helps","Attention is limited; watching yourself feeds the anxiety loop and leaves less for communicating","Because you notice more mistakes","Because the audience can tell you're concentrating"], correct: 1, explanation: "Self-focused attention amplifies every symptom and starves communicating. Pointing attention outward — at the listener and the message — breaks the loop." },
-      { q: "What is the core attention shift confident speakers make?", options: ["From the audience to their notes","From 'how am I doing?' to 'are they following me?'","From the message to their delivery","From speaking to listening"], correct: 1, explanation: "The shift is from self-monitoring to audience focus. It doesn't eliminate anxiety, but it stops anxiety from dominating — and it's a trainable skill." }
+      { q: "Why does monitoring yourself while speaking make anxiety worse?", options: ["It doesn't — self-awareness always helps","Attention is limited; watching yourself feeds the anxiety loop and leaves less for communicating","Because you notice more mistakes","Because the audience can tell you're concentrating"], correct: 1, explanation: "Self-focused attention amplifies every symptom and starves communicating. Pointing attention outward — at the listener and the message — breaks the loop." }
     ]
   }
 });
