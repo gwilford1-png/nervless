@@ -242,17 +242,11 @@ if(localStorage.getItem('nervless_level')&&(JSON.parse(localStorage.getItem('ner
     <div style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;font-size:28px;line-height:1.3;margin-bottom:12px">Here's your recommended<br>starting point</div>
     <div style="font-size:14px;color:var(--muted);line-height:1.6">Everyone begins somewhere. You choose where.</div>
   </div>
-  <div style="padding:0 24px 24px;"><div id="all-levels-list"></div></div>
+  <div style="padding:0 24px 20px;"><div id="all-levels-list"></div></div>
   <div style="padding:0 24px 8px;display:none" id="rec-box-wrap">
     <div class="rec-card" id="rec-box"></div>
   </div>
-  <div style="padding:16px 24px 8px;">
-    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:14px 16px;text-align:center;font-size:13px;color:var(--muted);line-height:1.6">
-      Speaking anxiety reduces wages by <strong style="color:var(--accent)">10%</strong> on average and causes <strong style="color:var(--accent)">45%</strong> of people to turn down promotions. It also stops people speaking at weddings, funerals, and the moments that matter most.
-      <div style="margin-top:8px;font-size:11.5px;color:var(--faint)">From published research on speaking anxiety and careers &middot; <a href="/learn/" style="color:var(--faint)">more in Learn</a></div>
-    </div>
-  </div>
-  <div style="padding:24px 24px 32px;text-align:center;" id="level-cta-wrap">
+  <div style="padding:18px 24px 32px;text-align:center;" id="level-cta-wrap">
     <div id="level-cta"></div>
     <div class="level-footer">Your level updates as you improve</div>
   </div>
@@ -347,10 +341,10 @@ function showLevelReveal(){
     star:'<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>'
   };
   const all=[
-    {num:4,label:'Starting Fresh',summary:'Significant anxiety — we begin right at the beginning, gently',icon:IC.sunrise,traits:['Severe anxiety — completely valid','Tiny steps, big progress over time','Progress measured in moments, not scores']},
-    {num:3,label:'Facing the Fear',summary:'Real anxiety that has affected your life',icon:IC.heart,traits:["Significant anxiety — you're not alone",'Slow, gentle progression','Small wins matter enormously']},
-    {num:2,label:'Finding Your Voice',summary:'Some nerves — ready to build real confidence',icon:IC.sprout,traits:['Moderate anxiety — very common','Recommended start: Phase 2','Phase 1 stays open to revisit']},
-    {num:1,label:'Speaking Freely',summary:'Speaking with confidence and command',icon:IC.star,traits:['Low anxiety — here to sharpen','Recommended start: Phase 3','Phases 1–2 stay open to revisit']}
+    {num:4,label:'Starting Fresh',summary:'Significant anxiety — we begin right at the beginning, gently',icon:IC.sunrise,traits:['Severe anxiety — completely valid','Tiny steps, real progress over time']},
+    {num:3,label:'Facing the Fear',summary:'Real anxiety that has affected your life',icon:IC.heart,traits:["Significant anxiety — you're not alone",'Slow, gentle progression']},
+    {num:2,label:'Finding Your Voice',summary:'Some nerves — ready to build real confidence',icon:IC.sprout,traits:['Moderate anxiety — very common','Phase 1 stays open to revisit']},
+    {num:1,label:'Speaking Freely',summary:'Speaking with confidence and command',icon:IC.star,traits:['Low anxiety — here to sharpen','Phases 1–2 stay open to revisit']}
   ];
   let lines='',cards='';
   all.forEach((lv,i)=>{
