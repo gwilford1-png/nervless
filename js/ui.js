@@ -1,4 +1,4 @@
- /* ============================================================
+/* ============================================================
    Nervless — UI
    Screen routing, rendering, lessons, feedback, dashboard, practice — everything that touches the DOM. Depends on: data.js, logic.js.
    ============================================================ */
@@ -22,19 +22,23 @@ function showCurriculum() {
   r.setProperty('--sc-mid', '#C8C0F5');
 
   state.level = parseInt(localStorage.getItem('nervless_level') || state.level);
-  // Always start from Phase 1 — level determines coaching framing, not entry point
   state.currentSessionId = parseInt(localStorage.getItem('nervless_current_session') || 1);
   state.completedSessions = JSON.parse(localStorage.getItem('nervless_completed') || '[]');
 
   const passed = JSON.parse(localStorage.getItem('nervless_passed') || '[]');
   const DONE = passed;
   const CURRENT = state.currentSessionId;
-  // Always show the full curriculum from Phase 1
-  const entryPhase = 1;
+  // Full curriculum is always visible. The assessment recommends an entry phase;
+  // phases before it render as "open" — optional groundwork, never locked.
+  const entryId = parseInt(localStorage.getItem('nervless_entry') || 1);
+  const entryS = CURRICULUM.find(s => s.id === entryId);
+  const entryPhase = entryS ? entryS.phase : 1;
   const relevant = CURRICULUM;
+  const required = CURRICULUM.filter(s => s.phase >= entryPhase);
 
-  const totalDone = passed.length;
+  const totalDone = passed.length; // every passed session counts, optional ones included
   const totalSessions = relevant.length;
+  const requiredDone = required.filter(s => hasPassedSession(s.id)).length;
   const currSession = CURRICULUM.find(s => s.id === CURRENT);
   const currPhase = currSession ? currSession.phase : 1;
 
@@ -52,7 +56,7 @@ function showCurriculum() {
   if (ptsTotalEl) ptsTotalEl.textContent = '/ ' + maxPts.toLocaleString() + ' pts';
   document.getElementById('stat-phase-text').textContent = 'Phase ' + currPhase + ' of 9';
   const fill = document.getElementById('journey-progress-fill');
-  const pct = totalSessions ? Math.round((totalDone / totalSessions) * 100) : 0;
+  const pct = required.length ? Math.round((requiredDone / required.length) * 100) : 0;
   const clampedPct = Math.max(5, Math.min(100, pct));
   if (fill) fill.style.width = clampedPct + '%';
   // Position "You're here" tag under the knob
@@ -99,11 +103,9 @@ function showCurriculum() {
     const ss = relevant.filter(s => s.phase === num);
     if (ss.length === 0) return 'locked';
     if (ss.every(s => hasPassedSession(s.id))) return 'done';
-    // First phase present in relevant is always active (entry phase for this level)
-    const firstPhase = Math.min(...relevant.map(s => s.phase));
-    if (num === firstPhase) return 'active';
+    if (num < entryPhase) return 'open';     // optional groundwork — always accessible, never locked
+    if (num === entryPhase) return 'active'; // the recommended starting phase
     const prev = relevant.filter(s => s.phase === num - 1);
-    // If previous phase not in relevant (user entered mid-programme), treat as cleared
     if (prev.length === 0) return 'active';
     return prev.every(s => hasPassedSession(s.id)) ? 'active' : 'locked';
   }
@@ -132,8 +134,8 @@ function showCurriculum() {
   }
 
   // ── Phases-complete count ──
-  const phasesPresent = [...new Set(relevant.map(s => s.phase))];
-  const phasesDone = phasesPresent.filter(n => relevant.filter(s => s.phase === n).every(s => hasPassedSession(s.id))).length;
+  const phasesPresent = [...new Set(required.map(s => s.phase))];
+  const phasesDone = phasesPresent.filter(n => required.filter(s => s.phase === n).every(s => hasPassedSession(s.id))).length;
   document.getElementById('j-phases-count').textContent = phasesDone + ' of ' + phasesPresent.length + ' complete';
 
   // ── Build phase cards ──
@@ -167,11 +169,13 @@ function showCurriculum() {
       ).join('');
       body = `<div class="j-sessions"><div class="j-unlock-header">${LOCK} ${sessions.length} sessions · finish Phase ${p.num - 1} to unlock</div>${lockedRows}</div>`;
     } else {
+      const isOptional = st === 'open';
       const rows = sessions.map((s, si) => {
         const isDone = hasPassedSession(s.id);
-        // isCurrent: explicitly flagged, OR first unpassed session in an active phase
+        // isCurrent: explicitly flagged, OR first unpassed session in an active phase.
+        // Open (optional) phases never claim "Up next" — they're a side path, not the path.
         const firstUnpassed = sessions.find(ss => !hasPassedSession(ss.id));
-        const isCurrent = !isDone && (s.id === CURRENT || s === firstUnpassed);
+        const isCurrent = !isOptional && !isDone && (s.id === CURRENT || s === firstUnpassed);
         const showGrade = showsGrade(s) && s.scored !== false;
         let cls, inner, sub, subCls = '', right;
         if (isDone) {
@@ -194,7 +198,10 @@ function showCurriculum() {
             <div class="j-s-right">${right}</div>
           </div>`;
       }).join('');
-      body = `<div class="j-sessions">${rows}</div>`;
+      const optionalHeader = isOptional
+        ? `<div class="j-unlock-header">${CHECK} Optional groundwork — open to revisit any time</div>`
+        : '';
+      body = `<div class="j-sessions">${optionalHeader}${rows}</div>`;
     }
 
     return `<div class="j-phase-card state-${st}${isOpen ? ' open' : ''}" style="--pc:${p.color};--pc-light:${p.light};--pc-mid:${p.mid};animation-delay:${delay}s">
@@ -215,7 +222,7 @@ function showCurriculum() {
   }).join('');
 
   // ── Journey footer: completion hand-off, or a "where this leads" pull while in progress ──
-  const journeyComplete = totalSessions > 0 && totalDone >= totalSessions;
+  const journeyComplete = required.length > 0 && requiredDone >= required.length;
   let footerCard = '';
   if (journeyComplete) {
     const weekly = CURRICULUM.find(s => s.phase === 9 && /check[\s-]?in/i.test(s.title))
@@ -256,7 +263,6 @@ function showCurriculum() {
 
   setActiveNav('journey');
   renderMissionPrompt();
-  if (typeof renderWeeklyRing === 'function') renderWeeklyRing();
   showScreen('screen-curriculum');
 }
 
@@ -1699,9 +1705,6 @@ function renderFeedback(rec, transcript, analysis) {
 
   showScreen('screen-feedback');
 
-  // Weekly ring: this counts as a rep
-  if (typeof WeeklyRing !== 'undefined') WeeklyRing.logRep();
-
   // SUDS post-rating — only if a pre-rating was captured this rep
   if (typeof SUDS !== 'undefined') {
     setTimeout(() => { SUDS.post(); }, 600);
@@ -1808,7 +1811,8 @@ async function startRecording(){
 function stopRecording(){if(state.mediaRecorder&&state.mediaRecorder.state!=='inactive'){clearInterval(state.timerInterval);state.isRecording=false;state.mediaRecorder.stop();}}
 function showPhaseLockedMsg(phaseNum) {
   const prevPhase = phaseNum - 1;
-  const entrySession = CURRICULUM.find(s => s.id === LEVEL_ENTRY[state.level]);
+  const entryId = parseInt(localStorage.getItem('nervless_entry') || 1);
+  const entrySession = CURRICULUM.find(s => s.id === entryId);
   const entryPhase = entrySession ? entrySession.phase : 1;
   const relevant = CURRICULUM.filter(s => s.phase >= entryPhase);
   const prevSessions = relevant.filter(s => s.phase === prevPhase);
@@ -1826,11 +1830,11 @@ function completeSession() {
 
   if (completionPasses || score >= passScore) {
     markSessionPassed(id);
-    const entry = LEVEL_ENTRY[state.level];
-    const entrySession = CURRICULUM.find(s => s.id === entry);
+    const entryId = parseInt(localStorage.getItem('nervless_entry') || 1);
+    const entrySession = CURRICULUM.find(s => s.id === entryId);
     const entryPhase = entrySession ? entrySession.phase : 1;
-    const relevant = CURRICULUM.filter(s => s.phase >= entryPhase);
-    const nextUnpassed = relevant.find(s => !hasPassedSession(s.id));
+    const required = CURRICULUM.filter(s => s.phase >= entryPhase);
+    const nextUnpassed = required.find(s => !hasPassedSession(s.id));
     if (nextUnpassed) {
       state.currentSessionId = nextUnpassed.id;
       localStorage.setItem('nervless_current_session', nextUnpassed.id);
@@ -1842,15 +1846,13 @@ function completeSession() {
 function showDashboard(){
   const sessions=state.sessions,count=sessions.length,avg=count?Math.round(sessions.reduce((a,s)=>a+s.score,0)/count):null,mins=Math.round(sessions.reduce((a,s)=>a+(s.duration||60),0)/60);
   document.getElementById('stat-sessions').textContent=count;document.getElementById('stat-avg').textContent=avg||'-';document.getElementById('stat-mins').textContent=mins;
-  const streakEl=document.getElementById('streak-value'); if(streakEl) streakEl.textContent=count>0?Math.min(count,7)+' day'+(count>1?'s':''):'Start today';
+  document.getElementById('streak-value').textContent=count>0?Math.min(count,7)+' day'+(count>1?'s':''):'Start today';
   const list=document.getElementById('history-list');
   if(!sessions.length){list.innerHTML='<div style="text-align:center;color:var(--muted);padding:32px;font-size:15px">No sessions yet. Start your journey to see progress here.</div>';}
   else{list.innerHTML=sessions.slice(0,8).map(s=>{const c=s.score>=70?'var(--green)':s.score>=50?'var(--gold)':'var(--red)';return'<div class="history-card"><div><div class="history-prompt">'+(s.sessionTitle||'Practice session')+'</div><div class="history-meta">Level '+s.level+' &middot; '+s.date+'</div></div><div class="history-score" style="color:'+c+'">'+s.score+'</div></div>';}).join('');}
   setActiveNav('progress');
   showScreen('screen-dashboard');
   renderProgressChart();
-  if (typeof renderProgressExtras === 'function') renderProgressExtras();
-  if (typeof renderWeeklyRing === 'function') renderWeeklyRing();
 }
 
 function renderProgressChart() {
