@@ -1,4 +1,4 @@
-/* ============================================================
+ /* ============================================================
    Nervless — UI
    Screen routing, rendering, lessons, feedback, dashboard, practice — everything that touches the DOM. Depends on: data.js, logic.js.
    ============================================================ */
@@ -256,6 +256,7 @@ function showCurriculum() {
 
   setActiveNav('journey');
   renderMissionPrompt();
+  if (typeof renderWeeklyRing === 'function') renderWeeklyRing();
   showScreen('screen-curriculum');
 }
 
@@ -1698,6 +1699,9 @@ function renderFeedback(rec, transcript, analysis) {
 
   showScreen('screen-feedback');
 
+  // Weekly ring: this counts as a rep
+  if (typeof WeeklyRing !== 'undefined') WeeklyRing.logRep();
+
   // SUDS post-rating — only if a pre-rating was captured this rep
   if (typeof SUDS !== 'undefined') {
     setTimeout(() => { SUDS.post(); }, 600);
@@ -1838,7 +1842,7 @@ function completeSession() {
 function showDashboard(){
   const sessions=state.sessions,count=sessions.length,avg=count?Math.round(sessions.reduce((a,s)=>a+s.score,0)/count):null,mins=Math.round(sessions.reduce((a,s)=>a+(s.duration||60),0)/60);
   document.getElementById('stat-sessions').textContent=count;document.getElementById('stat-avg').textContent=avg||'-';document.getElementById('stat-mins').textContent=mins;
-  document.getElementById('streak-value').textContent=count>0?Math.min(count,7)+' day'+(count>1?'s':''):'Start today';
+  const streakEl=document.getElementById('streak-value'); if(streakEl) streakEl.textContent=count>0?Math.min(count,7)+' day'+(count>1?'s':''):'Start today';
   const list=document.getElementById('history-list');
   if(!sessions.length){list.innerHTML='<div style="text-align:center;color:var(--muted);padding:32px;font-size:15px">No sessions yet. Start your journey to see progress here.</div>';}
   else{list.innerHTML=sessions.slice(0,8).map(s=>{const c=s.score>=70?'var(--green)':s.score>=50?'var(--gold)':'var(--red)';return'<div class="history-card"><div><div class="history-prompt">'+(s.sessionTitle||'Practice session')+'</div><div class="history-meta">Level '+s.level+' &middot; '+s.date+'</div></div><div class="history-score" style="color:'+c+'">'+s.score+'</div></div>';}).join('');}
@@ -1846,6 +1850,7 @@ function showDashboard(){
   showScreen('screen-dashboard');
   renderProgressChart();
   if (typeof renderProgressExtras === 'function') renderProgressExtras();
+  if (typeof renderWeeklyRing === 'function') renderWeeklyRing();
 }
 
 function renderProgressChart() {
