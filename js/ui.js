@@ -607,15 +607,12 @@ function startLesson(s) {
   if (hasQuiz) {
     let quizHtml = '';
     lc.quiz.forEach((q, i) => {
-      const letters = ['A', 'B', 'C', 'D'];
       quizHtml += `<div class="quiz-question${i === 0 ? ' active' : ''}" id="quiz-q-${i}">
-        <div class="quiz-q-num">Question ${i + 1} of ${lc.quiz.length}</div>
+        <div class="quiz-q-num">Reflect</div>
         <div class="quiz-q-text">${q.q}</div>
         <div class="quiz-options">`;
       q.options.forEach((opt, j) => {
-        quizHtml += `<button class="quiz-option" id="quiz-opt-${i}-${j}" onclick="selectQuizAnswer(${i},${j})">
-          <span class="quiz-option-letter">${letters[j]}</span>${opt}
-        </button>`;
+        quizHtml += `<button class="quiz-option" id="quiz-opt-${i}-${j}" onclick="selectQuizAnswer(${i},${j})">${opt}</button>`;
       });
       quizHtml += `</div>
         <div class="quiz-feedback" id="quiz-fb-${i}"></div>
@@ -623,8 +620,11 @@ function startLesson(s) {
       </div>`;
     });
     document.getElementById('lesson-quiz-container').innerHTML = quizHtml;
-    document.getElementById('quiz-all-correct').classList.remove('show');
-    document.getElementById('quiz-progress-label').textContent = `Question 1 of ${lc.quiz.length}`;
+    const _ac = document.getElementById('quiz-all-correct');
+    _ac.classList.remove('show');
+    _ac.innerHTML = '<div style="font-size:16px;font-weight:700;color:var(--green);margin-bottom:4px">That\'s the idea</div><div style="font-size:13px;color:var(--muted)">You\'ve got it — let\'s keep going.</div>';
+    const _pl = document.getElementById('quiz-progress-label');
+    _pl.textContent = ''; _pl.style.display = 'none';
   }
 
   // Populate talk (only for scored sessions)
@@ -1002,7 +1002,7 @@ function selectQuizAnswer(qIdx, optIdx) {
     const wrongBtn = document.getElementById(`quiz-opt-${qIdx}-${optIdx}`);
     wrongBtn.classList.add('wrong');
     fb.className = 'quiz-feedback show wrong-fb';
-    fb.textContent = '✗ Not quite — give it another try.';
+    fb.textContent = 'Not quite — take another look.';
     setTimeout(() => { wrongBtn.classList.remove('wrong'); }, 900);
     return;
   }
@@ -1017,7 +1017,7 @@ function selectQuizAnswer(qIdx, optIdx) {
     btn.disabled = true;
   });
   fb.className = 'quiz-feedback show correct-fb';
-  fb.textContent = '✓ ' + q.explanation;
+  fb.textContent = q.explanation;
 
   const nbtn = document.getElementById(`quiz-next-${qIdx}`);
   if (qIdx < total - 1) {
@@ -1027,7 +1027,8 @@ function selectQuizAnswer(qIdx, optIdx) {
     nbtn.innerHTML = lessonState.isScored ? ('Now let\'s talk ' + arrow) : 'Complete session ✓';
     nbtn.onclick = lessonNext;
     document.getElementById('quiz-all-correct').classList.add('show');
-    document.getElementById('quiz-progress-label').textContent = 'Perfect score!';
+    const _plDone = document.getElementById('quiz-progress-label');
+    _plDone.style.display = ''; _plDone.textContent = 'Locked in';
   }
   nbtn.style.display = '';
 }
@@ -1041,7 +1042,6 @@ function quizAdvance(qIdx) {
   if (cur) cur.classList.remove('active');
   if (nxt) nxt.classList.add('active');
   lessonState.quizCurrent = next;
-  document.getElementById('quiz-progress-label').textContent = `Question ${next + 1} of ${total}`;
   document.getElementById('screen-lesson').scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1052,7 +1052,8 @@ function quizRestoreComplete() {
     if (el) el.classList.toggle('active', i === total - 1);
   }
   lessonState.quizCurrent = total - 1;
-  document.getElementById('quiz-progress-label').textContent = 'Perfect score!';
+  const _plr = document.getElementById('quiz-progress-label');
+  _plr.style.display = ''; _plr.textContent = 'Locked in';
   document.getElementById('quiz-all-correct').classList.add('show');
   const nbtn = document.getElementById(`quiz-next-${total - 1}`);
   if (nbtn) nbtn.style.display = '';
@@ -1846,7 +1847,7 @@ function completeSession() {
 function showDashboard(){
   const sessions=state.sessions,count=sessions.length,avg=count?Math.round(sessions.reduce((a,s)=>a+s.score,0)/count):null,mins=Math.round(sessions.reduce((a,s)=>a+(s.duration||60),0)/60);
   document.getElementById('stat-sessions').textContent=count;document.getElementById('stat-avg').textContent=avg||'-';document.getElementById('stat-mins').textContent=mins;
-  document.getElementById('streak-value').textContent=count>0?Math.min(count,7)+' day'+(count>1?'s':''):'Start today';
+  const _streak=document.getElementById('streak-value');if(_streak)_streak.textContent=count>0?Math.min(count,7)+' day'+(count>1?'s':''):'Start today';
   const list=document.getElementById('history-list');
   if(!sessions.length){list.innerHTML='<div style="text-align:center;color:var(--muted);padding:32px;font-size:15px">No sessions yet. Start your journey to see progress here.</div>';}
   else{list.innerHTML=sessions.slice(0,8).map(s=>{const c=s.score>=70?'var(--green)':s.score>=50?'var(--gold)':'var(--red)';return'<div class="history-card"><div><div class="history-prompt">'+(s.sessionTitle||'Practice session')+'</div><div class="history-meta">Level '+s.level+' &middot; '+s.date+'</div></div><div class="history-score" style="color:'+c+'">'+s.score+'</div></div>';}).join('');}
