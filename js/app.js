@@ -50,6 +50,7 @@ window.openSeriesDetail      = openSeriesDetail;
 window.renderJournalEvidence = renderJournalEvidence;
 window.refreshMissionGate    = refreshMissionGate;
 window._advanceTo            = _advanceTo;
+window.renderWeeklyRing      = renderWeeklyRing;
 window.renderProgressChart   = renderProgressChart;
 window.showFreeTab           = showFreeTab;
 window.showScreen            = showScreen;
