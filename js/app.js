@@ -14,11 +14,9 @@ let state={currentQuestion:0,answers:[],level:2,currentSessionId:1,isRecording:f
   // Load saved state and show curriculum
   state.level=parseInt(localStorage.getItem('nervless_level'));
   state.currentSessionId=parseInt(localStorage.getItem('nervless_current_session')||localStorage.getItem('nervless_entry')||1);
-  // Fresh from the start page (?go=1): drop straight into the recommended session
-  if(/[?&]go=1\b/.test(window.location.search)){
-    if(window.history&&history.replaceState)history.replaceState(null,'',window.location.pathname);
-    setTimeout(function(){ if(typeof loadSession==='function')loadSession(state.currentSessionId); else showCurriculum(); },0);
-    return;
+  // Coming out of the start funnel (?go=1): just clean the URL and land on the journey home.
+  if(/[?&]go=1\b/.test(window.location.search)&&window.history&&history.replaceState){
+    history.replaceState(null,'',window.location.pathname);
   }
   setTimeout(function(){showCurriculum();},0);
 })();
