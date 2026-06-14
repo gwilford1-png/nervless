@@ -585,8 +585,13 @@ function startLesson(s) {
   // Set up format-specific interactive elements
   if (lc.cards) {
     setupContentCards(lc.cards);
-    // For card-only sessions, enable complete button after cards are done
-    if (!isScored && !hasQuiz) {
+    // If this session also has an interaction, reveal it after the cards finish
+    lessonState.pendingInteraction =
+      (lc.scenario && fmt === 'scenario') ? 'scenario' :
+      (lc.reframe && fmt === 'reframe') ? 'reframe' :
+      (fmt === 'timed' && lc.timedSeconds) ? 'timed' : null;
+    // Pure read card session (no interaction/quiz/scoring): gate completion on finishing the cards
+    if (!lessonState.pendingInteraction && !isScored && !hasQuiz) {
       document.getElementById('lesson-next-btn').disabled = true;
       document.getElementById('lesson-next-btn').style.opacity = '0.45';
     }
@@ -693,6 +698,30 @@ function updateLessonStepUI(step) {
 // ── INTERACTIVE FORMAT FUNCTIONS ──
 let cardsState = { current: 0, total: 0 };
 
+function revealInteraction() {
+  const type = lessonState.pendingInteraction;
+  lessonState.pendingInteraction = null;
+  const lc = LESSON_CONTENT[lessonState.sessionId];
+  if (!lc) { lessonNext(); return; }
+  document.getElementById('lesson-cards-wrap').style.display = 'none';
+  document.getElementById('screen-lesson').classList.remove('cards-mode');
+  if (type === 'scenario' && lc.scenario) {
+    setupScenario(lc.scenario.description, lc.scenario.options);
+    document.getElementById('lesson-next-btn').disabled = true;
+    document.getElementById('lesson-next-btn').style.opacity = '0.45';
+  } else if (type === 'reframe' && lc.reframe) {
+    setupReframe(lc.reframe.prompt, lc.reframe.label);
+  } else if (type === 'timed' && lc.timedSeconds) {
+    setupTimed(lc.timedSeconds);
+  } else {
+    lessonNext();
+    return;
+  }
+  // The cards already did the teaching — don't re-show the old read wall
+  document.getElementById('lesson-read-content').style.display = 'none';
+  document.getElementById('screen-lesson').scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 function setupContentCards(cards) {
   cardsState.current = 0;
   cardsState.total = cards.length;
@@ -725,8 +754,13 @@ function updateCardsNav() {
   const nextBtn = document.getElementById('cards-next-btn');
   const arrow = '<svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
   if (cardsState.current === cardsState.total - 1) {
-    nextBtn.innerHTML = 'I\'ve read this ' + arrow;
-    nextBtn.onclick = lessonNext;
+    if (lessonState.pendingInteraction) {
+      nextBtn.innerHTML = 'Continue ' + arrow;
+      nextBtn.onclick = revealInteraction;
+    } else {
+      nextBtn.innerHTML = 'I\'ve read this ' + arrow;
+      nextBtn.onclick = lessonNext;
+    }
   } else {
     nextBtn.innerHTML = 'Next ' + arrow;
     nextBtn.onclick = cardsNext;
