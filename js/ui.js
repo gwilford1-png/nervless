@@ -583,7 +583,7 @@ function startLesson(s) {
   resetInteractiveFormats();
 
   // Set up format-specific interactive elements
-  if (lc.cards && (fmt === 'read_only')) {
+  if (lc.cards) {
     setupContentCards(lc.cards);
     // For card-only sessions, enable complete button after cards are done
     if (!isScored && !hasQuiz) {
@@ -698,11 +698,12 @@ function setupContentCards(cards) {
   cardsState.total = cards.length;
 
   const track = document.getElementById('cards-track');
-  track.innerHTML = cards.map((html) => `
-    <div class="content-card-item">
-      <div class="lesson-content">${html}</div>
-    </div>
-  `).join('');
+  track.innerHTML = cards.map((html) => {
+    const raw = html.trim().slice(0, 16).indexOf('class="rc') !== -1;
+    return raw
+      ? `<div class="content-card-item">${html}</div>`
+      : `<div class="content-card-item"><div class="lesson-content">${html}</div></div>`;
+  }).join('');
   track.style.transform = 'translateX(0%)';
 
   const dots = document.getElementById('cards-dots');
@@ -734,6 +735,8 @@ function updateCardsNav() {
     const dot = document.getElementById('card-dot-'+i);
     if (dot) dot.className = 'cards-dot' + (i === cardsState.current ? ' active' : '');
   }
+  const items = document.querySelectorAll('#cards-track .content-card-item');
+  items.forEach((el, i) => el.classList.toggle('active', i === cardsState.current));
 }
 
 function cardsNext() {
