@@ -1,4 +1,4 @@
- @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap');
 
 /* ─────────────────────────────────────────
    V7 DESIGN SYSTEM — matches curriculum v7
@@ -897,3 +897,33 @@ body {
 .jr-spin { animation: jrspin 1s linear infinite; display: inline-block; }
 @keyframes jrspin { to { transform: rotate(360deg); } }
 @media (max-width: 380px) { .jr-c-scale .suds-num { font-size: 13px; } }
+
+/* ── Premium reader cards ───────────────────────────────── */
+.content-card-item { padding: 6px 2px 10px; }
+.rc-card { width: 100%; }
+.rc-icon { width: 58px; height: 58px; border-radius: 17px; background: var(--sc-light); color: var(--sc); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 8px 22px color-mix(in srgb, var(--sc) 16%, transparent); }
+.rc-icon svg { width: 29px; height: 29px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rc-head { font-family: 'Hanken Grotesk', sans-serif; font-weight: 800; font-size: 28px; line-height: 1.14; letter-spacing: -0.025em; color: var(--text); margin: 0 0 14px; }
+.rc-body { font-size: 16.5px; line-height: 1.62; color: var(--muted); margin: 0; }
+.rc-body strong { color: var(--text); font-weight: 700; }
+.rc-body + .rc-body { margin-top: 13px; }
+.rc-eyebrow { font-family: 'Hanken Grotesk', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--sc); margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+.rc-eyebrow svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.rc-ex-box { background: var(--surface); border: 1.5px solid var(--border); border-left: 4px solid var(--sc); border-radius: 18px; padding: 22px 20px; box-shadow: 0 12px 30px rgba(40,30,15,0.07); }
+.rc-ex-quote { font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; font-size: 20px; line-height: 1.35; letter-spacing: -0.01em; color: var(--text); margin-bottom: 12px; }
+.rc-ex-beat { font-size: 15.5px; line-height: 1.6; color: var(--muted); margin: 0; }
+.rc-ex-beat strong { color: var(--text); }
+.rc-highlight { background: linear-gradient(160deg, var(--sc) 0%, color-mix(in srgb, var(--sc) 76%, #000) 100%); border-radius: 22px; padding: 38px 26px; color: #fff; box-shadow: 0 16px 40px color-mix(in srgb, var(--sc) 30%, transparent); position: relative; overflow: hidden; }
+.rc-hl-mark { font-family: 'Hanken Grotesk', sans-serif; font-size: 84px; line-height: 0.6; font-weight: 800; color: rgba(255,255,255,0.18); position: absolute; top: 16px; left: 18px; }
+.rc-hl-quote { font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; font-size: 25px; line-height: 1.22; letter-spacing: -0.02em; position: relative; margin-bottom: 16px; }
+.rc-hl-sub { font-size: 15px; line-height: 1.58; color: rgba(255,255,255,0.84); position: relative; }
+.rc-stat-num { font-family: 'Hanken Grotesk', sans-serif; font-weight: 800; font-size: 82px; line-height: 0.9; letter-spacing: -0.04em; color: var(--sc); margin-bottom: 10px; }
+.rc-stat-label { font-size: 17.5px; line-height: 1.5; color: var(--text); font-weight: 700; margin-bottom: 16px; }
+.rc-stat-pill { display: inline-block; font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; font-size: 13.5px; color: var(--sc); background: var(--sc-light); padding: 8px 15px; border-radius: 100px; }
+.rc-anim { opacity: 1; }
+.content-card-item.active .rc-anim { animation: rcRise 0.55s cubic-bezier(0.2,0.7,0.2,1) both; }
+.content-card-item.active .rc-anim:nth-child(2) { animation-delay: 0.06s; }
+.content-card-item.active .rc-anim:nth-child(3) { animation-delay: 0.12s; }
+.content-card-item.active .rc-anim:nth-child(4) { animation-delay: 0.18s; }
+@keyframes rcRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .content-card-item.active .rc-anim { animation: none; } }
