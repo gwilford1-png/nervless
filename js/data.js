@@ -174,6 +174,11 @@ const LESSON_CONTENT = {
     ]
   },
   28: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div><h2 class="rc-head rc-anim">Why interviews freeze even confident people</h2><p class="rc-body rc-anim">The stakes feel existential — career, income, self-worth all on the line at once, and everything you say is being judged. That&rsquo;s why people who speak comfortably elsewhere still freeze here.</p><p class="rc-body rc-anim">But the interviewer expects nerves. What they&rsquo;re actually looking for isn&rsquo;t polish — it&rsquo;s clarity, relevance, and authenticity.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><h2 class="rc-head rc-anim">&ldquo;Tell me about yourself&rdquo; isn&rsquo;t a CV recital</h2><p class="rc-body rc-anim">It&rsquo;s an invitation to tell a coherent story: who you are professionally, what you&rsquo;ve built, why you&rsquo;re here, and what you bring. Four beats, not a chronological list.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Prepare structures, not scripts.</div><div class="rc-hl-sub">A frame gives you something to hang your words on when anxiety empties your mind. Memorised answers shatter the moment a question lands slightly differently.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Why interviews feel different — and what to do about it</h3>
@@ -192,6 +197,11 @@ const LESSON_CONTENT = {
     ]
   },
   29: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div><h2 class="rc-head rc-anim">The authority trap</h2><p class="rc-body rc-anim">Speaking to senior people triggers a felt status gap, and the instinct is to shrink — more hedging, more over-explaining, a pre-emptive apology for having a view at all. It&rsquo;s counterproductive.</p><p class="rc-body rc-anim">The reframe: you were invited because your perspective is valued. The invitation itself is the signal that you belong in the room.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><h2 class="rc-head rc-anim">Hedges don&rsquo;t sound humble</h2><p class="rc-body rc-anim">&ldquo;I might be wrong, but&hellip;&rdquo; &ldquo;This is just my opinion&hellip;&rdquo; — these don&rsquo;t read as modest, they read as unsure of yourself. Say the thing plainly.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Changing your view because of a question is capitulation, not humility.</div><div class="rc-hl-sub">Acknowledge the concern, hold your position if you believe it&rsquo;s right, and explain your reasoning.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>The authority trap — and how to escape it</h3>
@@ -210,6 +220,11 @@ const LESSON_CONTENT = {
     ]
   },
   30: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h2 class="rc-head rc-anim">When a question feels like an attack</h2><p class="rc-body rc-anim">Critical, sceptical or hostile questions trigger a threat response — freeze, fight back defensively, or collapse into over-explaining. None of those is the right move.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></div><h2 class="rc-head rc-anim">Pause &rarr; acknowledge &rarr; reframe &rarr; answer</h2><p class="rc-body rc-anim">A visible breath before answering signals composure and gives your thinking brain time to come back online. Never open with an apology — apologising before you answer signals that the attack was accurate.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">A calm, direct answer is the most powerful response to hostility.</div><div class="rc-hl-sub">Defensiveness — explaining too hard, justifying, hitting back — tells the asker the question landed exactly as intended.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>What to do when a question feels like an attack</h3>
@@ -228,6 +243,11 @@ const LESSON_CONTENT = {
     ]
   },
   31: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><h2 class="rc-head rc-anim">How to deliver bad news well</h2><p class="rc-body rc-anim">Something&rsquo;s gone wrong and you have to say so. The instinct is to bury it — in context, hedges, passive language, endless apology. It&rsquo;s understandable, and it almost always makes things worse. People need the information first, not protection from it.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><h2 class="rc-head rc-anim">What happened &rarr; impact &rarr; what you&rsquo;re doing &rarr; prevention</h2><p class="rc-body rc-anim">Those four answer everything the listener needs before they can regulate their own reaction. State it once, clearly, then stop talking.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Over-explaining looks like panic, not control.</div><div class="rc-hl-sub">A steady, measured voice — not flat, but controlled — signals you have the situation in hand, even when the news is bad.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>How to deliver bad news well</h3>
@@ -246,6 +266,11 @@ const LESSON_CONTENT = {
     ]
   },
   32: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div><h2 class="rc-head rc-anim">Why asking is so hard</h2><p class="rc-body rc-anim">Negotiation means stating your own worth and needs out loud, which feels exposing and presumptuous — the fear is of seeming greedy or unrealistic. So most people either don&rsquo;t ask, or ask and instantly retreat the moment they meet pushback.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg></div><h2 class="rc-head rc-anim">Anchor, then go quiet</h2><p class="rc-body rc-anim">The first number stated has outsized pull — anchor low and you&rsquo;ll settle low. The most powerful move is also the simplest: make your ask clearly and specifically, give one reason, then stop. Silence after an ask isn&rsquo;t awkward — it&rsquo;s pressure on the other side.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">&ldquo;That&rsquo;s above our budget&rdquo; is an invitation, not a rejection.</div><div class="rc-hl-sub">Acknowledge the constraint, hold your position, and keep the conversation going rather than folding.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Why asking for what you want is so hard</h3>
@@ -264,6 +289,11 @@ const LESSON_CONTENT = {
     ]
   },
   33: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg></div><h2 class="rc-head rc-anim">Putting it all together</h2><p class="rc-body rc-anim">By now you have every tool: the neuroscience of your anxiety, ways to regulate your body, structures for answers and stories and arguments, and a ladder of practice behind you. This session is integration — using all of it at once, under genuine pressure.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><h2 class="rc-head rc-anim">Hook &rarr; Problem &rarr; Evidence &rarr; Solution &rarr; Call to action</h2><p class="rc-body rc-anim">These five sit inside almost every effective talk. The hook is the most underused — skip the &ldquo;Today I want to talk about&hellip;&rdquo; opening and start with something surprising or immediately relevant.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">The measure isn&rsquo;t perfection. It&rsquo;s coherence under stress.</div><div class="rc-hl-sub">Can you hold a clear structure while anxious? Can you stay on the point when the pressure is real? That&rsquo;s the skill.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Putting it all together under pressure</h3>
@@ -886,6 +916,11 @@ Object.assign(LESSON_CONTENT, {
       </div>`
   },
   62: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg></div><h2 class="rc-head rc-anim">The camera changes the rules</h2><p class="rc-body rc-anim">More and more speaking happens on video, and it carries an anxiety in-person doesn&rsquo;t. The biggest culprit is your own face in the corner — in a real meeting you never watch yourself; on a call you stare at yourself the whole time, feeding the self-monitoring that drives the anxiety.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><h2 class="rc-head rc-anim">Hide self-view</h2><p class="rc-body rc-anim">The grid of faces feels like constant evaluation, and the slight audio lag makes pauses feel longer than they are. The camera also flattens energy — what feels normal reads as flat on screen.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Look at the lens, leave a beat, bring more energy than feels natural.</div><div class="rc-hl-sub">Those three moves do more for how you land on a call than anything you actually say.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>The camera changes the rules</h3>
