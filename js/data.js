@@ -21,6 +21,48 @@ const STAR_THRESHOLDS = {
 
 // ── LESSON CONTENT ──
 const LESSON_CONTENT = {
+  54: {
+    read: '',
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><h2 class="rc-head rc-anim">Your brain is a catastrophe machine</h2><p class="rc-body rc-anim">Anxious speakers do two things at once: massively overestimate how <em>likely</em> the disaster is, and massively overestimate how <em>bad</em> it would be. This session reality-tests both.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">This isn&rsquo;t positive thinking. It&rsquo;s accurate thinking.</div><div class="rc-hl-sub">Most feared outcomes never happen — and when they do, the fallout is almost always smaller than your brain predicted.</div></div>`
+    ]
+  },
+  55: {
+    read: '',
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><h2 class="rc-head rc-anim">Name the voice</h2><p class="rc-body rc-anim">You have an inner voice that speaks up before you do — &ldquo;you&rsquo;re going to mess this up&rdquo;, &ldquo;everyone can see you&rsquo;re nervous.&rdquo; Naming it turns it into <em>the voice</em> rather than <em>the truth</em>.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">You stop being the thought and start being the person observing it.</div><div class="rc-hl-sub">The critic doesn&rsquo;t vanish — but once named and held at arm&rsquo;s length, it loses most of its authority.</div></div>`
+    ]
+  },
+  56: {
+    read: '',
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h2 class="rc-head rc-anim">Anxiety keeps a biased highlight reel</h2><p class="rc-body rc-anim">It replays every stumble and quietly deletes every time things went fine. That&rsquo;s confirmation bias — and it leaves you with a record of your speaking that simply isn&rsquo;t accurate.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Build the counter-evidence.</div><div class="rc-hl-sub">The goal isn&rsquo;t to convince yourself you&rsquo;re brilliant. It&rsquo;s to put the forgotten &ldquo;it went OK&rdquo; moments back on the record where they belong.</div></div>`
+    ]
+  },
+  57: {
+    read: '',
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><h2 class="rc-head rc-anim">You&rsquo;d never talk to a friend like this</h2><p class="rc-body rc-anim">Most anxious speakers are brutally harsh with themselves in ways they&rsquo;d never dream of being with someone they care about. This exercise closes that gap.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Self-compassion isn&rsquo;t weakness.</div><div class="rc-hl-sub">Research links it to more resilience, not less. You can be completely honest with yourself and kind at the same time.</div></div>`
+    ]
+  },
+  58: {
+    read: '',
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h2 class="rc-head rc-anim">The spotlight effect</h2><p class="rc-body rc-anim">We massively overestimate how much attention other people pay to us. The audience you&rsquo;re dreading is mostly sympathetic, a bit distracted, and half-wondering what&rsquo;s for lunch.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">They&rsquo;re far less interested in your performance than your anxiety believes.</div><div class="rc-hl-sub">That isn&rsquo;t dismissive. It&rsquo;s liberating — the harsh courtroom in your head doesn&rsquo;t actually exist.</div></div>`
+    ]
+  },
+  59: {
+    read: '',
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg></div><h2 class="rc-head rc-anim">Why most affirmations fail</h2><p class="rc-body rc-anim">Your brain rejects statements it knows aren&rsquo;t true. &ldquo;I am a confident speaker&rdquo; bounces straight off. So this session builds something different — a line grounded in your own evidence.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">The best mantra acknowledges the anxiety and reframes it.</div><div class="rc-hl-sub">Not one that pretends the fear isn&rsquo;t there — one accurate enough that you can say it before you speak and actually mean it.</div></div>`
+    ]
+  },
   1: {
     read: `
       <div class="lesson-content">
@@ -46,6 +88,11 @@ const LESSON_CONTENT = {
     ]
   },
   2: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.14Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.14Z"/></svg></div><h2 class="rc-head rc-anim">Meet your amygdala</h2><p class="rc-body rc-anim">Deep in your brain sits a small almond-shaped structure — the amygdala. It is your alarm system, constantly scanning for danger.</p><p class="rc-body rc-anim">It is fast, but crude. It cannot tell <strong>&ldquo;a lion is chasing me&rdquo;</strong> from <strong>&ldquo;twenty people are watching me present.&rdquo;</strong> A crowd of evaluating faces reads as danger.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">It fires before you&rsquo;ve decided to be nervous.</div><div class="rc-hl-sub">The amygdala reacts before your rational brain can step in — which is why your hands start shaking before you consciously choose to feel anxious.</div></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div><h2 class="rc-head rc-anim">Your thinking brain can take back control</h2><p class="rc-body rc-anim">The prefrontal cortex — the rational part — can calm the amygdala down. But it needs time and practice to override the alarm.</p><p class="rc-body rc-anim">That is exactly what this programme builds: the pathways that let your rational mind stay in control, even when the alarm fires.</p></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Meet your amygdala</h3>
@@ -82,6 +129,11 @@ const LESSON_CONTENT = {
     reframe: { label: "Your avoidance pattern", prompt: "What's one speaking situation you've avoided recently? It could be speaking up in a meeting, turning down a presentation, or staying quiet when you had something to say. What did avoiding it cost you?" }
   },
   4: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><h2 class="rc-head rc-anim">Your anxiety is a misguided protector</h2><p class="rc-body rc-anim">Here is a reframe that changes everything: your speaking anxiety isn&rsquo;t an enemy. It is trying to protect you.</p><p class="rc-body rc-anim">It usually guards against one core fear — being seen as incompetent, rejected, humiliated, or judged by people who matter. Real social fears, with deep roots: exclusion from the group was once genuinely dangerous.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">What exactly is my anxiety afraid will happen?</div><div class="rc-hl-sub">Most people have never named it clearly. Naming it is the first step to taking its power back.</div></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><h2 class="rc-head rc-anim">Anxiety is a bad estimator</h2><p class="rc-body rc-anim">When you know <em>what</em> it is protecting against, you can acknowledge the protection while showing it that the feared outcome is unlikely — or survivable even if it happens.</p><p class="rc-body rc-anim">This isn&rsquo;t toxic positivity. It is accuracy: anxiety almost always overestimates both the odds and the severity of what you fear.</p></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Your anxiety is trying to protect you</h3>
@@ -100,6 +152,11 @@ const LESSON_CONTENT = {
     ]
   },
   5: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><h2 class="rc-head rc-anim">Your anxiety pattern is unique</h2><p class="rc-body rc-anim">Speaking anxiety isn&rsquo;t one thing. It is a pattern — built from your history, your triggers, and the stories your brain tells you about what speaking means.</p></div>`,
+      `<div class="rc-card rc-example"><div class="rc-eyebrow rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg>It shows up differently for everyone</div><div class="rc-ex-box rc-anim"><div class="rc-ex-quote">&ldquo;Fine with peers, frozen in front of the boss.&rdquo;</div><p class="rc-ex-beat">Some dread formal presentations but are easy in meetings. Some avoid strangers but present happily to colleagues. <strong>Each pattern makes sense once you see where it came from.</strong></p></div></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></div><h2 class="rc-head rc-anim">Map it — don&rsquo;t dwell on it</h2><p class="rc-body rc-anim">This session, you will map your profile in detail. It is not dwelling on fear — it is diagnostic. The clearer the map, the more precisely we can work.</p><p class="rc-body rc-anim">Think about where it is worst, where it is manageable, what helps, what makes it worse, and when it started.</p></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Everyone's anxiety pattern is different</h3>
@@ -225,6 +282,11 @@ const LESSON_CONTENT = {
     ]
   },
   21: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3L12 3z"/></svg></div><h2 class="rc-head rc-anim">Generic is forgettable. Specific is memorable.</h2><p class="rc-body rc-anim">The most common mistake is trying to sound like a &ldquo;good speaker&rdquo; — polished, authoritative, impressive. The result is a generic confidence that washes over people without leaving a mark.</p><p class="rc-body rc-anim">The speakers you actually remember are the ones who are most specifically themselves: the unusual detail, the unexpected angle, the story nobody else could tell.</p></div>`,
+      `<div class="rc-card rc-example"><div class="rc-eyebrow rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg>Specific beats polished</div><div class="rc-ex-box rc-anim"><div class="rc-ex-quote">&ldquo;I grew up in a flat above a chip shop in Glasgow.&rdquo;</div><p class="rc-ex-beat">More interesting than &ldquo;I had an ordinary childhood.&rdquo; Both might be true — only one is worth listening to.</p></div></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">The goal isn&rsquo;t a better voice. It&rsquo;s your voice.</div><div class="rc-hl-sub">What do you notice that others miss? What do you care about that most people don&rsquo;t? What stories can only you tell?</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Generic is forgettable. Specific is memorable.</h3>
@@ -242,6 +304,11 @@ const LESSON_CONTENT = {
     ]
   },
   22: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><h2 class="rc-head rc-anim">Why stories work on the brain</h2><p class="rc-body rc-anim">Present information and the listener&rsquo;s brain processes it analytically — evaluating, judging. Tell a story and the brain activates as if it&rsquo;s living the events. That mirroring is called neural coupling.</p><p class="rc-body rc-anim">It&rsquo;s why stories are the most powerful tool we have: they bypass evaluation and create shared experience.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><h2 class="rc-head rc-anim">Situation &rarr; Complication &rarr; Action &rarr; Result</h2><p class="rc-body rc-anim">Set the scene, then what went wrong or was at stake, then what you did, then what happened. The most common mistake is dwelling on the situation and rushing the complication — which is where all the interest lives. The second is no clear ending.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Without complication, there&rsquo;s no story — just a sequence of events.</div><div class="rc-hl-sub">The power lives in what was at stake. The result doesn&rsquo;t need to be triumphant. It just needs to be there.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Why stories work on the brain</h3>
@@ -259,6 +326,11 @@ const LESSON_CONTENT = {
     ]
   },
   23: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><h2 class="rc-head rc-anim">Why emotion makes words land</h2><p class="rc-body rc-anim">Anxious speakers strip feeling from the voice as a control mechanism — if I don&rsquo;t show it, I can&rsquo;t lose it. It feels safe, but words without feeling are heard and not felt.</p><p class="rc-body rc-anim">Charged information is processed differently and remembered longer: feeling activates the listener&rsquo;s emotional brain alongside the rational one.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></div><h2 class="rc-head rc-anim">Permission, not performance</h2><p class="rc-body rc-anim">Performed emotion feels manipulative; genuine feeling that&rsquo;s allowed to surface feels human. The work is permission — letting yourself feel something while you speak, rather than managing it out of the experience. That isn&rsquo;t losing control. It&rsquo;s trusting that your emotion is appropriate.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">The most influential speakers aren&rsquo;t the calmest.</div><div class="rc-hl-sub">They&rsquo;re the ones who let genuine feeling be heard.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Why emotion makes words land</h3>
@@ -276,6 +348,11 @@ const LESSON_CONTENT = {
     ]
   },
   24: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div><h2 class="rc-head rc-anim">Trying to be funny makes you unfunny</h2><p class="rc-body rc-anim">When people can see you reaching for a laugh, the comedy dies. Genuine humour comes from the same place as genuine emotion: specificity, truth, and permission — an honest observation about something that actually happened.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M12 3 L22 20 L2 20 Z"/></svg></div><h2 class="rc-head rc-anim">The comedy triangle</h2><p class="rc-body rc-anim">Specificity + Truth + Timing. The more specific and true the observation, the funnier it is. Timing is simply giving people space to respond — pausing after the funny thing instead of rushing past it.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Laughing at yourself signals confidence and humanity.</div><div class="rc-hl-sub">Self-deprecation disarms the evaluative stance listeners bring — &ldquo;I&rsquo;m secure enough to laugh at myself, and I&rsquo;m not pretending to be perfect.&rdquo;</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Why trying to be funny makes you unfunny</h3>
@@ -308,6 +385,11 @@ const LESSON_CONTENT = {
     ]
   },
   26: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><h2 class="rc-head rc-anim">Performing vs connecting</h2><p class="rc-body rc-anim">Most speaking anxiety runs on audience-orientation: what do they think of me? How am I coming across? The more you monitor their reaction, the more anxious you get — and the more your delivery degrades.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><h2 class="rc-head rc-anim">Speak to one person</h2><p class="rc-body rc-anim">The antidote is connection-orientation — not &ldquo;how am I doing?&rdquo; but &ldquo;is this landing for them?&rdquo; The simplest way in: pick one real person whose understanding you care about and speak to them. It turns performance into conversation.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">From &lsquo;how am I doing?&rsquo; to &lsquo;is this landing for them?&rsquo;</div><div class="rc-hl-sub">Pace slows, fillers drop, eye contact warms — not as techniques you apply, but automatically, once the goal shifts from impressing to connecting.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>The shift from performing to connecting</h3>
@@ -325,6 +407,11 @@ const LESSON_CONTENT = {
     ]
   },
   27: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><h2 class="rc-head rc-anim">The story that carries you</h2><p class="rc-body rc-anim">Every effective communicator has at least one signature story — a narrative that captures something essential about who they are or what they&rsquo;ve learned. It needn&rsquo;t be dramatic. It&rsquo;s specific, true, and reveals character — and it does the work of introduction better than any list of credentials.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h2 class="rc-head rc-anim">Excavation, not invention</h2><p class="rc-body rc-anim">You don&rsquo;t make a signature story up — you dig it out. It&rsquo;s already there, in the experiences that shaped your thinking, the moments that changed direction, the failures that taught more than the wins.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">The best signature stories end with insight, not triumph.</div><div class="rc-hl-sub">Insight is more relatable than success — something you genuinely learned, noticed, or had to reckon with.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>The story that carries you</h3>
@@ -342,6 +429,11 @@ const LESSON_CONTENT = {
     ]
   },
   6: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/></svg></div><h2 class="rc-head rc-anim">Your breath is your remote control</h2><p class="rc-body rc-anim">When anxiety hits, your breathing goes shallow and fast — which feeds it. Short breaths signal danger, your brain sends more adrenaline, you breathe faster. A loop.</p><p class="rc-body rc-anim">Slow, controlled breathing flips the switch — it activates the parasympathetic nervous system, your body&rsquo;s built-in calm signal. Not a metaphor. Physiology.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><h2 class="rc-head rc-anim">Box breathing</h2><p class="rc-body rc-anim">Inhale 4 counts, hold 4, exhale 4, hold 4. One cycle is 16 seconds; three cycles takes under a minute and measurably lowers your heart rate.</p><p class="rc-body rc-anim">The exhale activates the vagus nerve, which tells your heart to slow. The holds give your nervous system time to register the change.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Breathing is the only part of this you can consciously control.</div><div class="rc-hl-sub">That makes it the fastest, most accessible tool you have for steadying yourself in real time.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Your breath is your remote control</h3>
@@ -358,6 +450,11 @@ const LESSON_CONTENT = {
     ]
   },
   7: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="3" y1="12" x2="21" y2="12"/></svg></div><h2 class="rc-head rc-anim">Where anxiety hides in your body</h2><p class="rc-body rc-anim">Most people carry tension without noticing — and by the time they do, it has already tightened their voice. A 60-second body scan heads it off.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><h2 class="rc-head rc-anim">The usual suspects</h2><p class="rc-body rc-anim">Jaw, shoulders, chest, stomach, hands. Scan top to bottom, name where you&rsquo;re holding, breathe into it, and let go. Two or three passes is enough — don&rsquo;t try to relax everything at once.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Tight jaw, tight voice.</div><div class="rc-hl-sub">Release it even slightly and your resonance opens and your register drops. The body and the voice are the same system.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Where anxiety hides in your body</h3>
@@ -372,6 +469,11 @@ const LESSON_CONTENT = {
       </div>`
   },
   8: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></div><h2 class="rc-head rc-anim">The power of saying nothing</h2><p class="rc-body rc-anim">Filler words — um, uh, like — are a nervous reflex. They exist to fill silence, because silence feels dangerous. But to a listener, a pause sounds like confidence.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">A two-second pause feels like an eternity to you.</div><div class="rc-hl-sub">To the room it sounds like authority. What people actually notice is the opposite — rushing, and never letting a point land.</div></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><h2 class="rc-head rc-anim">Get comfortable with silence</h2><p class="rc-body rc-anim">The fix isn&rsquo;t thinking &ldquo;don&rsquo;t say um&rdquo; — that just adds pressure. It&rsquo;s letting gaps exist. Pause mid-sentence, breathe into it, and let your brain stop treating silence as a threat.</p></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>The power of saying nothing</h3>
@@ -389,6 +491,12 @@ const LESSON_CONTENT = {
     ]
   },
   9: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="3"/><line x1="12" y1="22" x2="12" y2="8"/><path d="M5 12H2a10 10 0 0 0 20 0h-3"/></svg></div><h2 class="rc-head rc-anim">When panic hits mid-speech</h2><p class="rc-body rc-anim">Sometimes anxiety doesn&rsquo;t build — it spikes. Mind blank, heart racing, completely derailed. That&rsquo;s an amygdala hijack: the threat system fires so hard the thinking brain briefly goes offline.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><h2 class="rc-head rc-anim">5 &middot; 4 &middot; 3 &middot; 2 &middot; 1</h2><p class="rc-body rc-anim">Five things you can see. Four you can feel. Three you can hear. Two you can smell. One you can taste. Each step pulls your brain out of the spiral and back into the room.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Anxiety lives in the future. Grounding drags you into now.</div><div class="rc-hl-sub">And the present is the one place it can&rsquo;t survive.</div></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><h2 class="rc-head rc-anim">Do it slowly — and mean it</h2><p class="rc-body rc-anim">Really look at what you can see. Really feel your feet on the floor. It works through genuine sensory attention, not rattling through a list.</p></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>When panic hits mid-speech</h3>
@@ -405,6 +513,11 @@ const LESSON_CONTENT = {
     ]
   },
   10: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg></div><h2 class="rc-head rc-anim">Volume is confidence made audible</h2><p class="rc-body rc-anim">Quiet speakers read as less confident — not because they&rsquo;re less able, but because volume is a primary signal humans use to judge certainty. Unfair, but consistent.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></div><h2 class="rc-head rc-anim">Project — don&rsquo;t shout</h2><p class="rc-body rc-anim">Speaking quietly when anxious makes you <em>feel</em> more anxious; your brain takes your own thin voice as proof. Projection is direction and energy, not loudness — speak to the back of the room, resonating in your chest, not your throat.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Your voice isn&rsquo;t only talking to them. It&rsquo;s talking to you.</div><div class="rc-hl-sub">A grounded, chest-resonant voice signals confidence straight to your own nervous system.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Volume is confidence made audible</h3>
@@ -422,6 +535,11 @@ const LESSON_CONTENT = {
     ]
   },
   11: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><h2 class="rc-head rc-anim">Build your pre-speech routine</h2><p class="rc-body rc-anim">Elite performers — athletes, surgeons, musicians — use pre-performance routines because predictability calms the nervous system. A routine says: we&rsquo;ve done this before. This is safe.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Simpler is better.</div><div class="rc-hl-sub">Something you can do in 60 seconds anywhere — outside a room, before a meeting. It only works through repetition, until the calm becomes automatic.</div></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><h2 class="rc-head rc-anim">Three moves, made yours</h2><p class="rc-body rc-anim">An effective routine combines a breathing technique to settle the body, a physical release to drop tension, and a grounding moment to land in the present. You&rsquo;ve learned all three — this session makes them one routine that&rsquo;s yours.</p></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Building your pre-speech routine</h3>
@@ -455,6 +573,12 @@ const LESSON_CONTENT = {
     ]
   },
   13: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><line x1="6" y1="20" x2="6" y2="4"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="8" x2="18" y2="8"/><line x1="6" y1="12" x2="18" y2="12"/><line x1="6" y1="16" x2="18" y2="16"/></svg></div><h2 class="rc-head rc-anim">The ladder that changes everything</h2><p class="rc-body rc-anim">Exposure is the most evidence-based treatment for anxiety: approach what you fear, gradually and repeatedly, until your nervous system learns through experience that it&rsquo;s survivable — even manageable.</p><p class="rc-body rc-anim">The anxiety ladder is the map. It lists feared situations from least to most frightening, giving you a path from where you are to where you want to be.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><h2 class="rc-head rc-anim">Never skip rungs</h2><p class="rc-body rc-anim">Work a level until your anxiety there drops to about half its original intensity before moving up. Your ladder is personal — a vague fear of &ldquo;public speaking&rdquo; is hard to work with; &ldquo;being asked a question in a board meeting&rdquo; gives you something to grip.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg></div><h2 class="rc-head rc-anim">Predict, then check</h2><p class="rc-body rc-anim">Before each rung, predict what you fear — &ldquo;I&rsquo;ll freeze&rdquo;, &ldquo;my voice will shake&rdquo;. Afterwards, compare it to what actually happened. Your brain updates fastest not when it calms down, but when it&rsquo;s proven wrong.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Your brain doesn&rsquo;t update its threat register through reassurance.</div><div class="rc-hl-sub">Only through doing. That&rsquo;s the whole reason the ladder works.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>The ladder that changes everything</h3>
@@ -469,6 +593,11 @@ const LESSON_CONTENT = {
       </div>`
   },
   14: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></div><h2 class="rc-head rc-anim">The most underused practice</h2><p class="rc-body rc-anim">Recording yourself and listening back is one of the highest-leverage things you can do — research shows it accelerates improvement faster than almost anything else. And almost nobody does it, because most people can&rsquo;t stand hearing their own voice.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></div><h2 class="rc-head rc-anim">Why the discomfort is the point</h2><p class="rc-body rc-anim">The voice in your head has more bass; your recorded voice sounds thin and strange. But that&rsquo;s the voice everyone else hears every time you speak. Getting comfortable with it means getting accurate about how you actually come across.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Played back, you almost always look calmer than you felt.</div><div class="rc-hl-sub">That gap — between how it felt and how it landed — is some of the most useful evidence you&rsquo;ll ever gather about your speaking.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>The most underused speaking practice</h3>
@@ -486,6 +615,11 @@ const LESSON_CONTENT = {
     ]
   },
   15: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><h2 class="rc-head rc-anim">Passion unlocks your best voice</h2><p class="rc-body rc-anim">When people talk about something they love, the voice warms, the pace settles, the fillers drop. That isn&rsquo;t performance — it&rsquo;s what happens when the brain steps out of threat mode.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div><h2 class="rc-head rc-anim">It points your attention outward</h2><p class="rc-body rc-anim">Anxiety narrows attention onto the self — how am I coming across? Passion shifts it onto the topic, the ideas, the other person. That outward shift is one of the fastest ways to drop performance anxiety.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">The voice you use about what you love is your natural voice.</div><div class="rc-hl-sub">The whole goal of this programme is to make it available everywhere — not just on the easy topics.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Why passion unlocks your best voice</h3>
@@ -520,6 +654,11 @@ const LESSON_CONTENT = {
     ]
   },
   17: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div><h2 class="rc-head rc-anim">Thinking on your feet</h2><p class="rc-body rc-anim">Being called on unexpectedly is one of the most common speaking fears. It isn&rsquo;t really about speaking — it&rsquo;s the feeling of being put on the spot, which your brain reads as threat. The good news: it&rsquo;s a skill, and skills improve with practice.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg></div><h2 class="rc-head rc-anim">Buy yourself a beat</h2><p class="rc-body rc-anim">You don&rsquo;t need an instant perfect answer. Take a visible breath and say &ldquo;let me think about that for a second.&rdquo; That&rsquo;s not weakness — it reads as composure, and it buys you the few seconds you need.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Position. Reason. Example.</div><div class="rc-hl-sub">State your view, give one reason, give one example. A 30-second answer built this way beats a two-minute ramble every time.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>The skill of thinking on your feet</h3>
@@ -555,6 +694,11 @@ const LESSON_CONTENT = {
     ]
   },
   19: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></div><h2 class="rc-head rc-anim">Most problems are structure problems</h2><p class="rc-body rc-anim">People usually know what they want to say — they just deliver it in the order it occurred to them, not the order that makes sense to the listener. Strong content still ends up sounding disorganised.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div><h2 class="rc-head rc-anim">Point. Reason. Example.</h2><p class="rc-body rc-anim">State your point first — not your background, not your caveats. Then why. Then one specific example. Done. It has a built-in ending, which stops the rambling before it starts.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Lead with your point. Always.</div><div class="rc-hl-sub">Burying it is the most common mistake — by the time you arrive at the conclusion, the listener has lost the thread. Context can come after.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>The structure that works everywhere</h3>
@@ -700,6 +844,11 @@ Object.assign(LESSON_CONTENT, {
 
 Object.assign(LESSON_CONTENT, {
   60: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></div><h2 class="rc-head rc-anim">The avoidance you can&rsquo;t see</h2><p class="rc-body rc-anim">You already know that avoiding speaking makes the fear stronger. There&rsquo;s a subtler version: the small things you do <em>while</em> speaking to feel safe — scripting every word, gripping the lectern, never pausing, dodging eye contact, rushing to get it over with.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><h2 class="rc-head rc-anim">Two quiet harms</h2><p class="rc-body rc-anim">These safety behaviours stop your brain learning the situation is survivable on its own — and they burn attention that could go into actually connecting with people. They feel protective. They keep the fear exactly where it is.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Am I doing this to communicate — or just to feel less exposed?</div><div class="rc-hl-sub">That&rsquo;s the test. Dropping a crutch feels risky, and that&rsquo;s the point — it&rsquo;s how your brain finally gets the evidence that it&rsquo;s safe.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>The avoidance you can't see</h3>
@@ -717,6 +866,12 @@ Object.assign(LESSON_CONTENT, {
     ]
   },
   61: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div><h2 class="rc-head rc-anim">What this is — and isn&rsquo;t</h2><p class="rc-body rc-anim">Nervless is built on the same principles a good therapist uses for speaking anxiety: understanding the fear, regulating the body, and facing situations gradually.</p><p class="rc-body rc-anim">It works for the everyday fear of speaking up, presenting, and being put on the spot.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div><h2 class="rc-head rc-anim">When to get extra support</h2><p class="rc-body rc-anim">It isn&rsquo;t a replacement for professional care. If your anxiety runs well beyond speaking — across many parts of your life, with panic attacks, or stopping you doing things that matter — that is worth taking to a GP or therapist.</p><p class="rc-body rc-anim">They can offer things an app can&rsquo;t. You can do both at once.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">Not either/or. Plenty of people do both.</div><div class="rc-hl-sub">The same way you&rsquo;d see a physio for an injury while still training.</div></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/><line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/><line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/><line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/></svg></div><h2 class="rc-head rc-anim">If you&rsquo;re in crisis</h2><p class="rc-body rc-anim">If you ever feel genuinely unsafe, please reach out to a doctor or a local crisis line rather than working through an app. Asking for help is a strength.</p></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>What this programme is — and isn't</h3>
@@ -747,6 +902,11 @@ Object.assign(LESSON_CONTENT, {
     reminder: "Leave a beat before and after others speak — absorb the lag."
   },
   63: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/><line x1="23" y1="22" x2="1" y2="22"/><polyline points="8 6 12 2 16 6"/></svg></div><h2 class="rc-head rc-anim">The day starts before you speak</h2><p class="rc-body rc-anim">You can do everything right in the moment and still fight uphill — because the conditions for anxiety are often set hours earlier, by how you slept and what you put in your body.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div><h2 class="rc-head rc-anim">Caffeine borrows tomorrow&rsquo;s adrenaline</h2><p class="rc-body rc-anim">It doesn&rsquo;t make you calm and sharp — it makes you wired, raising your heart rate and priming the exact jittery feeling you&rsquo;re learning to quiet. Poor sleep lowers the threshold your threat response fires at; alcohol the night before rebounds into more anxiety.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">The easiest win is the night before and the morning of.</div><div class="rc-hl-sub">Easing off caffeine, protecting your sleep, staying hydrated — easy wins most people never use.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>The day starts before you speak</h3>
@@ -763,6 +923,11 @@ Object.assign(LESSON_CONTENT, {
     ]
   },
   64: {
+    cards: [
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg></div><h2 class="rc-head rc-anim">Attention is a spotlight</h2><p class="rc-body rc-anim">When you&rsquo;re anxious it pulls inward — onto your thumping heart, your shaking hands, the running question &ldquo;how am I coming across?&rdquo; The more you monitor yourself, the more anxious you get, and the less you have left for what you&rsquo;re actually doing.</p></div>`,
+      `<div class="rc-card rc-concept"><div class="rc-icon rc-anim"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg></div><h2 class="rc-head rc-anim">There&rsquo;s only one spotlight</h2><p class="rc-body rc-anim">Attention is limited. Every bit spent watching yourself is taken from communicating — you can&rsquo;t be fully focused on your listener and on monitoring yourself at once. Confident speakers simply aim it outward: at the listener, at whether the idea is landing.</p></div>`,
+      `<div class="rc-card rc-highlight rc-anim"><div class="rc-hl-mark">&ldquo;</div><div class="rc-hl-quote">From &lsquo;how am I doing?&rsquo; to &lsquo;are they following me?&rsquo;</div><div class="rc-hl-sub">Aiming attention outward doesn&rsquo;t remove the anxiety. It just stops it running the show — the single biggest shift from anxious to confident.</div></div>`
+    ],
     read: `
       <div class="lesson-content">
         <h3>Attention is a spotlight — you choose where it points</h3>
