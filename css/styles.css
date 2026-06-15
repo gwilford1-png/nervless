@@ -494,6 +494,7 @@ body {
 /* ── CONTENT CARDS (swipeable read) ── */
 .content-cards-wrap { position: relative; overflow: hidden; border-radius: 20px; margin-bottom: 6px; }
 .content-cards-track { display: flex; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); }
+.content-cards-wrap { overflow: hidden; padding-bottom: 8px; }
 .content-card-item { min-width: 100%; padding: 0; box-sizing: border-box; }
 .content-card-item .lesson-content { margin-bottom: 0; }
 .cards-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 4px 0; }
@@ -927,3 +928,24 @@ body {
 .content-card-item.active .rc-anim:nth-child(4) { animation-delay: 0.18s; }
 @keyframes rcRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .content-card-item.active .rc-anim { animation: none; } }
+
+/* ── Free Practice detail/header screen (pd-) — restores missing styling ── */
+.pd-header { position: relative; padding: calc(var(--header-top, 18px) + 46px) 20px 20px; background: linear-gradient(180deg, var(--pm-light, var(--sc-light)) 0%, var(--bg) 100%); }
+.pd-back { position: absolute; top: var(--header-top, 18px); left: 12px; width: 40px; height: 40px; padding: 0; border: none; border-radius: 13px; background: transparent; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.pd-back svg { width: 24px; height: 24px; stroke: var(--text); stroke-width: 2.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.pd-head-inner { display: flex; align-items: center; gap: 13px; }
+.pd-head-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pd-eyebrow { font-family: 'Hanken Grotesk', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.04em; color: var(--text-muted); }
+.pd-title { font-family: 'Hanken Grotesk', sans-serif; font-size: 26px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; color: var(--text); margin: 0; }
+.pd-tagline { margin: 14px 0 0; font-size: 15px; line-height: 1.5; color: var(--text-muted); }
+
+.pd-body { padding: 6px 20px 40px; }
+.pd-prompt-card { background: var(--surface); border-radius: 20px; padding: 22px 20px; box-shadow: 0 8px 24px rgba(40,30,15,0.06); margin-bottom: 16px; }
+.pd-prompt-label { font-family: 'Hanken Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sc); margin-bottom: 10px; }
+.pd-prompt-text { font-size: 19px; line-height: 1.45; font-weight: 600; color: var(--text); }
+.pd-shuffle { display: inline-flex; align-items: center; gap: 7px; margin-top: 16px; background: transparent; border: 1.5px solid var(--border-strong); border-radius: 100px; padding: 9px 16px; font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; font-size: 13px; color: var(--text-muted); cursor: pointer; }
+.pd-shuffle svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.pd-why { background: color-mix(in srgb, var(--sc) 9%, var(--surface)); border-radius: 16px; padding: 16px 18px; margin-bottom: 24px; }
+.pd-why-label { font-family: 'Hanken Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sc); margin-bottom: 7px; }
+.pd-why-text { font-size: 14.5px; line-height: 1.55; color: var(--text); }
+.pd-record-zone { display: flex; flex-direction: column; align-items: center; padding: 8px 0 0; }
