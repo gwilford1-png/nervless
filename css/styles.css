@@ -949,3 +949,21 @@ body {
 .pd-why-label { font-family: 'Hanken Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sc); margin-bottom: 7px; }
 .pd-why-text { font-size: 14.5px; line-height: 1.55; color: var(--text); }
 .pd-record-zone { display: flex; flex-direction: column; align-items: center; padding: 8px 0 0; }
+
+/* ════════ JOURNAL EVIDENCE — dashboard card additions ════════ */
+.jr-ev-headline { font-size: 14px; color: var(--text); line-height: 1.55; margin-bottom: 14px; padding: 12px 14px; background: var(--sc-light); border-radius: 12px; }
+.jr-ev-headline strong { font-weight: 800; }
+.jr-ev-pct { color: var(--green); }
+
+.jr-ev-chart-cap { font-size: 11.5px; color: var(--text-faint); line-height: 1.45; text-align: center; margin: 0 4px 12px; }
+
+.jr-ev-split { margin-top: 6px; border-top: 1px solid var(--border); padding-top: 14px; }
+.jr-ev-split-row { display: flex; gap: 10px; margin-bottom: 10px; }
+.jr-ev-split-cell { flex: 1; background: var(--bg); border: 1.5px solid var(--border); border-radius: 14px; padding: 12px 10px; text-align: center; }
+.jr-ev-split-num { font-family: 'Hanken Grotesk', sans-serif; font-size: 24px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; line-height: 1; }
+.jr-ev-split-lbl { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-top: 5px; letter-spacing: 0.01em; }
+.jr-ev-insight { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; margin-bottom: 12px; }
+.jr-ev-insight strong { color: var(--text); font-weight: 800; }
+.jr-ev-nudge { width: 100%; border: none; border-radius: 100px; padding: 13px 16px; background: var(--accent); color: #fff; font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 28%, transparent); }
+.jr-ev-nudge:active { transform: scale(0.98); }
+.jr-ev-gate { font-size: 12.5px; color: var(--text-faint); line-height: 1.5; text-align: center; padding: 4px 8px; }
