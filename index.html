@@ -451,13 +451,16 @@
       <canvas id="suds-trend-chart"></canvas>
     </div>
   </div>
-  <div id="jr-dash" style="display:none;margin:0 20px 8px;background:var(--surface);box-shadow:var(--card-shadow);border-radius:18px;padding:18px 16px 14px;">
+ <div id="jr-dash" style="display:none;margin:0 20px 8px;background:var(--surface);box-shadow:var(--card-shadow);border-radius:18px;padding:18px 16px 14px;">
     <div style="font-size:11px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">Real-world evidence</div>
+    <div class="jr-ev-headline" id="jr-dash-headline" style="display:none"></div>
     <div class="jr-dash-stats" id="jr-dash-stats"></div>
-    <div id="jr-dash-chart-wrap" style="display:none;position:relative;height:150px;margin:4px 0 10px;">
+    <div id="jr-dash-chart-wrap" style="display:none;position:relative;height:150px;margin:4px 0 4px;">
       <canvas id="jr-dash-chart"></canvas>
     </div>
+    <div class="jr-ev-chart-cap" id="jr-dash-chart-cap">Each line is one moment you logged — feared vs how it actually felt. The bold line is your average.</div>
     <div id="jr-dash-moments"></div>
+    <div class="jr-ev-split" id="jr-dash-split" style="display:none"></div>
   </div>
   <div id="prog-practice" style="display:none;margin:0 20px 8px;background:var(--surface);box-shadow:var(--card-shadow);border-radius:18px;padding:18px 16px 14px;">
     <div style="font-size:11px;font-weight:900;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:12px;">Practice</div>
