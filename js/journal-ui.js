@@ -141,22 +141,32 @@ function openSeriesDetail(i) {
   const modal = document.getElementById('jr-composer');
   const body = document.getElementById('jr-composer-body');
   if (!modal || !body) return;
-  const rows = g.logs.map((l, j) => {
+
+  // Chronological: oldest first, so the story reads befores → after → outcome.
+  const ordered = g.logs.slice().sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+
+  // Show feared text once (the earliest statement of it) to avoid repetition.
+  let fearedShown = false;
+
+  const rows = ordered.map((l) => {
     const date = new Date(l.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
     const kindLabel = { pre: 'Before', debrief: 'After', spontaneous: 'After', mission: 'Mission' }[l.kind] || '';
     let line = '';
-    if (l.bailed) line = 'Attempted — didn\u2019t complete';
-    else if (typeof l.predicted_anxiety === 'number' && typeof l.actual_anxiety === 'number') line = `Feared ${l.predicted_anxiety} → felt ${l.actual_anxiety}`;
+    if (l.bailed) line = 'Attempted \u2014 didn\u2019t complete';
+    else if (typeof l.predicted_anxiety === 'number' && typeof l.actual_anxiety === 'number') line = `Feared ${l.predicted_anxiety} \u2192 felt ${l.actual_anxiety}`;
+    else if (typeof l.actual_anxiety === 'number') line = `Felt ${l.actual_anxiety}/10`;
     else if (typeof l.predicted_anxiety === 'number') line = `Anticipated ${l.predicted_anxiety}/10`;
+
     let detail = '';
-    if (l.feared_text) detail += `<div class="jr-d-feared">\u201C${_esc(l.feared_text)}\u201D</div>`;
+    if (l.feared_text && !fearedShown) { detail += `<div class="jr-d-feared">\u201C${_esc(l.feared_text)}\u201D</div>`; fearedShown = true; }
     if (l.outcome) {
       const oTxt = { no: 'The feared thing didn\u2019t happen', partly: 'It partly happened', yes: 'It happened' }[l.outcome];
       const oCls = { no: 'jr-out-good', partly: 'jr-out-mid', yes: 'jr-out-bad' }[l.outcome];
       detail += `<div class="jr-log-outcome ${oCls}">${oTxt}</div>`;
     }
     if (l.ai_feedback) detail += `<div class="jr-log-ai">${_esc(l.ai_feedback)}</div>`;
-    return `<div class="jr-d-row" onclick="this.classList.toggle('open')">
+
+    return `<div class="jr-d-row open">
       <div class="jr-d-row-head">
         <span class="jr-log-kind">${kindLabel}</span>
         <span class="jr-d-row-line">${line}</span>
@@ -165,11 +175,24 @@ function openSeriesDetail(i) {
       ${detail ? `<div class="jr-d-row-body">${detail}</div>` : ''}
     </div>`;
   }).join('');
+
+  // Honest header — only claims a "win" when felt actually came in under feared.
   let summary = '';
-  if (g.avgPred !== null && g.avgActual !== null && g.logs.length > 1) {
-    summary = `<div class="jr-d-summary">Average — feared <strong>${_fmtAvg(g.avgPred)}</strong>, felt <strong>${_fmtAvg(g.avgActual)}</strong>${g.outcomeN ? ` · ${g.notHappened}/${g.outcomeN} fears didn\u2019t happen` : ''}</div>`;
+  if (g.avgPred !== null && g.avgActual !== null) {
+    const drop = Math.round((g.avgPred - g.avgActual) * 10) / 10;
+    const fearLine = g.outcomeN ? ` \u00B7 ${g.notHappened}/${g.outcomeN} fears didn\u2019t happen` : '';
+    if (drop > 0) {
+      summary = `<div class="jr-d-summary jr-out-good">It landed <strong>${_fmtAvg(drop)}</strong> lower than you feared \u2014 ${_fmtAvg(g.avgPred)} \u2192 ${_fmtAvg(g.avgActual)}${fearLine}</div>`;
+    } else if (drop < 0) {
+      summary = `<div class="jr-d-summary jr-out-mid">It ran a little hotter than predicted (${_fmtAvg(g.avgPred)} \u2192 ${_fmtAvg(g.avgActual)}). That happens \u2014 the honest record still counts.${fearLine}</div>`;
+    } else {
+      summary = `<div class="jr-d-summary">It landed about where you predicted (${_fmtAvg(g.avgPred)} \u2192 ${_fmtAvg(g.avgActual)}).${fearLine}</div>`;
+    }
+  } else if (g.avgPred !== null) {
+    summary = `<div class="jr-d-summary">Anticipated <strong>${_fmtAvg(g.avgPred)}/10</strong> \u2014 log the after to see how it actually landed.</div>`;
   }
-  body.innerHTML = `<div class="jr-c-title" style="margin-bottom:4px">${_esc(g.title)}</div>${summary}
+
+  body.innerHTML = `<div class="jr-c-title" style="margin-bottom:6px">${_esc(g.title)}</div>${summary}
     <div class="jr-d-list">${rows}</div>
     <button class="btn-primary jr-c-btn" onclick="closeComposer()">Done</button>`;
   modal.style.display = 'flex';
