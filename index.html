@@ -625,14 +625,18 @@
     <div class="jr-h-sub">Your evidence record — what you feared, what actually happened.</div>
   </div>
   <div class="jr-evidence" id="jr-evidence" style="display:none"></div>
-  <div class="jr-actions">
-    <button class="jr-action-primary" onclick="startBeforeLog()">
+<div class="jr-actions">
+    <button class="jr-action-card jr-action-before" onclick="startBeforeLog()">
       <span class="jr-action-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/></svg></span>
       <span class="jr-action-txt"><strong>Before — it's coming up</strong><span>Log the fear before the moment</span></span>
     </button>
-    <button class="jr-action-secondary" onclick="startAfterLog()">
+    <button class="jr-action-card jr-action-after" onclick="startAfterLog()">
       <span class="jr-action-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="8 12.5 11 15.5 16 9.5"/></svg></span>
-      <span class="jr-action-txt"><strong>After — how did it go?</strong><span>Debrief it, voice or skip</span></span>
+      <span class="jr-action-txt"><strong>After — how did it go?</strong><span>Debrief a moment you logged</span></span>
+    </button>
+    <button class="jr-action-card jr-action-impromptu" onclick="startSpontaneousLog()">
+      <span class="jr-action-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+      <span class="jr-action-txt"><strong>Caught on the spot</strong><span>Log something you didn't prepare for</span></span>
     </button>
   </div>
   <div class="jr-events" id="jr-events"></div>
