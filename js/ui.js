@@ -617,7 +617,7 @@ function startLesson(s) {
         <div class="quiz-q-text">${q.q}</div>
         <div class="quiz-options">`;
       q.options.forEach((opt, j) => {
-        quizHtml += `<button class="quiz-option" id="quiz-opt-${i}-${j}" onclick="selectQuizAnswer(${i},${j})">${opt}</button>`;
+        quizHtml += `<button class="quiz-option" id="quiz-opt-${i}-${j}" onclick="selectQuizAnswer(${i},${j})"><span class="quiz-option-letter">${String.fromCharCode(65 + j)}</span><span class="quiz-option-body">${opt}</span></button>`;
       });
       quizHtml += `</div>
         <div class="quiz-feedback" id="quiz-fb-${i}"></div>
