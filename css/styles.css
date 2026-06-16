@@ -967,3 +967,42 @@ body {
 .jr-ev-nudge { width: 100%; border: none; border-radius: 100px; padding: 13px 16px; background: var(--accent); color: #fff; font-family: 'Hanken Grotesk', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 8px 20px color-mix(in srgb, var(--accent) 28%, transparent); }
 .jr-ev-nudge:active { transform: scale(0.98); }
 .jr-ev-gate { font-size: 12.5px; color: var(--text-faint); line-height: 1.5; text-align: center; padding: 4px 8px; }
+
+
+/* ════════ JOURNAL — drop 2: matched action cards + impromptu ════════ */
+/* Replaces the black/white Before/After mismatch with a calm matched set. */
+.jr-actions { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
+.jr-action-card {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px 18px; border-radius: 16px; cursor: pointer; text-align: left;
+  font-family: 'Nunito', sans-serif; width: 100%;
+  background: var(--surface); border: 1.5px solid var(--border);
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+.jr-action-card:active { transform: scale(0.99); }
+.jr-action-card .jr-action-ic { width: 26px; height: 26px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+.jr-action-card .jr-action-ic svg { width: 22px; height: 22px; }
+.jr-action-card .jr-action-txt { display: flex; flex-direction: column; gap: 2px; }
+.jr-action-card .jr-action-txt strong { color: var(--text); font-size: 15px; }
+.jr-action-card .jr-action-txt span { color: var(--text-muted); font-size: 12px; }
+
+/* Before = the lead action: accent border + tinted icon */
+.jr-action-before { border-color: var(--accent-mid); }
+.jr-action-before .jr-action-ic { color: var(--accent); }
+.jr-action-after .jr-action-ic { color: var(--green); }
+.jr-action-impromptu .jr-action-ic { color: var(--gold); }
+
+/* Impromptu row reused inside the After sheet */
+.jr-c-impromptu-row { margin-top: 14px; }
+
+/* Detail rows now render expanded by default (chronological story) */
+.jr-d-summary { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 0 0 14px; padding: 12px 14px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; }
+.jr-d-summary.jr-out-good { background: rgba(60,170,110,0.08); border-color: rgba(60,170,110,0.25); color: var(--green); }
+.jr-d-summary.jr-out-mid { background: rgba(212,160,60,0.08); border-color: rgba(212,160,60,0.25); color: var(--gold); }
+.jr-d-summary strong { font-weight: 800; }
+.jr-d-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.jr-d-row { background: var(--surface); border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.jr-d-row-head { display: flex; align-items: center; gap: 10px; }
+.jr-d-row-line { flex: 1; font-size: 13.5px; font-weight: 700; color: var(--text); }
+.jr-d-row-body { margin-top: 8px; }
+.jr-d-feared { font-size: 13.5px; color: var(--text-muted); font-style: italic; line-height: 1.5; margin-bottom: 6px; }
