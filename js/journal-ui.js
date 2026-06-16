@@ -255,9 +255,43 @@ function startSpeakingSoon() {
   _openComposer('speaking-soon');
 }
 
-// ── BEFORE / AFTER entry points (with recurring-moment picker) ──
+// ── BEFORE / AFTER entry points ──
+// Before → moment picker (new or attach to a series).
+// After  → list of OPEN moments (a before logged, not yet closed) to debrief,
+//          plus an impromptu option for something logged after the fact.
 function startBeforeLog() { _openMomentPicker('before'); }
-function startAfterLog()  { _openMomentPicker('after'); }
+
+function startAfterLog() {
+  const modal = document.getElementById('jr-composer');
+  const body = document.getElementById('jr-composer-body');
+  if (!modal || !body) return;
+  const open = Journal.events().filter(e => e.status === 'upcoming');
+
+  let list = '';
+  if (open.length) {
+    list = '<div class="jr-moment-chips">' + open.map(ev => {
+      const c = Journal.eventLogCounts(ev.id);
+      const meta = [c.pre ? `${c.pre} before` : '', c.after ? `${c.after} after` : ''].filter(Boolean).join(' \u00B7 ') || 'before logged';
+      return `<button class="jr-moment-chip" onclick="startDebrief('${ev.id}')">
+        <span class="jr-moment-chip-title">${_esc(ev.title)}</span>
+        <span class="jr-moment-chip-meta">${meta}</span>
+      </button>`;
+    }).join('') + '</div>';
+  } else {
+    list = '<div class="jr-c-sub" style="margin-bottom:4px">No moments waiting on a debrief right now.</div>';
+  }
+
+  body.innerHTML = `<div class="jr-c-title">How did it go?</div>
+    <div class="jr-c-sub" style="margin-bottom:14px">${open.length ? 'Pick the moment you logged a before for:' : ''}</div>
+    ${list}
+    <button class="jr-action-card jr-action-impromptu jr-c-impromptu-row" onclick="startSpontaneousLog()">
+      <span class="jr-action-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+      <span class="jr-action-txt"><strong>Something I didn't prep for</strong><span>No before \u2014 just log how it went</span></span>
+    </button>`;
+
+  modal.style.display = 'flex';
+  requestAnimationFrame(() => modal.classList.add('show'));
+}
 
 function _openMomentPicker(which) {
   const modal = document.getElementById('jr-composer');
