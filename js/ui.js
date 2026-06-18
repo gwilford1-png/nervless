@@ -258,7 +258,23 @@ function showCurriculum() {
   document.getElementById('curriculum-list').innerHTML = '<div class="j-phase-list">' + html + footerCard + '</div>';
 
   document.querySelectorAll('.j-phase-head[data-toggle]').forEach(head => {
-    head.onclick = () => { const c = head.closest('.j-phase-card'); if (c) c.classList.toggle('open'); };
+    head.onclick = () => {
+      const card = head.closest('.j-phase-card');
+      if (!card) return;
+      const willOpen = !card.classList.contains('open');
+      // Accordion: close any other phase that's currently open
+      document.querySelectorAll('.j-phase-card.open').forEach(c => {
+        if (c !== card) c.classList.remove('open');
+      });
+      card.classList.toggle('open', willOpen);
+      // When opening, slide the page up so the revealed lessons are in view
+      if (willOpen) {
+        requestAnimationFrame(() => {
+          const top = head.getBoundingClientRect().top + window.scrollY - 16;
+          window.scrollTo({ top, behavior: 'smooth' });
+        });
+      }
+    };
   });
 
   setActiveNav('journey');
