@@ -233,7 +233,7 @@ function showCurriculum() {
     footerCard =
       '<div style="margin:22px 16px 8px;background:var(--surface);border:1.5px solid rgba(46,158,122,0.3);border-radius:22px;padding:24px 20px;box-shadow:0 8px 24px rgba(80,55,30,0.07),0 1px 4px rgba(80,55,30,0.05);text-align:center;">'
       + '<div style="font-size:34px;margin-bottom:10px;">🎉</div>'
-      + '<div style="font-family:\'DM Serif Display\',serif;font-size:23px;color:var(--text);margin-bottom:10px;">You finished the journey</div>'
+      + '<div style="font-family:\'Hanken Grotesk\',sans-serif;font-weight:700;letter-spacing:-0.02em;font-size:23px;color:var(--text);margin-bottom:10px;">You finished the journey</div>'
       + '<div style="font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:18px;">The fear you started with doesn\'t get the last word anymore — and that\'s work most people never do. This isn\'t the end. It\'s the part that keeps it.</div>'
       + '<div style="display:flex;flex-direction:column;gap:10px;">'
       + weeklyBtn
@@ -1799,7 +1799,7 @@ function showModelAnswer(modelAnswer, session) {
     <div style="padding:52px 24px 24px;">
       <button onclick="document.getElementById('model-answer-overlay').remove()" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted);margin-bottom:20px;display:block;">←</button>
       <div style="font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px;">💡 HOW TO STRUCTURE THIS BETTER</div>
-      <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:6px;">${session ? session.title : 'Your session'}</div>
+      <div style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;font-size:22px;margin-bottom:6px;">${session ? session.title : 'Your session'}</div>
       <div style="font-size:14px;color:var(--muted);margin-bottom:24px;">Here's how a strong answer to this prompt could sound, based on what you were trying to say.</div>
     </div>
     <div style="margin:0 24px 20px;background:var(--surface);border:1.5px solid rgba(194,114,79,0.25);border-radius:20px;padding:22px;">
