@@ -4,7 +4,7 @@
    V7 DESIGN SYSTEM — matches curriculum v7
    ───────────────────────────────────────── */
 :root {
-  --bg: #F5F3EE;
+  --bg: #F7F5F0;
   --surface: #FFFFFF;
   --surface2: #EDEAE3;
   --border: #E4E0D8;
@@ -12,6 +12,8 @@
   --text: #1A1814;
   --text-muted: #7A7268;
   --text-faint: #ADA89E;
+  --muted: #7A7268;            /* alias: was referenced 19x but never defined */
+  --card-shadow: 0 1px 3px rgba(0,0,0,0.05);
   --green: #2E9E7A;
   --red: #D95470;
   --gold: #C4922A;
@@ -111,7 +113,7 @@ body {
 /* v7 header */
 .curr-header { padding: 16px 20px 16px; }
 .curr-eyebrow { font-size: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 4px; }
-.curr-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); letter-spacing: -0.3px; line-height: 1.15; margin-bottom: 16px; }
+.curr-title { font-family: 'Hanken Grotesk', sans-serif; font-size: 28px; color: var(--text); letter-spacing: -0.3px; line-height: 1.15; margin-bottom: 16px; }
 
 /* v7 progress strip */
 .curr-progress-strip { background: var(--surface); border: 1.5px solid var(--border); border-radius: 16px; padding: 14px 16px 12px; margin-bottom: 6px; }
@@ -153,7 +155,7 @@ body {
 .phase-block.ph9 .phase-header-tag { color: var(--phase9); }
 .phase-header-dot { font-size: 11px; color: var(--text-muted); }
 .phase-header-progress { font-size: 12px; font-weight: 700; color: var(--text-muted); }
-.phase-header-name { font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; color: var(--text); line-height: 1.2; }
+.phase-header-name { font-family: 'Hanken Grotesk', sans-serif; font-size: 20px; font-weight: 400; color: var(--text); line-height: 1.2; }
 .phase-header-benefit { font-size: 12px; color: var(--text-muted); line-height: 1.4; margin-top: 4px; }
 .phase-chevron { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--text-muted); transition: transform 0.3s cubic-bezier(0.4,0,0.2,1); }
 .phase-chevron svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
@@ -195,7 +197,7 @@ body {
 .level-chip { background: var(--sc-light); border: 1px solid var(--sc-mid); border-radius: 100px; padding: 5px 13px; font-size: 11px; font-weight: 800; color: var(--sc); white-space: nowrap; flex-shrink: 0; }
 .prompt-card { margin: 0 20px 20px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 22px; padding: 24px 20px; }
 .prompt-label { font-size: 11px; color: var(--sc); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 900; margin-bottom: 10px; }
-.prompt-text { font-family: 'DM Serif Display', serif; font-size: 20px; line-height: 1.45; color: var(--text); }
+.prompt-text { font-family: 'Hanken Grotesk', sans-serif; font-size: 20px; line-height: 1.45; color: var(--text); }
 .prompt-meta { display: flex; gap: 14px; margin-top: 14px; }
 .meta-item { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
 .coaching-tip { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-muted); line-height: 1.6; font-style: italic; }
@@ -254,13 +256,13 @@ body {
 .step-connector { width: 26px; height: 2px; border-radius: 2px; background: var(--border-strong); margin: 0 -1px; margin-bottom: 19px; transition: background 0.3s; }
 .step-connector.done { background: var(--sc); }
 .lesson-header { padding: 24px 20px 16px; background: linear-gradient(180deg, var(--sc-light) 0%, var(--bg) 100%); }
-.lesson-title { font-family: 'DM Serif Display', serif; font-size: 22px; line-height: 1.25; color: var(--text); }
+.lesson-title { font-family: 'Hanken Grotesk', sans-serif; font-size: 22px; line-height: 1.25; color: var(--text); }
 .lesson-body { padding: 0 16px; }
 .lesson-content { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 22px; margin-bottom: 14px; }
 .lesson-content p { font-size: 16px; color: var(--text); line-height: 1.7; margin-bottom: 14px; }
 .lesson-content p:last-child { margin-bottom: 0; }
 .lesson-content .highlight-box { background: var(--sc-light); border-left: 3px solid var(--sc); border-radius: 0 12px 12px 0; padding: 14px 16px; margin: 16px 0; font-size: 14px; color: var(--text); line-height: 1.6; font-style: italic; }
-.lesson-content h3 { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--text); margin-bottom: 10px; margin-top: 4px; }
+.lesson-content h3 { font-family: 'Hanken Grotesk', sans-serif; font-size: 17px; color: var(--text); margin-bottom: 10px; margin-top: 4px; }
 .key-insight { background: var(--sc-light); border: 1px solid var(--sc-mid); border-radius: 16px; padding: 18px 20px; margin-bottom: 16px; display: flex; gap: 14px; align-items: flex-start; }
 .key-insight-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
 .key-insight-text { font-size: 14px; color: var(--text); line-height: 1.6; }
@@ -288,7 +290,7 @@ body {
 .quiz-all-correct.show { display: block; }
 .talk-intro { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 16px 18px; margin-bottom: 10px; }
 .talk-intro-label { font-size: 11px; color: var(--sc); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 900; margin-bottom: 8px; }
-.talk-prompt-text { font-family: 'DM Serif Display', serif; font-size: 18px; line-height: 1.4; color: var(--text); margin-bottom: 12px; }
+.talk-prompt-text { font-family: 'Hanken Grotesk', sans-serif; font-size: 18px; line-height: 1.4; color: var(--text); margin-bottom: 12px; }
 .talk-meta { display: flex; gap: 14px; flex-wrap: wrap; }
 .talk-meta-item { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
 .talk-coach { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 12px; color: var(--text-muted); line-height: 1.55; font-style: italic; }
@@ -305,8 +307,8 @@ body {
 .feedback-header { padding: var(--header-top) 20px 28px; background: linear-gradient(180deg, var(--sc-light) 0%, var(--bg) 100%); text-align: center; }
 .feedback-score { width: 96px; height: 96px; border-radius: 50%; background: conic-gradient(var(--green) var(--pct), var(--surface2) 0); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; position: relative; }
 .feedback-score::before { content: ''; position: absolute; inset: 10px; border-radius: 50%; background: var(--bg); }
-.score-num { position: relative; font-family: 'DM Serif Display', serif; font-size: 30px; color: var(--text); z-index: 1; }
-.feedback-title { font-family: 'DM Serif Display', serif; font-size: 24px; margin-bottom: 6px; }
+.score-num { position: relative; font-family: 'Hanken Grotesk', sans-serif; font-size: 30px; color: var(--text); z-index: 1; }
+.feedback-title { font-family: 'Hanken Grotesk', sans-serif; font-size: 24px; margin-bottom: 6px; }
 .feedback-sub { font-size: 14px; color: var(--text-muted); font-weight: 600; }
 .session-context-strip { margin: 0 20px 14px; background: var(--sc-light); border: 1px solid var(--sc-mid); border-radius: 14px; padding: 12px 16px; font-size: 13px; color: var(--text-muted); line-height: 1.5; font-weight: 600; }
 .score-widget { flex: 1; background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 10px 6px; text-align: center; }
@@ -329,7 +331,7 @@ body {
 #screen-dashboard { overflow-y: auto; padding-bottom: calc(var(--nav-h) + 20px); }
 .dash-header { padding: var(--header-top) 20px 28px; }
 .dash-greeting { font-size: 11px; color: var(--text-faint); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 900; margin-bottom: 8px; }
-.dash-title { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 20px; letter-spacing: -0.3px; }
+.dash-title { font-family: 'Hanken Grotesk', sans-serif; font-size: 28px; margin-bottom: 20px; letter-spacing: -0.3px; }
 .streak-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 18px; display: flex; align-items: center; gap: 16px; }
 .streak-icon { font-size: 32px; }
 .streak-label { font-size: 11px; color: var(--text-faint); text-transform: uppercase; font-weight: 900; letter-spacing: 0.08em; margin-bottom: 4px; }
@@ -348,8 +350,8 @@ body {
 
 /* ── FREE PRACTICE ── */
 #screen-free { overflow-y: auto; padding-bottom: calc(var(--nav-h) + 20px); background: var(--bg); }
-.free-header { padding: var(--header-top) 20px 20px; background: linear-gradient(180deg, #FDF3E3 0%, var(--bg) 100%); }
-.free-header h1 { font-family: 'DM Serif Display', serif; font-size: 28px; margin-bottom: 6px; }
+.free-header { padding: var(--header-top) 20px 20px; background: linear-gradient(180deg, var(--sc-light) 0%, var(--bg) 100%); }
+.free-header h1 { font-family: 'Hanken Grotesk', sans-serif; font-size: 28px; margin-bottom: 6px; }
 .free-header p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
 .free-mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px 20px; }
 .free-mode-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 18px 14px; cursor: pointer; transition: all 0.15s; text-align: center; }
@@ -360,7 +362,7 @@ body {
 .free-mode-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 .free-prompt-area { margin: 0 16px 20px; background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 18px; }
 .free-prompt-label { font-size: 11px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 900; margin-bottom: 10px; }
-.free-prompt-text { font-family: 'DM Serif Display', serif; font-size: 19px; line-height: 1.45; color: var(--text); margin-bottom: 14px; }
+.free-prompt-text { font-family: 'Hanken Grotesk', sans-serif; font-size: 19px; line-height: 1.45; color: var(--text); margin-bottom: 14px; }
 .free-recording-zone { display: flex; flex-direction: column; align-items: center; padding: 0 16px 24px; gap: 18px; }
 .free-section-title { font-size: 11px; font-weight: 900; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; padding: 0 20px; margin-bottom: 8px; }
 
@@ -407,7 +409,7 @@ body {
 .css-lock { width: 10px; height: 12px; position: relative; flex-shrink: 0; }
 .css-lock::before { content:''; position: absolute; bottom: 0; left: 0; right: 0; height: 7px; background: var(--text-faint); border-radius: 2px; }
 .css-lock::after { content:''; position: absolute; bottom: 5px; left: 1.5px; right: 1.5px; height: 6px; border: 2px solid var(--text-faint); border-bottom: none; border-radius: 4px 4px 0 0; }
-.phase-name { font-family: 'DM Serif Display', serif; font-size: 21px; line-height: 1.15; color: var(--text); letter-spacing: -0.2px; margin-bottom: 12px; }
+.phase-name { font-family: 'Hanken Grotesk', sans-serif; font-size: 21px; line-height: 1.15; color: var(--text); letter-spacing: -0.2px; margin-bottom: 12px; }
 .state-locked .phase-name { color: var(--text-muted); }
 .progress-row { display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
 .prog-pill { display: flex; align-items: center; background: var(--pc-light); border: 1px solid var(--pc-mid); border-radius: 100px; padding: 3px 8px 3px 6px; gap: 5px; flex-shrink: 0; }
@@ -452,7 +454,7 @@ body {
 .session-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
 .session-title-block { flex: 1; min-width: 0; }
 .session-label { font-size: 11px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
-.session-title { font-family: 'DM Serif Display', serif; font-size: 17px; font-weight: 400; line-height: 1.25; color: var(--text); letter-spacing: -0.2px; }
+.session-title { font-family: 'Hanken Grotesk', sans-serif; font-size: 17px; font-weight: 400; line-height: 1.25; color: var(--text); letter-spacing: -0.2px; }
 .session-score-block { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; }
 .session-score { display: flex; align-items: baseline; gap: 1px; line-height: 1; }
 .session-score .score-num { font-size: 16px; font-weight: 900; letter-spacing: -0.5px; position: static; font-family: 'Nunito', sans-serif; }
@@ -785,7 +787,7 @@ body {
 .auth-wrap { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 0; }
 .auth-logo { display: flex; justify-content: center; margin-bottom: 24px; }
 .auth-logo-img { width: 72px; height: 72px; border-radius: 18px; }
-.auth-headline { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); text-align: center; margin-bottom: 10px; letter-spacing: -0.3px; }
+.auth-headline { font-family: 'Hanken Grotesk', sans-serif; font-size: 28px; color: var(--text); text-align: center; margin-bottom: 10px; letter-spacing: -0.3px; }
 .auth-sub { font-size: 14px; color: var(--text-muted); text-align: center; line-height: 1.6; margin-bottom: 28px; }
 .auth-input { width: 100%; background: var(--surface); border: 1.5px solid var(--border-strong); border-radius: 14px; padding: 15px 16px; font-size: 16px; font-family: 'Nunito', sans-serif; color: var(--text); outline: none; box-sizing: border-box; transition: border-color 0.15s; -webkit-appearance: none; }
 .auth-input:focus { border-color: var(--sc); }
@@ -809,7 +811,7 @@ body {
 .suds-modal.show { opacity: 1; }
 .suds-card { background: var(--bg); border-radius: 24px 24px 0 0; width: 100%; max-width: 480px; padding: 28px 22px calc(28px + env(safe-area-inset-bottom)); transform: translateY(20px); transition: transform 0.24s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 -8px 40px rgba(0,0,0,0.2); }
 .suds-modal.show .suds-card { transform: translateY(0); }
-.suds-title { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--text); text-align: center; line-height: 1.25; margin-bottom: 8px; }
+.suds-title { font-family: 'Hanken Grotesk', sans-serif; font-size: 22px; color: var(--text); text-align: center; line-height: 1.25; margin-bottom: 8px; }
 .suds-sub { font-size: 13.5px; color: var(--text-muted); text-align: center; line-height: 1.5; margin-bottom: 24px; }
 .suds-scale { display: grid; grid-template-columns: repeat(11, 1fr); gap: 5px; margin-bottom: 10px; }
 .suds-num { aspect-ratio: 1; border: 1.5px solid var(--border-strong); background: var(--surface); border-radius: 11px; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 15px; color: var(--text); cursor: pointer; transition: all 0.12s; display: flex; align-items: center; justify-content: center; padding: 0; }
@@ -821,10 +823,10 @@ body {
 /* ════════ JOURNAL ════════ */
 #screen-journal { background: var(--bg); overflow-y: auto; padding-bottom: calc(var(--nav-h) + 24px); }
 .jr-header { padding: var(--header-top) 20px 16px; }
-.jr-h-title { font-family: 'DM Serif Display', serif; font-size: 30px; color: var(--text); letter-spacing: -0.4px; }
+.jr-h-title { font-family: 'Hanken Grotesk', sans-serif; font-size: 30px; color: var(--text); letter-spacing: -0.4px; }
 .jr-h-sub { font-size: 13.5px; color: var(--text-muted); margin-top: 4px; line-height: 1.5; }
 .jr-evidence { margin: 0 20px 16px; background: var(--sc); border-radius: 18px; padding: 18px 20px; display: flex; align-items: center; gap: 14px; }
-.jr-evidence-num { font-family: 'DM Serif Display', serif; font-size: 34px; color: #fff; line-height: 1; }
+.jr-evidence-num { font-family: 'Hanken Grotesk', sans-serif; font-size: 34px; color: #fff; line-height: 1; }
 .jr-evidence-text { font-size: 14px; color: rgba(255,255,255,0.9); font-weight: 700; line-height: 1.35; }
 .jr-actions { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; margin-bottom: 22px; }
 .jr-action-primary, .jr-action-secondary { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 16px; border: none; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; width: 100%; }
@@ -881,7 +883,7 @@ body {
 .jr-composer.show .jr-composer-card { transform: translateY(0); }
 .jr-composer-close { position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 18px; color: var(--text-faint); cursor: pointer; padding: 4px; z-index: 2; }
 .jr-c-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sc); text-align: center; margin-bottom: 8px; }
-.jr-c-title { font-family: 'DM Serif Display', serif; font-size: 23px; color: var(--text); text-align: center; line-height: 1.25; margin-bottom: 8px; }
+.jr-c-title { font-family: 'Hanken Grotesk', sans-serif; font-size: 23px; color: var(--text); text-align: center; line-height: 1.25; margin-bottom: 8px; }
 .jr-c-sub { font-size: 13.5px; color: var(--text-muted); text-align: center; line-height: 1.55; margin-bottom: 20px; }
 .jr-c-why { font-size: 13.5px; color: var(--text-muted); text-align: center; line-height: 1.6; margin-bottom: 22px; background: var(--sc-light); padding: 12px 14px; border-radius: 12px; }
 .jr-c-input, .jr-c-textarea { width: 100%; background: var(--surface); border: 1.5px solid var(--border-strong); border-radius: 14px; padding: 14px 16px; font-size: 16px; font-family: 'Nunito', sans-serif; color: var(--text); outline: none; box-sizing: border-box; margin-bottom: 14px; -webkit-appearance: none; }
@@ -891,7 +893,7 @@ body {
 .jr-c-link { display: block; width: 100%; background: none; border: none; color: var(--text-faint); font-size: 13px; font-weight: 700; cursor: pointer; font-family: 'Nunito', sans-serif; margin-top: 12px; padding: 8px; }
 .jr-c-scale { display: grid; grid-template-columns: repeat(11, 1fr); gap: 5px; margin-bottom: 8px; }
 .jr-c-icon { font-size: 42px; text-align: center; margin-bottom: 14px; }
-.jr-c-evidence { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--sc); text-align: center; line-height: 1.3; margin-bottom: 16px; padding: 16px; background: var(--sc-light); border-radius: 14px; }
+.jr-c-evidence { font-family: 'Hanken Grotesk', sans-serif; font-size: 22px; color: var(--sc); text-align: center; line-height: 1.3; margin-bottom: 16px; padding: 16px; background: var(--sc-light); border-radius: 14px; }
 .jr-c-outcome-btns { display: flex; flex-direction: column; gap: 10px; }
 .jr-outcome-btn { padding: 15px; border-radius: 14px; border: 1.5px solid var(--border-strong); background: var(--surface); font-size: 15px; font-weight: 800; cursor: pointer; font-family: 'Nunito', sans-serif; color: var(--text); transition: all 0.12s; }
 .jr-outcome-btn.jr-out-good:hover { border-color: var(--green); background: rgba(60,170,110,0.08); }
@@ -899,7 +901,7 @@ body {
 .jr-outcome-btn.jr-out-bad:hover { border-color: var(--red, #d05050); background: rgba(220,80,80,0.06); }
 .jr-c-ai { font-size: 14px; color: var(--text); line-height: 1.6; background: var(--sc-light); padding: 14px 16px; border-radius: 14px; margin-bottom: 16px; text-align: left; }
 .jr-debrief-zone { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 16px 0 8px; }
-.jr-debrief-timer { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); }
+.jr-debrief-timer { font-family: 'Hanken Grotesk', sans-serif; font-size: 28px; color: var(--text); }
 .jr-debrief-hint { font-size: 13px; color: var(--text-muted); }
 .jr-spin { animation: jrspin 1s linear infinite; display: inline-block; }
 @keyframes jrspin { to { transform: rotate(360deg); } }
@@ -1021,3 +1023,25 @@ body {
 .j-continue-steps { display: none; }          /* purple card: drop the Read › Lock in pills */
 .lesson-steps-group { display: none; }         /* lesson top: drop the stepper (cards have their own dots) */
 .lesson-step-bar { min-height: 52px; }
+
+/* ─────────────────────────────────────────
+   TYPE STANDARDISATION (appended last so it wins
+   the cascade over every locally-defined heading,
+   including the j-* and jr-* screens defined further up).
+   One display voice: Hanken Grotesk. Body stays Nunito.
+   ───────────────────────────────────────── */
+.curr-title, .phase-header-name, .phase-name, .session-title,
+.lesson-title, .lesson-content h3, .prompt-text, .talk-prompt-text,
+.feedback-title, .dash-title, .free-header h1, .auth-headline,
+.suds-title, .jr-h-title, .jr-c-title, .jr-c-evidence, .jr-debrief-timer,
+.j-welcome, .j-phase-name, .j-logo-text, .j-continue-title {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+/* Big display numbers — heaviest loaded weight */
+.score-num, .j-score-num, .jr-evidence-num {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
