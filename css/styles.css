@@ -1034,7 +1034,7 @@ body {
 .lesson-title, .lesson-content h3, .prompt-text, .talk-prompt-text,
 .feedback-title, .dash-title, .free-header h1, .auth-headline,
 .suds-title, .jr-h-title, .jr-c-title, .jr-c-evidence, .jr-debrief-timer,
-.j-welcome, .j-phase-name, .j-logo-text, .j-continue-title {
+.j-welcome, .j-phase-name, .j-continue-title {
   font-family: 'Hanken Grotesk', sans-serif;
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -1044,4 +1044,20 @@ body {
   font-family: 'Hanken Grotesk', sans-serif;
   font-weight: 800;
   letter-spacing: -0.03em;
+}
+
+/* Logo wordmark — heaviest weight, matches /learn/ exactly */
+.j-logo-text {
+  font-family: 'Hanken Grotesk', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+/* ─────────────────────────────────────────
+   BUTTON STANDARDISATION — one UI voice for every
+   button/CTA (was mixed Nunito/Hanken). Family only,
+   so each button keeps its own weight hierarchy.
+   ───────────────────────────────────────── */
+button, .menu-cta {
+  font-family: 'Hanken Grotesk', sans-serif;
 }
