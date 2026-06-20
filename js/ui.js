@@ -2089,7 +2089,7 @@ const PRACTICE_ICONS = {
 };
 const PRACTICE_ORDER = ['hotseat','debate','scenarios','open'];
 
-// ── VOICE (browser speech synthesis) ──
+// ── VOICE (pre-generated clips + proxy fallback) ──
 function voicePrefOn() { return localStorage.getItem('nervless_voice') !== '0'; }
 function toggleVoicePref() {
   localStorage.setItem('nervless_voice', voicePrefOn() ? '0' : '1');
@@ -2103,19 +2103,61 @@ function renderVoicePref() {
   const pv = document.getElementById('pd-voice');
   if (pv) pv.classList.toggle('off', !on);
 }
-function speak(text) {
-  if (!voicePrefOn() || !('speechSynthesis' in window) || !text) return;
+
+// Same FNV-1a hash the generator uses — maps prompt text → clip filename.
+function voiceHash(text){
+  const s = (text || '').trim().replace(/\s+/g, ' ');
+  let h = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); }
+  return (h >>> 0).toString(16).padStart(8, '0');
+}
+
+let _voiceClips = null, _voiceClipsP = null, _currentVoice = null, _voicePrimed = false;
+
+function loadVoiceClips(){
+  if (_voiceClipsP) return _voiceClipsP;
+  _voiceClipsP = fetch('audio/manifest.json')
+    .then(r => r.ok ? r.json() : [])
+    .then(list => (_voiceClips = new Set(list)))
+    .catch(() => (_voiceClips = new Set()));
+  return _voiceClipsP;
+}
+
+// Unlock audio on the first user gesture (iOS/Safari block programmatic audio).
+function primeVoice(){
+  if (_voicePrimed) return; _voicePrimed = true;
   try {
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    const voices = speechSynthesis.getVoices() || [];
-    const gb = voices.find(v => v.lang === 'en-GB') || voices.find(v => (v.lang||'').startsWith('en'));
-    if (gb) u.voice = gb;
-    u.rate = 1;
-    speechSynthesis.speak(u);
+    const a = new Audio('data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2LjEwMAAAAAAAAAAAAAAA//NwwAAAAAAAAAAAAEluZm8AAAAPAAAABAAAAR4Aurq6urq6urq6urq6urq6urq6urq6urq60dHR0dHR0dHR0dHR0dHR0dHR0dHR0dHR0ejo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Ojo6Oj/////////////////////////////////AAAAAExhdmM2MC4zMQAAAAAAAAAAAAAAACQCcQAAAAAAAAEeqyLcVwAAAAAAAAAAAAAAAAD/8xDEAAAAA0gAAAAATEFNRTMuMTAwVVVVVf/zEMQNAAADSAAAAABVVVVVVVVVVVVVVVVV//MQxBoAAANIAAAAAFVVVVVVVVVVVVVVVVX/8xDEJwAAA0gAAAAAVVVVVVVVVVVVVVVVVQ==');
+    a.volume = 0; a.play().catch(()=>{});
+  } catch(e){}
+}
+
+function _playClip(url){
+  stopSpeaking();
+  try { const a = new Audio(url); _currentVoice = a; a.play().catch(()=>{}); } catch(e){}
+}
+
+async function speak(text){
+  if (!voicePrefOn() || !text) return;
+  const clips = await loadVoiceClips();
+  const h = voiceHash(text);
+  if (clips.has(h)) { _playClip('audio/' + h + '.mp3'); return; }   // fixed prompt → pre-generated clip
+  try {                                                             // dynamic (debate motion / AI challenge) → proxy
+    const res = await fetch(getProxyUrl() + '/speak', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+    if (!res.ok) return;
+    _playClip(URL.createObjectURL(await res.blob()));
   } catch(e) { /* voice is a nice-to-have — never block practice on it */ }
 }
-function stopSpeaking() { try { if ('speechSynthesis' in window) speechSynthesis.cancel(); } catch(e){} }
+
+function stopSpeaking(){
+  try { if (_currentVoice){ _currentVoice.pause(); _currentVoice = null; } } catch(e){}
+}
+
+document.addEventListener('pointerdown', primeVoice, { once: true });
 
 // ── MODE GRID ──
 function renderFreeGrid() {
