@@ -233,7 +233,7 @@ function showCurriculum() {
     footerCard =
       '<div style="margin:22px 16px 8px;background:var(--surface);border:1.5px solid rgba(46,158,122,0.3);border-radius:22px;padding:24px 20px;box-shadow:0 8px 24px rgba(80,55,30,0.07),0 1px 4px rgba(80,55,30,0.05);text-align:center;">'
       + '<div style="font-size:34px;margin-bottom:10px;">🎉</div>'
-      + '<div style="font-family:\'Hanken Grotesk\',sans-serif;font-weight:700;letter-spacing:-0.02em;font-size:23px;color:var(--text);margin-bottom:10px;">You finished the journey</div>'
+      + '<div style="font-family:\'DM Serif Display\',serif;font-size:23px;color:var(--text);margin-bottom:10px;">You finished the journey</div>'
       + '<div style="font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:18px;">The fear you started with doesn\'t get the last word anymore — and that\'s work most people never do. This isn\'t the end. It\'s the part that keeps it.</div>'
       + '<div style="display:flex;flex-direction:column;gap:10px;">'
       + weeklyBtn
@@ -258,23 +258,7 @@ function showCurriculum() {
   document.getElementById('curriculum-list').innerHTML = '<div class="j-phase-list">' + html + footerCard + '</div>';
 
   document.querySelectorAll('.j-phase-head[data-toggle]').forEach(head => {
-    head.onclick = () => {
-      const card = head.closest('.j-phase-card');
-      if (!card) return;
-      const willOpen = !card.classList.contains('open');
-      // Accordion: close any other phase that's currently open
-      document.querySelectorAll('.j-phase-card.open').forEach(c => {
-        if (c !== card) c.classList.remove('open');
-      });
-      card.classList.toggle('open', willOpen);
-      // When opening, slide the page up so the revealed lessons are in view
-      if (willOpen) {
-        requestAnimationFrame(() => {
-          const top = head.getBoundingClientRect().top + window.scrollY - 16;
-          window.scrollTo({ top, behavior: 'smooth' });
-        });
-      }
-    };
+    head.onclick = () => { const c = head.closest('.j-phase-card'); if (c) c.classList.toggle('open'); };
   });
 
   setActiveNav('journey');
@@ -1208,8 +1192,19 @@ async function runAIPipeline(audioChunks, durationSeconds, session) {
     transcript = '[Transcription failed — check your proxy is running]';
   }
 
-  const wordCount = transcript.trim().split(/\s+/).filter(w => w.length > 0).length;
-  if (!transcript || transcript.trim() === '' || wordCount < 5) {
+  // Whisper hallucinates short phrases on near-silent audio (e.g. "Thank you.",
+  // "Thanks for watching") and can repeat them past a raw word count. Strip known
+  // phantoms first, then judge whether any real speech remains.
+  const HALLUCINATIONS = [
+    'thank you for watching','thanks for watching','thank you so much',
+    'thank you very much','please subscribe','thank you','thanks','subscribe',
+    'bye bye','okay','bye','you','so','um','uh'
+  ].sort((a, b) => b.length - a.length);
+  let scrubbed = transcript.toLowerCase().replace(/[^a-z\s]/g, ' ').replace(/\s+/g, ' ').trim();
+  for (const h of HALLUCINATIONS) scrubbed = scrubbed.split(h).join(' ');
+  scrubbed = scrubbed.replace(/\s+/g, ' ').trim();
+  const realWordCount = scrubbed ? scrubbed.split(' ').filter(w => w.length > 0).length : 0;
+  if (!transcript || transcript.trim() === '' || realWordCount < 5) {
     hideLoading();
     return {
       transcript: transcript || '',
@@ -1217,6 +1212,7 @@ async function runAIPipeline(audioChunks, durationSeconds, session) {
       fillerCount: 0,
       durationSeconds,
       analysis: {
+        noSpeech: true,
         overallScore: 0,
         title: "Nothing detected",
         subtitle: "We didn't pick up any speech — try again and speak clearly into your microphone.",
@@ -1512,6 +1508,7 @@ function renderFeedback(rec, transcript, analysis) {
 
   const fbSession = CURRICULUM.find(s => s.id === (rec.sessionId || state.currentSessionId));
   const gradeVisible = showsGrade(fbSession);
+  const noSpeech = !!(a && a.noSpeech);
 
   const ringEl = document.getElementById('score-ring');
   const numEl = document.getElementById('score-num');
@@ -1519,10 +1516,16 @@ function renderFeedback(rec, transcript, analysis) {
     ringEl.style.setProperty('--pct', a.overallScore + '%');
     numEl.textContent = a.overallScore;
     numEl.style.fontSize = '';
+  } else if (noSpeech) {
+    ringEl.style.setProperty('--pct', '0%');
+    numEl.textContent = '—';
+    numEl.style.fontSize = '36px';
+    numEl.style.color = 'var(--muted)';
   } else {
     ringEl.style.setProperty('--pct', '100%');
     numEl.textContent = '✓';
     numEl.style.fontSize = '40px';
+    numEl.style.color = '';
   }
   document.getElementById('feedback-title').textContent = a.title;
   document.getElementById('feedback-sub').textContent = a.subtitle;
@@ -1667,7 +1670,7 @@ function renderFeedback(rec, transcript, analysis) {
 
   const oldNote = document.getElementById('phase-note');
   if (oldNote) oldNote.remove();
-  if (!gradeVisible && sessionForScore && banner) {
+  if (!gradeVisible && !noSpeech && sessionForScore && banner) {
     const ph = sessionForScore.phase;
     const noteText =
       ph === 1 ? '🫶 <strong style="color:var(--accent)">Phase 1 — no judgement.</strong> This phase is about speaking freely and building self-awareness.'
@@ -1685,7 +1688,22 @@ function renderFeedback(rec, transcript, analysis) {
   if (banner) {
     banner.style.display = 'block';
 
-    if (!gradeVisible) {
+    if (noSpeech) {
+      banner.style.background = 'rgba(196,146,42,0.08)';
+      banner.style.border = '1px solid rgba(196,146,42,0.3)';
+      banner.innerHTML =
+        '<div style="font-size:32px;margin-bottom:6px;">🎙️</div>'
+        + '<div style="font-weight:800;color:var(--gold);font-size:18px;margin-bottom:4px;">We didn\'t catch that</div>'
+        + '<div style="font-size:13px;color:var(--muted);">This one needs your voice. Find a quiet spot, hold your mic close and give it another go — there\'s nothing to get right, just speak.</div>';
+      if (btn) {
+        btn.textContent = 'Record again →';
+        btn.style.background = 'var(--accent)';
+        btn.style.width = '100%';
+        btn.onclick = () => loadSession(rec.sessionId || state.currentSessionId);
+      }
+      const staleHow = document.getElementById('show-how-btn');
+      if (staleHow) staleHow.remove();
+    } else if (!gradeVisible) {
       banner.style.background = 'rgba(46,158,122,0.1)';
       banner.style.border = '1px solid rgba(46,158,122,0.3)';
       banner.innerHTML =
@@ -1815,7 +1833,7 @@ function showModelAnswer(modelAnswer, session) {
     <div style="padding:52px 24px 24px;">
       <button onclick="document.getElementById('model-answer-overlay').remove()" style="background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted);margin-bottom:20px;display:block;">←</button>
       <div style="font-size:11px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;font-weight:700;margin-bottom:8px;">💡 HOW TO STRUCTURE THIS BETTER</div>
-      <div style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;font-size:22px;margin-bottom:6px;">${session ? session.title : 'Your session'}</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:6px;">${session ? session.title : 'Your session'}</div>
       <div style="font-size:14px;color:var(--muted);margin-bottom:24px;">Here's how a strong answer to this prompt could sound, based on what you were trying to say.</div>
     </div>
     <div style="margin:0 24px 20px;background:var(--surface);border:1.5px solid rgba(194,114,79,0.25);border-radius:20px;padding:22px;">
