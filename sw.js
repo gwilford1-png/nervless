@@ -6,7 +6,7 @@
    - Everything else: network-first, fallback to cache
    ============================================================ */
 
-const CACHE_VERSION = 'nervless-v4';
+const CACHE_VERSION = 'nervless-v5';
 const SHELL_CACHE = CACHE_VERSION + '-shell';
 
 // Files that make up the app shell — update CACHE_VERSION when deploying
