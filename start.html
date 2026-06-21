@@ -23,7 +23,7 @@
 </script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap');
-:root{--bg:#F5F3EE;--surface:#FFFFFF;--surface2:#EDEAE3;--border:#E2DDD4;--border-strong:#D6D1C7;--text:#1A1814;--muted:#7A7268;--faint:#ADA79D;--accent:#5B4FD9;--accent2:#7B6FEF;--green:#1B9C82;--red:#D95470;--gold:#C4922A;--display:'Hanken Grotesk',sans-serif;
+:root{--bg:#F5F3EE;--surface:#FFFFFF;--surface2:#EDEAE3;--border:#E2DDD4;--border-strong:#D6D1C7;--text:#1A1814;--muted:#5C554B;--faint:#8A8174;--accent:#5B4FD9;--accent2:#7B6FEF;--green:#1B9C82;--red:#D95470;--gold:#C4922A;--display:'Hanken Grotesk',sans-serif;
   --phase1:#5B4FD9;--phase1-bg:#EEEAFF;--phase1-border:#C8C0F5;
   --phase2:#2E9E7A;--phase2-bg:#E4F7F1;--phase2-border:#A8DFD0;
   --phase3:#C4922A;--phase3-bg:#FDF3E3;--phase3-border:#F0D49A;
@@ -45,7 +45,7 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 .nav-learn:hover{color:var(--accent)}
 .landing-headline{font-family:var(--display);font-weight:700;font-size:31px;line-height:1.1;letter-spacing:-0.02em;margin-bottom:12px;max-width:330px}
 .landing-headline em{font-style:normal;font-weight:800;color:var(--accent)}
-.landing-sub{font-size:15px;color:var(--muted);line-height:1.5;max-width:300px;margin:0 auto 22px}
+.landing-sub{font-size:15.5px;color:var(--muted);line-height:1.55;max-width:310px;margin:0 auto 22px}
 .pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
 .pill{background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:6px 14px;font-size:12px;color:var(--muted);font-weight:700;box-shadow:0 1px 3px rgba(40,30,15,0.04)}
 .pill .dot{color:var(--green);margin-right:4px}
@@ -61,19 +61,20 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 
 /* Feedback preview */
 .fb-card{background:var(--surface);border-radius:20px;padding:18px;box-shadow:0 10px 30px rgba(40,30,15,0.07),0 1px 3px rgba(40,30,15,0.05);text-align:left}
-.fb-transcript{font-size:13px;color:var(--muted);font-style:italic;line-height:1.5;padding:10px 12px;background:var(--bg);border-radius:12px;margin-bottom:12px}
+.fb-tag{font-size:11px;font-weight:800;letter-spacing:0.07em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+.fb-transcript{font-size:14px;color:var(--text);font-style:italic;line-height:1.55;padding:12px 14px;background:var(--bg);border-radius:12px;margin-bottom:4px}
 .fb-stats{display:flex;gap:8px;margin-bottom:12px}
 .fb-stat{flex:1;background:var(--bg);border-radius:12px;padding:10px 12px}
 .fb-stat-val{font-family:var(--display);font-weight:800;font-size:16px;letter-spacing:-0.01em}
-.fb-stat-lab{font-size:11px;color:var(--muted);margin-top:1px}
+.fb-stat-lab{font-size:12px;color:var(--muted);margin-top:1px}
 .fb-coach{display:flex;gap:10px;align-items:flex-start}
 .fb-coach-ic{width:26px;height:26px;border-radius:9px;background:var(--phase1-bg);color:var(--accent);display:flex;align-items:center;justify-content:center;flex-shrink:0;padding:6px}
-.fb-coach-text{font-size:13px;color:var(--text);line-height:1.55}
+.fb-coach-text{font-size:14px;color:var(--text);line-height:1.55}
 
 /* Phase preview */
 .phase-preview{width:100%;max-width:340px;margin:22px auto 0}
 .phase-preview-title{font-family:var(--display);font-size:11px;color:var(--faint);letter-spacing:0.14em;text-transform:uppercase;font-weight:700;margin-bottom:12px}
-.prog-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--surface);border:none;border-radius:14px;padding:14px 16px;cursor:pointer;font-family:var(--display);font-size:13.5px;font-weight:700;color:var(--text);text-align:left;box-shadow:0 4px 14px rgba(40,30,15,0.05)}
+.prog-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--surface);border:none;border-radius:14px;padding:14px 16px;cursor:pointer;font-family:var(--display);font-size:14.5px;font-weight:700;color:var(--text);text-align:left;box-shadow:0 4px 14px rgba(40,30,15,0.05)}
 .prog-toggle>svg{color:var(--faint);flex-shrink:0;transition:transform 0.3s}
 .prog-toggle.open>svg{transform:rotate(180deg)}
 .prog-row{display:flex;align-items:center;gap:11px;padding:9px 4px;font-family:var(--display);font-size:14px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border)}
@@ -82,13 +83,14 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 #prog-list{padding:6px 14px 4px}
 
 /* FAQ toggles */
-.faq-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--surface);border:none;border-radius:14px;padding:14px 16px;margin-bottom:8px;cursor:pointer;font-family:var(--display);font-size:13.5px;font-weight:700;color:var(--text);text-align:left;box-shadow:0 4px 14px rgba(40,30,15,0.05);transition:transform 0.12s}
+.faq-toggle{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--surface);border:none;border-radius:14px;padding:14px 16px;margin-bottom:8px;cursor:pointer;font-family:var(--display);font-size:14.5px;font-weight:700;color:var(--text);text-align:left;box-shadow:0 4px 14px rgba(40,30,15,0.05);transition:transform 0.12s}
 .faq-toggle:active{transform:scale(0.99)}
 .faq-toggle>svg{color:var(--faint);flex-shrink:0;transition:transform 0.3s}
 .faq-toggle.open>svg{transform:rotate(180deg)}
+.faq-toggle>svg,.prog-toggle>svg{background:var(--phase1-bg);color:var(--accent);border-radius:50%;padding:5px;width:26px;height:26px;box-sizing:border-box}
 .faq-label{display:flex;align-items:center;gap:9px}
 .faq-ic{width:16px;height:16px;color:var(--accent);flex-shrink:0;display:inline-flex}
-.faq-answer{font-size:12.5px;color:var(--muted);line-height:1.6;padding:0 16px 14px;margin-top:-4px;margin-bottom:8px}
+.faq-answer{font-size:13.5px;color:var(--muted);line-height:1.6;padding:0 16px 14px;margin-top:-4px;margin-bottom:8px}
 
 /* Assessment */
 #screen-assessment{padding:0}
@@ -155,17 +157,19 @@ if(localStorage.getItem('nervless_level')&&(JSON.parse(localStorage.getItem('ner
   <p class="landing-sub">Private AI-powered practice to help you overcome speaking anxiety. At your own pace.</p>
   <div style="border-radius:24px;padding:26px 22px;width:100%;max-width:340px;background:var(--surface);box-shadow:0 10px 30px rgba(40,30,15,0.07),0 1px 3px rgba(40,30,15,0.05);">
     <div style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;font-size:20px;text-align:center;margin-bottom:4px">Where should you begin?</div>
-    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:20px">5 minutes a day. No judgement. Just practice.</div>
-    <button class="btn-primary" onclick="startAssessment()">Find my starting point</button>
-    <div style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px">6 questions &middot; under a minute</div>
-    <div style="font-size:12px;color:var(--faint);text-align:center;margin-top:4px">Free to start &middot; No card, no sign-up</div>
+    <div style="font-size:14px;color:var(--muted);text-align:center;margin-bottom:20px">5 minutes a day. No judgement. Just practice.</div>
+    <button class="btn-primary" onclick="startAssessment()">Start</button>
+    <div style="font-size:13px;color:var(--muted);text-align:center;margin-top:10px">6 questions &middot; under a minute</div>
+    <div style="font-size:13px;color:var(--faint);text-align:center;margin-top:4px">Free to start &middot; No card, no sign-up</div>
   </div>
 
   <!-- What the AI feedback looks like -->
   <div style="width:100%;max-width:340px;margin:22px auto 0;">
     <div class="phase-preview-title" style="text-align:center">What your feedback looks like</div>
     <div class="fb-card">
-      <div class="fb-transcript">&ldquo;&hellip;so the main thing I&rsquo;d change about our meetings is, um, how we open them&hellip;&rdquo;</div>
+      <div class="fb-tag">Your recording</div>
+      <div class="fb-transcript">&ldquo;So the main thing I&rsquo;d change about our meetings is, um, how we open them.&rdquo;</div>
+      <div class="fb-tag" style="margin-top:14px">Your feedback</div>
       <div class="fb-stats">
         <div class="fb-stat"><div class="fb-stat-val">138 wpm</div><div class="fb-stat-lab">Pace &middot; steady</div></div>
         <div class="fb-stat"><div class="fb-stat-val">3</div><div class="fb-stat-lab">Fillers &middot; &lsquo;um&rsquo; &times;2, &lsquo;so&rsquo; &times;1</div></div>
@@ -181,11 +185,11 @@ if(localStorage.getItem('nervless_level')&&(JSON.parse(localStorage.getItem('ner
   <div style="width:100%;max-width:340px;margin:24px auto 0;text-align:left;">
     <div style="font-family:'Hanken Grotesk',sans-serif;font-weight:700;letter-spacing:-0.02em;font-size:18px;text-align:center;margin-bottom:14px;color:var(--text)">How will this work? I'm just talking into a phone?</div>
 
-    <button class="faq-toggle open" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none';if(this.classList.contains('open'))gtag('event','faq_opened',{event_category:'engagement',event_label:'body_difference'})">
+    <button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none';if(this.classList.contains('open'))gtag('event','faq_opened',{event_category:'engagement',event_label:'body_difference'})">
       <span class="faq-label"><span class="faq-ic svg-ic"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>Your body doesn't know the difference</span>
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
-    <div class="faq-answer" style="display:block">Recording yourself speaking triggers the same stress response &mdash; racing heart, filler words, self-consciousness. The anxiety is real even without an audience.</div>
+    <div class="faq-answer" style="display:none">Recording yourself speaking triggers the same stress response &mdash; racing heart, filler words, self-consciousness. The anxiety is real even without an audience.</div>
 
     <button class="faq-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.style.display=this.classList.contains('open')?'block':'none';if(this.classList.contains('open'))gtag('event','faq_opened',{event_category:'engagement',event_label:'avoidance_barrier'})">
       <span class="faq-label"><span class="faq-ic svg-ic"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></svg></span>The real barrier is avoidance</span>
